@@ -308,5 +308,32 @@ namespace Test {
 			t_2_3 = byte_pattern::temp_instance().get_first().address(0xB);
 			loc_15D8053 = byte_pattern::temp_instance().get_first().address(0x13);
 		}
+
+		/* フォントのバッファ拡張 */
+		byte_pattern::temp_instance().find_pattern("68 50 28 00 00 56 E8");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
+		byte_pattern::temp_instance().find_pattern("68 50 28 00 00 E8 ? ? ? ? 83");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
+
+		byte_pattern::temp_instance().find_pattern("68 20 28 00 00 E8 ? ? ? ? 83");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
+		byte_pattern::temp_instance().find_pattern("68 20 28 00 00 56 E8");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
+		
+
+		/* sub_1936F30 入力の修正 */
+
+		/* sub_1974E10 入力の修正 */
+
+
+		
 	}
 }
