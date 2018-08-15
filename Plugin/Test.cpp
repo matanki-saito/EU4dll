@@ -117,6 +117,42 @@ namespace Test {
 		}
 	}
 
+	uintptr_t k_2;
+	__declspec(naked) void k_a_1()
+	{
+		__asm {
+			cmp byte ptr[ebp - 1], ESCAPE_SEQ_1;
+			jnz k_a_2;
+			cmp dword ptr[ebp - 0x24], 3;
+			ja k_a_2;
+			mov eax, [ebp - 0x1C];
+			add eax, 2;
+			mov[ebp - 0x1C], eax;
+			mov eax, [ebp - 0x24];
+			add eax, 2;
+			mov[ebp - 0x24], eax;
+			mov byte ptr[ebp - 1], 5;
+
+		k_a_2:
+			movd xmm2, dword ptr[ebp - 0x1C];
+			cmp byte ptr[ebp - 1], ESCAPE_SEQ_1;
+			jz k_4;
+			mov eax, [ebp - 0x24];
+			jmp k_3;
+
+		k_4:
+			mov eax, [ebp - 0x1C];
+			add eax, 2;
+			mov [ebp - 0x1C], eax;
+			mov eax, [ebp - 0x24];
+			sub eax, 2;
+
+		k_3:
+			push k_2;
+			ret;
+		}
+	}
+
 	void InitAndPatch() {
 
 		/* sub_15D59D0 */
@@ -132,5 +168,16 @@ namespace Test {
 		if (byte_pattern::temp_instance().has_size(1)) {
 			loc_15D6741 = byte_pattern::temp_instance().get_first().address();
 		}
+
+		byte_pattern::temp_instance().find_pattern("8B 45 DC 66 0F 6E 55");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), k_a_1);
+		}
+		byte_pattern::temp_instance().find_pattern("48 0F 5B D2 F3 0F 11 45");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			k_2 = byte_pattern::temp_instance().get_first().address();
+		}
+		
+
 	}
 }
