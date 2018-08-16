@@ -220,7 +220,7 @@ namespace Test {
 			jz t_12;
 			cmp byte ptr[ecx + eax], ESCAPE_SEQ_4;
 			jz t_13;
-			movzx eax, byte ptr[eax + eax];
+			movzx eax, byte ptr[ecx + eax];
 			jmp t_3;
 
 		t_10:
@@ -469,7 +469,7 @@ namespace Test {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x19), aa_1);
 			aa_2 = byte_pattern::temp_instance().get_first().address(0x24);
 		}
-		byte_pattern::temp_instance().find_pattern("8B 8D 1C FF FF FF 40 89 45 E4");
+		byte_pattern::temp_instance().find_pattern("8B 45 E4 8B 8D 1C FF FF");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			loc_15D6741 = byte_pattern::temp_instance().get_first().address();
 		}
@@ -489,8 +489,8 @@ namespace Test {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), r_1);
 			loc_15D7B98 = byte_pattern::temp_instance().get_first().address(0x6);
 			loc_15D7BA1 = byte_pattern::temp_instance().get_first().address(0xF);
-			
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1F),s_1);
+
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1F), s_1);
 			s_2 = byte_pattern::temp_instance().get_first().address(0x29);
 		}
 		byte_pattern::temp_instance().find_pattern("8B 45 AC 8D 55 BC 6A 01");
@@ -577,8 +577,8 @@ namespace Test {
 		byte_pattern::temp_instance().find_pattern("53 57 8B F9 83 7F 14 10 8B 5F 10");
 		if (byte_pattern::temp_instance().has_size(2)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get(1).address(0x24), p_1);
-			p_3 = byte_pattern::temp_instance().get_first().address(0x29);
-			p_2 = byte_pattern::temp_instance().get_first().address(0x35);
+			p_3 = byte_pattern::temp_instance().get(1).address(0x29);
+			p_2 = byte_pattern::temp_instance().get(1).address(0x35);
 		}
 
 		/* sub_1B23C80 入力の修正 */
