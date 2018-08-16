@@ -672,6 +672,73 @@ namespace Test {
 		}
 	}
 
+	uintptr_t i_7;
+	uintptr_t loc_1998C12;
+	__declspec(naked) void i_1()
+	{
+		__asm {
+			cmp byte ptr[esi + edx], ESCAPE_SEQ_1;
+			jz i_10;
+			cmp byte ptr[esi + edx], ESCAPE_SEQ_2;
+			jz i_11;
+			cmp byte ptr[esi + edx], ESCAPE_SEQ_3;
+			jz i_12;
+			cmp byte ptr[esi + edx], ESCAPE_SEQ_4;
+			jz i_13;
+			jmp i_2;
+
+		i_10:
+			movzx eax, word ptr[esi + edx + 1];
+			jmp i_1x;
+
+		i_11:
+			movzx eax, word ptr[esi + edx + 1];
+			sub eax, SHIFT_2;
+			jmp i_1x;
+
+		i_12:
+			movzx eax, word ptr[esi + edx + 1];
+			add eax, SHIFT_3;
+			jmp i_1x;
+
+		i_13:
+			movzx eax, word ptr[esi + edx + 1];
+			add eax, SHIFT_4;
+			jmp i_1x;
+
+		i_2:
+			mov dl, [esi + edx];
+			movzx eax, dl;
+			jmp i_5;
+
+		i_1x:
+			movzx eax, ax;
+			cmp eax, NO_FONT;
+
+			ja i_4;
+			mov eax, NOT_DEF;
+
+		i_4:
+			add esi, 3;
+			cmp esi, ebx;
+			ja i_6;
+			sub esi, 1;
+
+		i_5:
+			lea ecx, [edi + 0xB4];
+
+			push i_7;
+			ret;
+
+		i_6:
+			mov eax, [esp + 0x98 - 0x8C];
+
+			push loc_1998C12;
+			ret;
+
+		}
+	}
+
 	void InitAndPatch() {
 
 		/* sub_15D59D0 */
@@ -781,7 +848,7 @@ namespace Test {
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x92, true);
 		}
 
-		/* sub_1996300 */
+		/* sub_1996300 : 本文 */
 		// スタック修正
 		byte_pattern::temp_instance().find_pattern("81 EC 20 06 00 00 56 57");
 		if (byte_pattern::temp_instance().has_size(1)) {
@@ -836,7 +903,17 @@ namespace Test {
 			h_6_2 = byte_pattern::temp_instance().get_first().address(0x20);
 		}
 
+		/* sub_1998A30 */
+		byte_pattern::temp_instance().find_pattern("8A 14 16 8D 8F");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), i_1);
+			i_7 = byte_pattern::temp_instance().get_first().address(0xC);
+		}
 		
+		byte_pattern::temp_instance().find_pattern("66 0F 6E C0 0F 5B C0 0F 2F C8 76 04 F3 0F");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			loc_1998C12 = byte_pattern::temp_instance().get_first().address();
+		}
 
 		/* sub_1A44A70 フォントサイズの拡張 */
 		byte_pattern::temp_instance().find_pattern("81 FE 00 00 00 01");
