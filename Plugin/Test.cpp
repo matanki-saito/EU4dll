@@ -365,6 +365,7 @@ namespace Test {
 		__asm {
 			cmp word ptr[eax + 6], 0;
 			jz v_3_jmp;
+
 			cmp word ptr[ebp - 0x564], 0xFF;
 			ja v_3_jmp;
 
@@ -392,21 +393,21 @@ namespace Test {
 			jmp b_3;
 
 		b_10:
-			movzx eax, word ptr[eax + esi + 1];
+			movzx eax, word ptr[eax + edi + 1];
 			jmp b_1x;
 
 		b_11:
-			movzx eax, word ptr[eax + esi + 1];
+			movzx eax, word ptr[eax + edi + 1];
 			sub eax, SHIFT_2;
 			jmp b_1x;
 
 		b_12:
-			movzx eax, word ptr[eax + esi + 1];
+			movzx eax, word ptr[eax + edi + 1];
 			add eax, SHIFT_3;
 			jmp b_1x;
 
 		b_13:
-			movzx eax, word ptr[eax + esi + 1];
+			movzx eax, word ptr[eax + edi + 1];
 			add eax, SHIFT_4;
 			jmp b_1x;
 
@@ -1198,7 +1199,7 @@ namespace Test {
 
 	void InitAndPatch() {
 
-		/* sub_15D59D0 */
+		/* sub_15D59D0 : マップ */
 		byte_pattern::temp_instance().find_pattern("8A 04 01 F3 0F");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), j_1);
@@ -1221,7 +1222,7 @@ namespace Test {
 			k_2 = byte_pattern::temp_instance().get_first().address();
 		}
 
-		/* sub_15D6FD0 */
+		/* sub_15D6FD0 : マップ */
 		byte_pattern::temp_instance().find_pattern("8D 4D F0 8D 51 01 8A 01 41");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), r_1);
@@ -1265,7 +1266,7 @@ namespace Test {
 
 		/* sub_1974E10 入力の修正 */
 
-		/* sub_1994720 */
+		/* sub_1994720 : UI、ツールチップ */
 		// スタックの修正
 		//スタック修正
 		byte_pattern::temp_instance().find_pattern("81 EC 58 05 00 00 8B");
