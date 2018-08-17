@@ -1107,13 +1107,18 @@ namespace Test {
 		q_1x:
 			movzx eax, ax;
 			cmp eax, NO_FONT;
-			ja q_4;
+			ja q_3;
 			mov eax, NOT_DEF;
+
+		q_3:
+			add edi, 2;
 
 		q_4:
 			mov ecx, [ebp - 0x28];
 			mov[ebp - 0x31A], ax;
 			movzx eax, ax;
+
+			mov ecx, [ecx + eax * 4];
 
 			push q_2_1;
 			ret;
@@ -1126,7 +1131,7 @@ namespace Test {
 	{
 		__asm {
 			lahf;
-			test ah, 44h;
+			test ah, 0x44;
 			jnp bb_3_jmp;
 
 			cmp[ebp - 0x31A], 0xFF;
@@ -1408,11 +1413,6 @@ namespace Test {
 		byte_pattern::temp_instance().find_pattern("81 EC 0C 03 00 00 8B");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x2), 0x0E, true);
-		}
-		byte_pattern::temp_instance().find_pattern("0F B6 04 38 8B 4D D8 8B 0C");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), q_1);
-			q_2_1 = byte_pattern::temp_instance().get_first().address(0xA);
 		}
 		byte_pattern::temp_instance().find_pattern("0F B6 04 38 8B 4D D8 8B 0C");
 		if (byte_pattern::temp_instance().has_size(1)) {
