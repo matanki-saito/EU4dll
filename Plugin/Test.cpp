@@ -739,6 +739,338 @@ namespace Test {
 		}
 	}
 
+	uintptr_t w_2;
+	__declspec(naked) void w_1()
+	{
+		__asm {
+			mov eax, [eax + edi];
+			mov [ebp - 0x5C], eax;
+			lea ecx, [ebp - 0xAC];
+
+			push w_2;
+			ret;
+		}
+	}
+
+	uintptr_t x_2;
+	__declspec(naked) void x_1()
+	{
+		__asm {
+			cmp byte ptr[eax], ESCAPE_SEQ_1;
+			jz x_4;
+			cmp byte ptr[eax], ESCAPE_SEQ_2;
+			jz x_4;
+			cmp byte ptr[eax], ESCAPE_SEQ_3;
+			jz x_4;
+			cmp byte ptr[eax], ESCAPE_SEQ_4;
+			jz x_4;
+			jmp x_3;
+
+		x_4:
+			mov ecx, [ebp - 0x5C];
+			mov[eax], ecx;
+			lea ecx, [eax];
+			mov byte ptr[ecx + 0x10], 3;
+
+		x_3:
+			push 0xFFFFFFFF;
+			push 0;
+			push eax;
+
+			push x_2;
+			ret;
+		}
+	}
+
+	uintptr_t y_2;
+	__declspec(naked) void y_1()
+	{
+		__asm {
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_1;
+			jz y_10;
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_2;
+			jz y_11;
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_3;
+			jz y_12;
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_4;
+			jz y_13;
+			jmp y_7;
+
+		y_10:
+			movzx eax, word ptr[eax + edi + 1];
+			jmp y_1x;
+
+		y_11:
+			movzx eax, word ptr[eax + edi + 1];
+			sub eax, SHIFT_2;
+			jmp y_1x;
+
+		y_12:
+			movzx eax, word ptr[eax + edi + 1];
+			add eax, SHIFT_3;
+			jmp y_1x;
+
+		y_13:
+			movzx eax, word ptr[eax + edi + 1];
+			add eax, SHIFT_4;
+
+		y_1x:
+			movzx eax, ax;
+			cmp eax, NO_FONT;
+			ja y_4;
+			mov eax, NOT_DEF;
+
+		y_4:
+			add edi, 2;
+			jmp y_6;
+
+		y_7:
+			mov al, [eax + edi];
+			movzx eax, al;
+
+		y_6:
+			push y_2;
+			ret;
+		}
+	}
+
+	uintptr_t z_2;
+	__declspec(naked) void z_1()
+	{
+		__asm {
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_1;
+			jz z_10;
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_2;
+			jz z_11;
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_3;
+			jz z_12;
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_4;
+			jz z_13;
+			jmp z_5;
+		
+		z_10:
+			movzx eax, word ptr[eax + esi + 1];
+			jmp z_1x;
+
+		z_11:
+			movzx eax, word ptr[eax + esi + 1];
+			sub eax,SHIFT_2;
+			jmp z_1x;
+
+		z_12:
+			movzx eax, word ptr[eax + esi + 1];
+			add eax,SHIFT_3;
+			jmp z_1x;
+
+		z_13:
+			movzx eax, word ptr[eax + esi + 1];
+			add eax, SHIFT_4;
+			
+		z_1x:
+			movzx eax, ax;
+			cmp eax, NO_FONT;
+			ja z_4;
+			mov eax, NOT_DEF;
+
+		z_4:
+			add esi, 2;
+		z_6:
+			mov edx, [edx + eax * 4];
+
+			push z_2;
+			ret;
+
+		z_5:
+			movzx eax, byte ptr[eax + esi];
+			jmp z_6;
+		}
+	}
+
+	uintptr_t l_3;
+	__declspec(naked) void l_1()
+	{
+		__asm {
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_1;
+			jz l_10;
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_2;
+			jz l_11;
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_3;
+			jz l_12;
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_4;
+			jz l_13;
+
+			mov al, [eax + edi];
+			lea ecx, [ebp - 0x80];
+			mov byte ptr[ebp - 0x38], al;
+			jmp l_2;
+
+		l_10:
+			movzx eax, word ptr[eax + edi + 1];
+			lea ecx, [ebp - 0x38];
+			mov byte ptr[ecx], ESCAPE_SEQ_1;
+			mov[ecx + 1], ax;
+			jmp l_1x;
+
+		l_11:
+			movzx eax, word ptr[eax + edi + 1];
+			lea ecx, [ebp - 0x38];
+			mov byte ptr[ecx], ESCAPE_SEQ_2;
+			mov[ecx + 1], ax;
+			jmp l_1x;
+
+		l_12:
+			movzx eax, word ptr[eax + edi + 1];
+			lea ecx, [ebp - 0x38];
+			mov byte ptr[ecx], ESCAPE_SEQ_3;
+			mov[ecx + 1], ax;
+			jmp l_1x;
+
+		l_13:
+			movzx eax, word ptr[eax + edi + 1];
+			lea ecx, [ebp - 0x38];
+			mov byte ptr[ecx], ESCAPE_SEQ_4;
+			mov[ecx + 1], ax;
+			
+		l_1x:
+			lea ecx, [ebp - 0x80];
+
+		l_2:
+			push l_3;
+			ret;
+		}
+	}
+
+	uintptr_t m_2;
+	__declspec(naked) void m_1()
+	{
+		__asm {
+			cmp byte ptr[eax], ESCAPE_SEQ_1;
+			jz m_3;
+			cmp byte ptr[eax], ESCAPE_SEQ_2;
+			jz m_3;
+			cmp byte ptr[eax], ESCAPE_SEQ_3;
+			jz m_3;
+			cmp byte ptr[eax], ESCAPE_SEQ_4;
+			jz m_3;
+			jmp m_4;
+
+		m_3:
+			mov ecx, [ebp - 0x38];
+			mov[eax], ecx;
+			mov byte ptr[eax + 0x10], 3;
+
+		m_4:
+			push 0xFFFFFFFF;
+			push 0;
+			push eax;
+			
+			push m_2;
+			ret;
+		}
+	}
+
+	uintptr_t n_2;
+	__declspec(naked) void n_1()
+	{
+		__asm {
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_1;
+			jz n_10;
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_2;
+			jz n_11;
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_3;
+			jz n_12;
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_4;
+			jz n_13;
+
+			movzx eax, byte ptr[eax + edi];
+			jmp n_3;
+
+		n_10:
+			movzx eax, word ptr[eax + edi + 1];
+			jmp n_1x;
+
+		n_11:
+			movzx eax, word ptr[eax + edi + 1];
+			sub eax, SHIFT_2;
+			jmp n_1x;
+
+		n_12:
+			movzx eax, word ptr[eax + edi + 1];
+			add eax, SHIFT_3;
+			jmp n_1x;
+
+		n_13:
+			movzx eax, word ptr[eax + edi + 1];
+			add eax, SHIFT_4;
+			
+		n_1x:
+			movzx eax, ax;
+			cmp eax, NO_FONT;
+			ja n_4;
+			mov eax, NOT_DEF;
+
+		n_4:
+			add edi, 2;
+
+		n_3:
+			mov ecx, [ebp - 0x1C];
+			
+			push n_2;
+			ret;
+		}
+	}
+
+	uintptr_t o_2;
+	__declspec(naked) void o_1()
+	{
+		__asm {
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_1;
+			jz o_10;
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_2;
+			jz o_11;
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_3;
+			jz o_12;
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_4;
+			jz o_13;
+			jmp o_3;
+
+		o_10:
+			movzx eax, word ptr[eax + esi + 1];
+			jmp o_1x;
+
+		o_11:
+			movzx eax, word ptr[eax + esi + 1];
+			sub eax, SHIFT_2;
+			jmp o_1x;
+
+		o_12:
+			movzx eax, word ptr[eax + esi + 1];
+			add eax, SHIFT_3;
+			jmp o_1x;
+
+		o_13:
+			movzx eax, word ptr[eax + esi + 1];
+			add eax, SHIFT_4;
+	
+		o_1x:
+			add esi, 2;
+			movzx eax, ax;
+			cmp eax, NO_FONT;
+			ja o_4;
+			mov eax, NOT_DEF;
+			jmp o_4;
+
+		o_3:
+			movzx eax, byte ptr[eax + esi];
+
+		o_4:
+			mov edi, [ebx + eax * 4];
+			
+			push o_2;
+			ret;
+		}
+	}
+
 	void InitAndPatch() {
 
 		/* sub_15D59D0 */
@@ -766,7 +1098,7 @@ namespace Test {
 
 		/* sub_15D6FD0 */
 		byte_pattern::temp_instance().find_pattern("8D 4D F0 8D 51 01 8A 01 41");
-		if (byte_pattern::temp_instance().has_size(2)) {
+		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), r_1);
 			loc_15D7B98 = byte_pattern::temp_instance().get_first().address(0x6);
 			loc_15D7BA1 = byte_pattern::temp_instance().get_first().address(0xF);
@@ -909,11 +1241,53 @@ namespace Test {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), i_1);
 			i_7 = byte_pattern::temp_instance().get_first().address(0xC);
 		}
-		
 		byte_pattern::temp_instance().find_pattern("66 0F 6E C0 0F 5B C0 0F 2F C8 76 04 F3 0F");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			loc_1998C12 = byte_pattern::temp_instance().get_first().address();
 		}
+
+		/* sub_1999AA0 */
+		byte_pattern::temp_instance().find_pattern("8A 04 38 8D 8D 54");
+		if (byte_pattern::temp_instance().has_size(2)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), w_1);
+			w_2 = byte_pattern::temp_instance().get_first().address();
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x14), x_1);
+			x_2 = byte_pattern::temp_instance().get_first().address(0x19);
+		}
+		byte_pattern::temp_instance().find_pattern("8A 04 38 0F B6");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), y_1);
+			y_2 = byte_pattern::temp_instance().get_first().address(0x6);
+		}
+		byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 14 82 89 55");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), z_1);
+			z_2 = byte_pattern::temp_instance().get_first().address(0x7);
+		}
+
+		/* sub_199A880 */
+		byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), l_1);
+			l_3 = byte_pattern::temp_instance().get_first().address(0x9);
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x11), m_1);
+			m_2 = byte_pattern::temp_instance().get_first().address(0x16);
+		}
+		byte_pattern::temp_instance().find_pattern("8A 04 38 8B 4D");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), n_1);
+			n_2 = byte_pattern::temp_instance().get_first().address(0x9);
+		}
+		byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 3C 83");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), o_1);
+			o_2 = byte_pattern::temp_instance().get_first().address(0x7);
+		}
+		
+		/* sub_199B240 */
+
+		/* sub_199BDA0  */
+
 
 		/* sub_1A44A70 フォントサイズの拡張 */
 		byte_pattern::temp_instance().find_pattern("81 FE 00 00 00 01");
