@@ -1440,7 +1440,7 @@ namespace Test {
 		/* sub_1A44A70 フォントサイズの拡張 */
 		byte_pattern::temp_instance().find_pattern("81 FE 00 00 00 01");
 		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x5), 0x03, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x5), 0x04, true);
 		}
 
 		/* sub_1AFC030 大文字化キャンセル？ */
