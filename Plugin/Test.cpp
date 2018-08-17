@@ -546,7 +546,7 @@ namespace Test {
 	{
 		__asm {
 			movzx eax, ax;
-			mov[ebp - 0x630], ax;
+			mov [ebp - 0x630], ax;
 			mov ecx, [edx + eax * 4];
 
 			push g_2;
@@ -568,12 +568,12 @@ namespace Test {
 
 		f_d:
 			cmp al, 0xA7;
-			jnz f_c;
+			jnz f_c_t;
 			
 			push f_f;
 			ret;
 
-		f_c:
+		f_c_t:
 			movzx eax, al;
 
 			push loc_1996B6B;
@@ -593,7 +593,7 @@ namespace Test {
 			ret;
 
 		g_3_jmp:
-			cmp[ebp - 0x630], 0xFF;
+			cmp word ptr [ebp - 0x630], 0xFF;
 			ja g_5_jmp;
 
 			push g_4;
@@ -1266,7 +1266,7 @@ namespace Test {
 
 		/* sub_1974E10 入力の修正 */
 
-		/* sub_1994720 : UI、ツールチップ */
+		/* sub_1994720 : 一部のUI、ツールチップの表示 */
 		// スタックの修正
 		//スタック修正
 		byte_pattern::temp_instance().find_pattern("81 EC 58 05 00 00 8B");
@@ -1306,7 +1306,7 @@ namespace Test {
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x92, true);
 		}
 
-		/* sub_1996300 : 本文 */
+		/* sub_1996300 : 一部のUI、本文文字表示 */
 		// スタック修正
 		byte_pattern::temp_instance().find_pattern("81 EC 20 06 00 00 56 57");
 		if (byte_pattern::temp_instance().has_size(1)) {
@@ -1361,7 +1361,7 @@ namespace Test {
 			h_6_2 = byte_pattern::temp_instance().get_first().address(0x20);
 		}
 
-		/* sub_1998A30 */
+		/* sub_1998A30 : ツールチップの改行 */
 		byte_pattern::temp_instance().find_pattern("8A 14 16 8D 8F");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), i_1);
@@ -1372,7 +1372,7 @@ namespace Test {
 			loc_1998C12 = byte_pattern::temp_instance().get_first().address();
 		}
 
-		/* sub_1999AA0 */
+		/* sub_1999AA0 : ツールチップの改行 */
 		byte_pattern::temp_instance().find_pattern("8A 04 38 8D 8D 54");
 		if (byte_pattern::temp_instance().has_size(2)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), w_1);
