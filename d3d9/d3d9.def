@@ -1,0 +1,4 @@
+LIBRARY "d3d9"
+EXPORTS
+Direct3DCreate9 = _Direct3DCreate9
+Direct3DCreate9Ex = _Direct3DCreate9Ex

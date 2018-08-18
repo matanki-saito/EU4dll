@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin", "Plugin\Plugin.vcxproj", "{F1BAF39A-68E7-48A3-A7C3-57105369E64C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "d3d9", "d3d9\d3d9.vcxproj", "{F63BBD6F-D723-480E-9D41-FD852A98A15C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1BAF39A-68E7-48A3-A7C3-57105369E64C}.Debug|x86.ActiveCfg = Debug|Win32
+		{F1BAF39A-68E7-48A3-A7C3-57105369E64C}.Debug|x86.Build.0 = Debug|Win32
+		{F1BAF39A-68E7-48A3-A7C3-57105369E64C}.Release|x86.ActiveCfg = Release|Win32
+		{F1BAF39A-68E7-48A3-A7C3-57105369E64C}.Release|x86.Build.0 = Release|Win32
+		{F63BBD6F-D723-480E-9D41-FD852A98A15C}.Debug|x86.ActiveCfg = Debug|Win32
+		{F63BBD6F-D723-480E-9D41-FD852A98A15C}.Debug|x86.Build.0 = Debug|Win32
+		{F63BBD6F-D723-480E-9D41-FD852A98A15C}.Release|x86.ActiveCfg = Release|Win32
+		{F63BBD6F-D723-480E-9D41-FD852A98A15C}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {48079BD5-400A-4BF3-9C30-596055C446D7}
+	EndGlobalSection
+EndGlobal
