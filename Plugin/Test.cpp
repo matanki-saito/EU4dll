@@ -1717,7 +1717,7 @@ namespace Test {
 		byte_pattern::temp_instance().find_pattern("8A 04 38 8D 8D 54");
 		if (byte_pattern::temp_instance().has_size(2)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), w_1);
-			w_2 = byte_pattern::temp_instance().get_first().address();
+			w_2 = byte_pattern::temp_instance().get_first().address(0xC);
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x14), x_1);
 			x_2 = byte_pattern::temp_instance().get_first().address(0x19);
 		}
