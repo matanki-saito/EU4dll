@@ -1473,6 +1473,27 @@ namespace Test {
 		}
 	}
 
+	uintptr_t ee_7;
+	uintptr_t ee_9;
+	__declspec(naked) void ee_6()
+	{
+		__asm {
+			add esp, 0x14;
+			test eax, eax;
+			jnz ee_8;
+
+			push ee_7;
+			ret;
+
+		ee_8:
+			mov ecx, [ebp + 0xCC];
+			mov ebx, [ebp + 0x10]; //hDrop
+
+			push ee_9;
+			ret;
+		}
+	}
+
 
 	void InitAndPatch() {
 
@@ -1772,6 +1793,15 @@ namespace Test {
 		}
 
 		/* sub_1B23C80 入力の修正 */
+		byte_pattern::temp_instance().find_pattern("83 C4 14 85 C0 0F 85 BF");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), ee_6);
+			ee_7 = byte_pattern::temp_instance().get_first().address(0xB);
+		}
+		byte_pattern::temp_instance().find_pattern("FF 75 14 53 51 FF 75 08 FF 35");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			ee_9 = byte_pattern::temp_instance().get_first().address();
+		}
 
 		/* sub_1B34410 入力の修正 */
 		byte_pattern::temp_instance().find_pattern("89 35 ? ? ? ? 85 F6 74 39 6A 00 6A 00");
