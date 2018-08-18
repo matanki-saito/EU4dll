@@ -1459,8 +1459,8 @@ namespace Test {
 		ee_2:
 			sub     esp, 8;
 			mov     ecx, [ebp + 0x18];
-			mov     edx, [ebp + 8];
-			mov[ecx + 0x38], edx;
+			mov     edx, [ebp + 0x8];
+			mov     [ecx + 0x38], edx;
 			mov     dword ptr[ebp - 0x14], 0;
 			mov     dword ptr[ebp - 0x10], 0;
 			lea     eax, [ebp - 0x14];
@@ -1486,7 +1486,7 @@ namespace Test {
 			ret;
 
 		ee_8:
-			mov ecx, [ebp + 0xCC];
+			mov ecx, [ebp + 0x0C];
 			mov ebx, [ebp + 0x10]; //hDrop
 
 			push ee_9;
@@ -1806,14 +1806,14 @@ namespace Test {
 		/* sub_1B34410 入力の修正 */
 		byte_pattern::temp_instance().find_pattern("89 35 ? ? ? ? 85 F6 74 39 6A 00 6A 00");
 		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0xEB, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x04, true);
 		}
 
 		/* sub_1B46720 入力の修正 */
 		byte_pattern::temp_instance().find_pattern("39 5E 28 0F 84 45");
 		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0xEB, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x19, true);
 		}
 		byte_pattern::temp_instance().find_pattern("0F 84 FA 01 00 00 83 E8");
@@ -1831,7 +1831,7 @@ namespace Test {
 		}
 		byte_pattern::temp_instance().find_pattern("68 00 08 00 00 57");
 		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0xEB, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x16, true);
 		}
 		byte_pattern::temp_instance().find_pattern("8B 4D 14 89 19");
