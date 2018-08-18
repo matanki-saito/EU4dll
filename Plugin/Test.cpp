@@ -1135,7 +1135,7 @@ namespace Test {
 			test ah, 0x44;
 			jnp bb_3_jmp;
 
-			cmp[ebp - 0x31A], 0xFF;
+			cmp word ptr [ebp - 0x31A], 0xFF;
 			jb bb_2_jmp;
 
 		bb_3_jmp:
@@ -1751,7 +1751,7 @@ namespace Test {
 			o_2 = byte_pattern::temp_instance().get_first().address(0x7);
 		}
 		
-		/* sub_199B240 : マップ文字調整 */
+		/* sub_199B240 : イベントダイアログ調整？ */
 		byte_pattern::temp_instance().find_pattern("81 EC 0C 03 00 00 8B");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x2), 0x0E, true);
