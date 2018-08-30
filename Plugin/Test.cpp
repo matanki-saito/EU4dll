@@ -1213,13 +1213,13 @@ namespace Test {
 			sub     eax, 3;
 			js      dd_3;
 			mov     al, [ecx + eax];
-			cmp     al, 0x10;
+			cmp     al, ESCAPE_SEQ_1;
 			jz      dd_4;
-;			cmp     al, 0x11;
+;			cmp     al, ESCAPE_SEQ_2;
 			jz      dd_4;
-			cmp     al, 0x12;
+			cmp     al, ESCAPE_SEQ_3;
 			jz      dd_4;
-			cmp     al, 0x13;
+			cmp     al, ESCAPE_SEQ_4;
 			jnz     dd_3;
 
 		dd_4:
@@ -1494,6 +1494,81 @@ namespace Test {
 		}
 	}
 
+	uintptr_t PHYSFS_utf8FromUcs2;
+	uintptr_t issue_7_1_end;
+	wchar_t fnamew[200] = {};
+	char fnameutf8[200] = {};
+	__declspec(naked) void issue_7_1_start() {
+		__asm {
+
+			mov ecx, edx;
+
+			push esi;
+			xor esi, esi;
+
+		issue_7_1_loop_start:
+			cmp byte ptr [ecx], ESCAPE_SEQ_1;
+			jz issue_7_1_10;
+			cmp byte ptr [ecx], ESCAPE_SEQ_2;
+			jz issue_7_1_11;
+			cmp byte ptr [ecx], ESCAPE_SEQ_3;
+			jz issue_7_1_12;
+			cmp byte ptr [ecx], ESCAPE_SEQ_4;
+			jz issue_7_1_13;
+			cmp byte ptr [ecx], NULL;
+			jz issue_7_1_loop_end;
+
+			movzx eax, byte ptr[ecx];
+			jmp issue_7_1_yy;
+
+		issue_7_1_10:
+			movzx eax, word ptr[ecx + 1];
+			jmp issue_7_1_xx;
+
+		issue_7_1_11:
+			movzx eax, word ptr[ecx + 1];
+			sub eax, SHIFT_2;
+			jmp issue_7_1_xx;
+			
+		issue_7_1_12:
+			movzx eax, word ptr[ecx + 1];
+			add eax, SHIFT_3;
+			jmp issue_7_1_xx;
+
+		issue_7_1_13:
+			movzx eax, word ptr[ecx + 1];
+			add eax, SHIFT_4;
+
+		issue_7_1_xx:
+			add ecx, 2;
+
+		issue_7_1_yy:
+			mov word ptr[fnamew + esi], ax;
+			inc ecx;
+			add esi, 2;
+			jmp issue_7_1_loop_start;
+
+		issue_7_1_loop_end:
+			push 0; // ?
+			push 200; // dst-buf-len
+			lea eax, fnameutf8; // dst
+			push eax;
+			lea eax, fnamew; // src
+			push eax;
+			call PHYSFS_utf8FromUcs2;
+			add esp, 0x10;
+
+			lea edx, fnameutf8;
+
+			pop esi;
+			mov[ebp - 0x34],0xF;
+			mov[ebp - 0x38], 0;
+			mov byte ptr[ebp - 0x48], 0;
+
+			push issue_7_1_end;
+			ret;
+		}
+	}
 
 	void InitAndPatch() {
 
@@ -1873,6 +1948,37 @@ namespace Test {
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(8), 0x20, true);
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(9), 0x0E, true);
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(10), 0x00, true);
+		}
+
+		/* UTF-8ファイルを列挙できるようにする jz(74) -> jmp(EB) */ 
+		byte_pattern::temp_instance().find_pattern("74 0E 78 0A 8A 41 01 41");
+		if (byte_pattern::temp_instance().has_size(2)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get(1).address(), 0xEB , true);
+		}
+
+		/* ファイル名を安全にしている場所を短絡する jmp [address] */
+		byte_pattern::temp_instance().find_pattern("85 FF 0F 84 EE 00 00 00 53 56");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0xE9, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0xF1, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x00, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x00, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x00, true);
+		}
+
+		// 0: latin1
+		// 1: ucs2
+		// 2: ucs4
+		byte_pattern::temp_instance().find_pattern("55 8B EC 56 8B 75 10 8B C6 57 8B 7D");
+		if (byte_pattern::temp_instance().has_size(3)) {
+			PHYSFS_utf8FromUcs2 = byte_pattern::temp_instance().get(1).address();
+		}
+
+		// ファイル名を変換する
+		byte_pattern::temp_instance().find_pattern("51 52 8D 4D B8 E8 ? ? ? ? 8D 4D B8 C7");
+		if (byte_pattern::temp_instance().has_size(2)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(-0x29), issue_7_1_start);
+			issue_7_1_end = byte_pattern::temp_instance().get_first().address(-0x17);
 		}
 	}
 }
