@@ -1498,9 +1498,20 @@ namespace Test {
 	uintptr_t issue_7_1_end;
 	wchar_t fnamew[200] = {};
 	char fnameutf8[200] = {};
+
+	void rstTmpMem() {
+		memset(fnamew, '\0', sizeof(wchar_t) * 200);
+		memset(fnameutf8, '\0', sizeof(char) * 200);
+	}
+
 	__declspec(naked) void issue_7_1_start() {
 		__asm {
 
+			push edx;
+
+			call rstTmpMem;
+
+			pop edx;
 			mov ecx, edx;
 
 			push esi;
