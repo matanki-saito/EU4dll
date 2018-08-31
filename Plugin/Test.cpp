@@ -1581,6 +1581,281 @@ namespace Test {
 		}
 	}
 
+
+
+	inline wchar_t UCS2ToCP1252(int cp) {
+		wchar_t result = cp;
+		switch (cp) {
+		case 0x20AC: result = 0x80; break;
+		case 0x201A: result = 0x82; break;
+		case 0x0192: result = 0x83; break;
+		case 0x201E: result = 0x84; break;
+		case 0x2026: result = 0x85; break;
+		case 0x2020: result = 0x86; break;
+		case 0x2021: result = 0x87; break;
+		case 0x02C6: result = 0x88; break;
+		case 0x2030: result = 0x89; break;
+		case 0x0160: result = 0x8A; break;
+		case 0x2039: result = 0x8B; break;
+		case 0x0152: result = 0x8C; break;
+		case 0x017D: result = 0x8E; break;
+		case 0x2018: result = 0x91; break;
+		case 0x2019: result = 0x92; break;
+		case 0x201C: result = 0x93; break;
+		case 0x201D: result = 0x94; break;
+		case 0x2022: result = 0x95; break;
+		case 0x2013: result = 0x96; break;
+		case 0x2014: result = 0x97; break;
+		case 0x02DC: result = 0x98; break;
+		case 0x2122: result = 0x99; break;
+		case 0x0161: result = 0x9A; break;
+		case 0x203A: result = 0x9B; break;
+		case 0x0153: result = 0x9C; break;
+		case 0x017E: result = 0x9E; break;
+		case 0x0178: result = 0x9F; break;
+		}
+
+		return result;
+	}
+
+	errno_t convertWideTextToEscapedText(const wchar_t* from, char** to) {
+
+		errno_t success = 0;
+		int toIndex = 0;
+		unsigned int size = 0;
+
+		/* */
+		if (from == NULL) {
+			success = 1;
+			goto A;
+		}
+
+		/* */
+		size = wcslen(from);
+
+		/* 全部エスケープしても３倍を超えることはない。１０はバッファ*/
+//		*to = (char*)calloc(size * 3 * 2 + 10, sizeof(char));
+
+		__asm {
+			push ecx;
+			push eax;
+			push    0x0FF; //dwBytes
+			call    sub_1D7B347;
+			add esp, 4;
+			mov ecx, dword ptr[to];
+			mov dword ptr [ecx], eax;
+			pop eax;
+			pop ecx;
+		}
+
+		if (*to == NULL) {
+			success = 2;
+			goto A;
+		}
+
+		/* */
+		toIndex = 0;
+		for (unsigned int fromIndex = 0; fromIndex < size; fromIndex++) {
+			wchar_t cp = from[fromIndex];
+
+			/* */
+			if (UCS2ToCP1252(cp) != cp) {
+				(*to)[toIndex++] = (byte) cp;
+				continue;
+			}
+
+			/* ずらす */
+			if (cp > 0x100 && cp < 0xA00) {
+				cp = cp + 0xE000;
+			}
+
+			/* 上位バイト */
+			byte high = (cp >> 8) & 0x000000FF;
+
+			/* 下位バイト */
+			byte low = cp & 0x000000FF;
+
+			byte escapeChr = 0x10;
+
+			/* 2byteじゃない */
+			if (high == 0) {
+				(*to)[toIndex++] = (byte)cp;
+				continue;
+			}
+
+			/* high byteより決定 */
+			switch (high) {
+			case 0xA4:case 0xA3:case 0xA7:case 0x24:case 0x5B:case 0x00:case 0x5C:
+			case 0x20:case 0x0D:case 0x0A:case 0x22:case 0x7B:case 0x7D:case 0x40:
+			case 0x80:case 0x7E:case 0x2F:
+				escapeChr += 2;
+				break;
+			default:
+				break;
+			}
+
+			/* low byteより決定 */
+			switch (low) {
+			case 0xA4:case 0xA3:case 0xA7:case 0x24:case 0x5B:case 0x00:case 0x5C:
+			case 0x20:case 0x0D:case 0x0A:case 0x22:case 0x7B:case 0x7D:case 0x40:
+			case 0x80:case 0x7E:case 0x2F:
+				escapeChr++;
+				break;
+			default:
+				break;
+			}
+
+			switch (escapeChr) {
+			case 0x11:
+				low += 14;
+				break;
+			case 0x12:
+				high -= 9;
+				break;
+			case 0x13:
+				low += 14;
+				high -= 9;
+				break;
+			case 0x10:
+			default:
+				break;
+			}
+
+			(*to)[toIndex++] = escapeChr;
+			(*to)[toIndex++] = low;
+			(*to)[toIndex++] = high;
+		}
+
+	A:
+		return success;
+	}
+
+	errno_t convertTextToWideText(const char* from, wchar_t **to) {
+
+		errno_t success = 0;
+		unsigned int err = 0;
+		unsigned int wideTextSize = 0;
+
+		/* */
+		if (from == NULL) {
+			success = 1;
+			goto A;
+		}
+
+		/* */
+		wideTextSize = MultiByteToWideChar(
+			CP_UTF8,
+			NULL,
+			from,
+			-1,
+			NULL,
+			NULL);
+
+		if (wideTextSize == NULL) {
+			success = GetLastError();
+			goto A;
+		}
+
+		/* */
+		*to = (wchar_t*)calloc(wideTextSize, sizeof(wchar_t));
+
+		if (*to == NULL) {
+			success = 3;
+			goto A;
+		}
+
+		/* */
+		err = MultiByteToWideChar(
+			CP_UTF8,
+			NULL,
+			from,
+			-1,
+			*to,
+			wideTextSize);
+
+		if (err == NULL) {
+			success = 4;
+			goto B;
+		}
+
+		goto A;
+
+	B:
+		free(*to);
+	A:
+		return success;
+	}
+
+	char*  utf8ToEscapedStr(char *from) {
+
+		wchar_t *tmp = NULL;
+		char *tmp2 = NULL;
+
+		char *src = NULL;
+		uintptr_t debug = NULL;
+
+		if (*(from + 0x10) > 0x10) {
+			debug = *((uintptr_t*)from);
+			src = (char*)debug;
+		}
+		else {
+			src = from;
+		}
+
+		//UTF-8 -> wide char (ucs2)
+		convertTextToWideText(src, &tmp);
+
+		//wide char (ucs2) -> Escaped Text
+		convertWideTextToEscapedText(tmp, &tmp2);
+
+		free(tmp);
+
+		int len = strlen(tmp2);
+		*(from + 0x10) = len;
+		if (len > 0x10) {
+			*((uintptr_t*)from) = (uintptr_t)tmp2;
+		}
+		else {
+			memcpy(from,tmp2,len);
+		}
+
+		if (debug != NULL) {
+			__asm {
+				push src;
+				call    sub_1D7B41A;
+				add esp, 4;
+			}
+		}
+
+		return from;
+	}
+
+
+	char titleUtf8tmp[200] = {};
+	char titleMytmp[200] = {};
+	uintptr_t issue_7_2_end;
+	__declspec(naked) void issue_7_2_start() {
+		__asm {
+			lea eax, [ebx + 0x304];
+
+			push ecx;
+
+			push eax;
+			call utf8ToEscapedStr;
+			add esp, 4;
+
+			pop ecx;
+
+			push eax;
+			mov eax, [ecx];
+
+
+			push issue_7_2_end;
+			ret;
+
+		}
+	}
+
 	void InitAndPatch() {
 
 		/* sub_15D59D0 : マップ */
@@ -1990,6 +2265,13 @@ namespace Test {
 		if (byte_pattern::temp_instance().has_size(2)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(-0x29), issue_7_1_start);
 			issue_7_1_end = byte_pattern::temp_instance().get_first().address(-0x17);
+		}
+
+		// セーブファイルのタイトルを表示する
+		byte_pattern::temp_instance().find_pattern("8D 83 04 03 00 00 50 8B");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_7_2_start);
+			issue_7_2_end = byte_pattern::temp_instance().get_first().address(0x9);
 		}
 	}
 }
