@@ -1634,19 +1634,7 @@ namespace Test {
 		size = wcslen(from);
 
 		/* 全部エスケープしても３倍を超えることはない。１０はバッファ*/
-//		*to = (char*)calloc(size * 3 * 2 + 10, sizeof(char));
-
-		__asm {
-			push ecx;
-			push eax;
-			push    0x0FF; //dwBytes
-			call    sub_1D7B347;
-			add esp, 4;
-			mov ecx, dword ptr[to];
-			mov dword ptr [ecx], eax;
-			pop eax;
-			pop ecx;
-		}
+		*to = (char*)calloc(size * 3 * 2 + 10, sizeof(char));
 
 		if (*to == NULL) {
 			success = 2;
@@ -1786,7 +1774,27 @@ namespace Test {
 		return success;
 	}
 
+	union T {
+		char text[0x10];
+		char* p;
+	};
+
+	typedef struct V {
+		union T t;
+		int len;
+		int len2;
+		~V() {
+			if (len >= 0x10) {
+				free(t.p);
+			}
+		}
+	} Vs;
+
+	Vs* tmpZV = NULL;
 	char*  utf8ToEscapedStr(char *from) {
+
+		if (tmpZV != NULL) delete tmpZV;
+		tmpZV = new Vs();
 
 		wchar_t *tmp = NULL;
 		char *tmp2 = NULL;
@@ -1794,7 +1802,7 @@ namespace Test {
 		char *src = NULL;
 		uintptr_t debug = NULL;
 
-		if (*(from + 0x10) > 0x10) {
+		if (*(from + 0x10) >= 0x10) {
 			debug = *((uintptr_t*)from);
 			src = (char*)debug;
 		}
@@ -1811,12 +1819,14 @@ namespace Test {
 		free(tmp);
 
 		int len = strlen(tmp2);
-		*(from + 0x10) = len;
-		if (len > 0x10) {
-			*((uintptr_t*)from) = (uintptr_t)tmp2;
+		tmpZV->len = len;
+		tmpZV->len2 = len;
+
+		if (len >= 0x10) {
+			tmpZV->t.p = tmp2;
 		}
 		else {
-			memcpy(from,tmp2,len);
+			memcpy(tmpZV->t.text,tmp2,len);
 		}
 
 		if (debug != NULL) {
@@ -1827,7 +1837,7 @@ namespace Test {
 			}
 		}
 
-		return from;
+		return (char*)tmpZV;
 	}
 
 
