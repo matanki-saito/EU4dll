@@ -1783,28 +1783,27 @@ namespace Test {
 		union T t;
 		int len;
 		int len2;
-		~V() {
-			if (len >= 0x10) {
-				free(t.p);
-			}
-		}
 	} Vs;
 
 	Vs* tmpZV = NULL;
 	char*  utf8ToEscapedStr(char *from) {
 
-		if (tmpZV != NULL) delete tmpZV;
+		if (tmpZV != NULL) {
+			if (tmpZV->len > 0x10) {
+				free(tmpZV->t.p);
+			}
+			delete tmpZV;
+		}
+
 		tmpZV = new Vs();
 
 		wchar_t *tmp = NULL;
 		char *tmp2 = NULL;
 
 		char *src = NULL;
-		uintptr_t debug = NULL;
 
 		if (*(from + 0x10) >= 0x10) {
-			debug = *((uintptr_t*)from);
-			src = (char*)debug;
+			src = (char*)(*((uintptr_t*)from));
 		}
 		else {
 			src = from;
@@ -1827,14 +1826,6 @@ namespace Test {
 		}
 		else {
 			memcpy(tmpZV->t.text,tmp2,len);
-		}
-
-		if (debug != NULL) {
-			__asm {
-				push src;
-				call    sub_1D7B41A;
-				add esp, 4;
-			}
 		}
 
 		return (char*)tmpZV;
