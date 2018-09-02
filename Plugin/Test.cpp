@@ -1572,8 +1572,8 @@ namespace Test {
 			lea edx, fnameutf8;
 
 			pop esi;
-			mov[ebp - 0x34],0xF;
-			mov[ebp - 0x38], 0;
+			mov dword ptr [ebp - 0x34],0xF;
+			mov dword ptr [ebp - 0x38], 0;
 			mov byte ptr[ebp - 0x48], 0;
 
 			push issue_7_1_end;
@@ -1854,6 +1854,20 @@ namespace Test {
 			push issue_7_2_end;
 			ret;
 
+		}
+	}
+
+	uintptr_t kinako_end;
+	uintptr_t funcA;
+	__declspec(naked) void kinako_start() {
+		__asm {
+			mov eax, dword ptr fs:0x18;
+			mov eax, [eax + 0x30];
+			mov byte ptr[eax + 2], 0;
+			call funcA;
+			
+			push kinako_end;
+			ret;
 		}
 	}
 
@@ -2274,5 +2288,16 @@ namespace Test {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_7_2_start);
 			issue_7_2_end = byte_pattern::temp_instance().get_first().address(0x9);
 		}
+
+		// あれ
+		//byte_pattern::temp_instance().find_pattern("51 8D 4C 24 08 2B C8 83");
+		//if (byte_pattern::temp_instance().has_size(2)) {
+		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(-0x16), kinako_start);
+		//	kinako_end = byte_pattern::temp_instance().get_first().address(-0x16 + 0x5);
+		//}
+		//byte_pattern::temp_instance().find_pattern("55 8B EC 83 EC 14 83 65");
+		//if (byte_pattern::temp_instance().has_size(1)) {
+		//	funcA = byte_pattern::temp_instance().get_first().address();
+		//}
 	}
 }
