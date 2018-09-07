@@ -75,6 +75,7 @@ class byte_pattern
     void bm_search();
 
     void debug_output() const;
+	void debug_output2(const std::string message) const;
 
 public:
     static void start_log(const wchar_t *module_name);
@@ -109,4 +110,5 @@ public:
             Pr(result);
         }
     }
+
 };

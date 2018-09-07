@@ -231,7 +231,11 @@ size_t byte_pattern::count() const
 
 bool byte_pattern::has_size(size_t expected) const
 {
-    return (this->_results.size() == expected);
+	const bool result = (this->_results.size() == expected);
+
+	debug_output2(result ? "[OK]" : "[NG]");
+
+	return result;
 }
 
 bool byte_pattern::empty() const
@@ -333,5 +337,15 @@ void byte_pattern::debug_output() const
         log_stream() << "None\n";
     }
 
-    log_stream() << "--------------------------------------------------------------------------------------" << '\n' << endl;
+    log_stream() << "--------------------------------------------------------------------------------------" << endl;
+}
+
+void byte_pattern::debug_output2(const std::string message) const
+{
+	if (!log_stream().is_open())
+		return;
+
+	log_stream() << message << "\n";
+
+	log_stream() << "--------------------------------------------------------------------------------------" << '\n' << endl;
 }
