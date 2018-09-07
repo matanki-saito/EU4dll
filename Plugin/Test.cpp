@@ -89,10 +89,10 @@ namespace Test {
 
 	uintptr_t aa_2;
 	uintptr_t loc_15D6741;
+	// 1.25.1.0
 	__declspec(naked) void aa_1()
 	{
 		__asm {
-			mov[ebp - 0x64], eax;
 			test eax, eax;
 			jz aa_3;
 
@@ -149,6 +149,42 @@ namespace Test {
 
 		k_3:
 			push k_2;
+			ret;
+		}
+	}
+
+	uintptr_t k_2_126;
+	__declspec(naked) void k_a_1_126()
+	{
+		__asm {
+			cmp byte ptr[ebp - 1], ESCAPE_SEQ_1;
+			jnz k_a_2;
+			cmp dword ptr[ebp - 0x24], 3;
+			ja k_a_2;
+			mov eax, [ebp - 0x1C];
+			add eax, 2;
+			mov[ebp - 0x1C], eax;
+			mov eax, [ebp - 0x24];
+			add eax, 2;
+			mov[ebp - 0x24], eax;
+			mov byte ptr[ebp - 1], 5;
+
+		k_a_2:
+			movd xmm1, dword ptr[ebp - 0x1C];
+			cmp byte ptr[ebp - 1], ESCAPE_SEQ_1;
+			jz k_4;
+			mov eax, [ebp - 0x24];
+			jmp k_3;
+
+		k_4:
+			mov eax, [ebp - 0x1C];
+			add eax, 2;
+			mov[ebp - 0x1C], eax;
+			mov eax, [ebp - 0x24];
+			sub eax, 2;
+
+		k_3:
+			push k_2_126;
 			ret;
 		}
 	}
@@ -1964,48 +2000,71 @@ namespace Test {
 	void InitAndPatch() {
 
 		/* sub_15D59D0 : マップ */
-		//byte_pattern::temp_instance().find_pattern("8A 04 01 F3 0F");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), j_1);
-		//	j_3 = byte_pattern::temp_instance().get_first().address(0x11);
+		// 1.25.1.0, 1.26.1.0
+		byte_pattern::temp_instance().find_pattern("8A 04 01 F3 0F");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), j_1);
+			j_3 = byte_pattern::temp_instance().get_first().address(0x11);
 
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x19), aa_1);
-		//	aa_2 = byte_pattern::temp_instance().get_first().address(0x24);
-		//}
-		//byte_pattern::temp_instance().find_pattern("8B 45 E4 8B 8D 1C FF FF");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	loc_15D6741 = byte_pattern::temp_instance().get_first().address();
-		//}
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1C), aa_1);
+			aa_2 = byte_pattern::temp_instance().get_first().address(0x24);
+		}
 
-		//byte_pattern::temp_instance().find_pattern("8B 45 DC 66 0F 6E 55");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), k_a_1);
-		//}
-		//byte_pattern::temp_instance().find_pattern("48 0F 5B D2 F3 0F 11 45");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	k_2 = byte_pattern::temp_instance().get_first().address();
-		//}
+		// 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("8B 45 E4 8B 4D 9C 40 89");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			loc_15D6741 = byte_pattern::temp_instance().get_first().address();
+		}
+		else {
+			// 1.25.1.0
+			byte_pattern::temp_instance().find_pattern("8B 45 E4 8B 8D 1C FF FF");
+			if (byte_pattern::temp_instance().has_size(1)) {
+				loc_15D6741 = byte_pattern::temp_instance().get_first().address();
+			}
+		}
+
+		// 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("8B 45 DC 66 0F 6E 4D E4");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), k_a_1_126);
+			k_2_126 = byte_pattern::temp_instance().get_first().address(0x8);
+		}
+		else {
+			// 1.25.1.0
+			byte_pattern::temp_instance().find_pattern("8B 45 DC 66 0F 6E 55");
+			if (byte_pattern::temp_instance().has_size(1)) {
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), k_a_1);
+			}
+			byte_pattern::temp_instance().find_pattern("48 0F 5B D2 F3 0F 11 45");
+			if (byte_pattern::temp_instance().has_size(1)) {
+				k_2 = byte_pattern::temp_instance().get_first().address();
+			}
+		}
+
 
 		/* sub_15D6FD0 : マップ */
-		//byte_pattern::temp_instance().find_pattern("8D 4D F0 8D 51 01 8A 01 41");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), r_1);
-		//	loc_15D7B98 = byte_pattern::temp_instance().get_first().address(0x6);
-		//	loc_15D7BA1 = byte_pattern::temp_instance().get_first().address(0xF);
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("8D 4D F0 8D 51 01 8A 01 41");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), r_1);
+			loc_15D7B98 = byte_pattern::temp_instance().get_first().address(0x6);
+			loc_15D7BA1 = byte_pattern::temp_instance().get_first().address(0xF);
 
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1F), s_1);
-		//	s_2 = byte_pattern::temp_instance().get_first().address(0x29);
-		//}
-		//byte_pattern::temp_instance().find_pattern("8B 45 AC 8D 55 BC 6A 01");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	s_4 = byte_pattern::temp_instance().get_first().address();
-		//}
-		//byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 04 82 85 C0 74");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), t_1);
-		//	t_2_3 = byte_pattern::temp_instance().get_first().address(0xB);
-		//	loc_15D8053 = byte_pattern::temp_instance().get_first().address(0x13);
-		//}
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1F), s_1);
+			s_2 = byte_pattern::temp_instance().get_first().address(0x29);
+		}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("8B 45 AC 8D 55 BC 6A 01");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			s_4 = byte_pattern::temp_instance().get_first().address();
+		}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 04 82 85 C0 74");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), t_1);
+			t_2_3 = byte_pattern::temp_instance().get_first().address(0xB);
+			loc_15D8053 = byte_pattern::temp_instance().get_first().address(0x13);
+		}
 
 		/* フォントのバッファ拡張 */
 		//1.25.1.0, 1.26.0.0
@@ -2030,36 +2089,36 @@ namespace Test {
 		}
 
 		/* sub_1936F30 入力の修正 */
-		//byte_pattern::temp_instance().find_pattern("8B 07 8B CF 85");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), dd_1);
-		//}
-		//byte_pattern::temp_instance().find_pattern("0F B7 47 3A 8B CF 50 8D 45 D8");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	loc_193704C = byte_pattern::temp_instance().get_first().address();
-		//}
+		byte_pattern::temp_instance().find_pattern("8B 07 8B CF 85");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), dd_1);
+		}
+		byte_pattern::temp_instance().find_pattern("0F B7 47 3A 8B CF 50 8D 45 D8");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			loc_193704C = byte_pattern::temp_instance().get_first().address();
+		}
 
 		/* sub_1974E10 入力の修正 */
 		//スタック拡張
-		//byte_pattern::temp_instance().find_pattern("D8 00 00 00 53 8B 5D 08 56 8B F1 85");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0xE0, true);
-		//}
-		//byte_pattern::temp_instance().find_pattern("8B 4D B8 32 C0 88 45 0B");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), cc_start);
-		//	cc_end = byte_pattern::temp_instance().get_first().address(0x5);
-		//}
+		byte_pattern::temp_instance().find_pattern("D8 00 00 00 53 8B 5D 08 56 8B F1 85");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0xE0, true);
+		}
+		byte_pattern::temp_instance().find_pattern("8B 4D B8 32 C0 88 45 0B");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), cc_start);
+			cc_end = byte_pattern::temp_instance().get_first().address(0x5);
+		}
 		//該当箇所はたくさん引っかかるので、少し上に引っかかるようにした
-		//byte_pattern::temp_instance().find_pattern("6A 00 6A 00 6A 0A 8B 07"); 
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	loc_1974E8D = byte_pattern::temp_instance().get_first().address(0xB);
-		//}
-		// utf8バイト列からUCS2列にする
-		//byte_pattern::temp_instance().find_pattern("55 8B EC 51 8B 4D 10 53");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	PHYSFS_utf8ToUcs2 = byte_pattern::temp_instance().get_first().address();
-		//}
+		byte_pattern::temp_instance().find_pattern("6A 00 6A 00 6A 0A 8B 07"); 
+		if (byte_pattern::temp_instance().has_size(1)) {
+			loc_1974E8D = byte_pattern::temp_instance().get_first().address(0xB);
+		}
+		//utf8バイト列からUCS2列にする
+		byte_pattern::temp_instance().find_pattern("55 8B EC 51 8B 4D 10 53");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			PHYSFS_utf8ToUcs2 = byte_pattern::temp_instance().get_first().address();
+		}
 
 		// 1.25.1.0, 1.26.0.0
 		// ヒープ確保関数を保持
@@ -2085,42 +2144,42 @@ namespace Test {
 		/* sub_1994720 : 一部のUI、ツールチップの表示 */
 		// スタックの修正
 		//スタック修正
-		//byte_pattern::temp_instance().find_pattern("81 EC 58 05 00 00 8B");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x5A, true);
-		//}
-		//byte_pattern::temp_instance().find_pattern("8A 04 30 88 85 60 FF FF");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), c_1);
-		//	c_2 = byte_pattern::temp_instance().get_first().address(0x9);
+		byte_pattern::temp_instance().find_pattern("81 EC 58 05 00 00 8B");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x5A, true);
+		}
+		byte_pattern::temp_instance().find_pattern("8A 04 30 88 85 60 FF FF");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), c_1);
+			c_2 = byte_pattern::temp_instance().get_first().address(0x9);
 
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x14), d_1);
-		//	d_2 = byte_pattern::temp_instance().get_first().address(0x19);
-		//}
-		//byte_pattern::temp_instance().find_pattern("8A 04 30 0F B6 C0 8B 84");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), e_1);
-		//	e_5 = byte_pattern::temp_instance().get_first().address(0x6);
-		//}
-		//byte_pattern::temp_instance().find_pattern("66 83 78 06 00 0F 85");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), v_1);
-		//	v_3 = byte_pattern::temp_instance().get_first().address(0xB);
-		//}
-		//byte_pattern::temp_instance().find_pattern("46 3B 75 DC 0F 8C DD F7");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	v_2 = byte_pattern::temp_instance().get_first().address();
-		//}
-		//byte_pattern::temp_instance().find_pattern("0F B6 04 38 8B 04 81");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), b_1);
-		//	b_6 = byte_pattern::temp_instance().get_first().address(0x7);
-		//}
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x14), d_1);
+			d_2 = byte_pattern::temp_instance().get_first().address(0x19);
+		}
+		byte_pattern::temp_instance().find_pattern("8A 04 30 0F B6 C0 8B 84");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), e_1);
+			e_5 = byte_pattern::temp_instance().get_first().address(0x6);
+		}
+		byte_pattern::temp_instance().find_pattern("66 83 78 06 00 0F 85");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), v_1);
+			v_3 = byte_pattern::temp_instance().get_first().address(0xB);
+		}
+		byte_pattern::temp_instance().find_pattern("46 3B 75 DC 0F 8C DD F7");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			v_2 = byte_pattern::temp_instance().get_first().address();
+		}
+		byte_pattern::temp_instance().find_pattern("0F B6 04 38 8B 04 81");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), b_1);
+			b_6 = byte_pattern::temp_instance().get_first().address(0x7);
+		}
 		//スタックの後始末
-		//byte_pattern::temp_instance().find_pattern("8D A5 94 FA FF FF");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x92, true);
-		//}
+		byte_pattern::temp_instance().find_pattern("8D A5 94 FA FF FF");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x92, true);
+		}
 
 		/* sub_1996300 : 一部のUI、本文文字表示 */
 		// スタック修正 620 -> 624
@@ -2241,80 +2300,81 @@ namespace Test {
 		}
 
 		/* sub_1998A30 : ツールチップの改行 */
-		//byte_pattern::temp_instance().find_pattern("8A 14 16 8D 8F");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), i_1);
-		//	i_7 = byte_pattern::temp_instance().get_first().address(0xC);
-		//}
-		//byte_pattern::temp_instance().find_pattern("66 0F 6E C0 0F 5B C0 0F 2F C8 76 04 F3 0F");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	loc_1998C12 = byte_pattern::temp_instance().get_first().address();
-		//}
+		byte_pattern::temp_instance().find_pattern("8A 14 16 8D 8F");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), i_1);
+			i_7 = byte_pattern::temp_instance().get_first().address(0xC);
+		}
+		byte_pattern::temp_instance().find_pattern("66 0F 6E C0 0F 5B C0 0F 2F C8 76 04 F3 0F");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			loc_1998C12 = byte_pattern::temp_instance().get_first().address();
+		}
 
 		/* sub_1999AA0 : ツールチップの改行 */
-		//byte_pattern::temp_instance().find_pattern("8A 04 38 8D 8D 54");
-		//if (byte_pattern::temp_instance().has_size(2)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), w_1);
-		//	w_2 = byte_pattern::temp_instance().get_first().address(0xC);
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x14), x_1);
-		//	x_2 = byte_pattern::temp_instance().get_first().address(0x19);
-		//}
-		//byte_pattern::temp_instance().find_pattern("8A 04 38 0F B6");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), y_1);
-		//	y_2 = byte_pattern::temp_instance().get_first().address(0x6);
-		//}
-		//byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 14 82 89 55");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), z_1);
-		//	z_2 = byte_pattern::temp_instance().get_first().address(0x7);
-		//}
+		byte_pattern::temp_instance().find_pattern("8A 04 38 8D 8D 54");
+		if (byte_pattern::temp_instance().has_size(2)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), w_1);
+			w_2 = byte_pattern::temp_instance().get_first().address(0xC);
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x14), x_1);
+			x_2 = byte_pattern::temp_instance().get_first().address(0x19);
+		}
+		byte_pattern::temp_instance().find_pattern("8A 04 38 0F B6");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), y_1);
+			y_2 = byte_pattern::temp_instance().get_first().address(0x6);
+		}
+		byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 14 82 89 55");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), z_1);
+			z_2 = byte_pattern::temp_instance().get_first().address(0x7);
+		}
 
 		/* sub_199A880 : マップ文字表示 */
-		//byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), l_1);
-		//	l_3 = byte_pattern::temp_instance().get_first().address(0x9);
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x11), m_1);
-		//	m_2 = byte_pattern::temp_instance().get_first().address(0x16);
-		//}
-		//byte_pattern::temp_instance().find_pattern("8A 04 38 8B 4D");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), n_1);
-		//	n_2 = byte_pattern::temp_instance().get_first().address(0x9);
-		//}
-		//byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 3C 83");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), o_1);
-		//	o_2 = byte_pattern::temp_instance().get_first().address(0x7);
-		//}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), l_1);
+			l_3 = byte_pattern::temp_instance().get_first().address(0x9);
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x11), m_1);
+			m_2 = byte_pattern::temp_instance().get_first().address(0x16);
+		}
+		byte_pattern::temp_instance().find_pattern("8A 04 38 8B 4D");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), n_1);
+			n_2 = byte_pattern::temp_instance().get_first().address(0x9);
+		}
+		byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 3C 83");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), o_1);
+			o_2 = byte_pattern::temp_instance().get_first().address(0x7);
+		}
 		
 		/* sub_199B240 : イベントダイアログ調整？ */
-		//byte_pattern::temp_instance().find_pattern("81 EC 0C 03 00 00 8B");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x2), 0x0E, true);
-		//}
-		//byte_pattern::temp_instance().find_pattern("0F B6 04 38 8B 4D D8 8B 0C");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), q_1);
-		//	q_2_1 = byte_pattern::temp_instance().get_first().address(0xA);
-		//}
-		//byte_pattern::temp_instance().find_pattern("9F F6 C4 44 7A 58 66");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), bb_1);
-		//	bb_3 = byte_pattern::temp_instance().get_first().address(0x6);
-		//}
-		//byte_pattern::temp_instance().find_pattern("8B 45 14 8B 4D D4 8B 55");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	bb_2 = byte_pattern::temp_instance().get_first().address();
-		//}
+		byte_pattern::temp_instance().find_pattern("81 EC 0C 03 00 00 8B");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x2), 0x0E, true);
+		}
+		byte_pattern::temp_instance().find_pattern("0F B6 04 38 8B 4D D8 8B 0C");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), q_1);
+			q_2_1 = byte_pattern::temp_instance().get_first().address(0xA);
+		}
+		byte_pattern::temp_instance().find_pattern("9F F6 C4 44 7A 58 66");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), bb_1);
+			bb_3 = byte_pattern::temp_instance().get_first().address(0x6);
+		}
+		byte_pattern::temp_instance().find_pattern("8B 45 14 8B 4D D4 8B 55");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			bb_2 = byte_pattern::temp_instance().get_first().address();
+		}
 
 		/* sub_199BDA0  */
-		//byte_pattern::temp_instance().find_pattern("8A 04 30 8B 55 14 0F B6");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), u_1);
-		//	u_2 = byte_pattern::temp_instance().get_first().address(0x9);
-		//}
+		byte_pattern::temp_instance().find_pattern("8A 04 30 8B 55 14 0F B6");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), u_1);
+			u_2 = byte_pattern::temp_instance().get_first().address(0x9);
+		}
 		
 		/* sub_1A44A70 フォントサイズの拡張 */
 		// 1.25.1.0, 1.26.0.0
