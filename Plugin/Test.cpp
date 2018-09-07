@@ -1983,6 +1983,30 @@ namespace Test {
 		}
 	}
 
+	char *save_game_title = "save_game_title";
+	uintptr_t issue_7_2_end_126;
+	__declspec(naked) void issue_7_2_start_126() {
+		__asm {
+			push ecx;
+
+			push edi;
+			call utf8ToEscapedStr;
+			add esp, 4;
+
+			pop ecx;
+
+			push eax;
+			push save_game_title;
+
+			mov     eax, dword ptr [ecx];
+			call dword ptr[eax + 0x4C];
+
+			push issue_7_2_end_126;
+			ret;
+
+		}
+	}
+
 	uintptr_t kinako_end;
 	uintptr_t funcA;
 	__declspec(naked) void kinako_start() {
@@ -2514,10 +2538,19 @@ namespace Test {
 		}
 
 		// セーブファイルのタイトルを表示する
-		byte_pattern::temp_instance().find_pattern("8D 83 04 03 00 00 50 8B");
+		//1.26.0.0
+		byte_pattern::temp_instance().find_pattern("57 68 ? ? ? ? FF 50 4C 8B C8");
 		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_7_2_start);
-			issue_7_2_end = byte_pattern::temp_instance().get_first().address(0x9);
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_7_2_start_126);
+			issue_7_2_end_126 = byte_pattern::temp_instance().get_first().address(0x9);
+		}
+		else {
+			//1.25.1.0
+			byte_pattern::temp_instance().find_pattern("8D 83 04 03 00 00 50 8B");
+			if (byte_pattern::temp_instance().has_size(1)) {
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_7_2_start);
+				issue_7_2_end = byte_pattern::temp_instance().get_first().address(0x9);
+			}
 		}
 
 		// あれ
