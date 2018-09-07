@@ -1918,23 +1918,26 @@ namespace Test {
 		//}
 
 		/* フォントのバッファ拡張 */
-		//byte_pattern::temp_instance().find_pattern("68 50 28 00 00 56 E8");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
-		//}
-		//byte_pattern::temp_instance().find_pattern("68 50 28 00 00 E8 ? ? ? ? 83");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
-		//}
-
-		//byte_pattern::temp_instance().find_pattern("68 20 28 00 00 E8 ? ? ? ? 83");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
-		//}
-		//byte_pattern::temp_instance().find_pattern("68 20 28 00 00 56 E8");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
-		//}
+		//1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("68 50 28 00 00 56 E8");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
+		//1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("68 50 28 00 00 E8 ? ? ? ? 83");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
+		//1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("68 20 28 00 00 E8 ? ? ? ? 83");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
+		//1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("68 20 28 00 00 56 E8");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
 
 		/* sub_1936F30 入力の修正 */
 		//byte_pattern::temp_instance().find_pattern("8B 07 8B CF 85");
@@ -1968,21 +1971,21 @@ namespace Test {
 		//	PHYSFS_utf8ToUcs2 = byte_pattern::temp_instance().get_first().address();
 		//}
 
-		// 1.25.1.0: OK, 1.26.0.0: OK
+		// 1.25.1.0, 1.26.0.0
 		// ヒープ確保関数を保持
 		byte_pattern::temp_instance().find_pattern("8B FF 55 8B EC 56 8B 75 08 83 FE E0 77 30");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			sub_1D7B347 = byte_pattern::temp_instance().get_first().address();
 		}
 
-		// 1.25.1.0: OK, 1.26.1.0: OK
+		// 1.25.1.0, 1.26.0.0
 		//オブジェクト初期化関数を保持。たくさん引っかかるので少し下に
 		byte_pattern::temp_instance().find_pattern("C7 41 08 00 00 00 00 8A 00 88 41 0C");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			sub_1966D50 = byte_pattern::temp_instance().get_first().address(-0x13);
 		}
 
-		// 1.25.1.0:OK, 1.26.0.0:OK
+		// 1.25.1.0, 1.26.0.0
 		//ヒープクリア関数を保持
 		byte_pattern::temp_instance().find_pattern("8B FF 55 8B EC 83 7D 08 00 74 2D FF 75 08 6A");
 		if (byte_pattern::temp_instance().has_size(1)) {
@@ -2076,7 +2079,7 @@ namespace Test {
 		//	g_4 = byte_pattern::temp_instance().get_first().address();
 		//}
 
-		// 1.25.1.0:OK, 1.26.0.0:OK
+		// 1.25.1.0, 1.26.0.0
 		byte_pattern::temp_instance().find_pattern("8A 8A ? ? ? ? F3 0F");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0x8D, true);
@@ -2163,18 +2166,20 @@ namespace Test {
 		//}
 		
 		/* sub_1A44A70 フォントサイズの拡張 */
-		//byte_pattern::temp_instance().find_pattern("81 FE 00 00 00 01");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x5), 0x04, true);
-		//}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("81 FE 00 00 00 01");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x5), 0x04, true);
+		}
 
 		/* sub_1AFC030 大文字化キャンセル？ */
-		//byte_pattern::temp_instance().find_pattern("53 57 8B F9 83 7F 14 10 8B 5F 10");
-		//if (byte_pattern::temp_instance().has_size(2)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get(1).address(0x24), p_1);
-		//	p_3 = byte_pattern::temp_instance().get(1).address(0x29);
-		//	p_2 = byte_pattern::temp_instance().get(1).address(0x35);
-		//}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("53 57 8B F9 83 7F 14 10 8B 5F 10");
+		if (byte_pattern::temp_instance().has_size(2)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get(1).address(0x24), p_1);
+			p_3 = byte_pattern::temp_instance().get(1).address(0x29);
+			p_2 = byte_pattern::temp_instance().get(1).address(0x35);
+		}
 
 		/* sub_1B23C80 入力の修正 */
 		//byte_pattern::temp_instance().find_pattern("83 C4 14 85 C0 0F 85 BF");
@@ -2228,60 +2233,67 @@ namespace Test {
 		//}
 
 		/* sub_1D7B347 ヒープクリアフラグの修正 */
-		//byte_pattern::temp_instance().find_pattern("59 85 C0 74 15 56 6A 00");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x7), 0x08, true);
-		//}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("59 85 C0 74 15 56 6A 00");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x7), 0x08, true);
+		}
 
 		/* フォントバッファクリア */
-		//byte_pattern::temp_instance().find_pattern("68 20 28 00 00 8B 45");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
-		//}
-		//byte_pattern::temp_instance().find_pattern("68 50 28 00 00 8B 45");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
-		//}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("68 20 28 00 00 8B 45");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("68 50 28 00 00 8B 45");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
+		}
 
 		/* 日付 */
-		//byte_pattern::temp_instance().find_pattern("64 20 77 20 6D");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x79, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x20, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x0F, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x20, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x6D, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(5), 0x77, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x20, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x64, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(8), 0x20, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(9), 0x0E, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(10), 0x00, true);
-		//}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("64 20 77 20 6D");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x79, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x20, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x0F, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x20, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x6D, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(5), 0x77, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x20, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x64, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(8), 0x20, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(9), 0x0E, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(10), 0x00, true);
+		}
 
 		/* UTF-8ファイルを列挙できるようにする jz(74) -> jmp(EB) */ 
-		//byte_pattern::temp_instance().find_pattern("74 0E 78 0A 8A 41 01 41");
-		//if (byte_pattern::temp_instance().has_size(2)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get(1).address(), 0xEB , true);
-		//}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("74 0E 78 0A 8A 41 01 41");
+		if (byte_pattern::temp_instance().has_size(2)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get(1).address(), 0xEB , true);
+		}
 
 		/* ファイル名を安全にしている場所を短絡する jmp [address] */
-		//byte_pattern::temp_instance().find_pattern("85 FF 0F 84 EE 00 00 00 53 56");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0xE9, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0xF1, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x00, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x00, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x00, true);
-		//}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("85 FF 0F 84 EE 00 00 00 53 56");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0xE9, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0xF1, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x00, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x00, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x00, true);
+		}
 
 		// 0: latin1
 		// 1: ucs2
 		// 2: ucs4
-		//byte_pattern::temp_instance().find_pattern("55 8B EC 56 8B 75 10 8B C6 57 8B 7D");
-		//if (byte_pattern::temp_instance().has_size(3)) {
-		//	PHYSFS_utf8FromUcs2 = byte_pattern::temp_instance().get(1).address();
-		//}
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("55 8B EC 56 8B 75 10 8B C6 57 8B 7D");
+		if (byte_pattern::temp_instance().has_size(3)) {
+			PHYSFS_utf8FromUcs2 = byte_pattern::temp_instance().get(1).address();
+		}
 
 		// ファイル名を変換する
 		//byte_pattern::temp_instance().find_pattern("51 52 8D 4D B8 E8 ? ? ? ? 8D 4D B8 C7");
