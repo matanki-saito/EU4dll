@@ -634,7 +634,7 @@ namespace Test {
 	__declspec(naked) void g_0_126()
 	{
 		__asm {
-			movzx  eax, word ptr[edi + ecx];
+			movzx eax, ax;
 			mov edx, [ebp - 0x40];
 			mov [ebp - 0x630], ax;
 			mov ecx, [edx + eax * 4];
