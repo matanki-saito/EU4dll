@@ -459,6 +459,7 @@ namespace Test {
 		}
 	}
 
+	// 1.26.0.0
 	uintptr_t diff;
 	uintptr_t f_71;
 	uintptr_t loc_1996B6B;
@@ -541,6 +542,80 @@ namespace Test {
 		}
 	}
 
+	// 1.26.0.0
+	uintptr_t f_71_126;
+	__declspec(naked) void f_1_126()
+	{
+		// edxにDSTのアドレスがある
+		__asm {
+			mov al, byte ptr [edi + ecx];
+			mov byte ptr [edx + esi], al;
+			inc esi;
+
+			cmp al, ESCAPE_SEQ_1;
+			jz f_10;
+			cmp al, ESCAPE_SEQ_2;
+			jz f_11;
+			cmp al, ESCAPE_SEQ_3;
+			jz f_12;
+			cmp al, ESCAPE_SEQ_4;
+			jz f_13;
+			jmp f_4;
+
+		f_10:
+			movzx eax, word ptr[edi + ecx + 1];
+			mov[edx + esi], ax;
+			jmp f_3;
+
+		f_11:
+			movzx eax, word ptr[edi + ecx + 1];
+			mov[edx + esi], ax;
+			sub eax, SHIFT_2;
+			jmp f_3;
+
+		f_12:
+			movzx eax, word ptr[edi + ecx + 1];
+			mov[edx + esi], ax;
+			add eax, SHIFT_3;
+			jmp f_3;
+
+		f_13:
+			movzx eax, word ptr[edi + ecx + 1];
+			mov[edx + esi], ax;
+			add eax, SHIFT_4;
+
+		f_3:
+			movzx eax, ax;
+			add esi, 2;
+			cmp eax, NO_FONT;
+
+			ja f_2;
+			mov eax, NOT_DEF;
+
+		f_2:
+			add edi, 2;
+			mov[ebp - 0x24], edi;
+
+			jmp loc_1996B6B_jmp;
+
+		f_4:
+			cmp byte ptr[ebp + 0x3C], 0; // arg_34
+			jz loc_1996B6B_jmp;
+
+			mov edx, [ebp - 0x10];
+
+			push f_71_126;
+			ret;
+
+		loc_1996B6B_jmp:
+
+			push loc_1996B6B;
+			ret;
+		}
+	}
+
+
+	// 1.25.1.0
 	uintptr_t g_2;
 	__declspec(naked) void g_0()
 	{
@@ -554,6 +629,21 @@ namespace Test {
 		}
 	}
 
+	// 1.26.0.0
+	uintptr_t g_2_126;
+	__declspec(naked) void g_0_126()
+	{
+		__asm {
+			movzx  eax, word ptr[edi + ecx];
+			mov edx, [ebp - 0x40];
+			mov [ebp - 0x630], ax;
+			mov ecx, [edx + eax * 4];
+
+			push g_2_126;
+			ret;
+		}
+	}
+
 	uintptr_t f_b;
 	uintptr_t f_f;
 	__declspec(naked) void f_a()
@@ -561,7 +651,7 @@ namespace Test {
 		__asm {
 			cmp al, 0xA4;
 			jnz f_d;
-			movss xmm2, [ebp + 0x18];
+			movss xmm2, [ebp + 0x18]; //arg_10
 
 			push f_b;
 			ret;
@@ -2033,51 +2123,112 @@ namespace Test {
 		//}
 
 		/* sub_1996300 : 一部のUI、本文文字表示 */
-		// スタック修正
-		//byte_pattern::temp_instance().find_pattern("81 EC 20 06 00 00 56 57");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x24, true);
-		//}
-		// 転送バッファ
-		//byte_pattern::temp_instance().find_pattern("8A 87 ? ? ? ? 88 86 ? ? ? ? 46");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	char *pSRC = *byte_pattern::temp_instance().get_first().pointer<char *>(2);
-		//	char *pDST = *byte_pattern::temp_instance().get_first().pointer<char *>(8);
+		// スタック修正 620 -> 624
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("81 EC 20 06 00 00 56 57");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x24, true);
+		}
 
-		//	diff = pDST - pSRC;
+		// 転送先バッファのポインタを確保
+		// 1.26.0.0
+		// mov byte_XXXXX[esi],al -> lea edx, byte_XXXXX
+		byte_pattern::temp_instance().find_pattern("8A 04 0F 88 86 ? ? ? ? 46");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			char *pDST = *byte_pattern::temp_instance().get_first().pointer<char *>(5);
 
-		//	injector::WriteMemory<char *>(byte_pattern::temp_instance().get_first().address(8), pSRC, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x8D, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x15, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x8D, true);
-		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x15, true);
-		//}
-		//byte_pattern::temp_instance().find_pattern("46 84 C9 0F 84 B6");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), f_1);
-		//	f_71 = byte_pattern::temp_instance().get_first().address(0x9);
-		//}
-		//byte_pattern::temp_instance().find_pattern("8B 55 C4 0F B6 C0 8B");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	loc_1996B6B = byte_pattern::temp_instance().get_first().address();
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x3), g_0);
-		//	g_2 = byte_pattern::temp_instance().get_first().address(0x9);
-		//}
-		//byte_pattern::temp_instance().find_pattern("3C A4 75 17 F3");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), f_a);
-		//	f_b = byte_pattern::temp_instance().get_first().address(0x9);
-		//	f_f = byte_pattern::temp_instance().get_first().address(0x1F);
-		//}
-		//byte_pattern::temp_instance().find_pattern("66 83 79 06 00 0F");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), g_3);
-		//	g_5 = byte_pattern::temp_instance().get_first().address(0xB);
-		//}
-		//byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 A9 01 00 00 8B");
-		//if (byte_pattern::temp_instance().has_size(1)) {
-		//	g_4 = byte_pattern::temp_instance().get_first().address();
-		//}
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x8D, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x15, true);
+			injector::WriteMemory<char *>(byte_pattern::temp_instance().get_first().address(5), pDST, true);
+		}
+		else {
+			// 1.25.1.0
+			byte_pattern::temp_instance().find_pattern("8A 87 ? ? ? ? 88 86 ? ? ? ? 46");
+			if (byte_pattern::temp_instance().has_size(1)) {
+				char *pSRC = *byte_pattern::temp_instance().get_first().pointer<char *>(2);
+				char *pDST = *byte_pattern::temp_instance().get_first().pointer<char *>(8);
+
+				diff = pDST - pSRC;
+
+				injector::WriteMemory<char *>(byte_pattern::temp_instance().get_first().address(8), pSRC, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x8D, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x15, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x8D, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x15, true);
+			}
+			else {
+				exit(-1);
+			}
+		}
+
+		// 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("46 80 7D 3C 00 0F 84 32");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), f_1_126);
+			f_71_126 = byte_pattern::temp_instance().get_first().address(0xB);
+		}
+		else {
+			// 1.25.1.0
+			byte_pattern::temp_instance().find_pattern("46 84 C9 0F 84 B6");
+			if (byte_pattern::temp_instance().has_size(1)) {
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), f_1);
+				f_71 = byte_pattern::temp_instance().get_first().address(0x9);
+			}
+			else {
+				exit(-1);
+			}
+		}
+
+		//1.26.0.0
+		byte_pattern::temp_instance().find_pattern("0F B6 04 0F 8B 55 C0 8B");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			loc_1996B6B = byte_pattern::temp_instance().get_first().address();
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), g_0_126);
+			g_2_126 = byte_pattern::temp_instance().get_first().address(0xA);
+		}
+		else {
+			//1.25.1.0
+			byte_pattern::temp_instance().find_pattern("8B 55 C4 0F B6 C0 8B");
+			if (byte_pattern::temp_instance().has_size(1)) {
+				loc_1996B6B = byte_pattern::temp_instance().get_first().address();
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x3), g_0);
+				g_2 = byte_pattern::temp_instance().get_first().address(0x9);
+			}
+			else {
+				exit(-1);
+			}
+		}
+
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("3C A4 75 17 F3");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), f_a);
+			f_b = byte_pattern::temp_instance().get_first().address(0x9);
+			f_f = byte_pattern::temp_instance().get_first().address(0x1F);
+		}
+
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("66 83 79 06 00 0F");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), g_3);
+			g_5 = byte_pattern::temp_instance().get_first().address(0xB);
+		}
+
+		//1.26.0.0
+		byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 98 01");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			g_4 = byte_pattern::temp_instance().get_first().address();
+		}
+		else {
+			//1.25.1.0
+			byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 A9 01 00 00 8B");
+			if (byte_pattern::temp_instance().has_size(1)) {
+				g_4 = byte_pattern::temp_instance().get_first().address();
+			}
+			else {
+				exit(-1);
+			}
+		}
 
 		// 1.25.1.0, 1.26.0.0
 		byte_pattern::temp_instance().find_pattern("8A 8A ? ? ? ? F3 0F");
