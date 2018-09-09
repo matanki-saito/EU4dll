@@ -1322,6 +1322,56 @@ namespace Test {
 		}
 	}
 
+	uintptr_t u_2_126;
+	__declspec(naked) void u_1_126()
+	{
+		__asm {
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_1;
+			jz u_10;
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_2;
+			jz u_11;
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_3;
+			jz u_12;
+			cmp byte ptr[eax + esi], ESCAPE_SEQ_4;
+			jz u_13;
+			movzx eax, byte ptr[eax + esi];
+			jmp u_3;
+
+		u_10:
+			movzx eax, word ptr[eax + esi + 1];
+			jmp u_1x;
+
+		u_11:
+			movzx eax, word ptr[eax + esi + 1];
+			sub eax, SHIFT_2;
+			jmp u_1x;
+
+		u_12:
+			movzx eax, word ptr[eax + esi + 1];
+			add eax, SHIFT_3;
+			jmp u_1x;
+
+		u_13:
+			movzx eax, word ptr[eax + esi + 1];
+			add eax, SHIFT_4;
+
+		u_1x:
+			movzx eax, ax;
+			add esi, 2;
+			cmp eax, NO_FONT;
+			ja u_3;
+			mov eax, NOT_DEF;
+
+		u_3:
+
+			mov ecx, [edx + eax * 4];
+			test ecx, ecx;
+
+			push u_2_126;
+			ret;
+		}
+	}
+
 	uintptr_t loc_193704C;
 	__declspec(naked) void dd_1()
 	{
@@ -2394,10 +2444,20 @@ namespace Test {
 		}
 
 		/* sub_199BDA0  */
-		byte_pattern::temp_instance().find_pattern("8A 04 30 8B 55 14 0F B6");
+		// 1.26.0.0
+		// だいぶ変更されている？ 本当に対応できているか不明。そもそもこの修正がどんな効果をもたらすか忘れてしまった
+		byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 0C 82 85");
 		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), u_1);
-			u_2 = byte_pattern::temp_instance().get_first().address(0x9);
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), u_1_126);
+			u_2_126 = byte_pattern::temp_instance().get_first().address(0x9);
+		}
+		else {
+			// 1.25.1.0
+			byte_pattern::temp_instance().find_pattern("8A 04 30 8B 55 14 0F B6");
+			if (byte_pattern::temp_instance().has_size(1)) {
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), u_1);
+				u_2 = byte_pattern::temp_instance().get_first().address(0x9);
+			}
 		}
 		
 		/* sub_1A44A70 フォントサイズの拡張 */
