@@ -584,6 +584,7 @@ namespace Test {
 	{
 		// edxにDSTのアドレスがある
 		__asm {
+			xor eax, eax;
 			mov al, byte ptr [edi + ecx];
 			mov byte ptr [edx + esi], al;
 			inc esi;
@@ -672,7 +673,7 @@ namespace Test {
 		__asm {
 			movzx eax, ax;
 			mov edx, [ebp - 0x40];
-			mov [ebp - 0x630], ax;
+			mov word ptr [ebp - 0x630], ax;
 			mov ecx, [edx + eax * 4];
 
 			push g_2_126;
