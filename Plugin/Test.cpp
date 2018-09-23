@@ -2212,6 +2212,7 @@ namespace Test {
 		}
 
 		/* sub_1936F30 入力の修正 */
+		// バックスペースの修正
 		byte_pattern::temp_instance().find_pattern("8B 07 8B CF 85");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), dd_1);
@@ -2222,6 +2223,7 @@ namespace Test {
 		}
 
 		/* sub_1974E10 入力の修正 */
+		// 入力した文字をutf8からエスケープ列へ変換する
 		//スタック拡張
 		byte_pattern::temp_instance().find_pattern("D8 00 00 00 53 8B 5D 08 56 8B F1 85");
 		if (byte_pattern::temp_instance().has_size(1)) {
@@ -2526,6 +2528,7 @@ namespace Test {
 		}
 
 		/* sub_1B23C80 入力の修正 */
+		// SDL_windowsevents.cの修正
 		byte_pattern::temp_instance().find_pattern("83 C4 14 85 C0 0F 85 BF");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), ee_6);
@@ -2537,13 +2540,16 @@ namespace Test {
 		}
 
 		/* sub_1B34410 入力の修正 */
-		byte_pattern::temp_instance().find_pattern("89 35 ? ? ? ? 85 F6 74 39 6A 00 6A 00");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x04, true);
-		}
+		// SDL_keyboard.cの修正
+		// issue-27でコメントアウト
+		//byte_pattern::temp_instance().find_pattern("89 35 ? ? ? ? 85 F6 74 39 6A 00 6A 00");
+		//if (byte_pattern::temp_instance().has_size(1)) {
+		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
+		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x04, true);
+		//}
 
 		/* sub_1B46720 入力の修正 */
+		// SDL_windowskeyboard.cの修正
 		byte_pattern::temp_instance().find_pattern("39 5E 28 0F 84 45");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
