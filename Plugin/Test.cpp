@@ -2072,6 +2072,54 @@ namespace Test {
 		}
 	}
 
+	uintptr_t issue_12_end;
+	__declspec(naked) void issue_12_start() {
+		__asm {
+			cmp byte ptr[eax + ecx], ESCAPE_SEQ_1;
+			jz issue_12_10;
+			cmp byte ptr[eax + ecx], ESCAPE_SEQ_2;
+			jz issue_12_11;
+			cmp byte ptr[eax + ecx], ESCAPE_SEQ_3;
+			jz issue_12_12;
+			cmp byte ptr[eax + ecx], ESCAPE_SEQ_4;
+			jz issue_12_13;
+
+			movzx eax, byte ptr[eax + ecx];
+			jmp issue_12_y;
+
+		issue_12_10:
+			movzx eax, word ptr[eax + ecx + 1];
+			jmp issue_12_x;
+
+		issue_12_11:
+			movzx eax, word ptr[eax + ecx + 1];
+			sub eax, SHIFT_2;
+			jmp issue_12_x;
+
+		issue_12_12:
+			movzx eax, word ptr[eax + ecx + 1];
+			add eax, SHIFT_3;
+			jmp issue_12_x;
+
+		issue_12_13:
+			movzx eax, word ptr[eax + ecx + 1];
+			add eax, SHIFT_4;
+
+		issue_12_x:
+			movzx eax, ax;
+			add ecx, 2;
+			cmp eax, NO_FONT;
+			ja issue_12_y;
+			mov eax, NOT_DEF;
+
+		issue_12_y:
+			mov eax,dword ptr [esi + eax * 4 + 0xB4];
+			
+			push issue_12_end;
+			ret;
+		}
+	}
+
 	void InitAndPatch() {
 
 		/* sub_15D59D0 : マップ */
@@ -2624,5 +2672,13 @@ namespace Test {
 		//if (byte_pattern::temp_instance().has_size(1)) {
 		//	funcA = byte_pattern::temp_instance().get_first().address();
 		//}
+
+		/* issue-12 nudgeモード修正 */
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 84 86 B4 00 00 00");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_12_start);
+			issue_12_end = byte_pattern::temp_instance().get_first().address(0xB);
+		}
 	}
 }
