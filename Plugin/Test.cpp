@@ -1509,6 +1509,18 @@ namespace Test {
 			cmp     ah, 0x7E;
 			jz      cc_4;
 			cmp     ah, 0x2F;
+			jz      cc_4;
+			cmp     ah, 0xBD;
+			jz      cc_4;
+			cmp     ah, 0x3B;
+			jz      cc_4;
+			cmp     ah, 0x5D;
+			jz      cc_4;
+			cmp     ah, 0x5F;
+			jz      cc_4;
+			cmp     ah, 0x3D;
+			jz      cc_4;
+			cmp     ah, 0x23;
 			jnz     cc_3;
 
 		cc_4:
@@ -1548,6 +1560,18 @@ namespace Test {
 			cmp     al, 0x7E;
 			jz      cc_5;
 			cmp     al, 0x2F;
+			jz      cc_5;
+			cmp     al, 0xBD;
+			jz      cc_5;
+			cmp     al, 0x3B;
+			jz      cc_5;
+			cmp     al, 0x5D;
+			jz      cc_5;
+			cmp     al, 0x5F;
+			jz      cc_5;
+			cmp     al, 0x3D;
+			jz      cc_5;
+			cmp     al, 0x23;
 			jnz     cc_6;
 
 		cc_5:
@@ -1852,7 +1876,8 @@ namespace Test {
 			switch (high) {
 			case 0xA4:case 0xA3:case 0xA7:case 0x24:case 0x5B:case 0x00:case 0x5C:
 			case 0x20:case 0x0D:case 0x0A:case 0x22:case 0x7B:case 0x7D:case 0x40:
-			case 0x80:case 0x7E:case 0x2F:
+			case 0x80:case 0x7E:case 0x2F:case 0xBD:case 0x3B:case 0x5D:case 0x5F:
+			case 0x3D:case 0x23:
 				escapeChr += 2;
 				break;
 			default:
@@ -1863,7 +1888,8 @@ namespace Test {
 			switch (low) {
 			case 0xA4:case 0xA3:case 0xA7:case 0x24:case 0x5B:case 0x00:case 0x5C:
 			case 0x20:case 0x0D:case 0x0A:case 0x22:case 0x7B:case 0x7D:case 0x40:
-			case 0x80:case 0x7E:case 0x2F:
+			case 0x80:case 0x7E:case 0x2F:case 0xBD:case 0x3B:case 0x5D:case 0x5F:
+			case 0x3D:case 0x23:
 				escapeChr++;
 				break;
 			default:
@@ -2072,6 +2098,90 @@ namespace Test {
 		}
 	}
 
+	uintptr_t issue_12_end;
+	__declspec(naked) void issue_12_start() {
+		__asm {
+			cmp byte ptr[eax + ecx], ESCAPE_SEQ_1;
+			jz issue_12_10;
+			cmp byte ptr[eax + ecx], ESCAPE_SEQ_2;
+			jz issue_12_11;
+			cmp byte ptr[eax + ecx], ESCAPE_SEQ_3;
+			jz issue_12_12;
+			cmp byte ptr[eax + ecx], ESCAPE_SEQ_4;
+			jz issue_12_13;
+
+			movzx eax, byte ptr[eax + ecx];
+			jmp issue_12_y;
+
+		issue_12_10:
+			movzx eax, word ptr[eax + ecx + 1];
+			jmp issue_12_x;
+
+		issue_12_11:
+			movzx eax, word ptr[eax + ecx + 1];
+			sub eax, SHIFT_2;
+			jmp issue_12_x;
+
+		issue_12_12:
+			movzx eax, word ptr[eax + ecx + 1];
+			add eax, SHIFT_3;
+			jmp issue_12_x;
+
+		issue_12_13:
+			movzx eax, word ptr[eax + ecx + 1];
+			add eax, SHIFT_4;
+
+		issue_12_x:
+			movzx eax, ax;
+			add ecx, 2;
+			cmp eax, NO_FONT;
+			ja issue_12_y;
+			mov eax, NOT_DEF;
+
+		issue_12_y:
+			mov eax,dword ptr [esi + eax * 4 + 0xB4];
+			
+			push issue_12_end;
+			ret;
+		}
+	}
+
+	uintptr_t sub_135FBC0;
+	uintptr_t issue_19_keydown_end;
+	__declspec(naked) void issue_19_keydown_start() {
+		__asm {
+			cmp ebx, 229;
+			jz issue_19_keydown_x; // skip
+			
+			push esi;
+			push 1;
+			call sub_135FBC0;
+			add esp, 8;
+
+		issue_19_keydown_x:
+			push issue_19_keydown_end;
+			ret;
+		}
+	}
+
+	uintptr_t issue_19_keypress_end;
+	__declspec(naked) void issue_19_keypress_start() {
+		__asm {
+			cmp ebx, 229;
+			jz issue_19_keypress_x; // skip
+
+			push esi;
+			push 1;
+			call sub_135FBC0;
+			add esp, 8;
+
+		issue_19_keypress_x:
+			push issue_19_keypress_end;
+			ret;
+		}
+	}
+
+
 	void InitAndPatch() {
 
 		/* sub_15D59D0 : マップ */
@@ -2164,6 +2274,7 @@ namespace Test {
 		}
 
 		/* sub_1936F30 入力の修正 */
+		// バックスペースの修正
 		byte_pattern::temp_instance().find_pattern("8B 07 8B CF 85");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), dd_1);
@@ -2174,6 +2285,7 @@ namespace Test {
 		}
 
 		/* sub_1974E10 入力の修正 */
+		// 入力した文字をutf8からエスケープ列へ変換する
 		//スタック拡張
 		byte_pattern::temp_instance().find_pattern("D8 00 00 00 53 8B 5D 08 56 8B F1 85");
 		if (byte_pattern::temp_instance().has_size(1)) {
@@ -2478,6 +2590,7 @@ namespace Test {
 		}
 
 		/* sub_1B23C80 入力の修正 */
+		// SDL_windowsevents.cの修正
 		byte_pattern::temp_instance().find_pattern("83 C4 14 85 C0 0F 85 BF");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), ee_6);
@@ -2489,18 +2602,22 @@ namespace Test {
 		}
 
 		/* sub_1B34410 入力の修正 */
-		byte_pattern::temp_instance().find_pattern("89 35 ? ? ? ? 85 F6 74 39 6A 00 6A 00");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x04, true);
-		}
+		// SDL_keyboard.cの修正
+		// issue-27でコメントアウト
+		//byte_pattern::temp_instance().find_pattern("89 35 ? ? ? ? 85 F6 74 39 6A 00 6A 00");
+		//if (byte_pattern::temp_instance().has_size(1)) {
+		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
+		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x04, true);
+		//}
 
 		/* sub_1B46720 入力の修正 */
-		byte_pattern::temp_instance().find_pattern("39 5E 28 0F 84 45");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x19, true);
-		}
+		// SDL_windowskeyboard.cの修正
+		// issue-19でコメントアウト
+		//byte_pattern::temp_instance().find_pattern("39 5E 28 0F 84 45");
+		//if (byte_pattern::temp_instance().has_size(1)) {
+		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
+		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x19, true);
+		//}
 		byte_pattern::temp_instance().find_pattern("0F 84 FA 01 00 00 83 E8");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), ee_4);
@@ -2516,8 +2633,8 @@ namespace Test {
 		}
 		byte_pattern::temp_instance().find_pattern("68 00 08 00 00 57");
 		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x16, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(-0x2), 0xEB, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(-0x1), 0x41, true);
 		}
 		byte_pattern::temp_instance().find_pattern("8B 4D 14 89 19");
 		if (byte_pattern::temp_instance().has_size(1)) {
@@ -2624,5 +2741,32 @@ namespace Test {
 		//if (byte_pattern::temp_instance().has_size(1)) {
 		//	funcA = byte_pattern::temp_instance().get_first().address();
 		//}
+
+		/* issue-12 nudgeモード修正 */
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 84 86 B4 00 00 00");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_12_start);
+			issue_12_end = byte_pattern::temp_instance().get_first().address(0xB);
+		}
+
+		/* issue-19 */
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("83 C4 08 33 C0 E9 82 F8 FF FF");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0xE), issue_19_keydown_start);
+			issue_19_keydown_end = byte_pattern::temp_instance().get_first().address(0xE + 0xB);
+		}
+		//
+		byte_pattern::temp_instance().find_pattern("55 8B EC 83 EC 40 56 8B 75 0C");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			sub_135FBC0 = byte_pattern::temp_instance().get_first().address(0x0);
+		}
+
+		byte_pattern::temp_instance().find_pattern("83 FE 46 75 11 80 78 46 00 75");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0xB), issue_19_keypress_start);
+			issue_19_keypress_end = byte_pattern::temp_instance().get_first().address(0xB + 0xB);
+		}
 	}
 }
