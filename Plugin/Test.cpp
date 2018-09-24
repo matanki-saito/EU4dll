@@ -2124,34 +2124,34 @@ namespace Test {
 	uintptr_t issue_19_keydown_end;
 	__declspec(naked) void issue_19_keydown_start() {
 		__asm {
-			cmp dword ptr[ebp - 0x8C], 229;
-			jnz issue_19_keydown_1; // skip
+			cmp ebx, 229;
+			jz issue_19_keydown_x; // skip
 			
 			push esi;
 			push 1;
 			call sub_135FBC0;
 			add esp, 8;
 
-		issue_19_keydown_1:
+		issue_19_keydown_x:
 			push issue_19_keydown_end;
-			ret
+			ret;
 		}
 	}
 
 	uintptr_t issue_19_keypress_end;
 	__declspec(naked) void issue_19_keypress_start() {
 		__asm {
-			cmp dword ptr[ebp - 0x8C], 229;
-			jnz issue_19_keypress_1; // skip
+			cmp ebx, 229;
+			jz issue_19_keypress_x; // skip
 
 			push esi;
 			push 1;
 			call sub_135FBC0;
 			add esp, 8;
 
-		issue_19_keypress_1:
+		issue_19_keypress_x:
 			push issue_19_keypress_end;
-			ret
+			ret;
 		}
 	}
 
@@ -2739,8 +2739,8 @@ namespace Test {
 
 		byte_pattern::temp_instance().find_pattern("83 FE 46 75 11 80 78 46 00 75");
 		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x8), issue_19_keypress_start);
-			issue_19_keypress_end = byte_pattern::temp_instance().get_first().address(0x8 + 0xB);
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0xB), issue_19_keypress_start);
+			issue_19_keypress_end = byte_pattern::temp_instance().get_first().address(0xB + 0xB);
 		}
 	}
 }
