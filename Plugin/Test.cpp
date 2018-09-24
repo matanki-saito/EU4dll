@@ -1509,6 +1509,18 @@ namespace Test {
 			cmp     ah, 0x7E;
 			jz      cc_4;
 			cmp     ah, 0x2F;
+			jz      cc_4;
+			cmp     ah, 0xBD;
+			jz      cc_4;
+			cmp     ah, 0x3B;
+			jz      cc_4;
+			cmp     ah, 0x5D;
+			jz      cc_4;
+			cmp     ah, 0x5F;
+			jz      cc_4;
+			cmp     ah, 0x3D;
+			jz      cc_4;
+			cmp     ah, 0x23;
 			jnz     cc_3;
 
 		cc_4:
@@ -1548,6 +1560,18 @@ namespace Test {
 			cmp     al, 0x7E;
 			jz      cc_5;
 			cmp     al, 0x2F;
+			jz      cc_5;
+			cmp     al, 0xBD;
+			jz      cc_5;
+			cmp     al, 0x3B;
+			jz      cc_5;
+			cmp     al, 0x5D;
+			jz      cc_5;
+			cmp     al, 0x5F;
+			jz      cc_5;
+			cmp     al, 0x3D;
+			jz      cc_5;
+			cmp     al, 0x23;
 			jnz     cc_6;
 
 		cc_5:
@@ -1852,7 +1876,8 @@ namespace Test {
 			switch (high) {
 			case 0xA4:case 0xA3:case 0xA7:case 0x24:case 0x5B:case 0x00:case 0x5C:
 			case 0x20:case 0x0D:case 0x0A:case 0x22:case 0x7B:case 0x7D:case 0x40:
-			case 0x80:case 0x7E:case 0x2F:
+			case 0x80:case 0x7E:case 0x2F:case 0xBD:case 0x3B:case 0x5D:case 0x5F:
+			case 0x3D:case 0x23:
 				escapeChr += 2;
 				break;
 			default:
@@ -1863,7 +1888,8 @@ namespace Test {
 			switch (low) {
 			case 0xA4:case 0xA3:case 0xA7:case 0x24:case 0x5B:case 0x00:case 0x5C:
 			case 0x20:case 0x0D:case 0x0A:case 0x22:case 0x7B:case 0x7D:case 0x40:
-			case 0x80:case 0x7E:case 0x2F:
+			case 0x80:case 0x7E:case 0x2F:case 0xBD:case 0x3B:case 0x5D:case 0x5F:
+			case 0x3D:case 0x23:
 				escapeChr++;
 				break;
 			default:
