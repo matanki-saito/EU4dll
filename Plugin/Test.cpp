@@ -2120,6 +2120,42 @@ namespace Test {
 		}
 	}
 
+	uintptr_t sub_135FBC0;
+	uintptr_t issue_19_keydown_end;
+	__declspec(naked) void issue_19_keydown_start() {
+		__asm {
+			cmp dword ptr[ebp - 0x8C], 229;
+			jnz issue_19_keydown_1; // skip
+			
+			push esi;
+			push 1;
+			call sub_135FBC0;
+			add esp, 8;
+
+		issue_19_keydown_1:
+			push issue_19_keydown_end;
+			ret
+		}
+	}
+
+	uintptr_t issue_19_keypress_end;
+	__declspec(naked) void issue_19_keypress_start() {
+		__asm {
+			cmp dword ptr[ebp - 0x8C], 229;
+			jnz issue_19_keypress_1; // skip
+
+			push esi;
+			push 1;
+			call sub_135FBC0;
+			add esp, 8;
+
+		issue_19_keypress_1:
+			push issue_19_keypress_end;
+			ret
+		}
+	}
+
+
 	void InitAndPatch() {
 
 		/* sub_15D59D0 : マップ */
@@ -2550,11 +2586,12 @@ namespace Test {
 
 		/* sub_1B46720 入力の修正 */
 		// SDL_windowskeyboard.cの修正
-		byte_pattern::temp_instance().find_pattern("39 5E 28 0F 84 45");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x19, true);
-		}
+		// issue-19でコメントアウト
+		//byte_pattern::temp_instance().find_pattern("39 5E 28 0F 84 45");
+		//if (byte_pattern::temp_instance().has_size(1)) {
+		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
+		//	injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x19, true);
+		//}
 		byte_pattern::temp_instance().find_pattern("0F 84 FA 01 00 00 83 E8");
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), ee_4);
@@ -2570,8 +2607,8 @@ namespace Test {
 		}
 		byte_pattern::temp_instance().find_pattern("68 00 08 00 00 57");
 		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x0), 0xEB, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x1), 0x16, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(-0x2), 0xEB, true);
+			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(-0x1), 0x41, true);
 		}
 		byte_pattern::temp_instance().find_pattern("8B 4D 14 89 19");
 		if (byte_pattern::temp_instance().has_size(1)) {
@@ -2685,6 +2722,25 @@ namespace Test {
 		if (byte_pattern::temp_instance().has_size(1)) {
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_12_start);
 			issue_12_end = byte_pattern::temp_instance().get_first().address(0xB);
+		}
+
+		/* issue-19 */
+		// 1.25.1.0, 1.26.0.0
+		byte_pattern::temp_instance().find_pattern("83 C4 08 33 C0 E9 82 F8 FF FF");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0xE), issue_19_keydown_start);
+			issue_19_keydown_end = byte_pattern::temp_instance().get_first().address(0xE + 0xB);
+		}
+		//
+		byte_pattern::temp_instance().find_pattern("55 8B EC 83 EC 40 56 8B 75 0C");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			sub_135FBC0 = byte_pattern::temp_instance().get_first().address(0x0);
+		}
+
+		byte_pattern::temp_instance().find_pattern("83 FE 46 75 11 80 78 46 00 75");
+		if (byte_pattern::temp_instance().has_size(1)) {
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x8), issue_19_keypress_start);
+			issue_19_keypress_end = byte_pattern::temp_instance().get_first().address(0x8 + 0xB);
 		}
 	}
 }
