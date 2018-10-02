@@ -5,115 +5,9 @@ using namespace std;
 
 namespace Test {
 
-	uintptr_t loc_15D7B98;
-	uintptr_t loc_15D7BA1;
-	__declspec(naked) void r_1()
-	{
-		__asm {
-			cmp al, ESCAPE_SEQ_1;
-			jz r_2;
-			cmp al, ESCAPE_SEQ_2;
-			jz r_2;
-			cmp al, ESCAPE_SEQ_3;
-			jz r_2;
-			cmp al, ESCAPE_SEQ_4;
-			jz r_2;
 
-			lea ecx, [ebp - 0x10];
-			lea edx, [ecx + 1];
 
-			push loc_15D7B98;
-			ret;
 
-		r_2:
-			mov ecx, 3;
-			cmp byte ptr[ebp - 0xAC], 0x10;
-			lea eax, [ebp - 0xC0];
-			cmovnb eax, [ebp - 0xC0];
-			mov ax, [eax + esi + 1];
-			mov word ptr[ebp - 0x10 + 1], ax;
-			add esi, 2;
-
-			push loc_15D7BA1;
-			ret;
-		}
-	}
-
-	uintptr_t s_2;
-	uintptr_t s_4;
-	__declspec(naked) void s_1()
-	{
-		__asm {
-			cmp esi, edi;
-			jz s_4_jmp;
-			push 0xFFFFFFFF;
-			push 0;
-			lea eax, [ebp - 0x128];
-
-			push s_2;
-			ret;
-
-		s_4_jmp:
-			push s_4;
-			ret;
-		}
-	}
-
-	uintptr_t t_2_3;
-	uintptr_t loc_15D8053;
-	__declspec(naked) void t_1()
-	{
-		__asm {
-			cmp byte ptr[ecx + eax], ESCAPE_SEQ_1;
-			jz t_10;
-			cmp byte ptr[ecx + eax], ESCAPE_SEQ_2;
-			jz t_11;
-			cmp byte ptr[ecx + eax], ESCAPE_SEQ_3;
-			jz t_12;
-			cmp byte ptr[ecx + eax], ESCAPE_SEQ_4;
-			jz t_13;
-			movzx eax, byte ptr[ecx + eax];
-			jmp t_3;
-
-		t_10:
-			movzx eax, word ptr[ecx + eax + 1];
-			jmp t_1x;
-
-		t_11:
-			movzx eax, word ptr[ecx + eax + 1];
-			sub eax, SHIFT_2;
-			jmp t_1x;
-
-		t_12:
-			movzx eax, word ptr[ecx + eax + 1];
-			add eax, SHIFT_3;
-			jmp t_1x;
-
-		t_13:
-			movzx eax, word ptr[ecx + eax + 1];
-			add eax, SHIFT_4;
-		
-		t_1x:
-			add ecx, 2;
-			cmp eax, NO_FONT;
-			ja t_3;
-			mov eax, NOT_DEF;
-
-		t_3:
-			movzx eax, ax;
-
-			mov eax, [edx + eax * 4];
-			test eax, eax;
-			jz loc_15D8053_jmp;
-
-			push t_2_3;
-			ret;
-
-		loc_15D8053_jmp:
-			push loc_15D8053;
-			ret;
-		}
-	}
 
 	uintptr_t c_2;
 	__declspec(naked) void c_1()
@@ -2000,31 +1894,6 @@ namespace Test {
 
 	void InitAndPatch() {
 
-
-
-		/* sub_15D6FD0 : マップ */
-		// 1.25.1.0, 1.26.0.0, 1.27.0.0
-		byte_pattern::temp_instance().find_pattern("8D 4D F0 8D 51 01 8A 01 41");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), r_1);
-			loc_15D7B98 = byte_pattern::temp_instance().get_first().address(0x6);
-			loc_15D7BA1 = byte_pattern::temp_instance().get_first().address(0xF);
-
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1F), s_1);
-			s_2 = byte_pattern::temp_instance().get_first().address(0x29);
-		}
-		// 1.25.1.0, 1.26.0.0, 1.27.0.0
-		byte_pattern::temp_instance().find_pattern("8B 45 AC 8D 55 BC 6A 01");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			s_4 = byte_pattern::temp_instance().get_first().address();
-		}
-		// 1.25.1.0, 1.26.0.0, 1.27.0.0
-		byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 04 82 85 C0 74");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), t_1);
-			t_2_3 = byte_pattern::temp_instance().get_first().address(0xB);
-			loc_15D8053 = byte_pattern::temp_instance().get_first().address(0x13);
-		}
 
 
 

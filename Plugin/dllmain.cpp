@@ -1,5 +1,5 @@
 #include "byte_pattern.h"
-#include "Test.h"
+#include "namespace.h"
 
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 {
@@ -7,9 +7,9 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
     {
         byte_pattern::start_log(L"eu4jps");
 
-		//Test::InitAndPatch();
-		Test::InitAndPatchMapAdj();
-		Test::InitAndPatchFont();
+		MapAdj::init();
+		MapJustify::init();
+		Font::init();
     }
     else if (reason == DLL_PROCESS_DETACH)
     {

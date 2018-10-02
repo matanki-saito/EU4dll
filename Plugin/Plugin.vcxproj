@@ -92,12 +92,13 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="mapAdj.cpp" />
+    <ClCompile Include="mapJustify.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h" />
     <ClInclude Include="stdinc.h" />
-    <ClInclude Include="Test.h" />
+    <ClInclude Include="namespace.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Note.txt" />

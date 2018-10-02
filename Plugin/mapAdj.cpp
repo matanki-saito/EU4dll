@@ -1,7 +1,7 @@
 #include "stdinc.h"
 #include "byte_pattern.h"
 
-namespace Test {
+namespace MapAdj {
 
 	/*-----------------------------------------------*/
 
@@ -231,7 +231,9 @@ namespace Test {
 				return 1;
 			}
 		}
+		return 0;
 	}
+
 	errno_t map2_end_hook() {
 		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("F2 0F 10 65 C8 42 F2 0F");
@@ -336,6 +338,8 @@ namespace Test {
 		}
 	}
 
+	/*-----------------------------------------------*/
+
 	uintptr_t map3_v127_end;
 	__declspec(naked) void map3_v127_start()
 	{
@@ -372,7 +376,8 @@ namespace Test {
 		}
 	}
 
-	// ˆê•¶š•\¦‚Ì’²®
+	/*-----------------------------------------------*/
+
 	errno_t map3_hook() {
 		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("8B 45 DC 48 66 0F 6E FA");
@@ -412,15 +417,17 @@ namespace Test {
 				}
 			}
 		}
+		return 0;
 	}
 
 	/*-----------------------------------------------*/
 
-	errno_t InitAndPatchMapAdj() {
+	errno_t init() {
 		errno_t result = 0;
 
 		result |= map1_2_hook();
 		result |= map2_end_hook();
+		// ˆê•¶š•\¦‚Ì’²®
 		result |= map3_hook();
 
 		return result;
