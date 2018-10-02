@@ -90,6 +90,8 @@
   <ItemGroup>
     <ClCompile Include="byte_pattern.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="font.cpp" />
+    <ClCompile Include="mapAdj.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>

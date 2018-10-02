@@ -35,3 +35,18 @@ struct IncompleteClass
         return *(T *)(reinterpret_cast<std::uintptr_t>(this) + offset);
     }
 };
+
+#define ESCAPE_SEQ_1 0x10
+#define ESCAPE_SEQ_2 0x11
+#define ESCAPE_SEQ_3 0x12
+#define ESCAPE_SEQ_4 0x13
+
+#define LOW_SHIFT 0x0E
+#define HIGH_SHIFT 0x9
+
+#define SHIFT_2 LOW_SHIFT
+#define SHIFT_3 0x900
+#define SHIFT_4 0x8F2
+
+#define NO_FONT 0x98F
+#define NOT_DEF 0x2026

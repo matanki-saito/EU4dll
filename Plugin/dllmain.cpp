@@ -7,7 +7,9 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
     {
         byte_pattern::start_log(L"eu4jps");
 
-		Test::InitAndPatch();
+		//Test::InitAndPatch();
+		Test::InitAndPatchMapAdj();
+		Test::InitAndPatchFont();
     }
     else if (reason == DLL_PROCESS_DETACH)
     {
