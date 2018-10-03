@@ -98,7 +98,7 @@ public:
     memory_pointer get_first() const;
 
     std::size_t count() const;
-    bool has_size(std::size_t expected) const;
+    bool has_size(std::size_t expected,std::string version) const;
     bool empty() const;
     void clear();
 

@@ -35,11 +35,8 @@ namespace Misc {
 	/*-----------------------------------------------*/
 
 	errno_t capitalizeCancel_hook() {
-		// v1.25.X
-		// v1.26.X
-		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("53 57 8B F9 83 7F 14 10 8B 5F 10");
-		if (byte_pattern::temp_instance().has_size(2)) {
+		if (byte_pattern::temp_instance().has_size(2, "v1.25.X")) {
 			// movsx eax, byte ptr [edi+esi]
 			injector::MakeJMP(byte_pattern::temp_instance().get(1).address(0x24), func1_v125_start);
 			// call XXX
@@ -157,19 +154,16 @@ namespace Misc {
 	/*-----------------------------------------------*/
 
 	errno_t unknown_hook() {
-		// v1.26.X
-		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 0C 82 85");
-		if (byte_pattern::temp_instance().has_size(1)) {
+		if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
 			// movzx eax, byte ptr [eax+esi]
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), func2_v126_start);
 			// jz XXX
 			func2_v126_end = byte_pattern::temp_instance().get_first().address(0x9);
 		}
 		else {
-			// v1.25.X
 			byte_pattern::temp_instance().find_pattern("8A 04 30 8B 55 14 0F B6");
-			if (byte_pattern::temp_instance().has_size(1)) {
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
 				// TODO
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), func2_v125_start);
 				// TODO
@@ -186,11 +180,8 @@ namespace Misc {
 	/*-----------------------------------------------*/
 
 	errno_t dateFix_hook() {
-		// v1.25.X
-		// v1.26.X
-		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("64 20 77 20 6D");
-		if (byte_pattern::temp_instance().has_size(1)) {
+		if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
 			// d w mw w y
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x79, true);
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x20, true);

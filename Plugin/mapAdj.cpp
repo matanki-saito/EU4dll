@@ -192,6 +192,7 @@ namespace MapAdj {
 		aa_4:
 			add edx, 2;
 			mov[ebp - 0x28], edx;
+			sub edx, 2;
 
 			push map2_v127_end2;
 			ret;
@@ -201,9 +202,8 @@ namespace MapAdj {
 	/*-----------------------------------------------*/
 
 	errno_t map1_2_hook() {
-		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("8A 04 10 F3 0F");
-		if (byte_pattern::temp_instance().has_size(1)) {
+		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
 			// mov al,[eax+edx]
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v127_start);
 			// movss dword ptr [ebp-5Ch],xmm0
@@ -214,10 +214,8 @@ namespace MapAdj {
 			map2_v127_end = byte_pattern::temp_instance().get_first().address(0x24);
 		}
 		else {
-			// v1.25.X
-			// v1.26.X
 			byte_pattern::temp_instance().find_pattern("8A 04 01 F3 0F");
-			if (byte_pattern::temp_instance().has_size(1)) {
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
 				// mov al,[ecx+eax]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v125_start);
 				// movss dword ptr [ebp-2Ch],xmm0
@@ -225,7 +223,7 @@ namespace MapAdj {
 				// test eax,eax
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1C), map2_v125_start);
 				// cmp word ptr [eax+6],0
-				map1_v125_end = byte_pattern::temp_instance().get_first().address(0x24);
+				map2_v125_end = byte_pattern::temp_instance().get_first().address(0x24);
 			}
 			else {
 				return 1;
@@ -237,21 +235,21 @@ namespace MapAdj {
 	errno_t map2_end_hook() {
 		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("F2 0F 10 65 C8 42 F2 0F");
-		if (byte_pattern::temp_instance().has_size(1)) {
+		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
 			// mov eax. [ebp-1Ch]
 			map2_v127_end2 = byte_pattern::temp_instance().get_first().address();
 		}
 		else {
 			// v1.26.X
 			byte_pattern::temp_instance().find_pattern("8B 45 E4 8B 4D 9C 40 89");
-			if (byte_pattern::temp_instance().has_size(1)) {
+			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
 				// mov eax. [ebp-1Ch]
 				map2_v125_end2 = byte_pattern::temp_instance().get_first().address();
 			}
 			else {
 				// v1.25.X
 				byte_pattern::temp_instance().find_pattern("8B 45 E4 8B 8D 1C FF FF");
-				if (byte_pattern::temp_instance().has_size(1)) {
+				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
 					// TODO
 					map2_v125_end2 = byte_pattern::temp_instance().get_first().address();
 				}
@@ -348,8 +346,9 @@ namespace MapAdj {
 			jnz k_a_2;
 			cmp dword ptr[ebp - 0x24], 3;
 			ja k_a_2;
-			add edx, 2;
-			mov[ebp - 0x28], edx;
+			mov eax, [ebp - 0x28];
+			add eax, 2;
+			mov[ebp - 0x28], eax;
 			mov eax, [ebp - 0x24];
 			add eax, 2;
 			mov[ebp - 0x24], eax;
@@ -362,14 +361,16 @@ namespace MapAdj {
 			jmp k_3;
 
 		k_4:
-			add edx, 2;
-			mov[ebp - 0x28], edx;
+			mov eax, [ebp - 0x28];
+			add eax, 2;
+			mov[ebp - 0x28], eax;
 			mov eax, [ebp - 0x24];
 			sub eax, 2;
 
 		k_3:
+
+			movd xmm7, dword ptr [ebp-0x28];
 			dec eax;
-			movd xmm7, edx;
 
 			push map3_v127_end;
 			ret;
@@ -381,7 +382,7 @@ namespace MapAdj {
 	errno_t map3_hook() {
 		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("8B 45 DC 48 66 0F 6E FA");
-		if (byte_pattern::temp_instance().has_size(1)) {
+		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
 			// mov eax,[ebp-24h]
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v127_start);
 			// cvtdq2ps xmm7,xmm7
@@ -390,7 +391,7 @@ namespace MapAdj {
 		else {
 			// v1.26.X
 			byte_pattern::temp_instance().find_pattern("8B 45 DC 66 0F 6E 4D E4");
-			if (byte_pattern::temp_instance().has_size(1)) {
+			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
 				// mov eax,[ebp-24h]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v126_start);
 				// dec eax
@@ -399,7 +400,7 @@ namespace MapAdj {
 			else {
 				// 1.25.X
 				byte_pattern::temp_instance().find_pattern("8B 45 DC 66 0F 6E 55");
-				if (byte_pattern::temp_instance().has_size(1)) {
+				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
 					// TODO
 					injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v125_start);
 				}
@@ -408,7 +409,7 @@ namespace MapAdj {
 				}
 
 				byte_pattern::temp_instance().find_pattern("48 0F 5B D2 F3 0F 11 45");
-				if (byte_pattern::temp_instance().has_size(1)) {
+				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
 					// TODO
 					map3_v125_end = byte_pattern::temp_instance().get_first().address();
 				}

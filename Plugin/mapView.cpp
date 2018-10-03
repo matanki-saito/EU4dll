@@ -177,9 +177,8 @@ namespace MapView {
 	/*-----------------------------------------------*/
 
 	errno_t map1_2_hook(){
-		// v1.27.X
-		byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D");
-		if (byte_pattern::temp_instance().has_size(1)) {
+		byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D A8");
+		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
 			// mov al, [eax+edi]
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v127_start);
 			// push [ebp-0x38]
@@ -189,10 +188,8 @@ namespace MapView {
 			// lea ecx.[ebp-0x98]
 			map2_v127_end = byte_pattern::temp_instance().get_first().address(0x16);
 		}else{
-			// v1.25.X
-			// v1.26.X
-			byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D");
-			if (byte_pattern::temp_instance().has_size(1)) {
+			byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D 80");
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
 				// mov al, [eax+edi]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v125_start);
 				// push [ebp-0x38]
@@ -266,11 +263,8 @@ namespace MapView {
 	/*-----------------------------------------------*/
 
 	errno_t map3_hook() {
-		// v1.25.X
-		// v1.26.X
-		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("8A 04 38 8B 4D E4");
-		if (byte_pattern::temp_instance().has_size(1)) {
+		if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
 			// mov al, [eax+edi]
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v125_start);
 			// mov edx, [ecx+eax*4 + 0xB4h]
@@ -394,7 +388,7 @@ namespace MapView {
 	errno_t map4_hook() {
 		// v1.27.X
 		byte_pattern::temp_instance().find_pattern("0F B6 04 18 8B 34 87 89 B5 30");
-		if (byte_pattern::temp_instance().has_size(1)) {
+		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
 			// movzx eaxm byte ptr [eax+ebx]
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map4_v127_start);
 			// test esi, esi
@@ -403,7 +397,7 @@ namespace MapView {
 			// v1.25.X
 			// v1.26.X
 			byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 3C 83");
-			if (byte_pattern::temp_instance().has_size(1)) {
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
 				// movzx eax, byte ptr [eax+esi]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map4_v125_start);
 				// test edi, edi
