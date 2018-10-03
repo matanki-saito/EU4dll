@@ -11,6 +11,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		MapJustify::init();
 		MapView::init();
 		Font::init();
+		Misc::init();
     }
     else if (reason == DLL_PROCESS_DETACH)
     {

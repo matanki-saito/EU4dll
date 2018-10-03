@@ -94,6 +94,7 @@
     <ClCompile Include="mapAdj.cpp" />
     <ClCompile Include="mapJustify.cpp" />
     <ClCompile Include="mapView.cpp" />
+    <ClCompile Include="misc.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>

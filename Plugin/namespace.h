@@ -24,3 +24,8 @@ namespace MapView
 {
 	errno_t init();
 }
+
+namespace Misc
+{
+	errno_t init();
+}

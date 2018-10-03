@@ -177,33 +177,7 @@ namespace Test {
 		}
 	}
 
-	uintptr_t p_2;
-	uintptr_t p_3;
-	__declspec(naked) void p_1()
-	{
-		__asm {
-			movzx eax, byte ptr[edi + esi];
-			cmp eax, ESCAPE_SEQ_1;
-			jz p_4;
-			cmp eax, ESCAPE_SEQ_2;
-			jz p_4;
-			cmp eax, ESCAPE_SEQ_3;
-			jz p_4;
-			cmp eax, ESCAPE_SEQ_4;
-			jz p_4;
 
-			push eax;
-
-			push p_3;
-			ret;
-
-		p_4:
-			add esi, 3;
-
-			push p_2;
-			ret;
-		}
-	}
 
 	// 1.26.0.0
 	uintptr_t diff;
@@ -806,103 +780,9 @@ namespace Test {
 		}
 	}
 
-	uintptr_t u_2;
-	__declspec(naked) void u_1()
-	{
-		__asm {
-			cmp byte ptr[eax + esi], ESCAPE_SEQ_1;
-			jz u_10;
-			cmp byte ptr[eax + esi], ESCAPE_SEQ_2;
-			jz u_11;
-			cmp byte ptr[eax + esi], ESCAPE_SEQ_3;
-			jz u_12;
-			cmp byte ptr[eax + esi], ESCAPE_SEQ_4;
-			jz u_13;
-			movzx eax, byte ptr[eax + esi];
-			jmp u_3;
 
-		u_10:
-			movzx eax, word ptr[eax + esi + 1];
-			jmp u_1x;
 
-		u_11:
-			movzx eax, word ptr[eax + esi + 1];
-			sub eax, SHIFT_2;
-			jmp u_1x;
 
-		u_12:
-			movzx eax, word ptr[eax + esi + 1];
-			add eax, SHIFT_3;
-			jmp u_1x;
-
-		u_13:
-			movzx eax, word ptr[eax + esi + 1];
-			add eax, SHIFT_4;
-
-		u_1x:
-			movzx eax, ax;
-			add esi, 2;
-			cmp eax, NO_FONT;
-			ja u_3;
-			mov eax, NOT_DEF;
-
-		u_3:
-			mov edx, [ebp + 0x14];
-			
-			push u_2;
-			ret;
-		}
-	}
-
-	uintptr_t u_2_126;
-	__declspec(naked) void u_1_126()
-	{
-		__asm {
-			cmp byte ptr[eax + esi], ESCAPE_SEQ_1;
-			jz u_10;
-			cmp byte ptr[eax + esi], ESCAPE_SEQ_2;
-			jz u_11;
-			cmp byte ptr[eax + esi], ESCAPE_SEQ_3;
-			jz u_12;
-			cmp byte ptr[eax + esi], ESCAPE_SEQ_4;
-			jz u_13;
-			movzx eax, byte ptr[eax + esi];
-			jmp u_3;
-
-		u_10:
-			movzx eax, word ptr[eax + esi + 1];
-			jmp u_1x;
-
-		u_11:
-			movzx eax, word ptr[eax + esi + 1];
-			sub eax, SHIFT_2;
-			jmp u_1x;
-
-		u_12:
-			movzx eax, word ptr[eax + esi + 1];
-			add eax, SHIFT_3;
-			jmp u_1x;
-
-		u_13:
-			movzx eax, word ptr[eax + esi + 1];
-			add eax, SHIFT_4;
-
-		u_1x:
-			movzx eax, ax;
-			add esi, 2;
-			cmp eax, NO_FONT;
-			ja u_3;
-			mov eax, NOT_DEF;
-
-		u_3:
-
-			mov ecx, [edx + eax * 4];
-			test ecx, ecx;
-
-			push u_2_126;
-			ret;
-		}
-	}
 
 	uintptr_t loc_193704C;
 	__declspec(naked) void dd_1()
@@ -1990,34 +1870,9 @@ namespace Test {
 		if (byte_pattern::temp_instance().has_size(1)) {
 			//bb_2 = byte_pattern::temp_instance().get_first().address();
 		}
-
-		/* sub_199BDA0  */
-		// 1.26.0.0, 1.27.0.0
-		// だいぶ変更されている？ 本当に対応できているか不明。そもそもこの修正がどんな効果をもたらすか忘れてしまった
-		byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 0C 82 85");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), u_1_126);
-			u_2_126 = byte_pattern::temp_instance().get_first().address(0x9);
-		}
-		else {
-			// 1.25.1.0
-			byte_pattern::temp_instance().find_pattern("8A 04 30 8B 55 14 0F B6");
-			if (byte_pattern::temp_instance().has_size(1)) {
-				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), u_1);
-				u_2 = byte_pattern::temp_instance().get_first().address(0x9);
-			}
-		}
 		
 
 
-		/* sub_1AFC030 大文字化キャンセル？ */
-		// 1.25.1.0, 1.26.0.0, 1.27.0.0
-		byte_pattern::temp_instance().find_pattern("53 57 8B F9 83 7F 14 10 8B 5F 10");
-		if (byte_pattern::temp_instance().has_size(2)) {
-			injector::MakeJMP(byte_pattern::temp_instance().get(1).address(0x24), p_1);
-			p_3 = byte_pattern::temp_instance().get(1).address(0x29);
-			p_2 = byte_pattern::temp_instance().get(1).address(0x35);
-		}
 
 		/* sub_1B23C80 入力の修正 */
 		// SDL_windowsevents.cの修正
@@ -2075,22 +1930,7 @@ namespace Test {
 
 
 
-		/* 日付 */
-		// 1.25.1.0, 1.26.0.0, 1.27.0.0
-		byte_pattern::temp_instance().find_pattern("64 20 77 20 6D");
-		if (byte_pattern::temp_instance().has_size(1)) {
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x79, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x20, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x0F, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x20, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x6D, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(5), 0x77, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x20, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x64, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(8), 0x20, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(9), 0x0E, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(10), 0x00, true);
-		}
+
 
 		/* UTF-8ファイルを列挙できるようにする jz(74) -> jmp(EB) */ 
 		// 1.25.1.0, 1.26.0.0, 1.27.0.0
