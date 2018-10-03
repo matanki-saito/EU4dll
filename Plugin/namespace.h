@@ -19,3 +19,8 @@ namespace MapAdj
 {
 	errno_t init();
 }
+
+namespace MapView
+{
+	errno_t init();
+}
