@@ -96,6 +96,7 @@
     <ClCompile Include="mapView.cpp" />
     <ClCompile Include="misc.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h" />

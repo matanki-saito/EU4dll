@@ -39,6 +39,9 @@
     <ClCompile Include="misc.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">

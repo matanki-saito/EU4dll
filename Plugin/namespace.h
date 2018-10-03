@@ -29,3 +29,8 @@ namespace Misc
 {
 	errno_t init();
 }
+
+namespace TextView
+{
+	errno_t init();
+}
