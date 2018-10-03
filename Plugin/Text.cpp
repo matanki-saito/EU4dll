@@ -381,7 +381,7 @@ namespace TextView {
 	/*-----------------------------------------------*/
 
 	errno_t text2_hook() {
-		byte_pattern::temp_instance().find_pattern("x");
+		byte_pattern::temp_instance().find_pattern("0F B6 04 06 8B 84 87 B4 00 00 00");
 		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
 			// movzx eax, byte ptr [esi+eax]
 			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text2_v127_start);
@@ -445,20 +445,57 @@ namespace TextView {
 		}
 	}
 
+	uintptr_t text3_v127_end;
+	uintptr_t text3_v127_end2;
+	__declspec(naked) void text3_v127_start()
+	{
+		__asm {
+			cmp al, 0xA4;
+			jnz f_d;
+			movss xmm2, [ebp + 0x18]; //arg_10
+
+			push text3_v125_end;
+			ret;
+
+		f_d:
+			cmp al, 0xA7;
+			jnz f_c_t;
+
+			push text3_v125_end2;
+			ret;
+
+		f_c_t:
+			movzx eax, al;
+
+			push text1_v127_end2;
+			ret;
+		}
+	}
+
 	/*-----------------------------------------------*/
 
 	errno_t text3_hook() {
-		byte_pattern::temp_instance().find_pattern("3C A4 75 17 F3");
-		if (byte_pattern::temp_instance().has_size(1,"v1.25.X-v1.26.X")) {
-			// cmp al,A4h
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text3_v125_start);
+		byte_pattern::temp_instance().find_pattern("80 7D DE A4 75 17 F3 0F");
+		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
+			// cmp byte ptr [ebp-22h],0A4h
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text3_v127_start);
 			// addss xmm2, ds:dword_XXXXX
-			text3_v125_end = byte_pattern::temp_instance().get_first().address(0x9);
+			text3_v127_end = byte_pattern::temp_instance().get_first().address(0x9);
 			// mov al, [edi+ecx+1]
-			text3_v125_end2 = byte_pattern::temp_instance().get_first().address(0x1F);
-		}
-		else {
-			return 1;
+			text3_v127_end2 = byte_pattern::temp_instance().get_first().address(0x1F);
+		}else{
+			byte_pattern::temp_instance().find_pattern("3C A4 75 17 F3");
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
+				// cmp al,A4h
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text3_v125_start);
+				// addss xmm2, ds:dword_XXXXX
+				text3_v125_end = byte_pattern::temp_instance().get_first().address(0x9);
+				// mov al, [edi+ecx+1]
+				text3_v125_end2 = byte_pattern::temp_instance().get_first().address(0x1F);
+			}
+			else {
+				return 1;
+			}
 		}
 		return 0;
 	}
@@ -487,35 +524,76 @@ namespace TextView {
 		}
 	}
 
+	uintptr_t text4_v127_end;
+	uintptr_t text4_v127_end2;
+	__declspec(naked) void text4_v127_start()
+	{
+		__asm {
+			cmp word ptr[eax + 6], 0;
+			jnz g_3_jmp;
+			jmp g_5_jmp;
+
+		g_3_jmp:
+			cmp word ptr[ebp - 0x6B8], 0xFF;
+			ja g_5_jmp;
+
+			push text4_v127_end2;
+			ret;
+
+		g_5_jmp:
+			push text4_v127_end;
+			ret;
+		}
+	}
+
 	/*-----------------------------------------------*/
 
 	errno_t text4_hook() {
-		byte_pattern::temp_instance().find_pattern("66 83 79 06 00 0F");
-		if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
-			// cmp word ptr [ecx+6],0
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text4_v125_start);
-			// mov eax, [ebp+arg_24]
-			text4_v125_end = byte_pattern::temp_instance().get_first().address(0xB);
+		byte_pattern::temp_instance().find_pattern("66 83 78 06 00 0F 85 46");
+		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
+			// mov eax,[ebp-4Ch]
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text4_v127_start);
+			// mov eax, [ebp+2Ch]
+			text4_v127_end = byte_pattern::temp_instance().get_first().address(0xB);
 		}
 		else {
-			return 1;
-		}
-
-		byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 98 01");
-		if (byte_pattern::temp_instance().has_size(1,"v1.26.X")) {
-			// cmp byte_XXXXX, 0
-			text4_v125_end2 = byte_pattern::temp_instance().get_first().address();
-		}
-		else {
-			byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 A9 01 00 00 8B");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-				// TODO
-				text4_v125_end2 = byte_pattern::temp_instance().get_first().address();
+			byte_pattern::temp_instance().find_pattern("66 83 79 06 00 0F");
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
+				// cmp word ptr [ecx+6],0
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text4_v125_start);
+				// mov eax, [ebp+arg_24]
+				text4_v125_end = byte_pattern::temp_instance().get_first().address(0xB);
 			}
 			else {
 				return 1;
 			}
 		}
+
+		byte_pattern::temp_instance().find_pattern("80 3D 38 0F C7 01 00");
+		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
+			// cmp byte_XXXXX, 0
+			text4_v127_end2 = byte_pattern::temp_instance().get_first().address();
+		}else{
+			byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 98 01");
+			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
+				// cmp byte_XXXXX, 0
+				text4_v125_end2 = byte_pattern::temp_instance().get_first().address();
+			}
+			else {
+				byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 A9 01 00 00 8B");
+				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
+					// TODO
+					text4_v125_end2 = byte_pattern::temp_instance().get_first().address();
+				}
+				else {
+					return 1;
+				}
+			}
+		}
+
+
+
+
 		return 0;
 	}
 
@@ -577,6 +655,61 @@ namespace TextView {
 		}
 	}
 
+	uintptr_t text5_v127_end;
+	__declspec(naked) void text5_v127_start()
+	{
+		__asm {
+			cmp byte ptr[eax], ESCAPE_SEQ_1;
+			jz h_10;
+			cmp byte ptr[eax], ESCAPE_SEQ_2;
+			jz h_11;
+			cmp byte ptr[eax], ESCAPE_SEQ_3;
+			jz h_12;
+			cmp byte ptr[eax], ESCAPE_SEQ_4;
+			jz h_13;
+			jmp h_4;
+
+		h_10:
+			movzx eax, word ptr[eax + 1];
+			jmp h_2;
+
+		h_11:
+			movzx eax, word ptr[eax + 1];
+			sub eax, SHIFT_2;
+			jmp h_2;
+
+		h_12:
+			movzx eax, word ptr[eax + 1];
+			add eax, SHIFT_3;
+			jmp h_2;
+
+		h_13:
+			movzx eax, word ptr[eax + 1];
+			add eax, SHIFT_4;
+
+		h_2:
+			movzx eax, ax;
+			add edi, 2;
+			cmp eax, NO_FONT;
+
+			ja h_3;
+			mov eax, NOT_DEF;
+
+		h_3:
+			jmp h_5;
+
+		h_4:
+			movzx eax, byte ptr [eax];
+
+		h_5:
+			mov ecx, [ebp - 0x54];
+			mov [ebp - 0x4C], eax; // dword ‚Å‚æ‚¢H
+
+			push text5_v127_end;
+			ret;
+		}
+	}
+
 	/*-----------------------------------------------*/
 
 	uintptr_t text6_v125_end;
@@ -591,20 +724,36 @@ namespace TextView {
 		}
 	}
 
+	/*-----------------------------------------------*/
+
 	errno_t text5_6_hook() {
-		byte_pattern::temp_instance().find_pattern("8A 8A ? ? ? ? F3 0F");
-		if (byte_pattern::temp_instance().has_size(1 ,"v1.25.X-v1.26.X")) {
-			// 
+		byte_pattern::temp_instance().find_pattern("8A 87 ? ? ? ? 8B 4D AC");
+		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
+			// mov al, byte_XXXXX[edi] -> lea eax, byte_XXXXX[edi]
 			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0x8D, true);
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x6), text5_v125_start);
-
-			//
-			text5_v125_end = byte_pattern::temp_instance().get_first().address(0x11);
-
-			//
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x19), text6_v125_start);
-			text6_v125_end = byte_pattern::temp_instance().get_first().address(0x20);
+			// xmm3,dword ptr [ebp-78h],xmm3
+			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0xF), text5_v127_start);
+			//text6‚Ítext5‚É“‡‚µ‚½
 		}
+		else {
+			byte_pattern::temp_instance().find_pattern("8A 8A ? ? ? ? F3 0F");
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
+				// mov cl, byte_XXXXX[edx] -> lea ecx, byte_XXXXX[edx]
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0x8D, true);
+				// movss xmm3, dword ptr [edi+4DCh]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x6), text5_v125_start);
+				// movss [ebp-0xF4],xmm3
+				text5_v125_end = byte_pattern::temp_instance().get_first().address(0x11);
+				// mov esi,[edi+eax*4+0xB4]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x19), text6_v125_start);
+				// lea eax, [edi+0xB4]
+				text6_v125_end = byte_pattern::temp_instance().get_first().address(0x20);
+			}
+			else {
+				return 1;
+			}
+		}
+		return 0;
 	}
 
 	/*-----------------------------------------------*/
