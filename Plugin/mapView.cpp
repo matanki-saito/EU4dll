@@ -176,20 +176,30 @@ namespace MapView {
 
 	/*-----------------------------------------------*/
 
-	errno_t map1_2_hook(){
-		byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D A8");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// mov al, [eax+edi]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v127_start);
-			// push [ebp-0x38]
-			map1_v127_end = byte_pattern::temp_instance().get_first().address(0x9);
-			// push 0FFFFFFFFh
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x11), map2_v127_start);
-			// lea ecx.[ebp-0x98]
-			map2_v127_end = byte_pattern::temp_instance().get_first().address(0x16);
-		}else{
+	errno_t map1_2_hook(EU4Version version){
+		std::string desc = "map font view 1";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D A8");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov al, [eax+edi]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v127_start);
+				// push [ebp-0x38]
+				map1_v127_end = byte_pattern::temp_instance().get_first().address(0x9);
+				// push 0FFFFFFFFh
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x11), map2_v127_start);
+				// lea ecx.[ebp-0x98]
+				map2_v127_end = byte_pattern::temp_instance().get_first().address(0x16);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_25_X:
+		case v1_26_X:
+
 			byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D 80");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov al, [eax+edi]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v125_start);
 				// push [ebp-0x38]
@@ -199,12 +209,11 @@ namespace MapView {
 				// lea ecx.[ebp-0x98]
 				map2_v125_end = byte_pattern::temp_instance().get_first().address(0x16);
 			}
-			else {
-				return 1;
-			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
 
-		return 0;
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -262,19 +271,25 @@ namespace MapView {
 
 	/*-----------------------------------------------*/
 
-	errno_t map3_hook() {
-		byte_pattern::temp_instance().find_pattern("8A 04 38 8B 4D E4");
-		if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-			// mov al, [eax+edi]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v125_start);
-			// mov edx, [ecx+eax*4 + 0xB4h]
-			map3_v125_end = byte_pattern::temp_instance().get_first().address(0x9);
-		}
-		else {
-			return 1;
+	errno_t map3_hook(EU4Version version) {
+		std::string desc = "map font view 3";
+
+		switch (version) {
+		case v1_27_X:
+		case v1_25_X:
+		case v1_26_X:
+			byte_pattern::temp_instance().find_pattern("8A 04 38 8B 4D E4");
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
+				// mov al, [eax+edi]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v125_start);
+				// mov edx, [ecx+eax*4 + 0xB4h]
+				map3_v125_end = byte_pattern::temp_instance().get_first().address(0x9);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
 
-		return 0;
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -385,40 +400,47 @@ namespace MapView {
 
 	/*-----------------------------------------------*/
 
-	errno_t map4_hook() {
-		// v1.27.X
-		byte_pattern::temp_instance().find_pattern("0F B6 04 18 8B 34 87 89 B5 30");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// movzx eaxm byte ptr [eax+ebx]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map4_v127_start);
-			// test esi, esi
-			map4_v127_end = byte_pattern::temp_instance().get_first().address(0x13);
-		}else{
-			// v1.25.X
-			// v1.26.X
+	errno_t map4_hook(EU4Version version) {
+		std::string desc = "map font view 4";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("0F B6 04 18 8B 34 87 89 B5 30");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// movzx eaxm byte ptr [eax+ebx]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map4_v127_start);
+				// test esi, esi
+				map4_v127_end = byte_pattern::temp_instance().get_first().address(0x13);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_25_X:
+		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 3C 83");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// movzx eax, byte ptr [eax+esi]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map4_v125_start);
 				// test edi, edi
 				map4_v125_end = byte_pattern::temp_instance().get_first().address(0x7);
 			}
-			else {
-				return 1;
-			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
 
-		return 0;
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
 
-	errno_t init() {
+	errno_t init(EU4Version version) {
 		errno_t result = 0;
 
-		result |= map1_2_hook();
-		result |= map3_hook();
-		result |= map4_hook();
+		byte_pattern::temp_instance().debug_output2("font view");
+
+		result |= map1_2_hook(version);
+		result |= map3_hook(version);
+		result |= map4_hook(version);
 
 		return result;
 	}

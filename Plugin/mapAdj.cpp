@@ -201,21 +201,29 @@ namespace MapAdj {
 
 	/*-----------------------------------------------*/
 
-	errno_t map1_2_hook() {
-		byte_pattern::temp_instance().find_pattern("8A 04 10 F3 0F");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// mov al,[eax+edx]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v127_start);
-			// movss dword ptr [ebp-5Ch],xmm0
-			map1_v127_end = byte_pattern::temp_instance().get_first().address(0x11);
-			// test eax,eax
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1C), map2_v127_start);
-			// cmp word ptr [eax+6],0
-			map2_v127_end = byte_pattern::temp_instance().get_first().address(0x24);
-		}
-		else {
+	errno_t map1_2_hook(EU4Version version) {
+		std::string desc = "map adj fix";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8A 04 10 F3 0F");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov al,[eax+edx]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v127_start);
+				// movss dword ptr [ebp-5Ch],xmm0
+				map1_v127_end = byte_pattern::temp_instance().get_first().address(0x11);
+				// test eax,eax
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1C), map2_v127_start);
+				// cmp word ptr [eax+6],0
+				map2_v127_end = byte_pattern::temp_instance().get_first().address(0x24);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_26_X:
+		case v1_25_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 01 F3 0F");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov al,[ecx+eax]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v125_start);
 				// movss dword ptr [ebp-2Ch],xmm0
@@ -225,41 +233,46 @@ namespace MapAdj {
 				// cmp word ptr [eax+6],0
 				map2_v125_end = byte_pattern::temp_instance().get_first().address(0x24);
 			}
-			else {
-				return 1;
-			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
-		return 0;
+
+		return EU4_ERROR1;
 	}
 
-	errno_t map2_end_hook() {
-		// v1.27.X
-		byte_pattern::temp_instance().find_pattern("F2 0F 10 65 C8 42 F2 0F");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// mov eax. [ebp-1Ch]
-			map2_v127_end2 = byte_pattern::temp_instance().get_first().address();
-		}
-		else {
-			// v1.26.X
+	errno_t map2_end_hook(EU4Version version) {
+		std::string desc = "map adj get end address";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("F2 0F 10 65 C8 42 F2 0F");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov eax. [ebp-1Ch]
+				map2_v127_end2 = byte_pattern::temp_instance().get_first().address();
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("8B 45 E4 8B 4D 9C 40 89");
-			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov eax. [ebp-1Ch]
 				map2_v125_end2 = byte_pattern::temp_instance().get_first().address();
 			}
-			else {
-				// v1.25.X
-				byte_pattern::temp_instance().find_pattern("8B 45 E4 8B 8D 1C FF FF");
-				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-					// TODO
-					map2_v125_end2 = byte_pattern::temp_instance().get_first().address();
-				}
-				else {
-					return 1;
-				}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_25_X:
+			byte_pattern::temp_instance().find_pattern("8B 45 E4 8B 8D 1C FF FF");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// TODO
+				map2_v125_end2 = byte_pattern::temp_instance().get_first().address();
 			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
 
-		return 0;
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -379,57 +392,63 @@ namespace MapAdj {
 
 	/*-----------------------------------------------*/
 
-	errno_t map3_hook() {
-		// v1.27.X
-		byte_pattern::temp_instance().find_pattern("8B 45 DC 48 66 0F 6E FA");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// mov eax,[ebp-24h]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v127_start);
-			// cvtdq2ps xmm7,xmm7
-			map3_v127_end = byte_pattern::temp_instance().get_first().address(0x8);
-		}
-		else {
-			// v1.26.X
+	errno_t oneCharacter_hook(EU4Version version) {
+		std::string desc = "one character position fix";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8B 45 DC 48 66 0F 6E FA");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov eax,[ebp-24h]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v127_start);
+				// cvtdq2ps xmm7,xmm7
+				map3_v127_end = byte_pattern::temp_instance().get_first().address(0x8);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("8B 45 DC 66 0F 6E 4D E4");
-			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov eax,[ebp-24h]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v126_start);
 				// dec eax
 				map3_v126_end = byte_pattern::temp_instance().get_first().address(0x8);
 			}
-			else {
-				// 1.25.X
-				byte_pattern::temp_instance().find_pattern("8B 45 DC 66 0F 6E 55");
-				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-					// TODO
-					injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v125_start);
-				}
-				else {
-					return 1;
-				}
+			else return EU4_ERROR1;
+			return NOERROR;
 
-				byte_pattern::temp_instance().find_pattern("48 0F 5B D2 F3 0F 11 45");
-				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-					// TODO
-					map3_v125_end = byte_pattern::temp_instance().get_first().address();
-				}
-				else {
-					return 1;
-				}
+		case v1_25_X:
+			byte_pattern::temp_instance().find_pattern("8B 45 DC 66 0F 6E 55");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// TODO
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v125_start);
 			}
+			else return EU4_ERROR1;
+
+			byte_pattern::temp_instance().find_pattern("48 0F 5B D2 F3 0F 11 45");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// TODO
+				map3_v125_end = byte_pattern::temp_instance().get_first().address();
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
-		return 0;
+
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
 
-	errno_t init() {
+	errno_t init(EU4Version version) {
 		errno_t result = 0;
 
-		result |= map1_2_hook();
-		result |= map2_end_hook();
+		byte_pattern::temp_instance().debug_output2("font adj fix");
+
+		result |= map1_2_hook(version);
+		result |= map2_end_hook(version);
 		// àÍï∂éöï\é¶ÇÃí≤êÆ
-		result |= map3_hook();
+		result |= oneCharacter_hook(version);
 
 		return result;
 	}

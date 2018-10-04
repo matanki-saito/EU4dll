@@ -84,7 +84,7 @@ namespace Misc
 {
 	EU4Version getVersion();
 	std::string versionString(EU4Version version);
-	errno_t init();
+	errno_t init(EU4Version version);
 }
 
 namespace TextView

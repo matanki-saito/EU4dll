@@ -34,21 +34,27 @@ namespace Misc {
 
 	/*-----------------------------------------------*/
 
-	errno_t capitalizeCancel_hook() {
-		byte_pattern::temp_instance().find_pattern("53 57 8B F9 83 7F 14 10 8B 5F 10");
-		if (byte_pattern::temp_instance().has_size(2, "v1.25.X")) {
-			// movsx eax, byte ptr [edi+esi]
-			injector::MakeJMP(byte_pattern::temp_instance().get(1).address(0x24), func1_v125_start);
-			// call XXX
-			func1_v125_end2 = byte_pattern::temp_instance().get(1).address(0x29);
-			// cmp byte ptr [edi + esi], 0
-			func1_v125_end = byte_pattern::temp_instance().get(1).address(0x35);
-		}
-		else {
-			return 1;
+	errno_t capitalizeCancel_hook(EU4Version version) {
+		std::string desc = "capitalize cancel";
+
+		switch (version) {
+		case v1_25_X:
+		case v1_26_X:
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("53 57 8B F9 83 7F 14 10 8B 5F 10");
+			if (byte_pattern::temp_instance().has_size(2, desc)) {
+				// movsx eax, byte ptr [edi+esi]
+				injector::MakeJMP(byte_pattern::temp_instance().get(1).address(0x24), func1_v125_start);
+				// call XXX
+				func1_v125_end2 = byte_pattern::temp_instance().get(1).address(0x29);
+				// cmp byte ptr [edi + esi], 0
+				func1_v125_end = byte_pattern::temp_instance().get(1).address(0x35);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
 
-		return 0;
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -153,7 +159,7 @@ namespace Misc {
 
 	/*-----------------------------------------------*/
 
-	errno_t unknown_hook() {
+	errno_t unknown_hook(EU4Version version) {
 		byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 0C 82 85");
 		if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
 			// movzx eax, byte ptr [eax+esi]
@@ -179,41 +185,49 @@ namespace Misc {
 
 	/*-----------------------------------------------*/
 
-	errno_t dateFix_hook() {
-		byte_pattern::temp_instance().find_pattern("64 20 77 20 6D");
-		if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-			// d w mw w y
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x79, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x20, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x0F, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x20, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x6D, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(5), 0x77, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x20, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x64, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(8), 0x20, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(9), 0x0E, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(10), 0x00, true);
-		}
-		else {
-			return 1;
+	errno_t dateFix_hook(EU4Version version) {
+		std::string desc = "date fix";
+
+		switch (version) {
+		case v1_25_X:
+		case v1_26_X:
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("64 20 77 20 6D");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// d w mw w y
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x79, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x20, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x0F, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x20, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x6D, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(5), 0x77, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x20, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x64, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(8), 0x20, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(9), 0x0E, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(10), 0x00, true);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
 
-		return 0;
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
 
-	errno_t init() {
+	errno_t init(EU4Version version) {
 		errno_t result = 0;
 
+		byte_pattern::temp_instance().debug_output2("misc");
+
 		/* sub_1AFC030 大文字化キャンセル？ */
-		result |= capitalizeCancel_hook();
+		result |= capitalizeCancel_hook(version);
 		// だいぶ変更されている？ 本当に対応できているか不明。
 		// そもそもこの修正がどんな効果をもたらすか忘れてしまった
 		//result |= unknown_hook();
 		// 日付の表記の順番を入れ替える
-		result |= dateFix_hook();
+		result |= dateFix_hook(version);
 
 		return result;
 	}

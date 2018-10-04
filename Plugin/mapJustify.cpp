@@ -63,42 +63,49 @@ namespace MapJustify {
 
 	/*-----------------------------------------------*/
 
-	errno_t map1_2_hook() {
-		byte_pattern::temp_instance().find_pattern("8D 4D F0 8D 51 01 8A 01 41");
-		if (byte_pattern::temp_instance().has_size(1, "v1.25.X") || byte_pattern::temp_instance().has_size(2, "v1.25.X")) {
-			// lea ecx,[ebp-0x10]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v125_start);
-			// mov al,[ecx]
-			map1_v125_end = byte_pattern::temp_instance().get_first().address(0x6);
-			// push ecx
-			map1_v125_end2 = byte_pattern::temp_instance().get_first().address(0xF);
+	errno_t map1_2_hook(EU4Version version) {
+		std::string desc = "map justify 1";
 
-			// push 0FFFFFFFFh
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1F), map2_v125_start);
-			// push eax
-			map2_v125_end = byte_pattern::temp_instance().get_first().address(0x29);
-		}
-		else {
-			return 1;
-		}
+		switch (version) {
+		case v1_25_X:
+		case v1_26_X:
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8D 4D F0 8D 51 01 8A 01 41");
+			if (byte_pattern::temp_instance().has_size(1, desc) || byte_pattern::temp_instance().has_size(2, desc)) {
+				// lea ecx,[ebp-0x10]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v125_start);
+				// mov al,[ecx]
+				map1_v125_end = byte_pattern::temp_instance().get_first().address(0x6);
+				// push ecx
+				map1_v125_end2 = byte_pattern::temp_instance().get_first().address(0xF);
 
-		return 0;
+				// push 0FFFFFFFFh
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x1F), map2_v125_start);
+				// push eax
+				map2_v125_end = byte_pattern::temp_instance().get_first().address(0x29);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		}
+		return EU4_ERROR1;
 	}
 
-	errno_t map2_end2_hook() {
-		// v1.25.X
-		// v1.26.X
-		// v1.27.X
-		byte_pattern::temp_instance().find_pattern("8B 45 AC 8D 55 BC 6A 01");
-		if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-			// mov eax,[ebp-0x54]
-			map2_v125_end2 = byte_pattern::temp_instance().get_first().address();
-		}
-		else {
-			return 1;
-		}
+	errno_t map2_end2_hook(EU4Version version) {
+		std::string desc = "map justify 2";
 
-		return 0;
+		switch (version) {
+		case v1_25_X:
+		case v1_26_X:
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8B 45 AC 8D 55 BC 6A 01");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov eax,[ebp-0x54]
+				map2_v125_end2 = byte_pattern::temp_instance().get_first().address();
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		}
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -161,34 +168,38 @@ namespace MapJustify {
 
 	/*-----------------------------------------------*/
 
-	errno_t map3_hook() {
-		// v1.25.X
-		// v1.26.X
-		// v1.27.X
-		byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 04 82 85 C0 74");
-		if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-			// movzx eax, byte ptr [eax+ecx]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v125_start);
-			// cmp word ptr [eax+6], 0
-			map3_v125_end = byte_pattern::temp_instance().get_first().address(0xB);
-			// inc ecx
-			map3_v125_end2 = byte_pattern::temp_instance().get_first().address(0x13);
-		}
-		else {
-			return 1;
-		}
+	errno_t map3_hook(EU4Version version) {
+		std::string desc = "map justify 3";
 
-		return 0;
+		switch (version) {
+		case v1_25_X:
+		case v1_26_X:
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 04 82 85 C0 74");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// movzx eax, byte ptr [eax+ecx]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v125_start);
+				// cmp word ptr [eax+6], 0
+				map3_v125_end = byte_pattern::temp_instance().get_first().address(0xB);
+				// inc ecx
+				map3_v125_end2 = byte_pattern::temp_instance().get_first().address(0x13);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		}
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
 
-	errno_t init() {
+	errno_t init(EU4Version version) {
 		errno_t result = 0;
 
-		result |= map1_2_hook();
-		result |= map2_end2_hook();
-		result |= map3_hook();
+		byte_pattern::temp_instance().debug_output2("map font justify");
+
+		result |= map1_2_hook(version);
+		result |= map2_end2_hook(version);
+		result |= map3_hook(version);
 
 		return result;
 	}

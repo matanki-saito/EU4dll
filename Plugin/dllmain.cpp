@@ -16,12 +16,21 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		success |= Font::init(version);
 
 		// 本文テキスト表示の修正
+		// TODO: 変な改行や位置ずれバグあり
 		success |= TextView::init(version);
 
-		//MapAdj::init(version);
-		//MapJustify::init(version);
-		//MapView::init(version);
-		//Misc::init(version);
+		// マップ文字位置調整
+		// 先頭にオフセットが入るバグあり
+		success |= MapAdj::init(version);
+
+		// マップ文字justify
+		success |= MapJustify::init(version);
+
+		// マップ文字表示
+		success |= MapView::init(version);
+
+		// その他
+		success |= Misc::init(version);
 
 		if (success == NOERROR) {
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");

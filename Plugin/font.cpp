@@ -16,9 +16,9 @@ namespace Font {
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// push 0
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x7), 0x08, true);
-				return NOERROR;
 			}
 			else return EU4_ERROR1;
+			return NOERROR;
 		}
 		return EU4_ERROR1;
 	}
@@ -82,9 +82,9 @@ namespace Font {
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// cmp esi, 10000000h
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x5), 0x04, true);
-				return NOERROR;
 			}
 			else return EU4_ERROR1;
+			return NOERROR;
 		}
 
 		return EU4_ERROR1;
