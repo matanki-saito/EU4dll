@@ -97,11 +97,11 @@
     <ClCompile Include="misc.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h" />
     <ClInclude Include="stdinc.h" />
-    <ClInclude Include="namespace.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Note.txt" />

@@ -50,3 +50,45 @@ struct IncompleteClass
 
 #define NO_FONT 0x98F
 #define NOT_DEF 0x2026
+
+#define EU4_ERROR1 0x10000
+
+enum EU4Version {
+	UNKNOWN=0,
+	v1_25_X=125,
+	v1_26_X=126,
+	v1_27_X=127
+};
+
+namespace Font
+{
+	errno_t init(EU4Version version);
+}
+
+namespace MapJustify
+{
+	errno_t init(EU4Version version);
+}
+
+namespace MapAdj
+{
+	errno_t init(EU4Version version);
+}
+
+namespace MapView
+{
+	errno_t init(EU4Version version);
+}
+
+namespace Misc
+{
+	EU4Version getVersion();
+	std::string versionString(EU4Version version);
+	errno_t init();
+}
+
+namespace TextView
+{
+	errno_t init(EU4Version version);
+}
+

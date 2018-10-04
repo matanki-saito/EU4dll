@@ -229,11 +229,11 @@ size_t byte_pattern::count() const
     return this->_results.size();
 }
 
-bool byte_pattern::has_size(size_t expected, string version) const
+bool byte_pattern::has_size(size_t expected, string desc) const
 {
 	const bool result = (this->_results.size() == expected);
 
-	debug_output2(version + (result ? ":[OK]" : ":[NG]"));
+	debug_output2(desc + (result ? ":[OK]" : ":[NG]"));
 
 	return result;
 }

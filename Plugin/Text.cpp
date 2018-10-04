@@ -5,22 +5,30 @@
 namespace TextView {
 	/*-----------------------------------------------*/
 
-	errno_t changeStackSize_hook() {
-		byte_pattern::temp_instance().find_pattern("81 EC A8 06 00 00 56 57");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// sub esp,6A8h
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0xAA, true);
-		}else{
+	errno_t changeStackSize_hook(EU4Version version) {
+		std::string desc = "change stack size";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("81 EC A8 06 00 00 56 57");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// sub esp,6A8h
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0xAA, true);
+			}
+			else return EU4_ERROR1;
+			return NO_ERROR;
+
+		case v1_25_X:
+		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("81 EC 20 06 00 00 56 57");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// sub esp,620h
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x24, true);
 			}
-			else {
-				return 1;
-			}
+			else return EU4_ERROR1;
+			return NO_ERROR;
 		}
-		return 0;
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -29,19 +37,25 @@ namespace TextView {
 
 	/*-----------------------------------------------*/
 	
-	errno_t copyBuff_hook() {
+	errno_t prepareCopyBuff_hook(EU4Version version) {
+		std::string desc = "prepare copying text to buffer";
 		
-		byte_pattern::temp_instance().find_pattern("8A 04 06 88 82 ? ? ? ? 42");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// mov byte_XXXXX[edx],al -> get byte_XXXXX
-			char *pDST = *byte_pattern::temp_instance().get_first().pointer<char *>(5);
-			
-			// mov byte_XXXXX[edx],al -> lea edi, [byte_XXXXX]
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x8D, true);
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x3D, true);
-			injector::WriteMemory<char *>(byte_pattern::temp_instance().get_first().address(5), pDST, true);
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8A 04 06 88 82 ? ? ? ? 42");
+			if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
+				// mov byte_XXXXX[edx],al -> get byte_XXXXX
+				char *pDST = *byte_pattern::temp_instance().get_first().pointer<char *>(5);
 
-		}else{
+				// mov byte_XXXXX[edx],al -> lea edi, [byte_XXXXX]
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x8D, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x3D, true);
+				injector::WriteMemory<char *>(byte_pattern::temp_instance().get_first().address(5), pDST, true);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 0F 88 86 ? ? ? ? 46");
 			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
 				// mov byte_XXXXX[esi],al -> get byte_XXXXX
@@ -52,30 +66,31 @@ namespace TextView {
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x15, true);
 				injector::WriteMemory<char *>(byte_pattern::temp_instance().get_first().address(5), pDST, true);
 			}
-			else {
-				byte_pattern::temp_instance().find_pattern("8A 87 ? ? ? ? 88 86 ? ? ? ? 46");
-				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-					// TODO
-					char *pSRC = *byte_pattern::temp_instance().get_first().pointer<char *>(2);
-					// TODO
-					char *pDST = *byte_pattern::temp_instance().get_first().pointer<char *>(8);
+			else return EU4_ERROR1;
+			return NOERROR;
 
-					diff = pDST - pSRC;
+		case v1_25_X:
+			byte_pattern::temp_instance().find_pattern("8A 87 ? ? ? ? 88 86 ? ? ? ? 46");
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
+				// TODO
+				char *pSRC = *byte_pattern::temp_instance().get_first().pointer<char *>(2);
+				// TODO
+				char *pDST = *byte_pattern::temp_instance().get_first().pointer<char *>(8);
 
-					// TODO
-					injector::WriteMemory<char *>(byte_pattern::temp_instance().get_first().address(8), pSRC, true);
-					injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x8D, true);
-					injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x15, true);
-					injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x8D, true);
-					injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x15, true);
-				}
-				else {
-					return 1;
-				}
+				diff = pDST - pSRC;
+
+				// TODO
+				injector::WriteMemory<char *>(byte_pattern::temp_instance().get_first().address(8), pSRC, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x8D, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x15, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x8D, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x15, true);
 			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
 
-		return 0;
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -240,7 +255,11 @@ namespace TextView {
 		// ediにDSTのアドレスがある
 		// ediは上書きしてしまっているので最後に[ebp-14h]を入れて戻す
 		__asm {
+			// ゴミが入っているのを除去
+			movzx eax, al;
+
 			mov byte ptr[edi + edx], al;
+
 			inc edx;
 
 			cmp al, ESCAPE_SEQ_1;
@@ -294,7 +313,11 @@ namespace TextView {
 		f_4:
 			mov edi, [ebp - 0x14]; // もとに戻す
 
-			cmp byte ptr[ebp + 0x3C], 0; // arg_34
+			cmp byte ptr[ebx + 0x3C], 0; // arg_34, ebpではなくebxなことに注意
+
+			/* 1.27.Xからそのままeaxにcode-pointが残らなくなったので、拡張したスタックに保存 */
+			mov word ptr [ebp - 0x6B8], ax; // 保存
+
 			mov eax, [ebp - 0x18];
 
 			push text1_v127_end;
@@ -304,36 +327,45 @@ namespace TextView {
 
 	/*-----------------------------------------------*/
 
-	errno_t text1_hook() {
-		byte_pattern::temp_instance().find_pattern("42 80 7B 3C 00 8B 45 E8");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// inc edx
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text1_v127_start);
-			// mov [ebp-0x30],edx
-			text1_v127_end = byte_pattern::temp_instance().get_first().address(0x8);
-		}
-		else {
+	errno_t copyBuff_hook(EU4Version version) {
+		std::string desc = "copy text to buffer";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("42 80 7B 3C 00 8B 45 E8");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// inc edx
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text1_v127_start);
+				// mov [ebp-0x30],edx
+				text1_v127_end = byte_pattern::temp_instance().get_first().address(0x8);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("46 80 7D 3C 00 0F 84 32");
-			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// inc esi
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text1_v126_start);
 				// mov al,[edi+ecx]
 				text1_v126_end = byte_pattern::temp_instance().get_first().address(0xB);
 			}
-			else {
-				byte_pattern::temp_instance().find_pattern("46 84 C9 0F 84 B6");
-				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-					// TODO
-					injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text1_v125_start);
-					// TODO
-					text1_v125_end = byte_pattern::temp_instance().get_first().address(0x9);
-				}
-				else {
-					return 1;
-				}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_25_X:
+			byte_pattern::temp_instance().find_pattern("46 84 C9 0F 84 B6");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// TODO
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text1_v125_start);
+				// TODO
+				text1_v125_end = byte_pattern::temp_instance().get_first().address(0x9);
 			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
-		return 0;
+
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -369,8 +401,16 @@ namespace TextView {
 	__declspec(naked) void text2_v127_start()
 	{
 		__asm {
-			movzx eax, ax;
-			mov[ebp - 0x6B8], ax; // 保存
+			// text1でとっておいたcode-pointをチェック
+			cmp word ptr[ebp - 0x6B8], 0xFF;
+			ja f_1;
+
+			movzx eax, byte ptr[esi + eax];
+			jmp f_2;
+
+		f_1:
+			movzx eax, word ptr[ebp - 0x6B8];
+		f_2:
 			mov eax, [edi + eax*4 + 0xB4];
 
 			push text2_v127_end;
@@ -380,14 +420,22 @@ namespace TextView {
 
 	/*-----------------------------------------------*/
 
-	errno_t text2_hook() {
-		byte_pattern::temp_instance().find_pattern("0F B6 04 06 8B 84 87 B4 00 00 00");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// movzx eax, byte ptr [esi+eax]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text2_v127_start);
-			// mov [ebp - 4Ch], eax
-			text2_v127_end = byte_pattern::temp_instance().get_first().address(0xB);
-		}else{
+	errno_t getCharInFont_hook(EU4Version version) {
+		std::string desc = "get char in font";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("0F B6 04 06 8B 84 87 B4 00 00 00");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// movzx eax, byte ptr [esi+eax]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text2_v127_start);
+				// mov [ebp - 4Ch], eax
+				text2_v127_end = byte_pattern::temp_instance().get_first().address(0xB);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 0F 8B 55 C0 8B");
 			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
 				// movzx eax, byte ptr [edi+ecx]
@@ -397,23 +445,25 @@ namespace TextView {
 				// mov [ebp - 4Ch], ecx
 				text2_v126_end = byte_pattern::temp_instance().get_first().address(0xA);
 			}
-			else {
-				//1.25.1.0
-				byte_pattern::temp_instance().find_pattern("8B 55 C4 0F B6 C0 8B");
-				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
-					// TODO
-					text1_v125_end2 = byte_pattern::temp_instance().get_first().address();
-					// TODO
-					injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x3), text2_v125_start);
-					// TODO
-					text2_v125_end = byte_pattern::temp_instance().get_first().address(0x9);
-				}
-				else {
-					return 1;
-				}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_25_X:
+			//1.25.1.0
+			byte_pattern::temp_instance().find_pattern("8B 55 C4 0F B6 C0 8B");
+			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
+				// TODO
+				text1_v125_end2 = byte_pattern::temp_instance().get_first().address();
+				// TODO
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x3), text2_v125_start);
+				// TODO
+				text2_v125_end = byte_pattern::temp_instance().get_first().address(0x9);
 			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
-		return 0;
+
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -438,54 +488,26 @@ namespace TextView {
 			ret;
 
 		f_c_t:
-			movzx eax, al;
+			movzx eax, al; // これがやりたいだけ
 
 			push text1_v125_end2;
 			ret;
 		}
 	}
 
-	uintptr_t text3_v127_end;
-	uintptr_t text3_v127_end2;
-	__declspec(naked) void text3_v127_start()
-	{
-		__asm {
-			cmp al, 0xA4;
-			jnz f_d;
-			movss xmm2, [ebp + 0x18]; //arg_10
-
-			push text3_v125_end;
-			ret;
-
-		f_d:
-			cmp al, 0xA7;
-			jnz f_c_t;
-
-			push text3_v125_end2;
-			ret;
-
-		f_c_t:
-			movzx eax, al;
-
-			push text1_v127_end2;
-			ret;
-		}
-	}
-
 	/*-----------------------------------------------*/
 
-	errno_t text3_hook() {
-		byte_pattern::temp_instance().find_pattern("80 7D DE A4 75 17 F3 0F");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// cmp byte ptr [ebp-22h],0A4h
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text3_v127_start);
-			// addss xmm2, ds:dword_XXXXX
-			text3_v127_end = byte_pattern::temp_instance().get_first().address(0x9);
-			// mov al, [edi+ecx+1]
-			text3_v127_end2 = byte_pattern::temp_instance().get_first().address(0x1F);
-		}else{
+	errno_t fixCopyBuff_hook(EU4Version version) {
+		std::string desc = "fix copy buff";
+
+		switch (version) {
+		case v1_27_X:
+			/* text1の修正なのでスキップした */
+			return NOERROR;
+		case v1_26_X:
+		case v1_25_X:
 			byte_pattern::temp_instance().find_pattern("3C A4 75 17 F3");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// cmp al,A4h
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text3_v125_start);
 				// addss xmm2, ds:dword_XXXXX
@@ -493,11 +515,11 @@ namespace TextView {
 				// mov al, [edi+ecx+1]
 				text3_v125_end2 = byte_pattern::temp_instance().get_first().address(0x1F);
 			}
-			else {
-				return 1;
-			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
-		return 0;
+
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
@@ -529,6 +551,8 @@ namespace TextView {
 	__declspec(naked) void text4_v127_start()
 	{
 		__asm {
+			mov eax, [ebp - 0x4C];
+
 			cmp word ptr[eax + 6], 0;
 			jnz g_3_jmp;
 			jmp g_5_jmp;
@@ -548,15 +572,31 @@ namespace TextView {
 
 	/*-----------------------------------------------*/
 
-	errno_t text4_hook() {
-		byte_pattern::temp_instance().find_pattern("66 83 78 06 00 0F 85 46");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// mov eax,[ebp-4Ch]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text4_v127_start);
-			// mov eax, [ebp+2Ch]
-			text4_v127_end = byte_pattern::temp_instance().get_first().address(0xB);
-		}
-		else {
+	errno_t lineBreak_hook(EU4Version version) {
+		std::string desc = "line break";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8B 45 B4 66 83 78 06 00");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov eax,[ebp-4Ch]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text4_v127_start);
+				// mov eax, [ebp+2Ch]
+				text4_v127_end = byte_pattern::temp_instance().get_first().address(0xE);
+				// jnz loc_XXXXX
+				text4_v127_end2 = byte_pattern::temp_instance().get_first().address(8);
+				// jnz loc_XXXXX -> jmp loc_XXXXX
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(8), 0xE9, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(9), 0x47, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(10), 0x01, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(11), 0x00, true);
+			}
+			else return EU4_ERROR1;
+
+			return NOERROR;
+
+		case v1_26_X:
+		case v1_25_X:
 			byte_pattern::temp_instance().find_pattern("66 83 79 06 00 0F");
 			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
 				// cmp word ptr [ecx+6],0
@@ -564,37 +604,31 @@ namespace TextView {
 				// mov eax, [ebp+arg_24]
 				text4_v125_end = byte_pattern::temp_instance().get_first().address(0xB);
 			}
-			else {
-				return 1;
-			}
-		}
+			else return EU4_ERROR1;
 
-		byte_pattern::temp_instance().find_pattern("80 3D 38 0F C7 01 00");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// cmp byte_XXXXX, 0
-			text4_v127_end2 = byte_pattern::temp_instance().get_first().address();
-		}else{
-			byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 98 01");
-			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
-				// cmp byte_XXXXX, 0
-				text4_v125_end2 = byte_pattern::temp_instance().get_first().address();
-			}
-			else {
+			switch (version) {
+			case v1_26_X:
+				byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 98 01");
+				if (byte_pattern::temp_instance().has_size(1, desc)) {
+					// cmp byte_XXXXX, 0
+					text4_v125_end2 = byte_pattern::temp_instance().get_first().address();
+				}
+				else return EU4_ERROR1;
+
+			case v1_25_X:
 				byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 A9 01 00 00 8B");
-				if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
+				if (byte_pattern::temp_instance().has_size(1, desc)) {
 					// TODO
 					text4_v125_end2 = byte_pattern::temp_instance().get_first().address();
 				}
-				else {
-					return 1;
-				}
+				else return EU4_ERROR1;
+
+			default:
+				return EU4_ERROR1;
 			}
+
+			return NOERROR;
 		}
-
-
-
-
-		return 0;
 	}
 
 	/*-----------------------------------------------*/
@@ -659,6 +693,7 @@ namespace TextView {
 	__declspec(naked) void text5_v127_start()
 	{
 		__asm {
+
 			cmp byte ptr[eax], ESCAPE_SEQ_1;
 			jz h_10;
 			cmp byte ptr[eax], ESCAPE_SEQ_2;
@@ -726,18 +761,28 @@ namespace TextView {
 
 	/*-----------------------------------------------*/
 
-	errno_t text5_6_hook() {
-		byte_pattern::temp_instance().find_pattern("8A 87 ? ? ? ? 8B 4D AC");
-		if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
-			// mov al, byte_XXXXX[edi] -> lea eax, byte_XXXXX[edi]
-			injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0x8D, true);
-			// xmm3,dword ptr [ebp-78h],xmm3
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0xF), text5_v127_start);
-			//text6はtext5に統合した
-		}
-		else {
+	errno_t actualCharView_hook(EU4Version version) {
+		std::string desc = "actual char viewing";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8A 87 ? ? ? ? 8B 4D AC");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov al, byte_XXXXX[edi] -> lea eax, byte_XXXXX[edi]
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0x8D, true);
+				// ecx,[ebp-54h]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x6), text5_v127_start);
+				// xmm3, dword ptr [ecx+428h]
+				text5_v127_end = byte_pattern::temp_instance().get_first().address(0xF);
+				//text6はtext5に統合した
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+
+		case v1_26_X:
+		case v1_25_X:
 			byte_pattern::temp_instance().find_pattern("8A 8A ? ? ? ? F3 0F");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov cl, byte_XXXXX[edx] -> lea ecx, byte_XXXXX[edx]
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(), 0x8D, true);
 				// movss xmm3, dword ptr [edi+4DCh]
@@ -749,27 +794,34 @@ namespace TextView {
 				// lea eax, [edi+0xB4]
 				text6_v125_end = byte_pattern::temp_instance().get_first().address(0x20);
 			}
-			else {
-				return 1;
-			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		}
-		return 0;
+
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/
 
-	errno_t init() {
+	errno_t init(EU4Version version) {
 		errno_t result = 0;
 
+		byte_pattern::temp_instance().debug_output2("main text fix");
+
 		/* スタックサイズの調整 */
-		result |= changeStackSize_hook();
+		result |= changeStackSize_hook(version);
 		/* 転送先バッファのポインタを確保 */
-		result |= copyBuff_hook();
-		result |= text1_hook();
-		result |= text2_hook();
-		result |= text3_hook();
-		result |= text4_hook();
-		result |= text5_6_hook();
+		result |= prepareCopyBuff_hook(version);
+		/* バッファにコピー */
+		result |= copyBuff_hook(version);
+		/* フォントから文字を取得 */
+		result |= getCharInFont_hook(version);
+		/* ミスした修正 */
+		result |= fixCopyBuff_hook(version);
+		/* 改行の処理 */
+		result |= lineBreak_hook(version);
+		/* 表示処理に渡す文字 */
+		result |= actualCharView_hook(version);
 
 		return result;
 	}
