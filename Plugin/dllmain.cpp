@@ -47,6 +47,9 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		//マップ上のポップアップ文字
 		success |= PopupCharOnMap::init(version);
 
+		// issue19の修正
+		success |= InputIssue19::init(version);
+
 		if (success == NOERROR) {
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}

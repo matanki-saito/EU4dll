@@ -118,3 +118,7 @@ namespace PopupCharOnMap {
 namespace FileSave {
 	errno_t init(EU4Version version);
 }
+
+namespace InputIssue19 {
+	errno_t init(EU4Version version);
+}

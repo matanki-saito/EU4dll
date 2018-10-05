@@ -21,9 +21,6 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="font.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -61,6 +58,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FileSave.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InputIssue19.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="eventDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
