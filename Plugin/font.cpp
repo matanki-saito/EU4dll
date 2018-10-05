@@ -26,7 +26,6 @@ namespace Font {
 	/*-----------------------------------------------*/
 
 	errno_t bufferClear_hook(EU4Version version) {
-		
 		switch (version) {
 		case v1_25_X:
 		case v1_26_X:

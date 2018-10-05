@@ -91,6 +91,7 @@
     <ClCompile Include="ButtonAndToolTip.cpp" />
     <ClCompile Include="byte_pattern.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="FileSave.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="IME.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -98,8 +99,10 @@
     <ClCompile Include="mapJustify.cpp" />
     <ClCompile Include="mapView.cpp" />
     <ClCompile Include="misc.cpp" />
+    <ClCompile Include="Popup.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="ToolTipApx.cpp" />
     <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>

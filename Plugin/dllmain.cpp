@@ -41,6 +41,12 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		//ツールチップとボタン
 		success |= ButtonAndToolTip::init(version);
 
+		//ツールチップ追加処理
+		success |= ToolTipApx::init(version);
+
+		//マップ上のポップアップ文字
+		success |= PopupCharOnMap::init(version);
+
 		if (success == NOERROR) {
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}

@@ -106,3 +106,15 @@ namespace ButtonAndToolTip
 {
 	errno_t init(EU4Version version);
 }
+
+namespace ToolTipApx {
+	errno_t init(EU4Version version);
+}
+
+namespace PopupCharOnMap {
+	errno_t init(EU4Version version);
+}
+
+namespace FileSave {
+	errno_t init(EU4Version version);
+}
