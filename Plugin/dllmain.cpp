@@ -38,6 +38,9 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		//IME修正
 		success |= IME::init(version);
 
+		//ツールチップとボタン
+		success |= ButtonAndToolTip::init(version);
+
 		if (success == NOERROR) {
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}

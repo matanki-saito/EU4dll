@@ -97,6 +97,12 @@ namespace Input
 	errno_t init(EU4Version version);
 }
 
-namespace IME {
+namespace IME
+{
+	errno_t init(EU4Version version);
+}
+
+namespace ButtonAndToolTip
+{
 	errno_t init(EU4Version version);
 }
