@@ -92,3 +92,11 @@ namespace TextView
 	errno_t init(EU4Version version);
 }
 
+namespace Input
+{
+	errno_t init(EU4Version version);
+}
+
+namespace IME {
+	errno_t init(EU4Version version);
+}

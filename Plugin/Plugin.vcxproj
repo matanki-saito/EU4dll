@@ -91,6 +91,8 @@
     <ClCompile Include="byte_pattern.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="font.cpp" />
+    <ClCompile Include="IME.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="mapAdj.cpp" />
     <ClCompile Include="mapJustify.cpp" />
     <ClCompile Include="mapView.cpp" />
