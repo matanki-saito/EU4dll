@@ -598,7 +598,7 @@ namespace TextView {
 		case v1_26_X:
 		case v1_25_X:
 			byte_pattern::temp_instance().find_pattern("66 83 79 06 00 0F");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X-v1.26.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// cmp word ptr [ecx+6],0
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), text4_v125_start);
 				// mov eax, [ebp+arg_24]
@@ -614,7 +614,7 @@ namespace TextView {
 					text4_v125_end2 = byte_pattern::temp_instance().get_first().address();
 				}
 				else return EU4_ERROR1;
-
+				break;
 			case v1_25_X:
 				byte_pattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 A9 01 00 00 8B");
 				if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -622,7 +622,7 @@ namespace TextView {
 					text4_v125_end2 = byte_pattern::temp_instance().get_first().address();
 				}
 				else return EU4_ERROR1;
-
+				break;
 			default:
 				return EU4_ERROR1;
 			}

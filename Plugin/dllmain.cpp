@@ -24,10 +24,10 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		success |= MapAdj::init(version);
 
 		// マップ文字justify
-		success |= MapJustify::init(version);
+		//success |= MapJustify::init(version);
 
 		// マップ文字表示
-		success |= MapView::init(version);
+		//success |= MapView::init(version);
 
 		// その他
 		success |= Misc::init(version);

@@ -448,7 +448,7 @@ namespace MapAdj {
 		result |= map1_2_hook(version);
 		result |= map2_end_hook(version);
 		// ˆê•¶š•\¦‚Ì’²®
-		result |= oneCharacter_hook(version);
+		//result |= oneCharacter_hook(version);
 
 		return result;
 	}
