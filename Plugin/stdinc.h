@@ -122,3 +122,7 @@ namespace FileSave {
 namespace InputIssue19 {
 	errno_t init(EU4Version version);
 }
+
+namespace EventDialog {
+	errno_t init(EU4Version version);
+}

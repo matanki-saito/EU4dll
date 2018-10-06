@@ -243,7 +243,7 @@ namespace MapAdj {
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("F2 0F 10 65 C8 42 F2 0F");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// mov eax. [ebp-1Ch]
+				// movsd xmm4, qword ptr [ebp-38h]
 				map2_v127_end2 = byte_pattern::temp_instance().get_first().address();
 			}
 			else return EU4_ERROR1;
