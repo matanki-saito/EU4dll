@@ -13,7 +13,13 @@ namespace ButtonAndToolTip {
 		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("81 EC 58 05 00 00 8B");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				//sub esp,558h -(+2)-> 55A -(0Ah)-> 0x564
+				//    | edi  | [ebp-(0x558+0xC+0x8)] =(+2)=> [ebp-(0x55A+0xC+0x8)]
+				//    | esi
+				//    | Stack (0x558) =(+2)=> (0x55A) : [ebp-(0x55A+0xC)]=[ebp-0x566]
+				//    | large fs:0          | (4*3 = 12 = 0xC)
+				//    | offset SEH_11C0050  |
+				//    | 0FFFFFFFFh          |
+				//ebp | ebp
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x5A, true);
 			}
 			else return EU4_ERROR1;
@@ -22,7 +28,13 @@ namespace ButtonAndToolTip {
 		case v1_27_X: 
 			byte_pattern::temp_instance().find_pattern("81 EC 98 05 00 00 8B 55 18");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				//sub esp,598h  -(+2)-> 59Ah -(0Ah)-> 0x5A4
+				//    | edi  |  [ebp-(0x598+0xC+0x8)] =(+2)=> [ebp-(0x59A+0xC+0x8)]
+				//    | esi
+				//    | Stack (0x598) =(+2)=> (0x59A) : [ebp-(0x59A+0xC)]=[ebp-0x5A6]
+				//    | large fs:0          | (4*3 = 12 = 0xC)
+				//    | offset SEH_11CACC0  |
+				//    | 0FFFFFFFFh          |
+				//ebp | ebp
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x9A, true);
 			}
 			else return EU4_ERROR1;
@@ -204,7 +216,7 @@ namespace ButtonAndToolTip {
 			mov eax, NOT_DEF;
 
 		e_4:
-			mov word ptr[ebp - 0x5A4], ax;
+			mov word ptr[ebp - 0x5A6], ax;
 
 			push func3_v127_end;
 			ret;
@@ -273,7 +285,7 @@ namespace ButtonAndToolTip {
 			cmp word ptr[eax + 6], 0;
 			jz v_3_jmp;
 
-			cmp word ptr[ebp - 0x5A4], 0xFF;
+			cmp word ptr[ebp - 0x5A6], 0xFF;
 			ja v_3_jmp;
 
 			push func4_v127_end2;
@@ -481,7 +493,7 @@ namespace ButtonAndToolTip {
 
 		switch (version) {
 		case v1_27_X:
-			// lea esp,[ebp-5ACh] -(+2)-> 5AEh
+			// lea esp,[ebp-5ACh] -> 5AE
 			byte_pattern::temp_instance().find_pattern("8D A5 54 FA FF FF");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x52, true);
@@ -491,7 +503,7 @@ namespace ButtonAndToolTip {
 
 		case v1_26_X:
 		case v1_25_X:
-			// lea esp,[ebp-56Ch] -(+2)-> 56Eh
+			// lea esp,[ebp-56Ch] -> 56E
 			byte_pattern::temp_instance().find_pattern("8D A5 94 FA FF FF");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x92, true);
@@ -499,6 +511,8 @@ namespace ButtonAndToolTip {
 			else return EU4_ERROR1;
 			return NOERROR;
 		}
+
+		return EU4_ERROR1;
 	}
 	/*-----------------------------------------------*/
 

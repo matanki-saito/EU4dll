@@ -12,8 +12,15 @@ namespace TextView {
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("81 EC A8 06 00 00 56 57");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// sub esp,6A8h
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0xAA, true);
+				//    | edi
+				//    | esi
+				//    | Stack (0x6A8) =(+4)=> (0x6AC) : [ebp-(0x6AC+0x10)]=[ebp-0x6BC]
+				//    | ebx(esp)            |
+				//    | large fs:0          | (4*4 = 16 = 0x10)
+				//    | offset sub_16BC026  |
+				//    | 0FFFFFFFFh          |
+				//ebp | ebp
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0xAC, true);
 			}
 			else return EU4_ERROR1;
 			return NO_ERROR;
@@ -22,7 +29,13 @@ namespace TextView {
 		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("81 EC 20 06 00 00 56 57");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// sub esp,620h
+				//    | edi
+				//    | esi
+				//    | Stack (0x620) =(+4)=> (0x624) : [ebp-(0x624+0xC)]=[ebp-0x630]
+				//    | large fs:0          |
+				//    | offset SEH_11C1C30  | (4*3 = 12 = 0xC)
+				//    | 0FFFFFFFFh          |
+				//ebp | ebp
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x24, true);
 			}
 			else return EU4_ERROR1;
@@ -43,7 +56,7 @@ namespace TextView {
 		switch (version) {
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 06 88 82 ? ? ? ? 42");
-			if (byte_pattern::temp_instance().has_size(1, "v1.27.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov byte_XXXXX[edx],al -> get byte_XXXXX
 				char *pDST = *byte_pattern::temp_instance().get_first().pointer<char *>(5);
 
@@ -57,7 +70,7 @@ namespace TextView {
 
 		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 0F 88 86 ? ? ? ? 46");
-			if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov byte_XXXXX[esi],al -> get byte_XXXXX
 				char *pDST = *byte_pattern::temp_instance().get_first().pointer<char *>(5);
 
@@ -71,7 +84,7 @@ namespace TextView {
 
 		case v1_25_X:
 			byte_pattern::temp_instance().find_pattern("8A 87 ? ? ? ? 88 86 ? ? ? ? 46");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// TODO
 				char *pSRC = *byte_pattern::temp_instance().get_first().pointer<char *>(2);
 				// TODO
@@ -316,7 +329,7 @@ namespace TextView {
 			cmp byte ptr[ebx + 0x3C], 0; // arg_34, ebpではなくebxなことに注意
 
 			/* 1.27.Xからそのままeaxにcode-pointが残らなくなったので、拡張したスタックに保存 */
-			mov word ptr [ebp - 0x6B8], ax; // 保存
+			mov word ptr [ebp - 0x6BC], ax; // 保存
 
 			mov eax, [ebp - 0x18];
 
@@ -402,14 +415,14 @@ namespace TextView {
 	{
 		__asm {
 			// text1でとっておいたcode-pointをチェック
-			cmp word ptr[ebp - 0x6B8], 0xFF;
+			cmp word ptr[ebp - 0x6BC], 0xFF;
 			ja f_1;
 
 			movzx eax, byte ptr[esi + eax];
 			jmp f_2;
 
 		f_1:
-			movzx eax, word ptr[ebp - 0x6B8];
+			movzx eax, word ptr[ebp - 0x6BC];
 		f_2:
 			mov eax, [edi + eax*4 + 0xB4];
 
@@ -558,7 +571,7 @@ namespace TextView {
 			jmp g_5_jmp;
 
 		g_3_jmp:
-			cmp word ptr[ebp - 0x6B8], 0xFF;
+			cmp word ptr[ebp - 0x6BC], 0xFF;
 			ja g_5_jmp;
 
 			push text4_v127_end2;
@@ -629,6 +642,8 @@ namespace TextView {
 
 			return NOERROR;
 		}
+
+		return EU4_ERROR1;
 	}
 
 	/*-----------------------------------------------*/

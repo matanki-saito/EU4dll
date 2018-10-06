@@ -12,7 +12,13 @@ namespace EventDialog {
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("81 EC 08 03 00 00 8B 45");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// sub esp,308h -(+2)-> 30A -(+C)-> 0x316
+				//    | edi
+				//    | esi
+				//    | Stack (0x308) =(+2)=> (0x30A) : [ebp-(0x30A+0xC)]=[ebp-0x316]
+				//    | large fs:0          | (4*3 = 12 = 0xC)
+				//    | offset SEH_11CACC0  |
+				//    | 0FFFFFFFFh          |
+				//ebp | ebp
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x2), 0x0A, true);
 			}
 			else return EU4_ERROR1;
@@ -21,7 +27,13 @@ namespace EventDialog {
 		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("81 EC 0C 03 00 00 8B");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// sub esp,30Ch -(+2)-> 30E -(+Ch)-> 0x31A
+				//    | edi
+				//    | esi
+				//    | Stack (0x30C) =(+2)=> (0x30E) : [ebp-(0x30E+0xC)]=[ebp-0x31A]
+				//    | large fs:0          | (4*3 = 12 = 0xC)
+				//    | offset SEH_11C6B30  |
+				//    | 0FFFFFFFFh          |
+				//ebp | ebp
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0x2), 0x0E, true);
 			}
 			else return EU4_ERROR1;

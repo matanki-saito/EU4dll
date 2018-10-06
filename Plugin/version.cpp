@@ -40,6 +40,7 @@ namespace Misc {
 
 			return version;
 		}
+		else return UNKNOWN;
 	}
 
 	std::string versionString(EU4Version version) {

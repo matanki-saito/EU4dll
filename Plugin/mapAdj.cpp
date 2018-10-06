@@ -92,35 +92,31 @@ namespace MapAdj {
 			jmp j_01;
 
 		j_10:
-			add edx, 2;
 			mov byte ptr[ebp - 1], ESCAPE_SEQ_1;
-			movzx eax, word ptr[eax + edx - 1];
+			movzx eax, word ptr[eax + edx + 1];
 			jmp j_1x;
 
 		j_11:
-			add edx, 2;
 			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1でよい
-			movzx eax, word ptr[eax + edx - 1];
+			movzx eax, word ptr[eax + edx + 1];
 			sub eax, SHIFT_2;
 			jmp j_1x;
 
 		j_12:
-			add edx, 2;
 			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1でよい
-			movzx eax, word ptr[eax + edx - 1];
+			movzx eax, word ptr[eax + edx + 1];
 			add eax, SHIFT_3;
 			jmp j_1x;
 
 		j_13:
-			add edx, 2;
 			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1でよい
-			movzx eax, word ptr[eax + edx - 1];
+			movzx eax, word ptr[eax + edx + 1];
 			add eax, SHIFT_4;
 			jmp j_1x;
 
 		j_01:
-			mov al, [eax + edx];
-			mov[ebp - 1], al;
+			mov al,byte ptr [eax + edx];
+			mov byte ptr [ebp - 1], al;
 			movzx eax, al;
 			jmp j_2;
 
@@ -357,32 +353,32 @@ namespace MapAdj {
 		__asm {
 			cmp byte ptr[ebp - 1], ESCAPE_SEQ_1;
 			jnz k_a_2;
-			cmp dword ptr[ebp - 0x24], 3;
+			// 3byte = 1文字かどうか
+			cmp dword ptr[ebp - 0x24], 3; 
 			ja k_a_2;
-			mov eax, [ebp - 0x28];
-			add eax, 2;
-			mov[ebp - 0x28], eax;
+			add edx, 2;
+			mov[ebp - 0x28], edx;
 			mov eax, [ebp - 0x24];
 			add eax, 2;
 			mov[ebp - 0x24], eax;
 			mov byte ptr[ebp - 1], 5;
 
 		k_a_2:
+			movd xmm7, edx;
+			// エスケープ文字
 			cmp byte ptr[ebp - 1], ESCAPE_SEQ_1;
 			jz k_4;
+
 			mov eax, [ebp - 0x24];
 			jmp k_3;
 
 		k_4:
-			mov eax, [ebp - 0x28];
-			add eax, 2;
-			mov[ebp - 0x28], eax;
+			add edx, 2;
+			mov[ebp - 0x28], edx;
 			mov eax, [ebp - 0x24];
 			sub eax, 2;
 
 		k_3:
-
-			movd xmm7, dword ptr [ebp-0x28];
 			dec eax;
 
 			push map3_v127_end;
@@ -448,7 +444,7 @@ namespace MapAdj {
 		result |= map1_2_hook(version);
 		result |= map2_end_hook(version);
 		// 一文字表示の調整
-		//result |= oneCharacter_hook(version);
+		result |= oneCharacter_hook(version);
 
 		return result;
 	}

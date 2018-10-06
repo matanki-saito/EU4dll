@@ -272,9 +272,10 @@ namespace Misc {
 		switch (version) {
 		case v1_27_X:
 		case v1_25_X:
+		case v1_26_X:
 			/* ‚±‚ê‚Í‚í‚©‚ç‚È‚­‚È‚Á‚Ä‚µ‚Ü‚Á‚½ */
 			return NOERROR;
-		case v1_26_X:		
+		default:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 84 86 B4 00 00 00");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// movzx eax, byte ptr [eax+ecx]

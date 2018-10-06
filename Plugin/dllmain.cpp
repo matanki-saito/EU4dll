@@ -16,18 +16,16 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		success |= Font::init(version);
 
 		// 本文テキスト表示の修正
-		// TODO: 変な改行や位置ずれバグあり
 		success |= TextView::init(version);
 
 		// マップ文字位置調整
-		// 先頭にオフセットが入るバグあり
 		success |= MapAdj::init(version);
 
 		// マップ文字justify
-		//success |= MapJustify::init(version);
+		success |= MapJustify::init(version);
 
 		// マップ文字表示
-		//success |= MapView::init(version);
+		success |= MapView::init(version);
 
 		// その他
 		success |= Misc::init(version);
@@ -51,9 +49,11 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		success |= InputIssue19::init(version);
 
 		if (success == NOERROR) {
+			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}
 		else {
+			MessageBoxW(NULL, L"[NG]", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [NG]");
 			exit(-1);
 		}

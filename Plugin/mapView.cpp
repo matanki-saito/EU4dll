@@ -81,28 +81,28 @@ namespace MapView {
 			movzx eax, word ptr[eax + edi + 1];
 			lea ecx, [ebp - 0x2C];
 			mov byte ptr[ecx], ESCAPE_SEQ_1;
-			mov[ecx + 1], ax;
+			mov word ptr [ecx + 1], ax;
 			jmp l_1x;
 
 		l_11:
 			movzx eax, word ptr[eax + edi + 1];
 			lea ecx, [ebp - 0x2C];
 			mov byte ptr[ecx], ESCAPE_SEQ_2;
-			mov[ecx + 1], ax;
+			mov word ptr [ecx + 1], ax;
 			jmp l_1x;
 
 		l_12:
 			movzx eax, word ptr[eax + edi + 1];
 			lea ecx, [ebp - 0x2C];
 			mov byte ptr[ecx], ESCAPE_SEQ_3;
-			mov[ecx + 1], ax;
+			mov word ptr [ecx + 1], ax;
 			jmp l_1x;
 
 		l_13:
 			movzx eax, word ptr[eax + edi + 1];
 			lea ecx, [ebp - 0x2C];
 			mov byte ptr[ecx], ESCAPE_SEQ_4;
-			mov[ecx + 1], ax;
+			mov word ptr [ecx + 1], ax;
 
 		l_1x:
 			lea ecx, [ebp - 0x58];
@@ -144,7 +144,6 @@ namespace MapView {
 		}
 	}
 
-
 	uintptr_t map2_v127_end;
 	__declspec(naked) void map2_v127_start()
 	{
@@ -161,7 +160,7 @@ namespace MapView {
 
 		m_3:
 			mov ecx, [ebp - 0x2C];
-			mov[eax], ecx;
+			mov dword ptr [eax], ecx;
 			mov byte ptr[eax + 0x10], 3;
 
 		m_4:
@@ -185,11 +184,11 @@ namespace MapView {
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov al, [eax+edi]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map1_v127_start);
-				// push [ebp-0x38]
+				// push [ebp-0x2C]
 				map1_v127_end = byte_pattern::temp_instance().get_first().address(0x9);
 				// push 0FFFFFFFFh
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x11), map2_v127_start);
-				// lea ecx.[ebp-0x98]
+				// lea ecx.[ebp-0xA0]
 				map2_v127_end = byte_pattern::temp_instance().get_first().address(0x16);
 			}
 			else return EU4_ERROR1;
@@ -279,7 +278,7 @@ namespace MapView {
 		case v1_25_X:
 		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 38 8B 4D E4");
-			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov al, [eax+edi]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map3_v125_start);
 				// mov edx, [ecx+eax*4 + 0xB4h]
@@ -390,8 +389,8 @@ namespace MapView {
 
 		o_4:
 			mov esi, [edi + eax * 4];
-			mov[ebp - 0xD0], esi;
-			mov[ebp - 0x100], esi;
+			mov [ebp - 0xD0], esi;
+			mov [ebp - 0x100], esi;
 
 			push map4_v127_end;
 			ret;
@@ -407,7 +406,7 @@ namespace MapView {
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 18 8B 34 87 89 B5 30");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// movzx eaxm byte ptr [eax+ebx]
+				// movzx eax byte ptr [eax+ebx]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), map4_v127_start);
 				// test esi, esi
 				map4_v127_end = byte_pattern::temp_instance().get_first().address(0x13);
