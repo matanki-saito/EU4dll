@@ -88,14 +88,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ButtonAndToolTip.cpp" />
     <ClCompile Include="byte_pattern.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="eventDialog.cpp" />
+    <ClCompile Include="FileSave.cpp" />
+    <ClCompile Include="font.cpp" />
+    <ClCompile Include="IME.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InputIssue19.cpp" />
+    <ClCompile Include="mapAdj.cpp" />
+    <ClCompile Include="mapJustify.cpp" />
+    <ClCompile Include="mapView.cpp" />
+    <ClCompile Include="misc.cpp" />
+    <ClCompile Include="Popup.cpp" />
+    <ClCompile Include="Text.cpp" />
+    <ClCompile Include="ToolTipApx.cpp" />
+    <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h" />
     <ClInclude Include="stdinc.h" />
-    <ClInclude Include="Test.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Note.txt" />
