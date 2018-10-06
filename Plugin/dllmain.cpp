@@ -48,6 +48,9 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// issue19の修正
 		success |= InputIssue19::init(version);
 
+		// イベントダイアログの修正
+		//success |= EventDialog::init(version);
+
 		if (success == NOERROR) {
 			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
