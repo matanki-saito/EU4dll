@@ -103,12 +103,12 @@ namespace PopupCharOnMap {
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov al,[eax+edi]
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), func1_v127_start);
-				// push [ebp+var_5C]
+				// push [ebp+var_28]
 				func1_v127_end = byte_pattern::temp_instance().get_first().address(0xC);
 
 				// push 0FFFFFFFFh
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x14), func2_v127_start);
-				// lea ecx,[ebp+var_7C]
+				// lea ecx,[ebp+var_AC]
 				func2_v127_end = byte_pattern::temp_instance().get_first().address(0x19);
 			}
 			else return EU4_ERROR1;
@@ -344,7 +344,8 @@ namespace PopupCharOnMap {
 			jz z_12;
 			cmp byte ptr[eax + esi], ESCAPE_SEQ_4;
 			jz z_13;
-			jmp z_5;
+			movzx eax, byte ptr[eax + esi];
+			jmp z_6;
 
 		z_10:
 			movzx eax, word ptr[eax + esi + 1];
@@ -372,16 +373,13 @@ namespace PopupCharOnMap {
 
 		z_4:
 			add esi, 2;
+			mov dword ptr[ebp - 0x2C], esi; // ローカル変数更新
 		z_6:
 			movss [ebp - 0xBC], xmm4;
 			mov eax, [ecx + eax * 4 + 0xB4];
-		
+			
 			push func4_v127_end;
 			ret;
-
-		z_5:
-			movzx eax, byte ptr[eax + esi];
-			jmp z_6;
 		}
 	}
 
