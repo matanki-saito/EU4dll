@@ -51,6 +51,9 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// イベントダイアログの修正とマップ上の修正
 		success |= EventDialog::init(version);
 
+		// ファイルセーブ関連
+		success |= FileSave::init(version);
+
 		if (success == NOERROR) {
 			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
