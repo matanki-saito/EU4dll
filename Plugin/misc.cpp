@@ -160,14 +160,10 @@ namespace Misc {
 	/*-----------------------------------------------*/
 
 	errno_t unknown_hook(EU4Version version) {
-		byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 0C 82 85");
-		if (byte_pattern::temp_instance().has_size(1, "v1.26.X")) {
-			// movzx eax, byte ptr [eax+esi]
-			injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), func2_v126_start);
-			// jz XXX
-			func2_v126_end = byte_pattern::temp_instance().get_first().address(0x9);
-		}
-		else {
+		std::string desc = "unknown";
+
+		switch (version) {
+		case v1_25_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 30 8B 55 14 0F B6");
 			if (byte_pattern::temp_instance().has_size(1, "v1.25.X")) {
 				// TODO
@@ -175,12 +171,23 @@ namespace Misc {
 				// TODO
 				func2_v125_end = byte_pattern::temp_instance().get_first().address(0x9);
 			}
-			else {
-				return 1;
-			}
-		}
+			else return EU4_ERROR1;
+			return NOERROR;
 
-		return 0;
+		case v1_27_X:
+		case v1_26_X:
+			byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 0C 82 85");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// movzx eax, byte ptr [eax+esi]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), func2_v126_start);
+				// jz XXX
+				func2_v126_end = byte_pattern::temp_instance().get_first().address(0x9);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		}
+			
+		return NOERROR;
 	}
 
 	/*-----------------------------------------------*/
@@ -355,7 +362,7 @@ namespace Misc {
 		result |= capitalizeCancel_hook(version);
 		// だいぶ変更されている？ 本当に対応できているか不明。
 		// そもそもこの修正がどんな効果をもたらすか忘れてしまった
-		//result |= unknown_hook();
+		result |= unknown_hook(version);
 		// 日付の表記の順番を入れ替える
 		result |= dateFix_hook(version);
 		// nudgeモードの修正(issue12)
