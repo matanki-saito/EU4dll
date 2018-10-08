@@ -3,6 +3,8 @@
 
 namespace FileSave {
 
+	// TODO:このコードはパリピ状態になっているので落ち着いた感じに修正したい
+
 	/*-----------------------------------------------*/
 
 	errno_t fileNameSaftySkip_hook(EU4Version version) {
@@ -527,6 +529,9 @@ namespace FileSave {
 
 		/* ファイル名を変換する */
 		result |= filenameEncode_hook(version);
+
+		/* 変換関数を探してくる */
+		result |= PHYSFS_utf8FromUcs2_hook(version);
 
 		/* タイトルを表示できるようにする */
 		result |= showTitle_hook(version);
