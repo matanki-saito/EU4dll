@@ -54,6 +54,9 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// ファイルセーブ関連
 		success |= FileSave::init(version);
 
+		// issue66の修正
+		success |= Issue66::init(version);
+
 		if (success == NOERROR) {
 			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
