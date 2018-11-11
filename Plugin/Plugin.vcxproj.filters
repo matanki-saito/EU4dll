@@ -66,6 +66,9 @@
     <ClCompile Include="eventDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Issue66.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">

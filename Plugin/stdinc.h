@@ -126,3 +126,7 @@ namespace InputIssue19 {
 namespace EventDialog {
 	errno_t init(EU4Version version);
 }
+
+namespace Issue66 {
+	errno_t init(EU4Version version);
+}
