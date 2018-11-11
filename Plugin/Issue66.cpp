@@ -214,13 +214,13 @@ namespace Issue66 {
 
 		switch (version) {
 		case v1_27_X:
-			byte_pattern::temp_instance().find_pattern("8B F0 ? ? ? ? 01 8D 45 B8 C6");
+			byte_pattern::temp_instance().find_pattern("8B F0 8D 4D EC 6A 00 8D 45 A0");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov esi,eax
-				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_YM_v127_start);
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x20), issue66_YM_v127_start);
 
 				// push 0xFFFFFFFF
-				issue66_YM_v127_end = byte_pattern::temp_instance().get_first().address(0x27);
+				issue66_YM_v127_end = byte_pattern::temp_instance().get_first().address(0x20 + 0x27);
 			}
 			else return EU4_ERROR1;
 			return NOERROR;
