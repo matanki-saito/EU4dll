@@ -91,8 +91,6 @@ namespace Issue66 {
 
 	/*-----------------------------------------------*/
 
-	char *SPACE = " ";
-
 	union T {
 		char text[0x10];
 		char* p;
@@ -107,19 +105,9 @@ namespace Issue66 {
 	V *year;
 	V *day;
 
-	uintptr_t issue66_dateFormat_v127_end;
-	__declspec(naked) void issue66_dateFormat_v127_start() {
+	uintptr_t issue66_YMD_v127_end;
+	__declspec(naked) void issue66_YMD_v127_start() {
 		__asm {
-			// スペースをテキストバッファに格納する（ダミー）
-			mov     esi, eax;
-			mov     byte ptr[ebp - 0x4], 2;
-			push    1;
-			push    SPACE;
-			lea     ecx, dword ptr [ebp - 0x28];
-			mov     dword ptr [ebp - 0x14], 0x0F;
-			mov     dword ptr [ebp - 0x18], 0;
-			mov     byte ptr[ebp - 0x28], 0;
-			call    issue66_copyText_v127_start;
 
 			// 日をテキストバッファに変換
 			push    edi;
@@ -128,7 +116,6 @@ namespace Issue66 {
 			call    issue66_createBuff_v127_start;
 
 			// テキストバッファにyearを結合する
-			//lea     ecx, year;
 			mov     byte ptr[ebp - 0x4], 4;
 			push    year;
 			lea     ecx, dword ptr [ebp - 0x88];
@@ -144,7 +131,6 @@ namespace Issue66 {
 			push    ecx;
 			mov     ecx, eax;
 			call    issue66_copyBuff1_v127_start;
-
 
 			// バッファに日を結合する
 			lea ecx,    dword ptr[ebp - 0xA0];
@@ -163,37 +149,78 @@ namespace Issue66 {
 			mov     ecx, eax;
 			call    issue66_copyBuff1_v127_start;
 
-			push issue66_dateFormat_v127_end;
+			push issue66_YMD_v127_end;
 			ret;
 		}
 	}
 
 	/*-----------------------------------------------*/
 
-	errno_t genDateFormat_hook(EU4Version version) {
-		std::string desc = "gen date format hook";
-
-		day = new V();
-		day->t.text[0] = 0xE;
-		day->t.text[1] = '\0';
-		day->len = 1;
-		day->len2 = 0xF;
-
-		year = new V();
-		year->t.text[0] = 0xF;
-		year->t.text[1] = '\0';
-		year->len = 1;
-		year->len2 = 0xF;
+	errno_t fixYMD_hook(EU4Version version) {
+		std::string desc = "fix YMD format";
 
 		switch (version) {
 		case v1_27_X:
-			byte_pattern::temp_instance().find_pattern("8B F0 C6 45 FC 02 8D 4D D8 6A 01");
+			byte_pattern::temp_instance().find_pattern("57 8D 8D 60 FF FF FF C6 45 FC 03");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// mov esi,eax
-				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_dateFormat_v127_start);
+				// push edi
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_YMD_v127_start);
 
 				// push 0xFFFFFFFF
-				issue66_dateFormat_v127_end = byte_pattern::temp_instance().get_first().address(0x87);
+				issue66_YMD_v127_end = byte_pattern::temp_instance().get_first().address(0x60);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		case v1_26_X:
+		case v1_25_X:
+			/* 対応しない */
+			return NOERROR;
+		}
+
+		return EU4_ERROR1;
+	}
+
+	/*-----------------------------------------------*/
+
+	uintptr_t issue66_YM_v127_end;
+	__declspec(naked) void issue66_YM_v127_start() {
+		__asm {
+			mov     esi, eax
+
+			push    year;
+			lea     ecx, dword ptr[ebp - 0x30];
+			mov     byte ptr[ebp - 0x4], 3;
+			push    ecx;
+			mov     ecx, esi;
+			call    issue66_copyBuff2_v127_start;
+
+			lea     eax,dword ptr[ebp - 0x60];
+			push eax;
+			lea     eax, dword ptr [ebp - 0x48];
+			mov     byte ptr[ebp - 0x4], 2;
+			push    eax;
+			lea     ecx, dword ptr[ebp - 0x30];
+			call    issue66_copyBuff1_v127_start;
+
+			push issue66_YM_v127_end;
+			ret;
+		}
+	}
+
+	/*-----------------------------------------------*/
+
+	errno_t fixYM_hook(EU4Version version) {
+		std::string desc = "fix YM format";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8B F0 68 AC 1D B3 01 8D 45 B8");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov esi,eax
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_YM_v127_start);
+
+				// push 0xFFFFFFFF
+				issue66_YM_v127_end = byte_pattern::temp_instance().get_first().address(0x27);
 			}
 			else return EU4_ERROR1;
 			return NOERROR;
@@ -213,6 +240,20 @@ namespace Issue66 {
 
 		byte_pattern::temp_instance().debug_output2("issue66");
 
+		// 「日」を初期化
+		day = new V();
+		day->t.text[0] = 0xE;
+		day->t.text[1] = '\0';
+		day->len = 1;
+		day->len2 = 0xF;
+
+		// 「年」を初期化
+		year = new V();
+		year->t.text[0] = 0xF;
+		year->t.text[1] = '\0';
+		year->len = 1;
+		year->len2 = 0xF;
+
 		/* コピーバッファ関数をフック */
 		result |= copyBuffFunc_hook(version);
 
@@ -222,8 +263,11 @@ namespace Issue66 {
 		/* コピーテキスト作成関数をフック */
 		result |= copyText_hook(version);
 
-		/**/
-		result |= genDateFormat_hook(version);
+		/* 年月日 */
+		result |= fixYMD_hook(version);
+
+		/* 年月 */
+		result |= fixYM_hook(version);
 
 		return result;
 	}
