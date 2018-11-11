@@ -214,7 +214,7 @@ namespace Issue66 {
 
 		switch (version) {
 		case v1_27_X:
-			byte_pattern::temp_instance().find_pattern("8B F0 68 AC 1D B3 01 8D 45 B8");
+			byte_pattern::temp_instance().find_pattern("8B F0 ? ? ? ? 01 8D 45 B8 C6");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov esi,eax
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_YM_v127_start);
@@ -263,11 +263,13 @@ namespace Issue66 {
 		/* コピーテキスト作成関数をフック */
 		result |= copyText_hook(version);
 
+		/* 年月 */
+		result |= fixYM_hook(version);
+
 		/* 年月日 */
 		result |= fixYMD_hook(version);
 
-		/* 年月 */
-		result |= fixYM_hook(version);
+
 
 		return result;
 	}
