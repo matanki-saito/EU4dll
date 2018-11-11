@@ -137,6 +137,7 @@ namespace DateFormat {
 
 	V *year;
 	V *day;
+	V *month;
 
 	uintptr_t issue66_YMD_v127_end;
 	__declspec(naked) void issue66_YMD_v127_start() {
@@ -319,6 +320,67 @@ namespace DateFormat {
 
 	/*-----------------------------------------------*/
 
+	uintptr_t issue66_YYYYdMMdDD_1_v127_end;
+	__declspec(naked) void issue66_YYYYdMMdDD_1_v127_start() {
+		__asm {
+			push 0xFFFFFFFF;
+			push 0;
+			push year;
+
+			push issue66_YYYYdMMdDD_1_v127_end;
+			ret;
+		}
+	}
+
+	uintptr_t issue66_YYYYdMMdDD_2_v127_end;
+	__declspec(naked) void issue66_YYYYdMMdDD_2_v127_start() {
+		__asm {
+			push 0xFFFFFFFF;
+			push 0;
+			push month;
+
+			push issue66_YYYYdMMdDD_2_v127_end;
+			ret;
+		}
+	}
+
+	/*-----------------------------------------------*/
+
+	errno_t fixYYYYdMMdDD_hook(EU4Version version) {
+		std::string desc = "fix YYYY.MM.DD format";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8B CF E8 DE 37 C2 FF 53 8D 4D D0");
+			if (byte_pattern::temp_instance().has_size(1, desc + " Year")) {
+				// push 0xFFFFFFFF
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(-0x9), issue66_YYYYdMMdDD_1_v127_start);
+
+				// mov ecx,edi
+				issue66_YYYYdMMdDD_1_v127_end = byte_pattern::temp_instance().get_first().address();
+			}
+
+			byte_pattern::temp_instance().find_pattern("8B CF E8 97 37 C2 FF FF 75 E8 8D 4D D0");
+			if (byte_pattern::temp_instance().has_size(1, desc + " Month")) {
+				// push 0xFFFFFFFF
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(-0x9), issue66_YYYYdMMdDD_2_v127_start);
+
+				// mov ecx,edi
+				issue66_YYYYdMMdDD_2_v127_end = byte_pattern::temp_instance().get_first().address();
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		case v1_26_X:
+		case v1_25_X:
+			/* 対応しない */
+			return NOERROR;
+		}
+
+		return EU4_ERROR1;
+	}
+
+	/*-----------------------------------------------*/
+
 	errno_t init(EU4Version version) {
 		errno_t result = 0;
 
@@ -337,6 +399,13 @@ namespace DateFormat {
 		year->t.text[1] = '\0';
 		year->len = 1;
 		year->len2 = 0xF;
+
+		// 「月」を初期化
+		month = new V();
+		month->t.text[0] = 0xF;
+		month->t.text[1] = '\0';
+		month->len = 1;
+		month->len2 = 0xF;
 
 		/* 日付の表記の順番を入れ替える */
 		result |= menubar_dateFix_hook(version);
@@ -358,6 +427,9 @@ namespace DateFormat {
 
 		/* M Y → Y年M */
 		result |= fixM_Y_hook(version);
+
+		/* YYYY.MM.DD → YYYY年MM月DD日 */
+		result |= fixYYYYdMMdDD_hook(version);
 
 		return result;
 	}
