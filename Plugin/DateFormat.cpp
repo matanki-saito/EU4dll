@@ -1,8 +1,41 @@
 #include "stdinc.h"
 #include "byte_pattern.h"
 
+/*  menubar date format fix */
 /*  issue66 : https://github.com/matanki-saito/EU4dll/issues/66 */
-namespace Issue66 {
+/*  issue73 : https://github.com/matanki-saito/EU4dll/issues/73 */
+namespace DateFormat {
+
+	/*-----------------------------------------------*/
+
+	errno_t menubar_dateFix_hook(EU4Version version) {
+		std::string desc = "menu bar date fix";
+
+		switch (version) {
+		case v1_25_X:
+		case v1_26_X:
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("64 20 77 20 6D");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// d w mw w y
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x79, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x20, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x0F, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x20, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x6D, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(5), 0x77, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x20, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x64, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(8), 0x20, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(9), 0x0E, true);
+				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(10), 0x00, true);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		}
+
+		return EU4_ERROR1;
+	}
 
 	/*-----------------------------------------------*/
 	
@@ -156,8 +189,8 @@ namespace Issue66 {
 
 	/*-----------------------------------------------*/
 
-	errno_t fixYMD_hook(EU4Version version) {
-		std::string desc = "fix YMD format";
+	errno_t fixD_MC_Y_hook(EU4Version version) {
+		std::string desc = "fix D M, Y format";
 
 		switch (version) {
 		case v1_27_X:
@@ -209,8 +242,8 @@ namespace Issue66 {
 
 	/*-----------------------------------------------*/
 
-	errno_t fixYM_hook(EU4Version version) {
-		std::string desc = "fix YM format";
+	errno_t fixMC_Y_hook(EU4Version version) {
+		std::string desc = "fix M, Y format";
 
 		switch (version) {
 		case v1_27_X:
@@ -221,6 +254,57 @@ namespace Issue66 {
 
 				// push 0xFFFFFFFF
 				issue66_YM_v127_end = byte_pattern::temp_instance().get_first().address(0x20 + 0x27);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		case v1_26_X:
+		case v1_25_X:
+			/* 対応しない */
+			return NOERROR;
+		}
+
+		return EU4_ERROR1;
+	}
+
+	/*-----------------------------------------------*/
+
+	uintptr_t issue66_YSM_v127_end;
+	__declspec(naked) void issue66_YSM_v127_start() {
+		__asm {
+			mov     byte ptr[ebp - 0x4], 2;
+			push    year;
+			lea     eax, dword ptr[ebp - 0x44];
+			push    eax;
+			mov ecx, esi;
+			call    issue66_copyBuff2_v127_start;
+
+			lea  ecx , dword ptr[ebp - 0x5C];
+			push ecx;
+			mov     esi, dword ptr [ebp + 0x8]; // arg_0
+			mov     ecx, eax;
+			push    esi;
+			mov     byte ptr[ebp - 0x4], 3;
+			call    issue66_copyBuff2_v127_start;
+
+			push issue66_YSM_v127_end;
+			ret;
+		}
+	}
+
+	/*-----------------------------------------------*/
+
+	errno_t fixM_Y_hook(EU4Version version) {
+		std::string desc = "fix M Y format";
+
+		switch (version) {
+		case v1_27_X:
+			byte_pattern::temp_instance().find_pattern("8D 45 D4 C6 45 FC 02 50 8D 45 BC 50 8D 4D A4");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// lea eax, [ebp+var_2C]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_YSM_v127_start);
+
+				// mov eax, [ebp+var_30]
+				issue66_YSM_v127_end = byte_pattern::temp_instance().get_first().address(0x24);
 			}
 			else return EU4_ERROR1;
 			return NOERROR;
@@ -254,6 +338,9 @@ namespace Issue66 {
 		year->len = 1;
 		year->len2 = 0xF;
 
+		/* 日付の表記の順番を入れ替える */
+		result |= menubar_dateFix_hook(version);
+
 		/* コピーバッファ関数をフック */
 		result |= copyBuffFunc_hook(version);
 
@@ -263,13 +350,14 @@ namespace Issue66 {
 		/* コピーテキスト作成関数をフック */
 		result |= copyText_hook(version);
 
-		/* 年月 */
-		result |= fixYM_hook(version);
+		/* M, Y → Y年M */
+		result |= fixMC_Y_hook(version);
 
-		/* 年月日 */
-		result |= fixYMD_hook(version);
+		/* D M, Y → Y年MD日*/
+		result |= fixD_MC_Y_hook(version);
 
-
+		/* M Y → Y年M */
+		result |= fixM_Y_hook(version);
 
 		return result;
 	}

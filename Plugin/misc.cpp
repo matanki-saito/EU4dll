@@ -190,36 +190,6 @@ namespace Misc {
 		return NOERROR;
 	}
 
-	/*-----------------------------------------------*/
-
-	errno_t dateFix_hook(EU4Version version) {
-		std::string desc = "date fix";
-
-		switch (version) {
-		case v1_25_X:
-		case v1_26_X:
-		case v1_27_X:
-			byte_pattern::temp_instance().find_pattern("64 20 77 20 6D");
-			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// d w mw w y
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(0), 0x79, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(1), 0x20, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(2), 0x0F, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x20, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(4), 0x6D, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(5), 0x77, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(6), 0x20, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(7), 0x64, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(8), 0x20, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(9), 0x0E, true);
-				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(10), 0x00, true);
-			}
-			else return EU4_ERROR1;
-			return NOERROR;
-		}
-
-		return EU4_ERROR1;
-	}
 
 	/*-----------------------------------------------*/
 
@@ -363,8 +333,6 @@ namespace Misc {
 		// だいぶ変更されている？ 本当に対応できているか不明。
 		// そもそもこの修正がどんな効果をもたらすか忘れてしまった
 		result |= unknown_hook(version);
-		// 日付の表記の順番を入れ替える
-		result |= dateFix_hook(version);
 		// nudgeモードの修正(issue12)
 		result |= nudge_hook(version);
 
