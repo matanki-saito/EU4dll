@@ -320,6 +320,10 @@ namespace DateFormat {
 
 	/*-----------------------------------------------*/
 
+	uintptr_t issue66_copy_func;
+
+	/*-----------------------------------------------*/
+
 	uintptr_t issue66_YYYYdMMdDD_1_v127_end;
 	__declspec(naked) void issue66_YYYYdMMdDD_1_v127_start() {
 		__asm {
@@ -332,6 +336,8 @@ namespace DateFormat {
 		}
 	}
 
+	/*-----------------------------------------------*/
+
 	uintptr_t issue66_YYYYdMMdDD_2_v127_end;
 	__declspec(naked) void issue66_YYYYdMMdDD_2_v127_start() {
 		__asm {
@@ -340,6 +346,23 @@ namespace DateFormat {
 			push month;
 
 			push issue66_YYYYdMMdDD_2_v127_end;
+			ret;
+		}
+	}
+
+	/*-----------------------------------------------*/
+
+	uintptr_t issue66_YYYYdMMdDD_3_v127_end;
+	__declspec(naked) void issue66_YYYYdMMdDD_3_v127_start() {
+		__asm {
+			push 0xFFFFFFFF;
+			push 0;
+			push day;
+			mov  ecx, edi;
+			call issue66_copy_func;
+			mov     ecx, [ebp - 0x1C]
+
+			push issue66_YYYYdMMdDD_3_v127_end;
 			ret;
 		}
 	}
@@ -359,6 +382,7 @@ namespace DateFormat {
 				// mov ecx,edi
 				issue66_YYYYdMMdDD_1_v127_end = byte_pattern::temp_instance().get_first().address();
 			}
+			else return EU4_ERROR1;
 
 			byte_pattern::temp_instance().find_pattern("8B CF E8 97 37 C2 FF FF 75 E8 8D 4D D0");
 			if (byte_pattern::temp_instance().has_size(1, desc + " Month")) {
@@ -367,8 +391,24 @@ namespace DateFormat {
 
 				// mov ecx,edi
 				issue66_YYYYdMMdDD_2_v127_end = byte_pattern::temp_instance().get_first().address();
+
+				// mov ecx,[ebp+var_1C]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x25), issue66_YYYYdMMdDD_3_v127_start);
+
+				// cmp ecx,10h
+				issue66_YYYYdMMdDD_3_v127_end = byte_pattern::temp_instance().get_first().address(0x2B);
+
 			}
 			else return EU4_ERROR1;
+
+			// コピーする関数を取得する
+			byte_pattern::temp_instance().find_pattern("57 8B 43 10 3B C1 0F 82 C0 00 00 00");
+			if (byte_pattern::temp_instance().has_size(1, desc + " copy func")) {
+				// push edi
+				issue66_copy_func = byte_pattern::temp_instance().get_first().address(-0xD);
+			}
+			else return EU4_ERROR1;
+
 			return NOERROR;
 		case v1_26_X:
 		case v1_25_X:
@@ -402,7 +442,7 @@ namespace DateFormat {
 
 		// 「月」を初期化
 		month = new V();
-		month->t.text[0] = 0xF;
+		month->t.text[0] = 7; //BEL
 		month->t.text[1] = '\0';
 		month->len = 1;
 		month->len2 = 0xF;
