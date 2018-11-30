@@ -97,7 +97,7 @@
     <ClCompile Include="IME.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputIssue19.cpp" />
-    <ClCompile Include="Issue66.cpp" />
+    <ClCompile Include="DateFormat.cpp" />
     <ClCompile Include="mapAdj.cpp" />
     <ClCompile Include="mapJustify.cpp" />
     <ClCompile Include="mapView.cpp" />
