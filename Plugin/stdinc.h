@@ -127,6 +127,6 @@ namespace EventDialog {
 	errno_t init(EU4Version version);
 }
 
-namespace DateFormat {
+namespace Issue66 {
 	errno_t init(EU4Version version);
 }
