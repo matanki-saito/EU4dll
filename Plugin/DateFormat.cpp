@@ -469,7 +469,8 @@ namespace DateFormat {
 		result |= fixM_Y_hook(version);
 
 		/* YYYY.MM.DD → YYYY年MM月DD日 */
-		result |= fixYYYYdMMdDD_hook(version);
+		/* 不具合があってコメントアウト：https://github.com/matanki-saito/EU4dll/issues/76 */
+		//result |= fixYYYYdMMdDD_hook(version);
 
 		return result;
 	}
