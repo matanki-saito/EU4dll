@@ -55,7 +55,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		success |= FileSave::init(version);
 
 		// issue66ÇÃèCê≥
-		success |= Issue66::init(version);
+		success |= DateFormat::init(version);
 
 		if (success == NOERROR) {
 			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);
