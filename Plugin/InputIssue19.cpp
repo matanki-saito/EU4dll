@@ -13,6 +13,7 @@ namespace InputIssue19 {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			// 1.25.1.0, 1.26.0.0, 1.27.0.0
 			byte_pattern::temp_instance().find_pattern("55 8B EC 83 EC 40 56 8B 75 0C");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -52,6 +53,7 @@ namespace InputIssue19 {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			// 1.25.1.0, 1.26.0.0, 1.27.0.0
 			byte_pattern::temp_instance().find_pattern("83 C4 08 33 C0 E9 82 F8 FF FF");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -92,6 +94,7 @@ namespace InputIssue19 {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			// 1.25.1.0, 1.26.0.0, 1.27.0.0
 			byte_pattern::temp_instance().find_pattern("83 FE 46 75 11 80 78 46 00 75");
 			if (byte_pattern::temp_instance().has_size(1, "")) {

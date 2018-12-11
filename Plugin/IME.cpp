@@ -32,6 +32,7 @@ namespace IME {
 		std::string desc = "SDL_windowsevents";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 		case v1_26_X:
 		case v1_25_X:
@@ -92,6 +93,7 @@ namespace IME {
 		std::string desc = "SDL_windowskeyboard";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 		case v1_26_X:
 		case v1_25_X:

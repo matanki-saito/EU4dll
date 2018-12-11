@@ -12,6 +12,7 @@ namespace Font {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("59 85 C0 74 15 56 6A 00");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// push 0
@@ -30,6 +31,7 @@ namespace Font {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			/* ランチャー */
 			byte_pattern::temp_instance().find_pattern("68 20 28 00 00 8B 45");
 			if (byte_pattern::temp_instance().has_size(1,"buffer clear launcher 1")) {
@@ -77,6 +79,7 @@ namespace Font {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("81 FE 00 00 00 01");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// cmp esi, 10000000h
@@ -97,6 +100,7 @@ namespace Font {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			/* ランチャー */
 			byte_pattern::temp_instance().find_pattern("68 20 28 00 00 E8 ? ? ? ? 83");
 			if (byte_pattern::temp_instance().has_size(1, "buffer exp launcher")) {

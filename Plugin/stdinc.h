@@ -54,10 +54,11 @@ struct IncompleteClass
 #define EU4_ERROR1 0x10000
 
 enum EU4Version {
-	UNKNOWN=0,
-	v1_25_X=125,
-	v1_26_X=126,
-	v1_27_X=127
+	UNKNOWN = 0,
+	v1_25_X = 125,
+	v1_26_X = 126,
+	v1_27_X = 127,
+	v1_28_X = 128
 };
 
 namespace Font

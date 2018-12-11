@@ -41,6 +41,7 @@ namespace Misc {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("53 57 8B F9 83 7F 14 10 8B 5F 10");
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
 				// movsx eax, byte ptr [edi+esi]
@@ -174,6 +175,7 @@ namespace Misc {
 			else return EU4_ERROR1;
 			return NOERROR;
 
+		case v1_28_X:
 		case v1_27_X:
 		case v1_26_X:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 30 8B 0C 82 85");
@@ -295,6 +297,7 @@ namespace Misc {
 		std::string desc = "nudge fix (issue42)";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:		
 			byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 84 82 B4 00 00 00");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
