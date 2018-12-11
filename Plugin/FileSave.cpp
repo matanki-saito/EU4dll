@@ -14,6 +14,7 @@ namespace FileSave {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("85 FF 0F 84 EE 00 00 00 53 56");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// test edi,edi
@@ -42,6 +43,7 @@ namespace FileSave {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			// 0: latin1
 			// 1: ucs2
 			// 2: ucs4
@@ -153,6 +155,7 @@ namespace FileSave {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("51 52 8D 4D B8 E8 ? ? ? ? 8D 4D B8 C7");
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(-0x29), filenameEncode_v125_start);
@@ -484,6 +487,7 @@ namespace FileSave {
 
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("57 68 ? ? ? ? FF 50 4C 8B C8");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_7_2_start_126);
@@ -505,6 +509,7 @@ namespace FileSave {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("74 0E 78 0A 8A 41 01 41");
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
 				// jz short loc_XXXXX

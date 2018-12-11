@@ -30,19 +30,19 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// その他
 		success |= Misc::init(version);
 
-		//入力修正
+		// 入力修正
 		success |= Input::init(version);
 
-		//IME修正
+		// IME修正
 		success |= IME::init(version);
 
-		//ツールチップとボタン
+		// ツールチップとボタン
 		success |= ButtonAndToolTip::init(version);
 
-		//ツールチップ追加処理
+		// ツールチップ追加処理
 		success |= ToolTipApx::init(version);
 
-		//マップ上のポップアップ文字
+		// マップ上のポップアップ文字
 		success |= PopupCharOnMap::init(version);
 
 		// issue19の修正
@@ -54,7 +54,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// ファイルセーブ関連
 		success |= FileSave::init(version);
 
-		// issue66の修正
+		// DateFormat(issue66)の修正
 		success |= DateFormat::init(version);
 
 		if (success == NOERROR) {
