@@ -62,7 +62,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}
 		else {
-			MessageBoxW(NULL, L"[NG]", L"Multibyte DLL", MB_OK);
+			MessageBoxW(NULL, L"[Multibyte DLL ERROR]\nThis game version is not supported by Multibyte DLL.\nPlease delete d3d9.dll and restart game.\nOr check new version dll.\n\nhttps://github.com/matanki-saito/EU4dll", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [NG]");
 			exit(-1);
 		}
