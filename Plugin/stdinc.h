@@ -61,6 +61,17 @@ enum EU4Version {
 	v1_28_X = 128
 };
 
+union T {
+	char text[0x10];
+	char* p;
+};
+
+typedef struct {
+	union T t;
+	int len;
+	int len2;
+} V;
+
 namespace Font
 {
 	errno_t init(EU4Version version);
