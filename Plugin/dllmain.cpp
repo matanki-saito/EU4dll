@@ -9,6 +9,10 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 
 		// versionを文字列から取得
 		EU4Version version = Misc::getVersion();
+
+		// オプションをiniファイルから取得
+		RunOptions options = RunOptions();
+		Misc::getOptionsByINI(&options);
 		
 		errno_t success = NOERROR;
 
@@ -57,12 +61,19 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// DateFormat(issue66)の修正
 		success |= DateFormat::init(version);
 
-		if (success == NOERROR) {
+		if (success == NOERROR && options.test == false) {
 			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}
 		else {
-			MessageBoxW(NULL, L"[Multibyte DLL ERROR]\nThis game version is not supported by Multibyte DLL.\nPlease delete d3d9.dll and restart game.\nOr check new version dll.\n\nhttps://github.com/matanki-saito/EU4dll", L"Multibyte DLL", MB_OK);
+			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
+			if (sysDefLcid == 1041) {
+				MessageBoxW(NULL, L"日本語化に失敗しました。このバージョンではまだ動かないか、未知のエラーです。\n以下で相談してみてください。\n https://paradoxian-japan-mod.com/", L"日本語化のエラーです", MB_OK);
+			}
+			else {
+				MessageBoxW(NULL, L"[Multibyte DLL ERROR]\nThis game version is not supported by Multibyte DLL.\nPlease delete d3d9.dll and restart game.\nOr check new version dll.\n\nhttps://github.com/matanki-saito/EU4dll", L"Multibyte DLL", MB_OK);
+			}
+
 			byte_pattern::temp_instance().debug_output2("DLL [NG]");
 			exit(-1);
 		}
