@@ -15,6 +15,7 @@ namespace DateFormat {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("64 20 77 20 6D");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// d w mw w y
@@ -49,6 +50,7 @@ namespace DateFormat {
 
 		switch (version) {
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("83 EC 20 56 FF 75 0C 8B D1 C7 45");
 			/* 2‚Â‚Æ‚àŽæ“¾‚·‚é */
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
@@ -79,6 +81,7 @@ namespace DateFormat {
 
 		switch (version) {
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("83 EC 28 56 8B F1 89 75 EC 57 C7 46");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// sub esp,28h
@@ -106,6 +109,7 @@ namespace DateFormat {
 
 		switch (version) {
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("55 8B EC 53 8B 5D 08 56 8B F1 85 DB 74 57");
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
 				// push ebp
@@ -194,6 +198,7 @@ namespace DateFormat {
 		std::string desc = "fix D M, Y format";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("57 8D 8D 60 FF FF FF C6 45 FC 03");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -247,6 +252,7 @@ namespace DateFormat {
 		std::string desc = "fix M, Y format";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8B F0 8D 4D EC 6A 00 8D 45 A0");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -298,6 +304,7 @@ namespace DateFormat {
 		std::string desc = "fix M Y format";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8D 45 D4 C6 45 FC 02 50 8D 45 BC 50 8D 4D A4");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -373,6 +380,7 @@ namespace DateFormat {
 		std::string desc = "fix YYYY.MM.DD format";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8B CF E8 DE 37 C2 FF 53 8D 4D D0");
 			if (byte_pattern::temp_instance().has_size(1, desc + " Year")) {

@@ -30,19 +30,19 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// その他
 		success |= Misc::init(version);
 
-		//入力修正
+		// 入力修正
 		success |= Input::init(version);
 
-		//IME修正
+		// IME修正
 		success |= IME::init(version);
 
-		//ツールチップとボタン
+		// ツールチップとボタン
 		success |= ButtonAndToolTip::init(version);
 
-		//ツールチップ追加処理
+		// ツールチップ追加処理
 		success |= ToolTipApx::init(version);
 
-		//マップ上のポップアップ文字
+		// マップ上のポップアップ文字
 		success |= PopupCharOnMap::init(version);
 
 		// issue19の修正
@@ -54,7 +54,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// ファイルセーブ関連
 		success |= FileSave::init(version);
 
-		// issue66の修正
+		// DateFormat(issue66)の修正
 		success |= DateFormat::init(version);
 
 		if (success == NOERROR) {
@@ -62,7 +62,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}
 		else {
-			MessageBoxW(NULL, L"[NG]", L"Multibyte DLL", MB_OK);
+			MessageBoxW(NULL, L"[Multibyte DLL ERROR]\nThis game version is not supported by Multibyte DLL.\nPlease delete d3d9.dll and restart game.\nOr check new version dll.\n\nhttps://github.com/matanki-saito/EU4dll", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [NG]");
 			exit(-1);
 		}

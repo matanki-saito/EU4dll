@@ -179,6 +179,7 @@ namespace MapView {
 		std::string desc = "map font view 1";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 38 8D 4D A8");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -274,6 +275,7 @@ namespace MapView {
 		std::string desc = "map font view 3";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 		case v1_25_X:
 		case v1_26_X:
@@ -403,6 +405,7 @@ namespace MapView {
 		std::string desc = "map font view 4";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 18 8B 34 87 89 B5 30");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {

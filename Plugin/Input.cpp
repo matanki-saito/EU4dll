@@ -234,6 +234,7 @@ namespace Input {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			
 			//スタック拡張
 			byte_pattern::temp_instance().find_pattern("D8 00 00 00 53 8B 5D 08 56 8B F1 85");
@@ -362,6 +363,7 @@ namespace Input {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("8B 07 8B CF 85");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov eax, [edi]

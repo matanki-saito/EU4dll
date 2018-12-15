@@ -23,13 +23,16 @@ namespace Misc {
 
 			switch (minor.calMinorVer()) {
 			case 25:
-				version =  v1_25_X;
+				version = v1_25_X;
 				break;
 			case 26:
 				version = v1_26_X;
 				break;
 			case 27:
 				version = v1_27_X;
+				break;
+			case 28:
+				version = v1_28_X;
 				break;
 			default:
 				version = UNKNOWN;
@@ -51,6 +54,8 @@ namespace Misc {
 			return "v1_26_X";
 		case v1_27_X:
 			return "v1_27_X";
+		case v1_28_X:
+			return "v1_28_X";
 		default:
 			return "UNKNOWN";
 		}

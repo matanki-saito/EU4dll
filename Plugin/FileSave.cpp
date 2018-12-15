@@ -14,6 +14,7 @@ namespace FileSave {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("85 FF 0F 84 EE 00 00 00 53 56");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// test edi,edi
@@ -42,6 +43,7 @@ namespace FileSave {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			// 0: latin1
 			// 1: ucs2
 			// 2: ucs4
@@ -153,6 +155,7 @@ namespace FileSave {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("51 52 8D 4D B8 E8 ? ? ? ? 8D 4D B8 C7");
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(-0x29), filenameEncode_v125_start);
@@ -360,18 +363,7 @@ namespace FileSave {
 		return success;
 	}
 
-	union T {
-		char text[0x10];
-		char* p;
-	};
-
-	typedef struct V {
-		union T t;
-		int len;
-		int len2;
-	} Vs;
-
-	Vs* tmpZV = NULL;
+	V* tmpZV = NULL;
 	char*  utf8ToEscapedStr(char *from) {
 
 		if (tmpZV != NULL) {
@@ -381,7 +373,7 @@ namespace FileSave {
 			delete tmpZV;
 		}
 
-		tmpZV = new Vs();
+		tmpZV = new V();
 
 		wchar_t *tmp = NULL;
 		char *tmp2 = NULL;
@@ -419,6 +411,9 @@ namespace FileSave {
 
 	char titleUtf8tmp[200] = {};
 	char titleMytmp[200] = {};
+
+	/*-----------------------------------------------*/
+
 	uintptr_t issue_7_2_end;
 	__declspec(naked) void issue_7_2_start() {
 		__asm {
@@ -484,6 +479,7 @@ namespace FileSave {
 
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("57 68 ? ? ? ? FF 50 4C 8B C8");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_7_2_start_126);
@@ -505,10 +501,97 @@ namespace FileSave {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("74 0E 78 0A 8A 41 01 41");
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
 				// jz short loc_XXXXX
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get(1).address(), 0xEB, true);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		}
+
+		return EU4_ERROR1;
+	}
+
+	/*-----------------------------------------------*/
+
+	V* tmpZV2 = NULL;
+	V* utf8ToEscapedStrFromV(V* from) {
+
+		if (tmpZV2 != NULL) {
+			if (tmpZV2->len > 0x10) {
+				free(tmpZV2->t.p);
+			}
+			delete tmpZV2;
+		}
+		tmpZV2 = new V();
+
+		wchar_t *tmp = NULL;
+		char *tmp2 = NULL;
+
+		char *src = NULL;
+
+		if (from->len >= 0x10) {
+			src = from->t.p;
+		}
+		else {
+			src = from->t.text;
+		}
+
+		//UTF-8 -> wide char (ucs2)
+		convertTextToWideText(src, &tmp);
+
+		//wide char (ucs2) -> Escaped Text
+		convertWideTextToEscapedText(tmp, &tmp2);
+
+		free(tmp);
+
+		int len = strlen(tmp2);
+		tmpZV2->len = len;
+		tmpZV2->len2 = len;
+
+		if (len >= 0x10) {
+			tmpZV2->t.p = tmp2;
+		}
+		else {
+			memcpy(tmpZV2->t.text, tmp2, len);
+		}
+
+		return tmpZV2;
+	}
+
+	uintptr_t showToolTip_end_v128;
+	__declspec(naked) void showToolTip_start_v128() {
+		__asm {
+			lea eax, [edi + 0x334];
+
+			mov byte ptr[ebp - 0x4], 0x15;
+
+			push eax;
+			call utf8ToEscapedStrFromV;
+			add esp, 4;
+
+			push    eax;
+
+			push showToolTip_end_v128;
+			ret;
+
+		}
+	}
+
+	/*-----------------------------------------------*/
+
+	errno_t showToolTip(EU4Version version) {
+
+		std::string desc = "show tool tip";
+
+		switch (version) {
+		case v1_28_X:
+			byte_pattern::temp_instance().find_pattern("8D 87 34 03 00 00 C6 45 FC 15");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), showToolTip_start_v128);
+				showToolTip_end_v128 = byte_pattern::temp_instance().get_first().address(0xB);
 			}
 			else return EU4_ERROR1;
 			return NOERROR;
@@ -538,6 +621,9 @@ namespace FileSave {
 
 		/* UTF-8ファイルを列挙できるようにする jz(74) -> jmp(EB) */ 
 		result |= fileEnumSkip_hook(version);
+
+		/* ツールチップを表示できるようにする */
+		result |= showToolTip(version);
 
 		return result;
 	}

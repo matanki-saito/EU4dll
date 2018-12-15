@@ -25,7 +25,8 @@ namespace ButtonAndToolTip {
 			else return EU4_ERROR1;
 			return NOERROR;
 
-		case v1_27_X: 
+		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("81 EC 98 05 00 00 8B 55 18");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				//    | edi  |  [ebp-(0x598+0xC+0x8)] =(+2)=> [ebp-(0x59A+0xC+0x8)]
@@ -94,6 +95,7 @@ namespace ButtonAndToolTip {
 		std::string desc = "func1";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 		case v1_25_X:
 		case v1_26_X:
@@ -230,6 +232,7 @@ namespace ButtonAndToolTip {
 
 		switch (version) {
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 30 0F B6 C0 8B 84");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov al,[eax+esi]
@@ -304,6 +307,7 @@ namespace ButtonAndToolTip {
 
 		switch (version) {
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("66 83 78 06 00 0F 85 17");
 			if (byte_pattern::temp_instance().has_size(1, desc + " start")) {
 				// cmp word ptr [eax+6],0
@@ -460,6 +464,7 @@ namespace ButtonAndToolTip {
 
 		switch (version) {
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 38 8B 04 81");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// movzx eax, byte ptr [eax+edi]
@@ -493,6 +498,7 @@ namespace ButtonAndToolTip {
 
 		switch (version) {
 		case v1_27_X:
+		case v1_28_X:
 			// lea esp,[ebp-5ACh] -> 5AE
 			byte_pattern::temp_instance().find_pattern("8D A5 54 FA FF FF");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {

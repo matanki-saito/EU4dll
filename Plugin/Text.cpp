@@ -9,6 +9,7 @@ namespace TextView {
 		std::string desc = "change stack size";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("81 EC A8 06 00 00 56 57");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -54,6 +55,7 @@ namespace TextView {
 		std::string desc = "prepare copying text to buffer";
 		
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 06 88 82 ? ? ? ? 42");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -344,6 +346,7 @@ namespace TextView {
 		std::string desc = "copy text to buffer";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("42 80 7B 3C 00 8B 45 E8");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -437,6 +440,7 @@ namespace TextView {
 		std::string desc = "get char in font";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 06 8B 84 87 B4 00 00 00");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -514,6 +518,7 @@ namespace TextView {
 		std::string desc = "fix copy buff";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			/* text1の修正なのでスキップした */
 			return NOERROR;
@@ -589,6 +594,7 @@ namespace TextView {
 		std::string desc = "line break";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8B 45 B4 66 83 78 06 00");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -780,6 +786,7 @@ namespace TextView {
 		std::string desc = "actual char viewing";
 
 		switch (version) {
+		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8A 87 ? ? ? ? 8B 4D AC");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {

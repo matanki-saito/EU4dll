@@ -80,6 +80,7 @@ namespace ToolTipApx {
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
+		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("8A 14 16 8D 8F");
 			if (byte_pattern::temp_instance().has_size(1, desc + " start")) {
 				// dl,[esi+edx]
