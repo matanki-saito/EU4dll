@@ -66,13 +66,13 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}
 		else {
-			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
-			if (sysDefLcid == 1041) {
-				MessageBoxW(NULL, L"日本語化に失敗しました。このバージョンではまだ動かないか、未知のエラーです。\n以下で相談してみてください。\n https://paradoxian-japan-mod.com/", L"日本語化のエラーです", MB_OK);
-			}
-			else {
+//			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
+//			if (sysDefLcid == 1041) {
+//				MessageBoxW(NULL, L"--> Go to https://paradoxian-japan-mod.com/ <--", L"Error", MB_OK);
+//			}
+//			else {
 				MessageBoxW(NULL, L"[Multibyte DLL ERROR]\nThis game version is not supported by Multibyte DLL.\nPlease delete d3d9.dll and restart game.\nOr check new version dll.\n\nhttps://github.com/matanki-saito/EU4dll", L"Multibyte DLL", MB_OK);
-			}
+//			}
 
 			byte_pattern::temp_instance().debug_output2("DLL [NG]");
 			exit(-1);
