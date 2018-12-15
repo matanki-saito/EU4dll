@@ -595,6 +595,10 @@ namespace FileSave {
 			}
 			else return EU4_ERROR1;
 			return NOERROR;
+		case v1_25_X:
+		case v1_26_X:
+		case v1_27_X:
+			return NOERROR;
 		}
 
 		return EU4_ERROR1;
