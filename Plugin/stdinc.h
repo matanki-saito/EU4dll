@@ -72,6 +72,15 @@ typedef struct {
 	int len2;
 } V;
 
+typedef struct _runoption {
+	// プログラムバージョン
+	EU4Version version;
+	
+	// テスト
+	boolean test;
+
+} RunOptions;
+
 namespace Font
 {
 	errno_t init(EU4Version version);
@@ -97,6 +106,7 @@ namespace Misc
 	EU4Version getVersion();
 	std::string versionString(EU4Version version);
 	errno_t init(EU4Version version);
+	void getOptionsByINI(RunOptions *options);
 }
 
 namespace TextView
