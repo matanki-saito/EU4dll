@@ -22,4 +22,4 @@ set url=http://localhost:8080/api/v1/distribution/eu4/%exeMD5%?dll_md5=%pluginMD
 
 echo %url%
 
-call "curl.exe" -o "Plugin.dll" %url%
+call "curl.exe" -f -o "Plugin.dll" %url%
