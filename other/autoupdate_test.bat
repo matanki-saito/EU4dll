@@ -20,5 +20,8 @@ for /f "skip=1 delims=:" %%a in ('CertUtil -hashfile ../eu4.exe MD5') do (
 
 set url=https://triela.japanwest.cloudapp.azure.com:8443/api/v1/distribution/144728261/%exeMD5%?dll_md5=%pluginMD5%
 
-rem 証明書が検証できない？ので-k
+echo %url%
+
 call "curl.exe" -k -f -o "Plugin.dll" %url%
+
+pause
