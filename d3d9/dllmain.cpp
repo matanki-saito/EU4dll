@@ -62,10 +62,13 @@ void Initialize(HMODULE hSelf)
 
     GetModuleFileNameW(hSelf, pluginpath, MAX_PATH);
 
-	initFileDl();
+	const path pluginsPath = path{ pluginpath }.parent_path() / L"plugins";
+
+	InitAutoUpdate(pluginsPath);
 
     InitD3D9();
-    LoadScripts(path{ pluginpath }.parent_path() / L"plugins");
+
+    LoadScripts(pluginsPath);
 }
 
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
