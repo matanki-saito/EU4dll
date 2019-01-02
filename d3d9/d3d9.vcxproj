@@ -87,6 +87,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="filedl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="filedl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
