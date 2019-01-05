@@ -22,6 +22,6 @@ set url=https://d3mq2c18xv0s3o.cloudfront.net/api/v1/distribution/144728261/%exe
 
 echo %url%
 
-call "curl.exe" -f -k -v -o "Plugin.dll" %url%
+call "curl.exe" -f -k -v --connect-timeout 3 -m 6  -o "Plugin.dll" %url%
 
 pause

@@ -20,4 +20,4 @@ for /f "skip=1 delims=:" %%a in ('CertUtil -hashfile ../eu4.exe MD5') do (
 
 set url=https://d3mq2c18xv0s3o.cloudfront.net/api/v1/distribution/144728261/%exeMD5%?dll_md5=%pluginMD5%
 
-call "curl.exe" -k -f -o -s "Plugin.dll" %url%
+call "curl.exe" -k -f --connect-timeout 3 -m 6 -s -o "Plugin.dll" %url%
