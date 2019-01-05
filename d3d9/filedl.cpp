@@ -16,11 +16,13 @@ int InitAutoUpdate(const path &pluginsPath)
 {
 	path batFilePath = path{ pluginsPath } / L"autoupdate.bat";
 
-	createProcess(
-		wcsdup(batFilePath.c_str()),
-		CREATE_NO_WINDOW,
-		true
-	);
+	if (std::experimental::filesystem::exists(batFilePath)) {
+		createProcess(
+			wcsdup(batFilePath.c_str()),
+			CREATE_NO_WINDOW,
+			true
+		);
+	}
 
 	return 1;
 }
