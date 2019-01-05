@@ -18,10 +18,10 @@ for /f "skip=1 delims=:" %%a in ('CertUtil -hashfile ../eu4.exe MD5') do (
   set/a count+=1
 )
 
-set url=https://triela.japanwest.cloudapp.azure.com:8443/api/v1/distribution/144728261/%exeMD5%?dll_md5=%pluginMD5%
+set url=https://triela.azureedge.net/api/v1/distribution/144728261/%exeMD5%?dll_md5=%pluginMD5%
 
 echo %url%
 
-call "curl.exe" -k -f -o "Plugin.dll" %url%
+call "curl.exe" -k -v -o "Plugin.dll" %url%
 
 pause
