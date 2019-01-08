@@ -16,8 +16,7 @@ If you find a bug, **create a issue** in this repository.
 If possible, please write the issue report in English. However you can also create it in your language (Japanese, Korean, Chinese, Russian etc).
 
 ## Autoupdate
-Plugin.dll will be updated automatically. It requires an Internet connection at game run.　If you do not need　or play offline,  please DELETE "plugins/autoupdate.bat" file.
-
+Plugin.dll will be updated automatically. It requires an Internet connection at game run.　If　you　do　not　need　or　play　offline game, please DELETE "plugins/autoupdate.bat" file.
 
 ## Licence
 MIT Licence
