@@ -8,8 +8,8 @@ This dll makes it possible to display double-byte characters on Europa Universal
 
 ## How to use
  1. Goto [Steam workshop mod](https://steamcommunity.com/sharedfiles/filedetails/?id=1510693109).
- 2. Open Installation procedure link.
- 3. Look at the webpade and description. 👍
+ 2. Open the Installation procedure link.
+ 3. Follow the instructions. 👍
 
 ## Find bugs
 If you find a bug, **create a issue** in this repository. 
