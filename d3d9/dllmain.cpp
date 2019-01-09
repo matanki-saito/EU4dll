@@ -8,6 +8,8 @@
 #include <Objbase.h>
 #pragma comment(lib, "Ole32.lib")
 
+#include "filedl.h"
+
 using namespace std;
 using namespace std::experimental::filesystem::v1;
 
@@ -60,8 +62,13 @@ void Initialize(HMODULE hSelf)
 
     GetModuleFileNameW(hSelf, pluginpath, MAX_PATH);
 
+	const path pluginsPath = path{ pluginpath }.parent_path() / L"plugins";
+
+	if (!InitAutoUpdate(pluginsPath)) exit(-1);
+
     InitD3D9();
-    LoadScripts(path{ pluginpath }.parent_path() / L"plugins");
+
+    LoadScripts(pluginsPath);
 }
 
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
@@ -73,6 +80,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
 
     return TRUE;
 }
+
 
 __declspec(naked) void _Direct3DCreate9() { _asm { jmp d3d9meta.Direct3DCreate9 } }
 __declspec(naked) void _Direct3DCreate9Ex() { _asm { jmp d3d9meta.Direct3DCreate9Ex } }
