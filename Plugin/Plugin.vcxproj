@@ -98,6 +98,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputIssue19.cpp" />
     <ClCompile Include="DateFormat.cpp" />
+    <ClCompile Include="ListChars.cpp" />
     <ClCompile Include="mapAdj.cpp" />
     <ClCompile Include="mapJustify.cpp" />
     <ClCompile Include="mapView.cpp" />
