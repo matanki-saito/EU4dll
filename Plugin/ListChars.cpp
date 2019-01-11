@@ -91,8 +91,8 @@ namespace ListChars {
 
 	/*-----------------------------------------------*/
 
-	uintptr_t issue_99_func2_v128_end;
-	__declspec(naked) void issue_99_func2_v128_start() {
+	uintptr_t issue_99_func2_1_v128_end;
+	__declspec(naked) void issue_99_func2_1_v128_start() {
 
 		__asm {
 			cmp byte ptr[eax + edi], ESCAPE_SEQ_1;
@@ -134,7 +134,6 @@ namespace ListChars {
 			jmp j_2;
 
 		j_1x:
-			add edi, 2;
 			movzx eax, ax;
 			cmp eax, NO_FONT;
 			ja j_2;
@@ -143,13 +142,71 @@ namespace ListChars {
 			mov edx, [ebp - 0x54];
 			movss xmm0, dword ptr[edx + 0x428];
 
-			push issue_99_func2_v128_end;
+			push issue_99_func2_1_v128_end;
 			ret;
 		}
 	}
 
 	/*-----------------------------------------------*/
 
+	uintptr_t issue_99_func2_2_v128_end;
+	__declspec(naked) void issue_99_func2_2_v128_start() {
+
+		__asm {
+
+			mov eax, dword ptr [esi + 0x14];
+			cmp eax, 0x10;
+			jb j_a;
+			mov eax, dword ptr [esi];
+			jmp j_b;
+		j_a:
+			mov eax, esi;
+		j_b:
+			
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_1;
+			jz j_1x;
+
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_2;
+			jz j_1x;
+
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_3;
+			jz j_1x;
+
+			cmp byte ptr[eax + edi], ESCAPE_SEQ_4;
+			jz j_1x;
+
+		j_01:
+			inc edi;
+			jmp j_2;
+
+		j_1x:
+			add edi, 3;
+		j_2:
+			mov eax, dword ptr [esi + 0x10];
+			mov dword ptr [ebp - 0x38], edi;
+			push issue_99_func2_2_v128_end;
+			ret;
+		}
+	}
+
+	/*-----------------------------------------------*/
+
+	uintptr_t issue_99_func2_3_v128_end;
+	__declspec(naked) void issue_99_func2_3_v128_start() {
+
+		__asm {
+			mov     eax, [eax + edi];
+			push [ebp  - 0x60];
+			mov     ecx, [ebp - 0x54];
+			mov     dword ptr[ebp - 0x64], eax;
+
+			push issue_99_func2_3_v128_end;
+			ret;
+		}
+	}
+
+	/*-----------------------------------------------*/
+	
 	errno_t func2_hook(EU4Version version) {
 		std::string desc = "func2";
 
@@ -160,14 +217,36 @@ namespace ListChars {
 			return NOERROR;
 
 		case v1_28_X:
+			// フォント読み出し
 			// mov     al, [eax+edi]
 			byte_pattern::temp_instance().find_pattern("8A 04 38 8B 55 AC 0F B6 C0");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_99_func2_v128_start);
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_99_func2_1_v128_start);
 				// mov     ebx, [edx+eax*4]
-				issue_99_func2_v128_end = byte_pattern::temp_instance().get_first().address(0x11);
+				issue_99_func2_1_v128_end = byte_pattern::temp_instance().get_first().address(0x11);
 			}
 			else return EU4_ERROR1;
+
+			// 上で2byte進めるとうまくいかないので、処理の最後でカウントを増やす
+			// mov     eax, [esi+10h]
+			byte_pattern::temp_instance().find_pattern("8B 46 10 47 89 7D C8 89 45 08");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_99_func2_2_v128_start);
+				// mov     [ebp+arg_0], eax
+				issue_99_func2_2_v128_end = byte_pattern::temp_instance().get_first().address(0x7);
+			}
+			else return EU4_ERROR1;
+
+			//// func1の引数を変更
+			//// mov     al, [eax+edi]
+			//byte_pattern::temp_instance().find_pattern("8A 04 38 FF 75 A0 8B 4D AC 88 45 9C");
+			//if (byte_pattern::temp_instance().has_size(1, desc)) {
+			//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_99_func2_3_v128_start);
+			//	// push    [ebp+var_64]
+			//	issue_99_func2_3_v128_end = byte_pattern::temp_instance().get_first().address(0xC);
+			//}
+			//else return EU4_ERROR1;
+
 			return NOERROR;
 		}
 		return EU4_ERROR1;
