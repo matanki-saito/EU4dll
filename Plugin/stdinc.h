@@ -152,3 +152,7 @@ namespace EventDialog {
 namespace DateFormat {
 	errno_t init(EU4Version version);
 }
+
+namespace ListChars {
+	errno_t init(EU4Version version);
+}
