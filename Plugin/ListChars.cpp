@@ -195,10 +195,42 @@ namespace ListChars {
 	__declspec(naked) void issue_99_func2_3_v128_start() {
 
 		__asm {
-			mov     eax, [eax + edi];
-			push [ebp  - 0x60];
-			mov     ecx, [ebp - 0x54];
-			mov     dword ptr[ebp - 0x64], eax;
+			mov ecx, dword ptr [esi + 0x14];
+			cmp ecx, 0x10;
+			jb j_a;
+			mov ecx, dword ptr [esi];
+			jmp j_b;
+		j_a:
+			mov ecx, esi;
+		j_b:
+
+			cmp byte ptr[ecx + edi], ESCAPE_SEQ_1;
+			jz j_1x;
+
+			cmp byte ptr[ecx + edi], ESCAPE_SEQ_2;
+			jz j_1x;
+
+			cmp byte ptr[ecx + edi], ESCAPE_SEQ_3;
+			jz j_1x;
+
+			cmp byte ptr[ecx + edi], ESCAPE_SEQ_4;
+			jz j_1x;
+
+			push    dword ptr[eax];
+			jmp j_z;
+
+		j_1x:
+			// Ç≤Ç‹Ç©Ç∑
+			mov eax, edi;
+			sub eax, 3;
+			push eax;
+
+		j_z:
+
+			mov     ecx, esi;
+			lea     eax, dword ptr [ebp - 0x34];
+			push    0;
+			push    eax;
 
 			push issue_99_func2_3_v128_end;
 			ret;
@@ -237,15 +269,15 @@ namespace ListChars {
 			}
 			else return EU4_ERROR1;
 
-			//// func1ÇÃà¯êîÇïœçX
-			//// mov     al, [eax+edi]
-			//byte_pattern::temp_instance().find_pattern("8A 04 38 FF 75 A0 8B 4D AC 88 45 9C");
-			//if (byte_pattern::temp_instance().has_size(1, desc)) {
-			//	injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_99_func2_3_v128_start);
-			//	// push    [ebp+var_64]
-			//	issue_99_func2_3_v128_end = byte_pattern::temp_instance().get_first().address(0xC);
-			//}
-			//else return EU4_ERROR1;
+			// 
+			//  mov     ecx, esi
+			byte_pattern::temp_instance().find_pattern("8B CE FF 30 8D 45 CC 6A 00 50 E8 C5 F3 15 00");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_99_func2_3_v128_start);
+				// call xxxxx
+				issue_99_func2_3_v128_end = byte_pattern::temp_instance().get_first().address(0xA);
+			}
+			else return EU4_ERROR1;
 
 			return NOERROR;
 		}
