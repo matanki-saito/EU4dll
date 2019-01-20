@@ -271,7 +271,7 @@ namespace ListChars {
 
 			// 
 			//  mov     ecx, esi
-			byte_pattern::temp_instance().find_pattern("8B CE FF 30 8D 45 CC 6A 00 50 E8 C5 F3 15 00");
+			byte_pattern::temp_instance().find_pattern("8B CE FF 30 8D 45 CC 6A 00 50 E8 ? ? ? ? 50");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_99_func2_3_v128_start);
 				// call xxxxx
