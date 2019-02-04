@@ -75,6 +75,7 @@ namespace ListChars {
 			return NOERROR;
 
 		case v1_28_X:
+		case v1_28_3:
 
 			// mov     eax, [esi+edx*4]
 			byte_pattern::temp_instance().find_pattern("8B 04 96 85 C0 74 48 80 78 0E 00");
@@ -249,6 +250,7 @@ namespace ListChars {
 			return NOERROR;
 
 		case v1_28_X:
+		case v1_28_3:
 			// フォント読み出し
 			// mov     al, [eax+edi]
 			byte_pattern::temp_instance().find_pattern("8A 04 38 8B 55 AC 0F B6 C0");

@@ -74,6 +74,7 @@ namespace Misc {
 		std::string desc = "capitalize cancel";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_25_X:
 		case v1_26_X:
 		case v1_27_X:
@@ -211,6 +212,7 @@ namespace Misc {
 			else return EU4_ERROR1;
 			return NOERROR;
 
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 		case v1_26_X:
@@ -227,7 +229,6 @@ namespace Misc {
 			
 		return NOERROR;
 	}
-
 
 	/*-----------------------------------------------*/
 
@@ -333,6 +334,7 @@ namespace Misc {
 		std::string desc = "nudge fix (issue42)";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:		
 			byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 84 82 B4 00 00 00");
