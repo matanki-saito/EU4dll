@@ -71,6 +71,7 @@ namespace MapJustify {
 		case v1_26_X:
 		case v1_27_X:
 		case v1_28_X:
+		case v1_28_3:
 			byte_pattern::temp_instance().find_pattern("8D 4D F0 8D 51 01 8A 01 41");
 			if (byte_pattern::temp_instance().has_size(1, desc) || byte_pattern::temp_instance().has_size(2, desc)) {
 				// lea ecx,[ebp-0x10]
@@ -99,6 +100,7 @@ namespace MapJustify {
 		case v1_26_X:
 		case v1_27_X:
 		case v1_28_X:
+		case v1_28_3:
 			byte_pattern::temp_instance().find_pattern("8B 45 AC 8D 55 BC 6A 01");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// mov eax,[ebp-0x54]
@@ -178,6 +180,7 @@ namespace MapJustify {
 		case v1_26_X:
 		case v1_27_X:
 		case v1_28_X:
+		case v1_28_3:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 08 8B 04 82 85 C0 74");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// movzx eax, byte ptr [eax+ecx]

@@ -98,6 +98,7 @@ namespace PopupCharOnMap {
 		std::string desc = "func1,2";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 38 8D 8D 28 FF FF FF 88 45 D8");
@@ -252,6 +253,7 @@ namespace PopupCharOnMap {
 		std::string desc = "func 3";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 38 8B 4D F0");
@@ -391,6 +393,7 @@ namespace PopupCharOnMap {
 		std::string desc = "func 4";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 30 F3 0F 11 A5 44 FF FF FF");
