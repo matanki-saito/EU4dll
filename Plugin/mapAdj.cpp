@@ -201,6 +201,7 @@ namespace MapAdj {
 		std::string desc = "map adj fix";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8A 04 10 F3 0F");
@@ -241,6 +242,7 @@ namespace MapAdj {
 		std::string desc = "map adj get end address";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("F2 0F 10 65 C8 42 F2 0F");
@@ -394,6 +396,7 @@ namespace MapAdj {
 		std::string desc = "one character position fix";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8B 45 DC 48 66 0F 6E FA");

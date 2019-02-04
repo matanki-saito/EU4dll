@@ -9,6 +9,7 @@ namespace EventDialog {
 		std::string desc = "change stack size";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("81 EC 08 03 00 00 8B 45");
@@ -159,6 +160,7 @@ namespace EventDialog {
 		std::string desc = "func1";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("0F B6 04 38 8B 4D D8 8B 0C");
@@ -237,6 +239,7 @@ namespace EventDialog {
 		std::string desc = "func2";
 
 		switch (version) {
+		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("9F F6 C4 44 7A 58 66");

@@ -15,6 +15,7 @@ namespace FileSave {
 		case v1_26_X:
 		case v1_27_X:
 		case v1_28_X:
+		case v1_28_3:
 			byte_pattern::temp_instance().find_pattern("85 FF 0F 84 EE 00 00 00 53 56");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// test edi,edi
@@ -44,6 +45,7 @@ namespace FileSave {
 		case v1_26_X:
 		case v1_27_X:
 		case v1_28_X:
+		case v1_28_3:
 			// 0: latin1
 			// 1: ucs2
 			// 2: ucs4
@@ -156,6 +158,7 @@ namespace FileSave {
 		case v1_26_X:
 		case v1_27_X:
 		case v1_28_X:
+		case v1_28_3:
 			byte_pattern::temp_instance().find_pattern("51 52 8D 4D B8 E8 ? ? ? ? 8D 4D B8 C7");
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(-0x29), filenameEncode_v125_start);
@@ -480,6 +483,7 @@ namespace FileSave {
 		case v1_26_X:
 		case v1_27_X:
 		case v1_28_X:
+		case v1_28_3:
 			byte_pattern::temp_instance().find_pattern("57 68 ? ? ? ? FF 50 4C 8B C8");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue_7_2_start_126);
@@ -502,6 +506,7 @@ namespace FileSave {
 		case v1_26_X:
 		case v1_27_X:
 		case v1_28_X:
+		case v1_28_3:
 			byte_pattern::temp_instance().find_pattern("74 0E 78 0A 8A 41 01 41");
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
 				// jz short loc_XXXXX
@@ -580,6 +585,24 @@ namespace FileSave {
 		}
 	}
 
+	static char yellow[] = { 0xA7, 0x59 }; // 
+	uintptr_t showToolTip_end_v1283;
+	__declspec(naked) void showToolTip_start_v1283() {
+		__asm {
+			lea eax, [edi + 0x334];
+
+			push eax;
+			call utf8ToEscapedStrFromV;
+			add esp, 4;
+
+			mov edx, offset yellow;
+
+			push showToolTip_end_v1283;
+			ret;
+
+		}
+	}
+
 	/*-----------------------------------------------*/
 
 	errno_t showToolTip(EU4Version version) {
@@ -587,6 +610,14 @@ namespace FileSave {
 		std::string desc = "show tool tip";
 
 		switch (version) {
+		case v1_28_3:
+			byte_pattern::temp_instance().find_pattern("8D 87 34 03 00 00 BA ? ? ? ? 50 8D 4D A8");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), showToolTip_start_v1283);
+				showToolTip_end_v1283 = byte_pattern::temp_instance().get_first().address(0xB);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("8D 87 34 03 00 00 C6 45 FC 15");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
