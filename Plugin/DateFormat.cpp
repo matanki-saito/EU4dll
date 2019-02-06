@@ -51,12 +51,11 @@ namespace DateFormat {
 
 		switch (version) {
 		case v1_28_3:
-			byte_pattern::temp_instance().find_pattern("83 EC 20 56 FF 75 0C 8B F1 FF 75 08");
-			/* 2つとも取得する */
+			byte_pattern::temp_instance().find_pattern("83 EC 24 53 56 57 FF 75 08 8B F9");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// sub esp,20h
+				// sub esp,24h
 				issue66_copyBuff1_v127_start = byte_pattern::temp_instance().get_first().address(-0x18);
-				// sub esp,20h
+				// sub esp,24h
 				issue66_copyBuff2_v127_start = byte_pattern::temp_instance().get_first().address(-0x18);
 			}
 			else return EU4_ERROR1;
@@ -214,6 +213,55 @@ namespace DateFormat {
 		}
 	}
 
+	uintptr_t issue66_YMD_v1283_end;
+	__declspec(naked) void issue66_YMD_v1283_start() {
+		__asm {
+
+			// 日をテキストバッファに変換
+			push    edi;
+			lea     ecx, dword ptr[ebp - 0xA0];
+			mov     byte ptr[ebp - 0x4], 3;
+			call    issue66_createBuff_v127_start;
+
+			// テキストバッファにyearを結合する
+			mov     byte ptr[ebp - 0x4], 4;
+			push    year;
+			lea     ecx, dword ptr[ebp - 0x88];
+			mov     edx, esi;
+			call    issue66_copyBuff2_v127_start;
+			add		esp, 4;
+
+			//バッファに月を結合する
+			lea     ecx, dword ptr[ebp - 0xB8];
+			mov     byte ptr[ebp - 0x4], 5;
+			push    ecx;
+			lea     ecx, dword ptr[ebp - 0x70];
+			mov     edx, eax;
+			call    issue66_copyBuff1_v127_start;
+			add		esp, 4;
+
+			// バッファに日を結合する
+			lea ecx, dword ptr[ebp - 0xA0];
+			push ecx;
+			lea     ecx, dword ptr[ebp - 0x40];
+			mov     byte ptr[ebp - 0x4], 7;
+			mov     edx, eax;
+			call    issue66_copyBuff2_v127_start;
+			add		esp, 4;
+
+			// バッファに「日」を結合する
+			push    day;
+			lea     ecx, dword ptr[ebp - 0x58];
+			mov     byte ptr[ebp - 0x4], 6;
+			mov     edx, eax;
+			call    issue66_copyBuff1_v127_start;
+			add		esp, 4;
+
+			push issue66_YMD_v1283_end;
+			ret;
+		}
+	}
+
 	/*-----------------------------------------------*/
 
 	errno_t fixD_MC_Y_hook(EU4Version version) {
@@ -221,6 +269,16 @@ namespace DateFormat {
 
 		switch (version) {
 		case v1_28_3:
+			byte_pattern::temp_instance().find_pattern("57 8D 8D 60 FF FF FF C6 45 FC 03");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// push edi
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_YMD_v1283_start);
+
+				// push 0xFFFFFFFF
+				issue66_YMD_v1283_end = byte_pattern::temp_instance().get_first().address(0x68);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("57 8D 8D 60 FF FF FF C6 45 FC 03");
@@ -504,13 +562,13 @@ namespace DateFormat {
 		result |= copyText_hook(version);
 
 		/* M, Y → Y年M */
-		result |= fixMC_Y_hook(version);
+		//result |= fixMC_Y_hook(version);
 
 		/* D M, Y → Y年MD日*/
 		result |= fixD_MC_Y_hook(version);
 
 		/* M Y → Y年M */
-		result |= fixM_Y_hook(version);
+		//result |= fixM_Y_hook(version);
 
 		/* YYYY.MM.DD → YYYY年MM月DD日 */
 		/* 不具合があってコメントアウト：https://github.com/matanki-saito/EU4dll/issues/76 */

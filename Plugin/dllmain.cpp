@@ -59,7 +59,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		success |= FileSave::init(version);
 
 		// DateFormat(issue66)‚ÌC³
-		//success |= DateFormat::init(version);
+		success |= DateFormat::init(version);
 
 		// List‚Ì•¶š’²®iissue-99j
 		//success |= ListChars::init(version);
