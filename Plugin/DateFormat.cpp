@@ -43,6 +43,7 @@ namespace DateFormat {
 	
 	uintptr_t issue66_copyBuff1_v127_start;
 	uintptr_t issue66_copyBuff2_v127_start;
+	uintptr_t issue66_copyBuff3_v1283_start;
 
 	/*-----------------------------------------------*/
 
@@ -51,16 +52,22 @@ namespace DateFormat {
 
 		switch (version) {
 		case v1_28_3:
-			byte_pattern::temp_instance().find_pattern("83 EC 20 56 FF 75 0C 8B F1 FF 75 08");
-			/* 2つとも取得する */
+			byte_pattern::temp_instance().find_pattern("83 EC 24 53 56 57 FF 75 08 8B F9");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
-				// sub esp,20h
+				// sub esp,24h
 				issue66_copyBuff1_v127_start = byte_pattern::temp_instance().get_first().address(-0x18);
-				// sub esp,20h
-				issue66_copyBuff2_v127_start = byte_pattern::temp_instance().get_first().address(-0x18);
 			}
 			else return EU4_ERROR1;
+
+			byte_pattern::temp_instance().find_pattern("8B 75 08 57 8B F9 C7 45 E8 00 00 00 00");
+			if (byte_pattern::temp_instance().has_size(2, desc)) {
+				// mov esi,[ebp+arg_0]
+				issue66_copyBuff3_v1283_start = byte_pattern::temp_instance().get(1).address(-0x1D);
+			}
+			else return EU4_ERROR1;
+
 			return NOERROR;
+
 		case v1_27_X:
 		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("83 EC 20 56 FF 75 0C 8B D1 C7 45");
@@ -162,6 +169,7 @@ namespace DateFormat {
 	} Vs;
 
 	V *year;
+	V *year2;
 	V *day;
 	V *month;
 
@@ -214,6 +222,55 @@ namespace DateFormat {
 		}
 	}
 
+	uintptr_t issue66_YMD_v1283_end;
+	__declspec(naked) void issue66_YMD_v1283_start() {
+		__asm {
+
+			// 日をテキストバッファに変換
+			push    edi;
+			lea     ecx, dword ptr[ebp - 0xA0];
+			mov     byte ptr[ebp - 0x4], 3;
+			call    issue66_createBuff_v127_start;
+
+			// テキストバッファにyearを結合する
+			mov     byte ptr[ebp - 0x4], 4;
+			push    year;
+			lea     ecx, dword ptr[ebp - 0x88];
+			mov     edx, esi;
+			call    issue66_copyBuff1_v127_start;
+			add		esp, 4;
+
+			//バッファに月を結合する
+			lea     ecx, dword ptr[ebp - 0xB8];
+			mov     byte ptr[ebp - 0x4], 5;
+			push    ecx;
+			lea     ecx, dword ptr[ebp - 0x70];
+			mov     edx, eax;
+			call    issue66_copyBuff1_v127_start;
+			add		esp, 4;
+
+			// バッファに日を結合する
+			lea ecx, dword ptr[ebp - 0xA0];
+			push ecx;
+			lea     ecx, dword ptr[ebp - 0x40];
+			mov     byte ptr[ebp - 0x4], 7;
+			mov     edx, eax;
+			call    issue66_copyBuff1_v127_start;
+			add		esp, 4;
+
+			// バッファに「日」を結合する
+			push    day;
+			lea     ecx, dword ptr[ebp - 0x58];
+			mov     byte ptr[ebp - 0x4], 6;
+			mov     edx, eax;
+			call    issue66_copyBuff1_v127_start;
+			add		esp, 4;
+
+			push issue66_YMD_v1283_end;
+			ret;
+		}
+	}
+
 	/*-----------------------------------------------*/
 
 	errno_t fixD_MC_Y_hook(EU4Version version) {
@@ -221,6 +278,16 @@ namespace DateFormat {
 
 		switch (version) {
 		case v1_28_3:
+			byte_pattern::temp_instance().find_pattern("57 8D 8D 60 FF FF FF C6 45 FC 03");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// push edi
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_YMD_v1283_start);
+
+				// push 0xFFFFFFFF
+				issue66_YMD_v1283_end = byte_pattern::temp_instance().get_first().address(0x68);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("57 8D 8D 60 FF FF FF C6 45 FC 03");
@@ -269,6 +336,31 @@ namespace DateFormat {
 		}
 	}
 
+	uintptr_t issue66_YM_v1283_end;
+	__declspec(naked) void issue66_YM_v1283_start() {
+		__asm {
+			mov     esi, eax
+
+			push    year;
+			lea     ecx, dword ptr[ebp - 0x30];
+			mov     byte ptr[ebp - 0x4], 3;
+			mov     edx, esi;
+			call    issue66_copyBuff1_v127_start;
+			add		esp, 4;
+
+			lea     eax, dword ptr[ebp - 0x60];
+			push	eax;
+			lea     ecx, dword ptr[ebp - 0x48];
+			mov     byte ptr[ebp - 0x4], 2;
+			lea     edx, dword ptr[ebp - 0x30];
+			call    issue66_copyBuff1_v127_start;
+			add		esp, 4;
+
+			push issue66_YM_v1283_end;
+			ret;
+		}
+	}
+
 	/*-----------------------------------------------*/
 
 	errno_t fixMC_Y_hook(EU4Version version) {
@@ -276,6 +368,16 @@ namespace DateFormat {
 
 		switch (version) {
 		case v1_28_3:
+			byte_pattern::temp_instance().find_pattern("8B F0 8D 4D EC 6A 00 8D 45 A0");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov esi,eax
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x20), issue66_YM_v1283_start);
+
+				// push 0xFFFFFFFF
+				issue66_YM_v1283_end = byte_pattern::temp_instance().get_first().address(0x20 + 0x2B);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
 		case v1_28_X:
 		case v1_27_X:
 			byte_pattern::temp_instance().find_pattern("8B F0 8D 4D EC 6A 00 8D 45 A0");
@@ -322,6 +424,31 @@ namespace DateFormat {
 		}
 	}
 
+	uintptr_t issue66_YSM_v1283_end;
+	__declspec(naked) void issue66_YSM_v1283_start() {
+		__asm {
+			mov     byte ptr[ebp - 0x4], 2;
+			push    year2;
+			lea     ecx, dword ptr[ebp - 0x44];
+			mov		edx, esi;
+			call    issue66_copyBuff3_v1283_start;
+			add		esp, 4;
+
+			lea		ecx, dword ptr[ebp - 0x5C];
+			push	ecx;
+			mov     esi, dword ptr[ebp + 0x8]; // arg_0
+			mov     edx, eax;
+			mov		ecx,esi;
+			mov     byte ptr[ebp - 0x4], 3;
+			call    issue66_copyBuff1_v127_start;
+			// add esp,4は戻り先で行われている
+
+			push issue66_YSM_v1283_end;
+			ret;
+		}
+	}
+
+
 	/*-----------------------------------------------*/
 
 	errno_t fixM_Y_hook(EU4Version version) {
@@ -332,10 +459,10 @@ namespace DateFormat {
 			byte_pattern::temp_instance().find_pattern("8D 45 D4 C6 45 FC 02 50 8D 55 A4");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
 				// lea eax, [ebp+var_2C]
-				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_YSM_v127_start);
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), issue66_YSM_v1283_start);
 
 				// mov eax, [ebp+var_30]
-				issue66_YSM_v127_end = byte_pattern::temp_instance().get_first().address(0x27);
+				issue66_YSM_v1283_end = byte_pattern::temp_instance().get_first().address(0x27);
 			}
 			else return EU4_ERROR1;
 			return NOERROR;
@@ -483,6 +610,14 @@ namespace DateFormat {
 		year->t.text[1] = '\0';
 		year->len = 1;
 		year->len2 = 0xF;
+
+		// 「年」を初期化
+		year2 = new V();
+		year2->t.text[0] = 0xF;
+		year2->t.text[1] = '\0';
+		year2->len = 1;
+		year2->len2 = 0xF;
+
 
 		// 「月」を初期化
 		month = new V();
