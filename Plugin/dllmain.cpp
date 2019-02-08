@@ -62,7 +62,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		success |= DateFormat::init(version);
 
 		// List‚Ì•¶š’²®iissue-99j
-		//success |= ListChars::init(version);
+		success |= ListChars::init(version);
 
 		if (success == NOERROR && options.test == false) {
 			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);
