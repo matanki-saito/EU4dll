@@ -169,7 +169,6 @@ namespace DateFormat {
 	} Vs;
 
 	V *year;
-	V *year2;
 	V *day;
 	V *month;
 
@@ -424,9 +423,23 @@ namespace DateFormat {
 		}
 	}
 
+	V *year2;
+	void resetYear2() {
+		if (year2 != NULL) delete year2;
+
+		// 「年」を初期化
+		year2 = new V();
+		year2->t.text[0] = 0xF;
+		year2->t.text[1] = '\0';
+		year2->len = 1;
+		year2->len2 = 0xF;
+	}
+
 	uintptr_t issue66_YSM_v1283_end;
 	__declspec(naked) void issue66_YSM_v1283_start() {
 		__asm {
+			call	resetYear2;
+
 			mov     byte ptr[ebp - 0x4], 2;
 			push    year2;
 			lea     ecx, dword ptr[ebp - 0x44];
@@ -610,14 +623,6 @@ namespace DateFormat {
 		year->t.text[1] = '\0';
 		year->len = 1;
 		year->len2 = 0xF;
-
-		// 「年」を初期化
-		year2 = new V();
-		year2->t.text[0] = 0xF;
-		year2->t.text[1] = '\0';
-		year2->len = 1;
-		year2->len2 = 0xF;
-
 
 		// 「月」を初期化
 		month = new V();
