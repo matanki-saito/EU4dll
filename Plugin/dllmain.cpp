@@ -49,7 +49,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// マップ上のポップアップ文字
 		success |= PopupCharOnMap::init(version);
 
-		// issue19の修正
+		// issue-19の修正
 		success |= InputIssue19::init(version);
 
 		// イベントダイアログの修正とマップ上の修正
@@ -58,11 +58,14 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		// ファイルセーブ関連
 		success |= FileSave::init(version);
 
-		// DateFormat(issue66)の修正
+		// DateFormat(issue-66)の修正
 		success |= DateFormat::init(version);
 
 		// Listの文字調整（issue-99）
 		success |= ListChars::init(version);
+
+		// 名前の順序(issue-98)
+		success |= NameOrder::init(version);
 
 		if (success == NOERROR && options.test == false) {
 			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);

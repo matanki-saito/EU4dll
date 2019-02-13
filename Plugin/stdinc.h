@@ -157,3 +157,7 @@ namespace DateFormat {
 namespace ListChars {
 	errno_t init(EU4Version version);
 }
+
+namespace NameOrder {
+	errno_t init(EU4Version version);
+}

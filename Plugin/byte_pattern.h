@@ -97,6 +97,7 @@ public:
 
     memory_pointer get(std::size_t index) const;
     memory_pointer get_first() const;
+	memory_pointer get_second() const;
 
     std::size_t count() const;
     bool has_size(std::size_t expected,std::string version) const;
