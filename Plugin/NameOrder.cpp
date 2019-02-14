@@ -102,6 +102,10 @@ namespace NameOrder {
 		__asm {
 			add     esp, 4;
 
+			// esiをチェックして*(0x2A)が最初に来ていれば反転させる
+			cmp byte ptr[eax+1], 0x2A; // [0]は0x20(white space)
+			jnz jmp2;
+
 			// クリア
 			cmp tmp, 0;
 			jz jmp1;
@@ -125,6 +129,7 @@ namespace NameOrder {
 			call text_release_func_v1283;
 			pop eax; // 戻す
 
+		jmp2:
 			push    0xFFFFFFFF;
 			push    0;
 			push    eax;
