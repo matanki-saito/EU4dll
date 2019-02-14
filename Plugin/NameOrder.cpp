@@ -6,6 +6,7 @@ namespace NameOrder {
 
 	uintptr_t text_compo_func_v1283;
 	uintptr_t text_compo2_func_v1283;
+	uintptr_t text_release_func_v1283;
 
 	/*-----------------------------------------------*/
 
@@ -27,6 +28,14 @@ namespace NameOrder {
 				text_compo2_func_v1283 = byte_pattern::temp_instance().get_first().address(-0x19);
 			}
 			else return EU4_ERROR1;
+
+			// push    esi
+			byte_pattern::temp_instance().find_pattern("56 8B F1 8B 46 14 83 ? ? ? ? 6A 01 40 50 FF 36");
+			if (byte_pattern::temp_instance().has_size(3, desc)) {
+				text_release_func_v1283 = byte_pattern::temp_instance().get_second().address();
+			}
+			else return EU4_ERROR1;
+
 			return NOERROR;
 
 		case v1_28_X:
@@ -87,11 +96,21 @@ namespace NameOrder {
 	/*-----------------------------------------------*/
 
 
-	static uintptr_t tmp;
+	static uintptr_t tmp = NULL;
 	uintptr_t name_creation_func_fix_v1283_end;
 	__declspec(naked) void name_creation_func_fix_v1283_start() {
 		__asm {
 			add     esp, 4;
+
+			// クリア
+			cmp tmp, 0;
+			jz jmp1;
+			push eax; // 消えてしまうので保存
+			lea ecx, tmp;
+			call text_release_func_v1283;
+			mov tmp, 0;
+			pop eax; // 戻す
+		jmp1:
 
 			// 合成する
 			mov edx, eax;
@@ -100,10 +119,11 @@ namespace NameOrder {
 			call text_compo_func_v1283;
 			add esp, 4;
 
-			// esiをリセットする。あとで開放する処理を加える必要あり
-			mov byte ptr[esi], 0;
-			mov dword ptr[esi + 0x10], 0;
-			mov dword ptr[esi + 0x14], 0;
+			// esiをリセットする。
+			push eax; // 消えてしまうので保存
+			mov ecx, esi;
+			call text_release_func_v1283;
+			pop eax; // 戻す
 
 			push    0xFFFFFFFF;
 			push    0;
@@ -112,6 +132,7 @@ namespace NameOrder {
 			mov     ecx, esi;
 			mov[ebp - 0x4], 1;
 			call text_compo2_func_v1283;
+
 			lea ecx, [ebp - 0x2C];
 			
 			push	name_creation_func_fix_v1283_end;
