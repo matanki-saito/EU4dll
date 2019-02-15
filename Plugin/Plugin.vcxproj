@@ -103,6 +103,7 @@
     <ClCompile Include="mapJustify.cpp" />
     <ClCompile Include="mapView.cpp" />
     <ClCompile Include="misc.cpp" />
+    <ClCompile Include="NameOrder.cpp" />
     <ClCompile Include="Popup.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="ToolTipApx.cpp" />
