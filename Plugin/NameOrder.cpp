@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 
@@ -42,7 +42,7 @@ namespace NameOrder {
 		case v1_27_X:
 		case v1_25_X:
 		case v1_26_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
@@ -86,7 +86,7 @@ namespace NameOrder {
 		case v1_27_X:
 		case v1_25_X:
 		case v1_26_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
@@ -102,32 +102,32 @@ namespace NameOrder {
 		__asm {
 			add     esp, 4;
 
-			// esi‚ğƒ`ƒFƒbƒN‚µ‚Ä*(0x2A)‚ªÅ‰‚É—ˆ‚Ä‚¢‚ê‚Î”½“]‚³‚¹‚é
-			cmp byte ptr[eax+1], 0x2A; // [0]‚Í0x20(white space)
+			// esiã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦é€†ç–‘å•ç¬¦Â¿(0xBF)ãŒæœ€åˆã«æ¥ã¦ã„ã‚Œã°åè»¢ã•ã›ã‚‹
+			cmp byte ptr[eax+1], 0xBF; // [0]ã¯0x20(white space)
 			jnz jmp2;
 
-			// ƒNƒŠƒA
+			// ã‚¯ãƒªã‚¢
 			cmp tmp, 0;
 			jz jmp1;
-			push eax; // Á‚¦‚Ä‚µ‚Ü‚¤‚Ì‚Å•Û‘¶
+			push eax; // æ¶ˆãˆã¦ã—ã¾ã†ã®ã§ä¿å­˜
 			lea ecx, tmp;
 			call text_release_func_v1283;
 			mov tmp, 0;
-			pop eax; // –ß‚·
+			pop eax; // æˆ»ã™
 		jmp1:
 
-			// ‡¬‚·‚é
+			// åˆæˆã™ã‚‹
 			mov edx, eax;
 			push esi;
 			lea ecx, tmp;
 			call text_compo_func_v1283;
 			add esp, 4;
 
-			// esi‚ğƒŠƒZƒbƒg‚·‚éB
-			push eax; // Á‚¦‚Ä‚µ‚Ü‚¤‚Ì‚Å•Û‘¶
+			// esiã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹ã€‚
+			push eax; // æ¶ˆãˆã¦ã—ã¾ã†ã®ã§ä¿å­˜
 			mov ecx, esi;
 			call text_release_func_v1283;
-			pop eax; // –ß‚·
+			pop eax; // æˆ»ã™
 
 		jmp2:
 			push    0xFFFFFFFF;
@@ -166,7 +166,7 @@ namespace NameOrder {
 		case v1_27_X:
 		case v1_25_X:
 		case v1_26_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
