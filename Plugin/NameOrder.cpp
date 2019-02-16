@@ -96,7 +96,7 @@ namespace NameOrder {
 	/*-----------------------------------------------*/
 
 
-	static uintptr_t tmp = NULL;
+	V tmp;
 	uintptr_t name_creation_func_fix_v1283_end;
 	__declspec(naked) void name_creation_func_fix_v1283_start() {
 		__asm {
