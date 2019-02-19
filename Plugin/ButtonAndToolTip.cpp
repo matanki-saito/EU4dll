@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace ButtonAndToolTip {
@@ -533,7 +533,7 @@ namespace ButtonAndToolTip {
 
 		byte_pattern::temp_instance().debug_output2("button and tooltip fix");
 
-		/* ƒXƒ^ƒbƒNƒTƒCƒY•ÏX */
+		/* ã‚¹ã‚¿ãƒƒã‚¯ã‚µã‚¤ã‚ºå¤‰æ›´ */
 		result |= stackSize_hook(version);
 		/* */
 		result |= func1_2_hook(version);
@@ -543,7 +543,7 @@ namespace ButtonAndToolTip {
 		result |= func4_hook(version);
 		/* */
 		result |= func5_hook(version);
-		/* ƒXƒ^ƒbƒNŒãn–– */
+		/* ã‚¹ã‚¿ãƒƒã‚¯å¾Œå§‹æœ« */
 		result |= stackSizeClear_hook(version);
 
 		return result;

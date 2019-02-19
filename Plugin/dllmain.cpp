@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
@@ -7,64 +7,64 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
     {
 		byte_pattern::start_log(L"eu4jps");
 
-		// version‚ğ•¶š—ñ‚©‚çæ“¾
+		// versionã‚’æ–‡å­—åˆ—ã‹ã‚‰å–å¾—
 		EU4Version version = Misc::getVersion();
 
-		// ƒIƒvƒVƒ‡ƒ“‚ğiniƒtƒ@ƒCƒ‹‚©‚çæ“¾
+		// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’iniãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰å–å¾—
 		RunOptions options = RunOptions();
 		Misc::getOptionsByINI(&options);
 		
 		errno_t success = NOERROR;
 
-		// ƒtƒHƒ“ƒgŠÖ˜A‚ÌC³
+		// ãƒ•ã‚©ãƒ³ãƒˆé–¢é€£ã®ä¿®æ­£
 		success |= Font::init(version);
 
-		// –{•¶ƒeƒLƒXƒg•\¦‚ÌC³
+		// æœ¬æ–‡ãƒ†ã‚­ã‚¹ãƒˆè¡¨ç¤ºã®ä¿®æ­£
 		success |= TextView::init(version);
 
-		// ƒ}ƒbƒv•¶šˆÊ’u’²®
+		// ãƒãƒƒãƒ—æ–‡å­—ä½ç½®èª¿æ•´
 		success |= MapAdj::init(version);
 
-		// ƒ}ƒbƒv•¶šjustify
+		// ãƒãƒƒãƒ—æ–‡å­—justify
 		success |= MapJustify::init(version);
 
-		// ƒ}ƒbƒv•¶š•\¦
+		// ãƒãƒƒãƒ—æ–‡å­—è¡¨ç¤º
 		success |= MapView::init(version);
 
-		// ‚»‚Ì‘¼
+		// ãã®ä»–
 		success |= Misc::init(version);
 
-		// “ü—ÍC³
+		// å…¥åŠ›ä¿®æ­£
 		success |= Input::init(version);
 
-		// IMEC³
+		// IMEä¿®æ­£
 		success |= IME::init(version);
 
-		// ƒc[ƒ‹ƒ`ƒbƒv‚Æƒ{ƒ^ƒ“
+		// ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã¨ãƒœã‚¿ãƒ³
 		success |= ButtonAndToolTip::init(version);
 
-		// ƒc[ƒ‹ƒ`ƒbƒv’Ç‰Áˆ—
+		// ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—è¿½åŠ å‡¦ç†
 		success |= ToolTipApx::init(version);
 
-		// ƒ}ƒbƒvã‚Ìƒ|ƒbƒvƒAƒbƒv•¶š
+		// ãƒãƒƒãƒ—ä¸Šã®ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—æ–‡å­—
 		success |= PopupCharOnMap::init(version);
 
-		// issue-19‚ÌC³
+		// issue-19ã®ä¿®æ­£
 		success |= InputIssue19::init(version);
 
-		// ƒCƒxƒ“ƒgƒ_ƒCƒAƒƒO‚ÌC³‚Æƒ}ƒbƒvã‚ÌC³
+		// ã‚¤ãƒ™ãƒ³ãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ä¿®æ­£ã¨ãƒãƒƒãƒ—ä¸Šã®ä¿®æ­£
 		success |= EventDialog::init(version);
 
-		// ƒtƒ@ƒCƒ‹ƒZ[ƒuŠÖ˜A
+		// ãƒ•ã‚¡ã‚¤ãƒ«ã‚»ãƒ¼ãƒ–é–¢é€£
 		success |= FileSave::init(version);
 
-		// DateFormat(issue-66)‚ÌC³
+		// DateFormat(issue-66)ã®ä¿®æ­£
 		success |= DateFormat::init(version);
 
-		// List‚Ì•¶š’²®iissue-99j
+		// Listã®æ–‡å­—èª¿æ•´ï¼ˆissue-99ï¼‰
 		success |= ListChars::init(version);
 
-		// –¼‘O‚Ì‡˜(issue-98)
+		// åå‰ã®é †åº(issue-98)
 		success |= NameOrder::init(version);
 
 		if (success == NOERROR && options.test == false) {

@@ -1,4 +1,4 @@
-#include "stdinc.h"
+Ôªø#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace MapAdj {
@@ -33,21 +33,21 @@ namespace MapAdj {
 
 		j_11:
 			add eax, 2;
-			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1Ç≈ÇÊÇ¢
+			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1„Åß„Çà„ÅÑ
 			movzx eax, word ptr[ecx + eax - 1];
 			sub eax, SHIFT_2;
 			jmp j_1x;
 
 		j_12:
 			add eax, 2;
-			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1Ç≈ÇÊÇ¢
+			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1„Åß„Çà„ÅÑ
 			movzx eax, word ptr[ecx + eax - 1];
 			add eax, SHIFT_3;
 			jmp j_1x;
 
 		j_13:
 			add eax, 2;
-			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1Ç≈ÇÊÇ¢
+			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1„Åß„Çà„ÅÑ
 			movzx eax, word ptr[ecx + eax - 1];
 			add eax, SHIFT_4;
 			jmp j_1x;
@@ -97,19 +97,19 @@ namespace MapAdj {
 			jmp j_1x;
 
 		j_11:
-			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1Ç≈ÇÊÇ¢
+			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1„Åß„Çà„ÅÑ
 			movzx eax, word ptr[eax + edx + 1];
 			sub eax, SHIFT_2;
 			jmp j_1x;
 
 		j_12:
-			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1Ç≈ÇÊÇ¢
+			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1„Åß„Çà„ÅÑ
 			movzx eax, word ptr[eax + edx + 1];
 			add eax, SHIFT_3;
 			jmp j_1x;
 
 		j_13:
-			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1Ç≈ÇÊÇ¢
+			mov byte ptr[ebp - 1], ESCAPE_SEQ_1; // 1„Åß„Çà„ÅÑ
 			movzx eax, word ptr[eax + edx + 1];
 			add eax, SHIFT_4;
 			jmp j_1x;
@@ -357,7 +357,7 @@ namespace MapAdj {
 		__asm {
 			cmp byte ptr[ebp - 1], ESCAPE_SEQ_1;
 			jnz k_a_2;
-			// 3byte = 1ï∂éöÇ©Ç«Ç§Ç©
+			// 3byte = 1ÊñáÂ≠ó„Åã„Å©„ÅÜ„Åã
 			cmp dword ptr[ebp - 0x24], 3; 
 			ja k_a_2;
 			add edx, 2;
@@ -369,7 +369,7 @@ namespace MapAdj {
 
 		k_a_2:
 			movd xmm7, edx;
-			// ÉGÉXÉPÅ[Évï∂éö
+			// „Ç®„Çπ„Ç±„Éº„ÉóÊñáÂ≠ó
 			cmp byte ptr[ebp - 1], ESCAPE_SEQ_1;
 			jz k_4;
 
@@ -449,7 +449,7 @@ namespace MapAdj {
 
 		result |= map1_2_hook(version);
 		result |= map2_end_hook(version);
-		// àÍï∂éöï\é¶ÇÃí≤êÆ
+		// ‰∏ÄÊñáÂ≠óË°®Á§∫„ÅÆË™øÊï¥
 		result |= oneCharacter_hook(version);
 
 		return result;

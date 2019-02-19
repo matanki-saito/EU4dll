@@ -1,4 +1,4 @@
-#include "filedl.h"
+﻿#include "filedl.h"
 
 bool createProcess(WCHAR* szCmd, DWORD flag) {
 	STARTUPINFO si;

@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace ToolTipApx {
@@ -111,7 +111,7 @@ namespace ToolTipApx {
 
 		byte_pattern::temp_instance().debug_output2("tooltip plus");
 
-		// ‰üsˆ—‚ÌC³
+		// æ”¹è¡Œå‡¦ç†ã®ä¿®æ­£
 		result |= lineBreak_hook(version);
 
 		return result;

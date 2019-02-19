@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace Font {
@@ -34,7 +34,7 @@ namespace Font {
 		case v1_27_X:
 		case v1_28_X:
 		case v1_28_3:
-			/* ƒ‰ƒ“ƒ`ƒƒ[ */
+			/* ãƒ©ãƒ³ãƒãƒ£ãƒ¼ */
 			byte_pattern::temp_instance().find_pattern("68 20 28 00 00 8B 45");
 			if (byte_pattern::temp_instance().has_size(1,"buffer clear launcher 1")) {
 				// push 2820h
@@ -42,7 +42,7 @@ namespace Font {
 			}
 			else return EU4_ERROR1;
 
-			/* ƒ‰ƒ“ƒ`ƒƒ[ */
+			/* ãƒ©ãƒ³ãƒãƒ£ãƒ¼ */
 			byte_pattern::temp_instance().find_pattern("68 20 28 00 00 56 E8");
 			if (byte_pattern::temp_instance().has_size(1, "buffer clear launcher 2")) {
 				// push 2820h
@@ -50,7 +50,7 @@ namespace Font {
 			}
 			else return EU4_ERROR1;
 
-			/* –{‘Ì */
+			/* æœ¬ä½“ */
 			byte_pattern::temp_instance().find_pattern("68 50 28 00 00 8B 45");
 			if (byte_pattern::temp_instance().has_size(1, "buffer clear main 1")) {
 				// push 2850h
@@ -58,7 +58,7 @@ namespace Font {
 			}
 			else return EU4_ERROR1;
 
-			/* –{‘Ì */
+			/* æœ¬ä½“ */
 			byte_pattern::temp_instance().find_pattern("68 50 28 00 00 56 E8");
 			if (byte_pattern::temp_instance().has_size(1, "buffer clear main 2")) {
 				// push 2850h
@@ -105,14 +105,14 @@ namespace Font {
 		case v1_27_X:
 		case v1_28_X:
 		case v1_28_3:
-			/* ƒ‰ƒ“ƒ`ƒƒ[ */
+			/* ãƒ©ãƒ³ãƒãƒ£ãƒ¼ */
 			byte_pattern::temp_instance().find_pattern("68 20 28 00 00 E8 ? ? ? ? 83");
 			if (byte_pattern::temp_instance().has_size(1, "buffer exp launcher")) {
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
 			}
 			else return EU4_ERROR1;
 
-			/* –{‘Ì */
+			/* æœ¬ä½“ */
 			byte_pattern::temp_instance().find_pattern("68 50 28 00 00 E8 ? ? ? ? 83");
 			if (byte_pattern::temp_instance().has_size(1, "buffer main launcher")) {
 				injector::WriteMemory<uint8_t>(byte_pattern::temp_instance().get_first().address(3), 0x04, true);
@@ -132,13 +132,13 @@ namespace Font {
 
 		byte_pattern::temp_instance().debug_output2("font etc fix");
 
-		/* ƒq[ƒvƒ[ƒƒtƒ‰ƒO‚ÌC³ */
+		/* ãƒ’ãƒ¼ãƒ—ã‚¼ãƒ­ãƒ•ãƒ©ã‚°ã®ä¿®æ­£ */
 		result |= heepZero_hook(version);
-		/* ƒtƒHƒ“ƒgƒoƒbƒtƒ@ƒNƒŠƒA */
+		/* ãƒ•ã‚©ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢ */
 		result |= bufferClear_hook(version);
-		/* ƒtƒHƒ“ƒgƒoƒbƒtƒ@Šg’£ */
+		/* ãƒ•ã‚©ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡æ‹¡å¼µ */
 		result |= bufferExp_hook(version);
-		/* ƒtƒHƒ“ƒgƒTƒCƒY‚ÌŠg’£ */
+		/* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºã®æ‹¡å¼µ */
 		result |= fontSize_hook(version);
 
 		return result;
