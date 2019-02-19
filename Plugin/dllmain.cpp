@@ -80,53 +80,53 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 			case MAKELANGID(LANG_JAPANESE, SUBLANG_JAPANESE_JAPAN):
 				caption = L"エラー";
 				message = L""
-					"このバージョンはまだ日本語化対応していません\n"
-					"d3d9.dllを削除してゲームを再起動してください。\n"
-					"\n"
-					"プロジェクトページ：\n"
-					"https://github.com/matanki-saito/EU4dll";
+					L"このバージョンはまだ日本語化対応していません\n"
+					L"d3d9.dllを削除してゲームを再起動してください。\n"
+					L"\n"
+					L"プロジェクトページ：\n"
+					L"https://github.com/matanki-saito/EU4dll";
 				break;
 
 			case MAKELANGID(LANG_CHINESE_SIMPLIFIED, SUBLANG_CHINESE_SIMPLIFIED):
 				caption = L"错误";
 				message = L""
-					"此版本尚不支持\n"
-					"请删除d3d9.dll并重启游戏\n"
-					"\n"
-					"项目页面:\n"
-					"https://github.com/matanki-saito/EU4dll";
+					L"此版本尚不支持\n"
+					L"请删除d3d9.dll并重启游戏\n"
+					L"\n"
+					L"项目页面:\n"
+					L"https://github.com/matanki-saito/EU4dll";
 				break;
 
 
 			case MAKELANGID(LANG_CHINESE_TRADITIONAL, SUBLANG_CHINESE_TRADITIONAL):
 				caption = L"錯誤";
 				message = L""
-					"此版本尚不支持\n"
-					"請刪除d3d9.dll並重啟遊戲\n"
-					"\n"
-					"項目頁面:\n"
-					"https://github.com/matanki-saito/EU4dll";
+					L"此版本尚不支持\n"
+					L"請刪除d3d9.dll並重啟遊戲\n"
+					L"\n"
+					L"項目頁面:\n"
+					L"https://github.com/matanki-saito/EU4dll";
 				break;
 
 			case MAKELANGID(LANG_KOREAN, SUBLANG_KOREAN):
 				caption = L"오류";
 				message = L""
-					"이 버전은 아직 지원하지 않습니다.\n"
-					"d3d9.dll을 삭제하고 게임을 다시 시작하십시오. \n"
-					"\n"
-					"프로젝트 페이지\n"
-					"https://github.com/matanki-saito/EU4dll";
+					L"이 버전은 아직 지원하지 않습니다.\n"
+					L"d3d9.dll을 삭제하고 게임을 다시 시작하십시오. \n"
+					L"\n"
+					L"프로젝트 페이지\n"
+					L"https://github.com/matanki-saito/EU4dll";
 				break;
 
 			case MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US):
 			default:
 				caption = L"ERROR";
 				message = L""
-					"This game version is not supported.\n"
-					"Please delete d3d9.dll and restart game.\n"
-					"\n"
-					"Project Page:\n"
-					"https://github.com/matanki-saito/EU4dll";
+					L"This game version is not supported.\n"
+					L"Please delete d3d9.dll and restart game.\n"
+					L"\n"
+					L"Project Page:\n"
+					L"https://github.com/matanki-saito/EU4dll";
 			}
 
 			MessageBoxW(NULL, message, caption, MB_OK);
