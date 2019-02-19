@@ -68,17 +68,68 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 		success |= NameOrder::init(version);
 
 		if (success == NOERROR && options.test == false) {
-			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}
 		else {
-//			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
-//			if (sysDefLcid == 1041) {
-//				MessageBoxW(NULL, L"--> Go to https://paradoxian-japan-mod.com/ <--", L"Error", MB_OK);
-//			}
-//			else {
-				MessageBoxW(NULL, L"[Multibyte DLL ERROR]\nThis game version is not supported by Multibyte DLL.\nPlease delete d3d9.dll and restart game.\nOr check new version dll.\n\nhttps://github.com/matanki-saito/EU4dll", L"Multibyte DLL", MB_OK);
-//			}
+			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
+
+			WCHAR* message;
+			WCHAR* caption;
+
+			switch (sysDefLcid) {
+			case MAKELANGID(LANG_JAPANESE, SUBLANG_JAPANESE_JAPAN):
+				caption = L"エラー";
+				message = L""
+					"このバージョンはまだ日本語化対応していません\n"
+					"d3d9.dllを削除してゲームを再起動してください。\n"
+					"\n"
+					"プロジェクトページ：\n"
+					"https://github.com/matanki-saito/EU4dll";
+				break;
+
+			case MAKELANGID(LANG_CHINESE_SIMPLIFIED, SUBLANG_CHINESE_SIMPLIFIED):
+				caption = L"错误";
+				message = L""
+					"此版本尚不支持\n"
+					"请删除d3d9.dll并重启游戏\n"
+					"\n"
+					"项目页面:\n"
+					"https://github.com/matanki-saito/EU4dll";
+				break;
+
+
+			case MAKELANGID(LANG_CHINESE_TRADITIONAL, SUBLANG_CHINESE_TRADITIONAL):
+				caption = L"錯誤";
+				message = L""
+					"此版本尚不支持\n"
+					"請刪除d3d9.dll並重啟遊戲\n"
+					"\n"
+					"項目頁面:\n"
+					"https://github.com/matanki-saito/EU4dll";
+				break;
+
+			case MAKELANGID(LANG_KOREAN, SUBLANG_KOREAN):
+				caption = L"오류";
+				message = L""
+					"이 버전은 아직 지원하지 않습니다.\n"
+					"d3d9.dll을 삭제하고 게임을 다시 시작하십시오. \n"
+					"\n"
+					"프로젝트 페이지\n"
+					"https://github.com/matanki-saito/EU4dll";
+				break;
+
+			case MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US):
+			default:
+				caption = L"ERROR";
+				message = L""
+					"This game version is not supported.\n"
+					"Please delete d3d9.dll and restart game.\n"
+					"\n"
+					"Project Page:\n"
+					"https://github.com/matanki-saito/EU4dll";
+			}
+
+			MessageBoxW(NULL, message, caption, MB_OK);
 
 			byte_pattern::temp_instance().debug_output2("DLL [NG]");
 			exit(-1);
