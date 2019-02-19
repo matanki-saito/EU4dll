@@ -1,7 +1,7 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
-// ‚±‚ê‚Ípopup window‚Å‚Í‚È‚­‚ÄAmapã‚Å•‚‚©‚Ñã‚ª‚é•¶š‚Ì•”•ª‚ÌC³
+// ã“ã‚Œã¯popup windowã§ã¯ãªãã¦ã€mapä¸Šã§æµ®ã‹ã³ä¸ŠãŒã‚‹æ–‡å­—ã®éƒ¨åˆ†ã®ä¿®æ­£
 namespace PopupCharOnMap {
 
 	/*-----------------------------------------------*/
@@ -377,7 +377,7 @@ namespace PopupCharOnMap {
 
 		z_4:
 			add esi, 2;
-			mov dword ptr[ebp - 0x2C], esi; // ƒ[ƒJƒ‹•Ï”XV
+			mov dword ptr[ebp - 0x2C], esi; // ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°æ›´æ–°
 		z_6:
 			movss [ebp - 0xBC], xmm4;
 			mov eax, [ecx + eax * 4 + 0xB4];

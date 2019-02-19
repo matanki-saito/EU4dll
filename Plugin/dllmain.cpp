@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
@@ -7,78 +7,129 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
     {
 		byte_pattern::start_log(L"eu4jps");
 
-		// version‚ð•¶Žš—ñ‚©‚çŽæ“¾
+		// versionã‚’æ–‡å­—åˆ—ã‹ã‚‰å–å¾—
 		EU4Version version = Misc::getVersion();
 
-		// ƒIƒvƒVƒ‡ƒ“‚ðiniƒtƒ@ƒCƒ‹‚©‚çŽæ“¾
+		// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’iniãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰å–å¾—
 		RunOptions options = RunOptions();
 		Misc::getOptionsByINI(&options);
 		
 		errno_t success = NOERROR;
 
-		// ƒtƒHƒ“ƒgŠÖ˜A‚ÌC³
+		// ãƒ•ã‚©ãƒ³ãƒˆé–¢é€£ã®ä¿®æ­£
 		success |= Font::init(version);
 
-		// –{•¶ƒeƒLƒXƒg•\Ž¦‚ÌC³
+		// æœ¬æ–‡ãƒ†ã‚­ã‚¹ãƒˆè¡¨ç¤ºã®ä¿®æ­£
 		success |= TextView::init(version);
 
-		// ƒ}ƒbƒv•¶ŽšˆÊ’u’²®
+		// ãƒžãƒƒãƒ—æ–‡å­—ä½ç½®èª¿æ•´
 		success |= MapAdj::init(version);
 
-		// ƒ}ƒbƒv•¶Žšjustify
+		// ãƒžãƒƒãƒ—æ–‡å­—justify
 		success |= MapJustify::init(version);
 
-		// ƒ}ƒbƒv•¶Žš•\Ž¦
+		// ãƒžãƒƒãƒ—æ–‡å­—è¡¨ç¤º
 		success |= MapView::init(version);
 
-		// ‚»‚Ì‘¼
+		// ãã®ä»–
 		success |= Misc::init(version);
 
-		// “ü—ÍC³
+		// å…¥åŠ›ä¿®æ­£
 		success |= Input::init(version);
 
-		// IMEC³
+		// IMEä¿®æ­£
 		success |= IME::init(version);
 
-		// ƒc[ƒ‹ƒ`ƒbƒv‚Æƒ{ƒ^ƒ“
+		// ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã¨ãƒœã‚¿ãƒ³
 		success |= ButtonAndToolTip::init(version);
 
-		// ƒc[ƒ‹ƒ`ƒbƒv’Ç‰Áˆ—
+		// ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—è¿½åŠ å‡¦ç†
 		success |= ToolTipApx::init(version);
 
-		// ƒ}ƒbƒvã‚Ìƒ|ƒbƒvƒAƒbƒv•¶Žš
+		// ãƒžãƒƒãƒ—ä¸Šã®ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—æ–‡å­—
 		success |= PopupCharOnMap::init(version);
 
-		// issue-19‚ÌC³
+		// issue-19ã®ä¿®æ­£
 		success |= InputIssue19::init(version);
 
-		// ƒCƒxƒ“ƒgƒ_ƒCƒAƒƒO‚ÌC³‚Æƒ}ƒbƒvã‚ÌC³
+		// ã‚¤ãƒ™ãƒ³ãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ä¿®æ­£ã¨ãƒžãƒƒãƒ—ä¸Šã®ä¿®æ­£
 		success |= EventDialog::init(version);
 
-		// ƒtƒ@ƒCƒ‹ƒZ[ƒuŠÖ˜A
+		// ãƒ•ã‚¡ã‚¤ãƒ«ã‚»ãƒ¼ãƒ–é–¢é€£
 		success |= FileSave::init(version);
 
-		// DateFormat(issue-66)‚ÌC³
+		// DateFormat(issue-66)ã®ä¿®æ­£
 		success |= DateFormat::init(version);
 
-		// List‚Ì•¶Žš’²®iissue-99j
+		// Listã®æ–‡å­—èª¿æ•´ï¼ˆissue-99ï¼‰
 		success |= ListChars::init(version);
 
-		// –¼‘O‚Ì‡˜(issue-98)
+		// åå‰ã®é †åº(issue-98)
 		success |= NameOrder::init(version);
 
 		if (success == NOERROR && options.test == false) {
-			//MessageBoxW(NULL, L"[OK]", L"Multibyte DLL", MB_OK);
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}
 		else {
-//			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
-//			if (sysDefLcid == 1041) {
-//				MessageBoxW(NULL, L"--> Go to https://paradoxian-japan-mod.com/ <--", L"Error", MB_OK);
-//			}
-//			else {
-				MessageBoxW(NULL, L"[Multibyte DLL ERROR]\nThis game version is not supported by Multibyte DLL.\nPlease delete d3d9.dll and restart game.\nOr check new version dll.\n\nhttps://github.com/matanki-saito/EU4dll", L"Multibyte DLL", MB_OK);
-//			}
+			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
+
+			WCHAR* message;
+			WCHAR* caption;
+
+			switch (sysDefLcid) {
+			case MAKELANGID(LANG_JAPANESE, SUBLANG_JAPANESE_JAPAN):
+				caption = L"ã‚¨ãƒ©ãƒ¼";
+				message = L""
+					"ã“ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¯ã¾ã æ—¥æœ¬èªžåŒ–å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“\n"
+					"d3d9.dllã‚’å‰Šé™¤ã—ã¦ã‚²ãƒ¼ãƒ ã‚’å†èµ·å‹•ã—ã¦ãã ã•ã„ã€‚\n"
+					"\n"
+					"ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒšãƒ¼ã‚¸ï¼š\n"
+					"https://github.com/matanki-saito/EU4dll";
+				break;
+
+			case MAKELANGID(LANG_CHINESE_SIMPLIFIED, SUBLANG_CHINESE_SIMPLIFIED):
+				caption = L"é”™è¯¯";
+				message = L""
+					"æ­¤ç‰ˆæœ¬å°šä¸æ”¯æŒ\n"
+					"è¯·åˆ é™¤d3d9.dllå¹¶é‡å¯æ¸¸æˆ\n"
+					"\n"
+					"é¡¹ç›®é¡µé¢:\n"
+					"https://github.com/matanki-saito/EU4dll";
+				break;
+
+
+			case MAKELANGID(LANG_CHINESE_TRADITIONAL, SUBLANG_CHINESE_TRADITIONAL):
+				caption = L"éŒ¯èª¤";
+				message = L""
+					"æ­¤ç‰ˆæœ¬å°šä¸æ”¯æŒ\n"
+					"è«‹åˆªé™¤d3d9.dllä¸¦é‡å•ŸéŠæˆ²\n"
+					"\n"
+					"é …ç›®é é¢:\n"
+					"https://github.com/matanki-saito/EU4dll";
+				break;
+
+			case MAKELANGID(LANG_KOREAN, SUBLANG_KOREAN):
+				caption = L"ì˜¤ë¥˜";
+				message = L""
+					"ì´ ë²„ì „ì€ ì•„ì§ ì§€ì›í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n"
+					"d3d9.dllì„ ì‚­ì œí•˜ê³  ê²Œìž„ì„ ë‹¤ì‹œ ì‹œìž‘í•˜ì‹­ì‹œì˜¤. \n"
+					"\n"
+					"í”„ë¡œì íŠ¸ íŽ˜ì´ì§€\n"
+					"https://github.com/matanki-saito/EU4dll";
+				break;
+
+			case MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US):
+			default:
+				caption = L"ERROR";
+				message = L""
+					"This game version is not supported.\n"
+					"Please delete d3d9.dll and restart game.\n"
+					"\n"
+					"Project Page:\n"
+					"https://github.com/matanki-saito/EU4dll";
+			}
+
+			MessageBoxW(NULL, message, caption, MB_OK);
 
 			byte_pattern::temp_instance().debug_output2("DLL [NG]");
 			exit(-1);

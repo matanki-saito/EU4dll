@@ -1,4 +1,4 @@
-//This is a very simplified version of Ultimate ASI Loader
+﻿//This is a very simplified version of Ultimate ASI Loader
 //https://github.com/ThirteenAG/Ultimate-ASI-Loader
 
 #include <windows.h>

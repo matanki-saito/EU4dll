@@ -1,11 +1,11 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace Misc {
 
 	void getOptionsByINI(RunOptions *options) {
 
-		// exe‚ÌƒpƒX‚ğŒ©‚Â‚¯‚é
+		// exeã®ãƒ‘ã‚¹ã‚’è¦‹ã¤ã‘ã‚‹
 		wchar_t exe_path[1024];
 		wchar_t drive[8];
 		wchar_t dir[1024];
@@ -369,12 +369,12 @@ namespace Misc {
 
 		byte_pattern::temp_instance().debug_output2("misc");
 
-		/* sub_1AFC030 ‘å•¶š‰»ƒLƒƒƒ“ƒZƒ‹H */
+		/* sub_1AFC030 å¤§æ–‡å­—åŒ–ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ */
 		result |= capitalizeCancel_hook(version);
-		// ‚¾‚¢‚Ô•ÏX‚³‚ê‚Ä‚¢‚éH –{“–‚É‘Î‰‚Å‚«‚Ä‚¢‚é‚©•s–¾B
-		// ‚»‚à‚»‚à‚±‚ÌC³‚ª‚Ç‚ñ‚ÈŒø‰Ê‚ğ‚à‚½‚ç‚·‚©–Y‚ê‚Ä‚µ‚Ü‚Á‚½
+		// ã ã„ã¶å¤‰æ›´ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ æœ¬å½“ã«å¯¾å¿œã§ãã¦ã„ã‚‹ã‹ä¸æ˜ã€‚
+		// ãã‚‚ãã‚‚ã“ã®ä¿®æ­£ãŒã©ã‚“ãªåŠ¹æœã‚’ã‚‚ãŸã‚‰ã™ã‹å¿˜ã‚Œã¦ã—ã¾ã£ãŸ
 		result |= unknown_hook(version);
-		// nudgeƒ‚[ƒh‚ÌC³(issue12)
+		// nudgeãƒ¢ãƒ¼ãƒ‰ã®ä¿®æ­£(issue12)
 		result |= nudge_hook(version);
 
 		return result;
