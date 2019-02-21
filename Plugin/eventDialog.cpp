@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace EventDialog {
@@ -287,7 +287,7 @@ namespace EventDialog {
 
 		byte_pattern::temp_instance().debug_output2("event dialog");
 
-		/* ƒXƒ^ƒbƒNƒTƒCƒY•ÏX */
+		/* ã‚¹ã‚¿ãƒƒã‚¯ã‚µã‚¤ã‚ºå¤‰æ›´ */
 		result |= changeStackSize_hook(version);
 
 		/**/

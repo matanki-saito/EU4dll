@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace IME {
@@ -152,10 +152,10 @@ namespace IME {
 
 		byte_pattern::temp_instance().debug_output2("IME fix");
 
-		/* SDL_windowsevents.c‚Ì’²® */
+		/* SDL_windowsevents.cã®èª¿æ•´ */
 		result |= SDL_windowsevents_hook(version);
 
-		/* SDL_windowskeyboard.c‚Ì’²® */
+		/* SDL_windowskeyboard.cã®èª¿æ•´ */
 		result |= SDL_windowskeyboard_hook(version);
 
 		return result;

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #define NOMINMAX
 
@@ -74,10 +74,10 @@ typedef struct {
 } V;
 
 typedef struct _runoption {
-	// ƒvƒƒOƒ‰ƒ€ƒo[ƒWƒ‡ƒ“
+	// ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãƒãƒ¼ã‚¸ãƒ§ãƒ³
 	EU4Version version;
 	
-	// ƒeƒXƒg
+	// ãƒ†ã‚¹ãƒˆ
 	boolean test;
 
 } RunOptions;
@@ -155,5 +155,9 @@ namespace DateFormat {
 }
 
 namespace ListChars {
+	errno_t init(EU4Version version);
+}
+
+namespace NameOrder {
 	errno_t init(EU4Version version);
 }

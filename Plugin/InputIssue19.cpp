@@ -1,4 +1,4 @@
-#include "stdinc.h"
+﻿#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace InputIssue19 {

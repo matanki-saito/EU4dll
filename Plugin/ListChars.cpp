@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace ListChars {
@@ -261,7 +261,7 @@ namespace ListChars {
 			jmp j_z;
 
 		j_1x:
-			// ‚²‚Ü‚©‚·
+			// ã”ã¾ã‹ã™
 			mov eax, edi;
 			sub eax, 3;
 			push eax;
@@ -307,7 +307,7 @@ namespace ListChars {
 			jmp j_z;
 
 		j_1x:
-			// ‚²‚Ü‚©‚·
+			// ã”ã¾ã‹ã™
 			mov eax, edi;
 			sub eax, 3;
 			push eax;
@@ -336,7 +336,7 @@ namespace ListChars {
 			return NOERROR;
 
 		case v1_28_X:
-			// ƒtƒHƒ“ƒg“Ç‚İo‚µ
+			// ãƒ•ã‚©ãƒ³ãƒˆèª­ã¿å‡ºã—
 			// mov     al, [eax+edi]
 			byte_pattern::temp_instance().find_pattern("8A 04 38 8B 55 AC 0F B6 C0");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -346,7 +346,7 @@ namespace ListChars {
 			}
 			else return EU4_ERROR1;
 
-			// ã‚Å2bytei‚ß‚é‚Æ‚¤‚Ü‚­‚¢‚©‚È‚¢‚Ì‚ÅAˆ—‚ÌÅŒã‚ÅƒJƒEƒ“ƒg‚ğ‘‚â‚·
+			// ä¸Šã§2byteé€²ã‚ã‚‹ã¨ã†ã¾ãã„ã‹ãªã„ã®ã§ã€å‡¦ç†ã®æœ€å¾Œã§ã‚«ã‚¦ãƒ³ãƒˆã‚’å¢—ã‚„ã™
 			// mov     eax, [esi+10h]
 			byte_pattern::temp_instance().find_pattern("8B 46 10 47 89 7D C8 89 45 08");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -369,7 +369,7 @@ namespace ListChars {
 			return NOERROR;
 
 		case v1_28_3:
-			// ƒtƒHƒ“ƒg“Ç‚İo‚µ
+			// ãƒ•ã‚©ãƒ³ãƒˆèª­ã¿å‡ºã—
 			// mov     al, [eax+edi]
 			byte_pattern::temp_instance().find_pattern("8A 04 38 8B 55 AC 0F B6 C0");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -379,7 +379,7 @@ namespace ListChars {
 			}
 			else return EU4_ERROR1;
 
-			// ã‚Å2bytei‚ß‚é‚Æ‚¤‚Ü‚­‚¢‚©‚È‚¢‚Ì‚ÅAˆ—‚ÌÅŒã‚ÅƒJƒEƒ“ƒg‚ğ‘‚â‚·
+			// ä¸Šã§2byteé€²ã‚ã‚‹ã¨ã†ã¾ãã„ã‹ãªã„ã®ã§ã€å‡¦ç†ã®æœ€å¾Œã§ã‚«ã‚¦ãƒ³ãƒˆã‚’å¢—ã‚„ã™
 			// mov     eax, [esi+10h]
 			byte_pattern::temp_instance().find_pattern("8B 46 10 47 89 7D E0 89 45 08 3B F8");
 			if (byte_pattern::temp_instance().has_size(1, desc)) {
@@ -413,7 +413,7 @@ namespace ListChars {
 
 		byte_pattern::temp_instance().debug_output2("issue-99 fix");
 
-		// ‚¢‚ç‚È‚¢H
+		// ã„ã‚‰ãªã„ï¼Ÿ
 		//result |= func1_hook(version);
 
 		result |= func2_hook(version);

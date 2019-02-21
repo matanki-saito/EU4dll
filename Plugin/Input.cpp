@@ -1,7 +1,7 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
-/*  ˆê•”‚ÌUIA–{•¶•¶š•\¦ */
+/*  ä¸€éƒ¨ã®UIã€æœ¬æ–‡æ–‡å­—è¡¨ç¤º */
 namespace Input {
 
 	/*-----------------------------------------------*/
@@ -237,7 +237,7 @@ namespace Input {
 		case v1_28_X:
 		case v1_28_3:
 			
-			//ƒXƒ^ƒbƒNŠg’£
+			//ã‚¹ã‚¿ãƒƒã‚¯æ‹¡å¼µ
 			byte_pattern::temp_instance().find_pattern("D8 00 00 00 53 8B 5D 08 56 8B F1 85");
 			if (byte_pattern::temp_instance().has_size(1, desc + "stack size change")) {
 				// sub esp,0xD8
@@ -245,7 +245,7 @@ namespace Input {
 			}
 			else return EU4_ERROR1;
 
-			// “ü—Í‚µ‚½•¶š‚ğutf8‚©‚çƒGƒXƒP[ƒv—ñ‚Ö•ÏŠ·‚·‚é
+			// å…¥åŠ›ã—ãŸæ–‡å­—ã‚’utf8ã‹ã‚‰ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—åˆ—ã¸å¤‰æ›ã™ã‚‹
 			byte_pattern::temp_instance().find_pattern("8B 4D B8 32 C0 88 45 0B");
 			if (byte_pattern::temp_instance().has_size(1, desc + "encode utf8")) {
 				// mov ecx, [ebp-0x48]
@@ -254,7 +254,7 @@ namespace Input {
 			}
 			else return EU4_ERROR1;
 
-			//ŠY“–‰ÓŠ‚Í‚½‚­‚³‚ñˆø‚Á‚©‚©‚é‚Ì‚ÅA­‚µã‚Éˆø‚Á‚©‚©‚é‚æ‚¤‚É‚µ‚½
+			//è©²å½“ç®‡æ‰€ã¯ãŸãã•ã‚“å¼•ã£ã‹ã‹ã‚‹ã®ã§ã€å°‘ã—ä¸Šã«å¼•ã£ã‹ã‹ã‚‹ã‚ˆã†ã«ã—ãŸ
 			byte_pattern::temp_instance().find_pattern("6A 00 6A 00 6A 0A 8B 07"); 
 			if (byte_pattern::temp_instance().has_size(1, desc + "end2")) {
 				// push 0
@@ -262,7 +262,7 @@ namespace Input {
 			}
 			else return EU4_ERROR1;
 
-			//utf8ƒoƒCƒg—ñ‚©‚çUCS2—ñ‚É‚·‚é
+			//utf8ãƒã‚¤ãƒˆåˆ—ã‹ã‚‰UCS2åˆ—ã«ã™ã‚‹
 			byte_pattern::temp_instance().find_pattern("55 8B EC 51 8B 4D 10 53");
 			if (byte_pattern::temp_instance().has_size(1,desc+"get PHYSFS_utf8ToUcs2 addr")) {
 				// push ebp
@@ -270,7 +270,7 @@ namespace Input {
 			}
 			else return EU4_ERROR1;
 
-			// ƒq[ƒvŠm•ÛŠÖ”‚ğ•Û
+			// ãƒ’ãƒ¼ãƒ—ç¢ºä¿é–¢æ•°ã‚’ä¿æŒ
 			byte_pattern::temp_instance().find_pattern("8B FF 55 8B EC 56 8B 75 08 83 FE E0 77 30");
 			if (byte_pattern::temp_instance().has_size(1,desc + "get heap malloc get")) {
 				// mov edi,edi
@@ -278,7 +278,7 @@ namespace Input {
 			}
 			else return EU4_ERROR1;
 
-			//ƒIƒuƒWƒFƒNƒg‰Šú‰»ŠÖ”‚ğ•ÛB‚½‚­‚³‚ñˆø‚Á‚©‚©‚é‚Ì‚Å­‚µ‰º‚É
+			//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–é–¢æ•°ã‚’ä¿æŒã€‚ãŸãã•ã‚“å¼•ã£ã‹ã‹ã‚‹ã®ã§å°‘ã—ä¸‹ã«
 			byte_pattern::temp_instance().find_pattern("C7 41 08 00 00 00 00 8A 00 88 41 0C");
 			if (byte_pattern::temp_instance().has_size(1, desc + "get initilize object func addr")) {
 				// mov dword ptr [ecx+8],0
@@ -286,7 +286,7 @@ namespace Input {
 			}
 			else return EU4_ERROR1;
 
-			//ƒq[ƒvƒNƒŠƒAŠÖ”‚ğ•Û
+			//ãƒ’ãƒ¼ãƒ—ã‚¯ãƒªã‚¢é–¢æ•°ã‚’ä¿æŒ
 			byte_pattern::temp_instance().find_pattern("8B FF 55 8B EC 83 7D 08 00 74 2D FF 75 08 6A");
 			if (byte_pattern::temp_instance().has_size(1,desc + "get heap free func addr")) {
 				// mov edi,edi
@@ -307,14 +307,14 @@ namespace Input {
 		__asm {
 			push    ebx;
 			xor     ebx, ebx;
-			mov     eax, [edi + 0x2C]; // •¶š—ñ’·‚³
+			mov     eax, [edi + 0x2C]; // æ–‡å­—åˆ—é•·ã•
 			cmp     eax, 0x10;
 			lea     ecx, [edi + 0x1C];
 			jbe     dd_2;
 			mov     ecx, [ecx];
 
 		dd_2:
-			mov     eax, [edi + 0x38]; // eax: ƒLƒƒƒŒƒbƒgˆÊ’u
+			mov     eax, [edi + 0x38]; // eax: ã‚­ãƒ£ãƒ¬ãƒƒãƒˆä½ç½®
 			sub     eax, 3;
 			js      dd_3;
 			mov     al, [ecx + eax];
@@ -391,9 +391,9 @@ namespace Input {
 
 		byte_pattern::temp_instance().debug_output2("input fix");
 
-		/* ƒoƒbƒNƒXƒy[ƒX’²® */
+		/* ãƒãƒƒã‚¯ã‚¹ãƒšãƒ¼ã‚¹èª¿æ•´ */
 		result |= backspace_hook(version);
-		/* input stack Šg’£*/
+		/* input stack æ‹¡å¼µ*/
 		result |= input1_hook(version);
 
 		return result;

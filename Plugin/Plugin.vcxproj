@@ -14,7 +14,7 @@
     <ProjectGuid>{F1BAF39A-68E7-48A3-A7C3-57105369E64C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Plugin</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -103,6 +103,7 @@
     <ClCompile Include="mapJustify.cpp" />
     <ClCompile Include="mapView.cpp" />
     <ClCompile Include="misc.cpp" />
+    <ClCompile Include="NameOrder.cpp" />
     <ClCompile Include="Popup.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="ToolTipApx.cpp" />

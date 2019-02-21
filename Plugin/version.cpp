@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 namespace Misc {
@@ -16,10 +16,10 @@ namespace Misc {
 
 	EU4Version getVersion(){
 		// EU4 v1.??.?
-		// ‚±‚ê‚¾‚Æo‚½‚Î‚Á‚©‚è‚Ì‚Ì1.28.0.0‚ÌE‚æ‚¤‚È‚à‚Ì‚É‚Í‘Î‰‚Å‚«‚È‚¢‚Ì‚Å•Ê“r‘Î‰‚·‚é•K—v‚ ‚è
+		// ã“ã‚Œã ã¨å‡ºãŸã°ã£ã‹ã‚Šã®æ™‚ã®1.28.0.0ã®ãƒ»ã‚ˆã†ãªã‚‚ã®ã«ã¯å¯¾å¿œã§ããªã„ã®ã§åˆ¥é€”å¯¾å¿œã™ã‚‹å¿…è¦ã‚ã‚Š
 		byte_pattern::temp_instance().find_pattern("45 55 34 20 76 31 2E ? ? 2E ?");
 		if (byte_pattern::temp_instance().count() > 0) {
-			// ??‚ğæ“¾‚·‚é
+			// ??ã‚’å–å¾—ã™ã‚‹
 			A minor = injector::ReadMemory<A>(byte_pattern::temp_instance().get_first().address(0x7), true);
 
 			EU4Version version;

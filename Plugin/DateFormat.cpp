@@ -1,4 +1,4 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
 /*  menubar date format fix */
@@ -71,7 +71,7 @@ namespace DateFormat {
 		case v1_27_X:
 		case v1_28_X:
 			byte_pattern::temp_instance().find_pattern("83 EC 20 56 FF 75 0C 8B D1 C7 45");
-			/* 2‚Â‚Æ‚àæ“¾‚·‚é */
+			/* 2ã¤ã¨ã‚‚å–å¾—ã™ã‚‹ */
 			if (byte_pattern::temp_instance().has_size(2, desc)) {
 				// sub esp,20h
 				issue66_copyBuff1_v127_start = byte_pattern::temp_instance().get_first().address(-0x18);
@@ -82,7 +82,7 @@ namespace DateFormat {
 			return NOERROR;
 		case v1_26_X:
 		case v1_25_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
@@ -119,7 +119,7 @@ namespace DateFormat {
 			return NOERROR;
 		case v1_26_X:
 		case v1_25_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
@@ -148,7 +148,7 @@ namespace DateFormat {
 			return NOERROR;
 		case v1_26_X:
 		case v1_25_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
@@ -176,13 +176,13 @@ namespace DateFormat {
 	__declspec(naked) void issue66_YMD_v127_start() {
 		__asm {
 
-			// “ú‚ğƒeƒLƒXƒgƒoƒbƒtƒ@‚É•ÏŠ·
+			// æ—¥ã‚’ãƒ†ã‚­ã‚¹ãƒˆãƒãƒƒãƒ•ã‚¡ã«å¤‰æ›
 			push    edi;
 			lea     ecx, dword ptr [ebp - 0xA0 ];
 			mov     byte ptr[ebp - 0x4], 3;
 			call    issue66_createBuff_v127_start;
 
-			// ƒeƒLƒXƒgƒoƒbƒtƒ@‚Éyear‚ğŒ‹‡‚·‚é
+			// ãƒ†ã‚­ã‚¹ãƒˆãƒãƒƒãƒ•ã‚¡ã«yearã‚’çµåˆã™ã‚‹
 			mov     byte ptr[ebp - 0x4], 4;
 			push    year;
 			lea     ecx, dword ptr [ebp - 0x88];
@@ -190,7 +190,7 @@ namespace DateFormat {
 			mov     ecx, esi;
 			call    issue66_copyBuff2_v127_start;
 
-			//ƒoƒbƒtƒ@‚ÉŒ‚ğŒ‹‡‚·‚é
+			//ãƒãƒƒãƒ•ã‚¡ã«æœˆã‚’çµåˆã™ã‚‹
 			lea     ecx, dword ptr [ebp - 0xB8];
 			mov     byte ptr[ebp - 0x4], 5;
 			push    ecx;
@@ -199,7 +199,7 @@ namespace DateFormat {
 			mov     ecx, eax;
 			call    issue66_copyBuff1_v127_start;
 
-			// ƒoƒbƒtƒ@‚É“ú‚ğŒ‹‡‚·‚é
+			// ãƒãƒƒãƒ•ã‚¡ã«æ—¥ã‚’çµåˆã™ã‚‹
 			lea ecx,    dword ptr[ebp - 0xA0];
 			push ecx;
 			lea     ecx, dword ptr [ebp - 0x40];
@@ -208,7 +208,7 @@ namespace DateFormat {
 			mov     ecx, eax;
 			call    issue66_copyBuff2_v127_start;
 
-			// ƒoƒbƒtƒ@‚Éu“úv‚ğŒ‹‡‚·‚é
+			// ãƒãƒƒãƒ•ã‚¡ã«ã€Œæ—¥ã€ã‚’çµåˆã™ã‚‹
 			push    day;
 			lea     ecx, dword ptr[ebp - 0x58];
 			mov     byte ptr[ebp - 0x4], 6;
@@ -225,13 +225,13 @@ namespace DateFormat {
 	__declspec(naked) void issue66_YMD_v1283_start() {
 		__asm {
 
-			// “ú‚ğƒeƒLƒXƒgƒoƒbƒtƒ@‚É•ÏŠ·
+			// æ—¥ã‚’ãƒ†ã‚­ã‚¹ãƒˆãƒãƒƒãƒ•ã‚¡ã«å¤‰æ›
 			push    edi;
 			lea     ecx, dword ptr[ebp - 0xA0];
 			mov     byte ptr[ebp - 0x4], 3;
 			call    issue66_createBuff_v127_start;
 
-			// ƒeƒLƒXƒgƒoƒbƒtƒ@‚Éyear‚ğŒ‹‡‚·‚é
+			// ãƒ†ã‚­ã‚¹ãƒˆãƒãƒƒãƒ•ã‚¡ã«yearã‚’çµåˆã™ã‚‹
 			mov     byte ptr[ebp - 0x4], 4;
 			push    year;
 			lea     ecx, dword ptr[ebp - 0x88];
@@ -239,7 +239,7 @@ namespace DateFormat {
 			call    issue66_copyBuff1_v127_start;
 			add		esp, 4;
 
-			//ƒoƒbƒtƒ@‚ÉŒ‚ğŒ‹‡‚·‚é
+			//ãƒãƒƒãƒ•ã‚¡ã«æœˆã‚’çµåˆã™ã‚‹
 			lea     ecx, dword ptr[ebp - 0xB8];
 			mov     byte ptr[ebp - 0x4], 5;
 			push    ecx;
@@ -248,7 +248,7 @@ namespace DateFormat {
 			call    issue66_copyBuff1_v127_start;
 			add		esp, 4;
 
-			// ƒoƒbƒtƒ@‚É“ú‚ğŒ‹‡‚·‚é
+			// ãƒãƒƒãƒ•ã‚¡ã«æ—¥ã‚’çµåˆã™ã‚‹
 			lea ecx, dword ptr[ebp - 0xA0];
 			push ecx;
 			lea     ecx, dword ptr[ebp - 0x40];
@@ -257,7 +257,7 @@ namespace DateFormat {
 			call    issue66_copyBuff1_v127_start;
 			add		esp, 4;
 
-			// ƒoƒbƒtƒ@‚Éu“úv‚ğŒ‹‡‚·‚é
+			// ãƒãƒƒãƒ•ã‚¡ã«ã€Œæ—¥ã€ã‚’çµåˆã™ã‚‹
 			push    day;
 			lea     ecx, dword ptr[ebp - 0x58];
 			mov     byte ptr[ebp - 0x4], 6;
@@ -301,7 +301,7 @@ namespace DateFormat {
 			return NOERROR;
 		case v1_26_X:
 		case v1_25_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
@@ -391,7 +391,7 @@ namespace DateFormat {
 			return NOERROR;
 		case v1_26_X:
 		case v1_25_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
@@ -427,7 +427,7 @@ namespace DateFormat {
 	void resetYear2() {
 		if (year2 != NULL) delete year2;
 
-		// u”Nv‚ğ‰Šú‰»
+		// ã€Œå¹´ã€ã‚’åˆæœŸåŒ–
 		year2 = new V();
 		year2->t.text[0] = 0xF;
 		year2->t.text[1] = '\0';
@@ -454,7 +454,7 @@ namespace DateFormat {
 			mov		ecx,esi;
 			mov     byte ptr[ebp - 0x4], 3;
 			call    issue66_copyBuff1_v127_start;
-			// add esp,4‚Í–ß‚èæ‚Ås‚í‚ê‚Ä‚¢‚é
+			// add esp,4ã¯æˆ»ã‚Šå…ˆã§è¡Œã‚ã‚Œã¦ã„ã‚‹
 
 			push issue66_YSM_v1283_end;
 			ret;
@@ -493,7 +493,7 @@ namespace DateFormat {
 			return NOERROR;
 		case v1_26_X:
 		case v1_25_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
@@ -585,7 +585,7 @@ namespace DateFormat {
 			}
 			else return EU4_ERROR1;
 
-			// ƒRƒs[‚·‚éŠÖ”‚ğæ“¾‚·‚é
+			// ã‚³ãƒ”ãƒ¼ã™ã‚‹é–¢æ•°ã‚’å–å¾—ã™ã‚‹
 			byte_pattern::temp_instance().find_pattern("57 8B 43 10 3B C1 0F 82 C0 00 00 00");
 			if (byte_pattern::temp_instance().has_size(1, desc + " copy func")) {
 				// push edi
@@ -596,7 +596,7 @@ namespace DateFormat {
 			return NOERROR;
 		case v1_26_X:
 		case v1_25_X:
-			/* ‘Î‰‚µ‚È‚¢ */
+			/* å¯¾å¿œã—ãªã„ */
 			return NOERROR;
 		}
 
@@ -610,50 +610,50 @@ namespace DateFormat {
 
 		byte_pattern::temp_instance().debug_output2("issue66");
 
-		// u“úv‚ğ‰Šú‰»
+		// ã€Œæ—¥ã€ã‚’åˆæœŸåŒ–
 		day = new V();
 		day->t.text[0] = 0xE;
 		day->t.text[1] = '\0';
 		day->len = 1;
 		day->len2 = 0xF;
 
-		// u”Nv‚ğ‰Šú‰»
+		// ã€Œå¹´ã€ã‚’åˆæœŸåŒ–
 		year = new V();
 		year->t.text[0] = 0xF;
 		year->t.text[1] = '\0';
 		year->len = 1;
 		year->len2 = 0xF;
 
-		// uŒv‚ğ‰Šú‰»
+		// ã€Œæœˆã€ã‚’åˆæœŸåŒ–
 		month = new V();
 		month->t.text[0] = 7; //BEL
 		month->t.text[1] = '\0';
 		month->len = 1;
 		month->len2 = 0xF;
 
-		/* “ú•t‚Ì•\‹L‚Ì‡”Ô‚ğ“ü‚ê‘Ö‚¦‚é */
+		/* æ—¥ä»˜ã®è¡¨è¨˜ã®é †ç•ªã‚’å…¥ã‚Œæ›¿ãˆã‚‹ */
 		result |= menubar_dateFix_hook(version);
 
-		/* ƒRƒs[ƒoƒbƒtƒ@ŠÖ”‚ğƒtƒbƒN */
+		/* ã‚³ãƒ”ãƒ¼ãƒãƒƒãƒ•ã‚¡é–¢æ•°ã‚’ãƒ•ãƒƒã‚¯ */
 		result |= copyBuffFunc_hook(version);
 
-		/* ƒoƒbƒtƒ@ì¬ŠÖ”‚ğƒtƒbƒN */
+		/* ãƒãƒƒãƒ•ã‚¡ä½œæˆé–¢æ•°ã‚’ãƒ•ãƒƒã‚¯ */
 		result |= createBuffFunc_hook(version);
 
-		/* ƒRƒs[ƒeƒLƒXƒgì¬ŠÖ”‚ğƒtƒbƒN */
+		/* ã‚³ãƒ”ãƒ¼ãƒ†ã‚­ã‚¹ãƒˆä½œæˆé–¢æ•°ã‚’ãƒ•ãƒƒã‚¯ */
 		result |= copyText_hook(version);
 
-		/* M, Y ¨ Y”NM */
+		/* M, Y â†’ Yå¹´M */
 		result |= fixMC_Y_hook(version);
 
-		/* D M, Y ¨ Y”NMD“ú*/
+		/* D M, Y â†’ Yå¹´MDæ—¥*/
 		result |= fixD_MC_Y_hook(version);
 
-		/* M Y ¨ Y”NM */
+		/* M Y â†’ Yå¹´M */
 		result |= fixM_Y_hook(version);
 
-		/* YYYY.MM.DD ¨ YYYY”NMMŒDD“ú */
-		/* •s‹ï‡‚ª‚ ‚Á‚ÄƒRƒƒ“ƒgƒAƒEƒgFhttps://github.com/matanki-saito/EU4dll/issues/76 */
+		/* YYYY.MM.DD â†’ YYYYå¹´MMæœˆDDæ—¥ */
+		/* ä¸å…·åˆãŒã‚ã£ã¦ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆï¼šhttps://github.com/matanki-saito/EU4dll/issues/76 */
 		//result |= fixYYYYdMMdDD_hook(version);
 
 		return result;

@@ -1,7 +1,7 @@
-#include "stdinc.h"
+ï»¿#include "stdinc.h"
 #include "byte_pattern.h"
 
-/*  ˆê•”‚ÌUIA–{•¶•¶š•\¦ */
+/*  ä¸€éƒ¨ã®UIã€æœ¬æ–‡æ–‡å­—è¡¨ç¤º */
 namespace TextView {
 	/*-----------------------------------------------*/
 
@@ -196,7 +196,7 @@ namespace TextView {
 	uintptr_t text1_v126_end;
 	__declspec(naked) void text1_v126_start()
 	{
-		// edx‚ÉDST‚ÌƒAƒhƒŒƒX‚ª‚ ‚é
+		// edxã«DSTã®ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒã‚ã‚‹
 		__asm {
 			xor eax, eax;
 			mov al, byte ptr[edi + ecx];
@@ -268,11 +268,11 @@ namespace TextView {
 	uintptr_t text1_v127_end;
 	__declspec(naked) void text1_v127_start()
 	{
-		// al‚É‚Íæ‚èo‚µ‚½1byte‚ª“ü‚Á‚Ä‚¢‚é
-		// edi‚ÉDST‚ÌƒAƒhƒŒƒX‚ª‚ ‚é
-		// edi‚Íã‘‚«‚µ‚Ä‚µ‚Ü‚Á‚Ä‚¢‚é‚Ì‚ÅÅŒã‚É[ebp-14h]‚ğ“ü‚ê‚Ä–ß‚·
+		// alã«ã¯å–ã‚Šå‡ºã—ãŸ1byteãŒå…¥ã£ã¦ã„ã‚‹
+		// ediã«DSTã®ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒã‚ã‚‹
+		// ediã¯ä¸Šæ›¸ãã—ã¦ã—ã¾ã£ã¦ã„ã‚‹ã®ã§æœ€å¾Œã«[ebp-14h]ã‚’å…¥ã‚Œã¦æˆ»ã™
 		__asm {
-			// ƒSƒ~‚ª“ü‚Á‚Ä‚¢‚é‚Ì‚ğœ‹
+			// ã‚´ãƒŸãŒå…¥ã£ã¦ã„ã‚‹ã®ã‚’é™¤å»
 			movzx eax, al;
 
 			mov byte ptr[edi + edx], al;
@@ -328,12 +328,12 @@ namespace TextView {
 			mov[ebp - 0x28], esi;
 
 		f_4:
-			mov edi, [ebp - 0x14]; // ‚à‚Æ‚É–ß‚·
+			mov edi, [ebp - 0x14]; // ã‚‚ã¨ã«æˆ»ã™
 
-			cmp byte ptr[ebx + 0x3C], 0; // arg_34, ebp‚Å‚Í‚È‚­ebx‚È‚±‚Æ‚É’ˆÓ
+			cmp byte ptr[ebx + 0x3C], 0; // arg_34, ebpã§ã¯ãªãebxãªã“ã¨ã«æ³¨æ„
 
-			/* 1.27.X‚©‚ç‚»‚Ì‚Ü‚Üeax‚Écode-point‚ªc‚ç‚È‚­‚È‚Á‚½‚Ì‚ÅAŠg’£‚µ‚½ƒXƒ^ƒbƒN‚É•Û‘¶ */
-			mov word ptr [ebp - 0x6BC], ax; // •Û‘¶
+			/* 1.27.Xã‹ã‚‰ãã®ã¾ã¾eaxã«code-pointãŒæ®‹ã‚‰ãªããªã£ãŸã®ã§ã€æ‹¡å¼µã—ãŸã‚¹ã‚¿ãƒƒã‚¯ã«ä¿å­˜ */
+			mov word ptr [ebp - 0x6BC], ax; // ä¿å­˜
 
 			mov eax, [ebp - 0x18];
 
@@ -420,7 +420,7 @@ namespace TextView {
 	__declspec(naked) void text2_v127_start()
 	{
 		__asm {
-			// text1‚Å‚Æ‚Á‚Ä‚¨‚¢‚½code-point‚ğƒ`ƒFƒbƒN
+			// text1ã§ã¨ã£ã¦ãŠã„ãŸcode-pointã‚’ãƒã‚§ãƒƒã‚¯
 			cmp word ptr[ebp - 0x6BC], 0xFF;
 			ja f_1;
 
@@ -509,7 +509,7 @@ namespace TextView {
 			ret;
 
 		f_c_t:
-			movzx eax, al; // ‚±‚ê‚ª‚â‚è‚½‚¢‚¾‚¯
+			movzx eax, al; // ã“ã‚ŒãŒã‚„ã‚ŠãŸã„ã ã‘
 
 			push text1_v125_end2;
 			ret;
@@ -525,7 +525,7 @@ namespace TextView {
 		case v1_28_3:
 		case v1_28_X:
 		case v1_27_X:
-			/* text1‚ÌC³‚È‚Ì‚ÅƒXƒLƒbƒv‚µ‚½ */
+			/* text1ã®ä¿®æ­£ãªã®ã§ã‚¹ã‚­ãƒƒãƒ—ã—ãŸ */
 			return NOERROR;
 		case v1_26_X:
 		case v1_25_X:
@@ -765,7 +765,7 @@ namespace TextView {
 
 		h_5:
 			mov ecx, [ebp - 0x54];
-			mov [ebp - 0x4C], eax; // dword ‚Å‚æ‚¢H
+			mov [ebp - 0x4C], eax; // dword ã§ã‚ˆã„ï¼Ÿ
 
 			push text5_v127_end;
 			ret;
@@ -803,7 +803,7 @@ namespace TextView {
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(0x6), text5_v127_start);
 				// xmm3, dword ptr [ecx+428h]
 				text5_v127_end = byte_pattern::temp_instance().get_first().address(0xF);
-				//text6‚Ítext5‚É“‡‚µ‚½
+				//text6ã¯text5ã«çµ±åˆã—ãŸ
 			}
 			else return EU4_ERROR1;
 			return NOERROR;
@@ -837,19 +837,19 @@ namespace TextView {
 
 		byte_pattern::temp_instance().debug_output2("main text fix");
 
-		/* ƒXƒ^ƒbƒNƒTƒCƒY‚Ì’²® */
+		/* ã‚¹ã‚¿ãƒƒã‚¯ã‚µã‚¤ã‚ºã®èª¿æ•´ */
 		result |= changeStackSize_hook(version);
-		/* “]‘—æƒoƒbƒtƒ@‚Ìƒ|ƒCƒ“ƒ^‚ğŠm•Û */
+		/* è»¢é€å…ˆãƒãƒƒãƒ•ã‚¡ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ç¢ºä¿ */
 		result |= prepareCopyBuff_hook(version);
-		/* ƒoƒbƒtƒ@‚ÉƒRƒs[ */
+		/* ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼ */
 		result |= copyBuff_hook(version);
-		/* ƒtƒHƒ“ƒg‚©‚ç•¶š‚ğæ“¾ */
+		/* ãƒ•ã‚©ãƒ³ãƒˆã‹ã‚‰æ–‡å­—ã‚’å–å¾— */
 		result |= getCharInFont_hook(version);
-		/* ƒ~ƒX‚µ‚½C³ */
+		/* ãƒŸã‚¹ã—ãŸä¿®æ­£ */
 		result |= fixCopyBuff_hook(version);
-		/* ‰üs‚Ìˆ— */
+		/* æ”¹è¡Œã®å‡¦ç† */
 		result |= lineBreak_hook(version);
-		/* •\¦ˆ—‚É“n‚·•¶š */
+		/* è¡¨ç¤ºå‡¦ç†ã«æ¸¡ã™æ–‡å­— */
 		result |= actualCharView_hook(version);
 
 		return result;
