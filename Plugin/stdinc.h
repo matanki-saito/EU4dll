@@ -14,6 +14,7 @@
 #include <utility>
 #include <cstring>
 #include <filesystem>
+#include <shlobj.h>
 #include <boost/utility/string_view.hpp>
 #include "../include/injector/hooking.hpp"
 #include "../include/injector/calling.hpp"
