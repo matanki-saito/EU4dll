@@ -75,12 +75,18 @@
     <ClCompile Include="NameOrder.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="moddl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="stdinc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="moddl.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
