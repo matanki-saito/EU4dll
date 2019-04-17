@@ -78,6 +78,9 @@
     <ClCompile Include="moddl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ShowFileName.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
