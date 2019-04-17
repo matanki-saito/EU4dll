@@ -176,7 +176,6 @@ namespace ListChars {
 			cmp byte ptr[eax + edi], ESCAPE_SEQ_4;
 			jz j_1x;
 
-		j_01:
 			inc edi;
 			jmp j_2;
 
@@ -216,7 +215,6 @@ namespace ListChars {
 			cmp byte ptr[eax + edi], ESCAPE_SEQ_4;
 			jz j_1x;
 
-		j_01:
 			inc edi;
 			jmp j_2;
 

@@ -585,7 +585,7 @@ namespace FileSave {
 		}
 	}
 
-	static char yellow[] = { 0xA7, 0x59 }; // 
+	static char yellow[] = { (char)0xA7, (char)0x59 };
 	uintptr_t showToolTip_end_v1283;
 	__declspec(naked) void showToolTip_start_v1283() {
 		__asm {

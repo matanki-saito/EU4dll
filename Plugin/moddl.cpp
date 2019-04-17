@@ -46,7 +46,7 @@ bool InitAutoUpdate(const path &pluginsPath)
 
 	if (std::experimental::filesystem::exists(exeFilePath)) {
 		return createProcess(
-			wcsdup(exeFilePath.c_str()),
+			_wcsdup(exeFilePath.c_str()),
 			CREATE_NO_WINDOW
 		);
 	}

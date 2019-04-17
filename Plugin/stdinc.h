@@ -140,6 +140,7 @@ namespace PopupCharOnMap {
 }
 
 namespace FileSave {
+	char* utf8ToEscapedStr(char* from);
 	errno_t init(EU4Version version);
 }
 
