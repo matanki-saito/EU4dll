@@ -639,6 +639,57 @@ namespace FileSave {
 
 	/*-----------------------------------------------*/
 
+	uintptr_t loadgame_showTitle_end_v1283;
+	__declspec(naked) void loadgame_showTitle_start_v1283() {
+		__asm {
+			// もともとあったもの
+
+
+			// ここから処理
+			lea eax, [ebp - 0x28];
+			push eax;
+			call utf8ToEscapedStr;
+			add esp, 4;
+			push eax;
+
+			lea ecx, [edi + 0x6C];
+			mov eax, [edi + 0x6C];
+
+			lea edx, [ebp - 0x28];
+
+			push loadgame_showTitle_end_v1283;
+			ret;
+		}
+	}
+
+	/*-----------------------------------------------*/
+
+	errno_t loadgame_showTitle_hook(EU4Version version) {
+		std::string desc = "show title";
+
+		switch (version) {
+		case v1_25_X:
+		case v1_26_X:
+		case v1_27_X:
+		case v1_28_X:
+			return NOERROR;
+		case v1_28_3:
+			byte_pattern::temp_instance().find_pattern("8B 47 6C 8D 4F 6C 8D 55 D8 52 FF 50 40 8B CF");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov eax, [edi+6Ch]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), loadgame_showTitle_start_v1283);
+				// call dword ptr[eax+40h]
+				loadgame_showTitle_end_v1283 = byte_pattern::temp_instance().get_first().address(0xA);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		}
+
+		return EU4_ERROR1;
+	}
+
+	/*-----------------------------------------------*/
+
 	errno_t init(EU4Version version) {
 		errno_t result = 0;
 
@@ -661,6 +712,9 @@ namespace FileSave {
 
 		/* ツールチップを表示できるようにする */
 		result |= showToolTip(version);
+
+		/* タイトルを表示できるようにする */
+		result |= loadgame_showTitle_hook(version);
 
 		return result;
 	}
