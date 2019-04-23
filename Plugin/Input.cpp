@@ -85,7 +85,7 @@ namespace Input {
 			jz      cc_4;
 			cmp     ah, 0x80;
 			jz      cc_4
-				cmp     ah, 0x7E;
+			cmp     ah, 0x7E;
 			jz      cc_4;
 			cmp     ah, 0x2F;
 			jz      cc_4;
@@ -100,6 +100,18 @@ namespace Input {
 			cmp     ah, 0x3D;
 			jz      cc_4;
 			cmp     ah, 0x23;
+			jz		cc_4;
+			cmp		ah, 0x3F;
+			jz		cc_4;
+			cmp     ah, 0x3A;
+			jz		cc_4;
+			cmp     ah, 0x3C;
+			jz		cc_4;
+			cmp     ah, 0x3E;
+			jz		cc_4;
+			cmp     ah, 0x2A;
+			jz		cc_4;
+			cmp     ah, 0x7C;
 			jnz     cc_3;
 
 		cc_4:
@@ -140,19 +152,30 @@ namespace Input {
 			jz      cc_5;
 			cmp     al, 0x2F;
 			jz      cc_5;
+			cmp     al, 0x5F;
+			jz      cc_5;
 			cmp     al, 0xBD;
 			jz      cc_5;
 			cmp     al, 0x3B;
 			jz      cc_5;
 			cmp     al, 0x5D;
 			jz      cc_5;
-			cmp     al, 0x5F;
-			jz      cc_5;
 			cmp     al, 0x3D;
 			jz      cc_5;
 			cmp     al, 0x23;
+			jz		cc_5;
+			cmp		al, 0x3F;
+			jz		cc_5;
+			cmp     al, 0x3A;
+			jz		cc_5;
+			cmp     al, 0x3C;
+			jz		cc_5;
+			cmp     al, 0x3E;
+			jz		cc_5;
+			cmp     al, 0x2A;
+			jz		cc_5;
+			cmp     al, 0x7C;
 			jnz     cc_6;
-
 		cc_5:
 			add     ecx, 1;
 

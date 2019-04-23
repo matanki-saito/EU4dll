@@ -14,19 +14,19 @@
     <ProjectGuid>{F1BAF39A-68E7-48A3-A7C3-57105369E64C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Plugin</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -56,7 +56,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PLUGIN_EXPORTS;_CRT_SECURE_NO_WARNINGS;_DISABLE_DEPRECATE_LTL_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
+      <MinimalRebuild>false</MinimalRebuild>
       <FunctionLevelLinking>
       </FunctionLevelLinking>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -106,6 +106,7 @@
     <ClCompile Include="moddl.cpp" />
     <ClCompile Include="NameOrder.cpp" />
     <ClCompile Include="Popup.cpp" />
+    <ClCompile Include="ShowFileName.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="ToolTipApx.cpp" />
     <ClCompile Include="version.cpp" />

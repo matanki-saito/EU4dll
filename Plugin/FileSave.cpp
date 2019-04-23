@@ -265,8 +265,9 @@ namespace FileSave {
 			switch (high) {
 			case 0xA4:case 0xA3:case 0xA7:case 0x24:case 0x5B:case 0x00:case 0x5C:
 			case 0x20:case 0x0D:case 0x0A:case 0x22:case 0x7B:case 0x7D:case 0x40:
-			case 0x80:case 0x7E:case 0x2F:case 0xBD:case 0x3B:case 0x5D:case 0x5F:
-			case 0x3D:case 0x23:
+			case 0x80:case 0x7E:case 0x2F:case 0x5F:case 0xBD:case 0x3B:case 0x5D:
+			case 0x3D:case 0x23:case 0x3F:case 0x3A:case 0x3C:case 0x3E:case 0x2A:
+			case 0x7C:
 				escapeChr += 2;
 				break;
 			default:
@@ -277,8 +278,9 @@ namespace FileSave {
 			switch (low) {
 			case 0xA4:case 0xA3:case 0xA7:case 0x24:case 0x5B:case 0x00:case 0x5C:
 			case 0x20:case 0x0D:case 0x0A:case 0x22:case 0x7B:case 0x7D:case 0x40:
-			case 0x80:case 0x7E:case 0x2F:case 0xBD:case 0x3B:case 0x5D:case 0x5F:
-			case 0x3D:case 0x23:
+			case 0x80:case 0x7E:case 0x2F:case 0x5F:case 0xBD:case 0x3B:case 0x5D:
+			case 0x3D:case 0x23:case 0x3F:case 0x3A:case 0x3C:case 0x3E:case 0x2A:
+			case 0x7C:
 				escapeChr++;
 				break;
 			default:
@@ -585,7 +587,7 @@ namespace FileSave {
 		}
 	}
 
-	static char yellow[] = { 0xA7, 0x59 }; // 
+	static char yellow[] = { (char)0xA7, (char)0x59 };
 	uintptr_t showToolTip_end_v1283;
 	__declspec(naked) void showToolTip_start_v1283() {
 		__asm {
@@ -637,6 +639,57 @@ namespace FileSave {
 
 	/*-----------------------------------------------*/
 
+	uintptr_t loadgame_showTitle_end_v1283;
+	__declspec(naked) void loadgame_showTitle_start_v1283() {
+		__asm {
+			// もともとあったもの
+
+
+			// ここから処理
+			lea eax, [ebp - 0x28];
+			push eax;
+			call utf8ToEscapedStr;
+			add esp, 4;
+			push eax;
+
+			lea ecx, [edi + 0x6C];
+			mov eax, [edi + 0x6C];
+
+			lea edx, [ebp - 0x28];
+
+			push loadgame_showTitle_end_v1283;
+			ret;
+		}
+	}
+
+	/*-----------------------------------------------*/
+
+	errno_t loadgame_showTitle_hook(EU4Version version) {
+		std::string desc = "show title";
+
+		switch (version) {
+		case v1_25_X:
+		case v1_26_X:
+		case v1_27_X:
+		case v1_28_X:
+			return NOERROR;
+		case v1_28_3:
+			byte_pattern::temp_instance().find_pattern("8B 47 6C 8D 4F 6C 8D 55 D8 52 FF 50 40 8B CF");
+			if (byte_pattern::temp_instance().has_size(1, desc)) {
+				// mov eax, [edi+6Ch]
+				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), loadgame_showTitle_start_v1283);
+				// call dword ptr[eax+40h]
+				loadgame_showTitle_end_v1283 = byte_pattern::temp_instance().get_first().address(0xA);
+			}
+			else return EU4_ERROR1;
+			return NOERROR;
+		}
+
+		return EU4_ERROR1;
+	}
+
+	/*-----------------------------------------------*/
+
 	errno_t init(EU4Version version) {
 		errno_t result = 0;
 
@@ -659,6 +712,9 @@ namespace FileSave {
 
 		/* ツールチップを表示できるようにする */
 		result |= showToolTip(version);
+
+		/* タイトルを表示できるようにする */
+		result |= loadgame_showTitle_hook(version);
 
 		return result;
 	}
