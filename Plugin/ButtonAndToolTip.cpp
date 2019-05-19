@@ -52,8 +52,29 @@ namespace ButtonAndToolTip {
 	__declspec(naked) void func1_v125_start()
 	{
 		__asm {
-			mov eax, [eax + esi];
-			mov[ebp - 0xA0], eax; // lpMem
+			push ecx;
+
+			// 1文字目
+			mov cl, byte ptr[eax + esi];
+			mov byte ptr[ebp - 0xA0], cl;  // lpMem
+
+			// 1文字目をみる
+			cmp cl, ESCAPE_SEQ_1;
+			jz geso1;
+			cmp cl, ESCAPE_SEQ_2;
+			jz geso1;
+			cmp cl, ESCAPE_SEQ_3;
+			jz geso1;
+			cmp cl, ESCAPE_SEQ_4;
+			jz geso1;
+			jmp geso;
+
+		geso1:
+			mov cx, word ptr [eax + esi+1];
+			mov word ptr[ebp - 0xA0 + 1], cx; // lpMem
+
+		geso:
+			pop ecx;
 
 			push func1_v125_end;
 			ret;
@@ -316,7 +337,7 @@ namespace ButtonAndToolTip {
 			if (byte_pattern::temp_instance().has_size(1, desc + " start")) {
 				// cmp word ptr [eax+6],0
 				injector::MakeJMP(byte_pattern::temp_instance().get_first().address(), func4_v127_start);
-				// cmp [ebp+var_30],0
+				// cmp [ebp+var_34],0
 				func4_v127_end = byte_pattern::temp_instance().get_first().address(0xB);
 			}
 			else return EU4_ERROR1;
