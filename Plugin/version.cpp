@@ -10,7 +10,8 @@ namespace Misc {
 		byte ascii3;
 
 		int calVer() {
-			return (ascii1 - 0x30) * 100 + (ascii2 - 0x30)*10 + (ascii3 - 0x30);
+			int ver =  (ascii1 - 0x30) * 100 + (ascii2 - 0x30)*10 + (ascii3 - 0x30);
+			return ver;
 		}
 	} A;
 
@@ -32,6 +33,7 @@ namespace Misc {
 				version = v1_26_X;
 				break;
 			case 270:
+			case 272:
 				version = v1_27_X;
 				break;
 			case 280:
