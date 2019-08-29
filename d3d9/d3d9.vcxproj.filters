@@ -27,4 +27,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <MASM Include="hook.asm">
+      <Filter>源文件</Filter>
+    </MASM>
+  </ItemGroup>
 </Project>

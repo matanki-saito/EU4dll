@@ -6,26 +6,29 @@
 #include <filesystem>
 #include <ShlObj.h>
 #include <Objbase.h>
-#pragma comment(lib, "Ole32.lib")
+//#pragma comment(lib, "Ole32.lib")
 
 #include "filedl.h"
 
 using namespace std;
 using namespace std::experimental::filesystem::v1;
+extern "C" {
+	struct
+	{
+		HMODULE dll;
+		FARPROC Direct3DCreate9;
+		FARPROC Direct3DCreate9Ex;
 
-struct
-{
-    HMODULE dll;
-    FARPROC Direct3DCreate9;
-    FARPROC Direct3DCreate9Ex;
-
-    void LoadOriginalLibrary(HMODULE module)
-    {
-        dll = module;
-        Direct3DCreate9 = GetProcAddress(module, "Direct3DCreate9");
-        Direct3DCreate9Ex = GetProcAddress(module, "Direct3DCreate9Ex");
-    }
-} d3d9meta;
+		void LoadOriginalLibrary(HMODULE module)
+		{
+			dll = module;
+			Direct3DCreate9 = GetProcAddress(module, "Direct3DCreate9");
+			Direct3DCreate9Ex = GetProcAddress(module, "Direct3DCreate9Ex");
+		}
+	} d3d9meta; // asmとシェアする
+	DWORD e = 1; // asmとシェアする
+	void hoge();//asmに置く予定の関数
+}
 
 void InitD3D9()
 {
@@ -56,6 +59,10 @@ void LoadScripts(const path &folder)
     }
 }
 
+void test() {
+	hoge();
+}
+
 void Initialize(HMODULE hSelf)
 {
     wchar_t pluginpath[MAX_PATH];
@@ -69,7 +76,11 @@ void Initialize(HMODULE hSelf)
     InitD3D9();
 
     LoadScripts(pluginsPath);
+
+	test();
 }
+
+
 
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
 {
@@ -80,7 +91,3 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
 
     return TRUE;
 }
-
-
-__declspec(naked) void _Direct3DCreate9() { _asm { jmp d3d9meta.Direct3DCreate9 } }
-__declspec(naked) void _Direct3DCreate9Ex() { _asm { jmp d3d9meta.Direct3DCreate9Ex } }

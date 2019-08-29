@@ -29,19 +29,22 @@
 #ifndef _MSC_VER    // MSVC is much more flexible when we're talking about inline assembly
 #error  Cannot use this header in another compiler other than MSVC
 #endif
-#ifndef _M_IX86
-#error  Supported only in x86
+#ifndef _M_X64
+#error  "Supported only in x64"
 #endif
 
-//
 #include "injector.hpp"
+
+extern "C" {
+	void make_reg_pack_and_call();
+}
 
 namespace injector
 {
     //helpers
     union general_register
     {
-        uint32_t i;
+        uint64_t i;
         void *p;
 
         template <typename T>
@@ -51,6 +54,7 @@ namespace injector
         }
     };
 
+	// http://www.zombie-hunting-club.com/entry/2017/10/15/220724?amp=1#4-%E3%83%95%E3%83%A9%E3%82%B0%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF
     struct flags_register
     {
         bool carry_flag : 1;
@@ -85,22 +89,63 @@ namespace injector
         bool flag29 : 1;
         bool flag30 : 1;
         bool flag31 : 1;
+		bool flag32 : 1;
+		bool flag33 : 1;
+		bool flag34 : 1;
+		bool flag35 : 1;
+		bool flag36 : 1;
+		bool flag37 : 1;
+		bool flag38 : 1;
+		bool flag39 : 1;
+		bool flag40 : 1;
+		bool flag41 : 1;
+		bool flag42 : 1;
+		bool flag43 : 1;
+		bool flag44 : 1;
+		bool flag45 : 1;
+		bool flag46 : 1;
+		bool flag47 : 1;
+		bool flag48 : 1;
+		bool flag49 : 1;
+		bool flag50 : 1;
+		bool flag51 : 1;
+		bool flag52 : 1;
+		bool flag53 : 1;
+		bool flag54 : 1;
+		bool flag55 : 1;
+		bool flag56 : 1;
+		bool flag57 : 1;
+		bool flag58 : 1;
+		bool flag59 : 1;
+		bool flag60 : 1;
+		bool flag61 : 1;
+		bool flag62 : 1;
+		bool flag63 : 1;
     };
-    static_assert(sizeof(general_register) == 4, "Type size error.");
-    static_assert(sizeof(flags_register) == 4, "Type size error.");
+    static_assert(sizeof(general_register) == 8, "Type size error.");
+    static_assert(sizeof(flags_register) == 8, "Type size error.");
+
 
     struct reg_pack
     {
+		// TODO: これはないのでどうするか考える
+		// http://left404.com/2011/01/04/moving-x86-assembly-to-64-bit-x86-64/
+
         // The ordering is very important, don't change
         // The first field is the last to be pushed and first to be poped
 
         // PUSHAD/POPAD -- must be the lastest fields (because of esp)
         union
         {
-            general_register arr[8];
-            struct { general_register edi, esi, ebp, esp, ebx, edx, ecx, eax; };
+            general_register arr[16];
+            struct {
+				general_register
+					rdi, rsi, rbp, rsp, rbx, rdx, rcx, rax,
+					r8, r9, r10, r11, r12, r13, r14, r15;
+			};
         };
-
+		// PUSHFQをつかう
+		// https://www.felixcloutier.com/x86/pushf:pushfd:pushfq
         // PUSHFD / POPFD
         flags_register ef;
     };
@@ -115,34 +160,16 @@ namespace injector
         {
             static void call(reg_pack* regs)
             {
-                T fun; fun(*regs);
+                T fun;
+				fun(*regs);
             }
         };
 
         // Constructs a reg_pack and calls the wrapper functor
         template<class W>   // where W is of type wrapper
-        inline void __declspec(naked) make_reg_pack_and_call()
+        inline void w_make_reg_pack_and_call()
         {
-            _asm
-            {
-                // Construct the reg_pack structure on the stack
-                pushfd              // Pushes EFLAGS to reg_pack
-                pushad              // Pushes general purposes registers to reg_pack
-                add dword ptr[esp+12], 8     // Add 4 to reg_pack::esp 'cuz of our return pointer, let it be as before this func is called
-
-                // Call wrapper sending reg_pack as parameter
-                push esp
-                call W::call
-                add esp, 4
-
-                // Destructs the reg_pack from the stack
-                sub dword ptr[esp+12], 8   // Fix reg_pack::esp before popping it (doesn't make a difference though) (+4 because eflags)
-                popad
-                popfd               // Warning: Do not use any instruction that changes EFLAGS after this (-> sub affects EF!! <-)
-
-                // Back to normal flow
-                ret
-            }
+			make_reg_pack_and_call();
         }
     };
 
@@ -156,7 +183,7 @@ namespace injector
     {
         typedef injector_asm::wrapper<FuncT> functor;
         if(false) functor::call(nullptr);   // To instantiate the template, if not done _asm will fail
-        MakeCALL(at, injector_asm::make_reg_pack_and_call<functor>);
+        MakeCALL(at, injector_asm::w_make_reg_pack_and_call<functor>);
     }
 
     /*

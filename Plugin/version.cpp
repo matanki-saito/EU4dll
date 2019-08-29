@@ -16,40 +16,14 @@ namespace Misc {
 	} A;
 
 	EU4Version getVersion(){
-		// EU4 v1.??.?
-		// これだと出たばっかりの時の1.28.0.0の・ようなものには対応できないので別途対応する必要あり
-		byte_pattern::temp_instance().find_pattern("45 55 34 20 76 31 2E ? ? 2E ?");
+		// Hydra v1.7.1
+		byte_pattern::temp_instance().find_pattern("48 79 64 72 61 20 76 31 2E 37 2E 31 00");
 		if (byte_pattern::temp_instance().count() > 0) {
 			// ??を取得する
-			A minor = injector::ReadMemory<A>(byte_pattern::temp_instance().get_first().address(0x7), true);
+			
+			auto a = byte_pattern::temp_instance().get_first().address();
 
-			EU4Version version;
-
-			switch (minor.calVer()) {
-			case 250:
-				version = v1_25_X;
-				break;
-			case 260:
-				version = v1_26_X;
-				break;
-			case 270:
-			case 272:
-				version = v1_27_X;
-				break;
-			case 280:
-				version = v1_28_X;
-				break;
-			case 283:
-				version = v1_28_3;
-				break;
-			default:
-				version = UNKNOWN;
-				break;
-;;			}
-
-			byte_pattern::temp_instance().debug_output2(Misc::versionString(version));
-
-			return version;
+			return v1_25_X;
 		}
 		else return UNKNOWN;
 	}
