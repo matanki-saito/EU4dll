@@ -123,9 +123,6 @@ union basic_memory_pointer
         template<class T>
         basic_memory_pointer(T* x) : p((void*)x) {}
 
-        
-
-        
         // Gets the translated pointer (plus automatic casting to lhs)
         auto_pointer get() const               { return memory_translate(p); }
         
@@ -436,9 +433,9 @@ inline memory_pointer_raw GetAbsoluteOffset(int rel_value, memory_pointer_tr end
  *  GetRelativeOffset
  *      Gets relative offset based on absolute address @abs_value for instruction that ends at @end_of_instruction
  */
-inline int GetRelativeOffset(memory_pointer_tr abs_value, memory_pointer_tr end_of_instruction)
+inline uintptr_t GetRelativeOffset(memory_pointer_tr abs_value, memory_pointer_tr end_of_instruction)
 {
-    return uintptr_t(abs_value.get<char>() - end_of_instruction.get<char>());
+	return uintptr_t(abs_value.get<char>() - end_of_instruction.get<char>());
 }
 
 /*
@@ -467,7 +464,7 @@ inline void MakeRelativeOffset(memory_pointer_tr at, memory_pointer_tr dest, siz
         case 1: WriteMemory<int8_t> (at, static_cast<int8_t> (GetRelativeOffset(dest, at+sizeof_addr)), vp);
         case 2: WriteMemory<int16_t>(at, static_cast<int16_t>(GetRelativeOffset(dest, at+sizeof_addr)), vp);
         case 4: WriteMemory<int32_t>(at, static_cast<int32_t>(GetRelativeOffset(dest, at+sizeof_addr)), vp);
-    }
+	}
 }
 
 /*
@@ -500,12 +497,32 @@ inline memory_pointer_raw GetBranchDestination(memory_pointer_tr at, bool vp = t
  *  MakeJMP
  *      Creates a JMP instruction at address @at that jumps into address @dest
  *      If there was already a branch instruction there, returns the previosly destination of the branch
+ *      全体では14バイト使用する
  */
 inline memory_pointer_raw MakeJMP(memory_pointer_tr at, memory_pointer_raw dest, bool vp = true)
 {
     auto p = GetBranchDestination(at, vp);
-    WriteMemory<uint8_t>(at, 0xE9, vp);
-    MakeRelativeOffset(at+1, dest, 4, vp);
+
+	auto offset = GetRelativeOffset(dest, at + 4);
+
+	if (offset > 0xFFFFFFFF) {
+		//WriteMemory<uint8_t>(at, 0x48, vp); // REX.w ‐ 1=オペランドサイズを64ビットにする。
+		WriteMemory<uint8_t>(at, 0xFF, vp); // operand①
+		// Mod/R: [RIP + disp32]を意味する
+		//        Mod: 00b : レジスター+レジスター
+		//        reg: 100b : operand② ①と②の組み合わせでjmpをnearで実施になる
+		//        r/m: 101b : x86だとdisp32のみだったがx64ではRIP（この命令の終わりのアドレス）を意味
+		WriteMemory<uint8_t>(at + 1, 0x25, vp);
+		// displacement 32には0を入れてRIPのすぐ後ろを見るようにする
+		WriteMemory<uint32_t>(at + 2, 0x0, vp);
+		// jmp先のアドレスを書く
+		WriteMemory<memory_pointer_raw>(at + 6, dest, vp);
+	}
+	else {
+		WriteMemory<uint8_t>(at, 0xE9, vp);
+		MakeRelativeOffset(at + 1, dest, 4, vp);
+	}
+
     return p;
 }
 
@@ -517,8 +534,25 @@ inline memory_pointer_raw MakeJMP(memory_pointer_tr at, memory_pointer_raw dest,
 inline memory_pointer_raw MakeCALL(memory_pointer_tr at, memory_pointer_raw dest, bool vp = true)
 {
     auto p = GetBranchDestination(at, vp);
-    WriteMemory<uint8_t>(at, 0xE8, vp);
-    MakeRelativeOffset(at+1, dest, 4, vp);
+	auto offset = GetRelativeOffset(dest, at + 4);
+
+	if (offset > 0xFFFFFFFF) {
+		WriteMemory<uint8_t>(at, 0xFF, vp); // operand ①
+		// Mod/R: [RIP + disp32]を意味する
+		//        Mod: 00b : レジスター+レジスター
+		//        reg: 010b :  ①と②の組み合わせでcallをnearで実施になる
+		//        r/m: 101b : x86だとdisp32のみだったがx64ではRIP（この命令の終わりのアドレス）を意味
+		WriteMemory<uint8_t>(at + 1, 0x15, vp);
+		// displacement 32には0を入れてRIPのすぐ後ろを見るようにする
+		WriteMemory<uint32_t>(at + 2, 0x0, vp);
+		// call先のアドレスを書く
+		WriteMemory<memory_pointer_raw>(at + 6, dest, vp);
+	}
+	else {
+		WriteMemory<uint8_t>(at, 0xE8, vp);
+		MakeRelativeOffset(at + 1, dest, 4, vp);
+	}
+
     return p;
 }
 
@@ -562,10 +596,6 @@ inline void MakeRET(memory_pointer_tr at, uint16_t pop = 0, bool vp = true)
     WriteMemory(at, pop? 0xC2 : 0xC3, vp);
     if(pop) WriteMemory(at+1, pop, vp);
 }
-
-
-
-
 
 /*
   *  lazy_pointer

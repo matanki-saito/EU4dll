@@ -35,14 +35,40 @@
     <ClInclude Include="moddl.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\injector\assembly.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\injector\calling.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\injector\hooking.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\injector\injector.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\injector\utility.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\injector\gvm\gvm.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\injector\gvm\translator.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Note.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="hook.asm">
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="hook.asm">
       <Filter>源文件</Filter>
-    </None>
+    </MASM>
+    <MASM Include="injectSample1.asm">
+      <Filter>源文件</Filter>
+    </MASM>
   </ItemGroup>
 </Project>

@@ -123,7 +123,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\plugins"</Command>
+      <Command>copy "$(TargetPath)" "C:\Users\gnagaoka\source\repos\MFCApplication1\x64\Release\plugins"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -168,6 +168,13 @@
     <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\injector\assembly.hpp" />
+    <ClInclude Include="..\include\injector\calling.hpp" />
+    <ClInclude Include="..\include\injector\gvm\gvm.hpp" />
+    <ClInclude Include="..\include\injector\gvm\translator.hpp" />
+    <ClInclude Include="..\include\injector\hooking.hpp" />
+    <ClInclude Include="..\include\injector\injector.hpp" />
+    <ClInclude Include="..\include\injector\utility.hpp" />
     <ClInclude Include="byte_pattern.h" />
     <ClInclude Include="moddl.h" />
     <ClInclude Include="stdinc.h" />
@@ -179,6 +186,7 @@
     <MASM Include="hook.asm">
       <FileType>Document</FileType>
     </MASM>
+    <MASM Include="injectSample1.asm" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

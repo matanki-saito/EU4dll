@@ -1,31 +1,56 @@
 ﻿#include "stdinc.h"
 #include "byte_pattern.h"
 
-namespace Misc {
-	
-	typedef struct _A{
-		byte ascii1;
-		byte ascii2;
-		byte dot;
-		byte ascii3;
+extern "C" {
+	void injectSampleFunc1();
+	void injectSampleFunc2();
+	uintptr_t injectSampleFunc1ReturnAddress;
+	uintptr_t textAddress = (uintptr_t)L"ゲソ娘";
+	uintptr_t textAddress2 = (uintptr_t)L"ねこ娘";
+}
 
-		int calVer() {
-			int ver =  (ascii1 - 0x30) * 100 + (ascii2 - 0x30)*10 + (ascii3 - 0x30);
-			return ver;
-		}
-	} A;
+namespace Misc {
+
+	typedef struct {
+		TCHAR text[4];
+	} LABEL;
 
 	EU4Version getVersion(){
-		// Hydra v1.7.1
-		byte_pattern::temp_instance().find_pattern("48 79 64 72 61 20 76 31 2E 37 2E 31 00");
-		if (byte_pattern::temp_instance().count() > 0) {
-			// ??を取得する
-			
-			auto a = byte_pattern::temp_instance().get_first().address();
 
-			return v1_25_X;
+		// Button 1
+		// WriteMemory
+		byte_pattern::temp_instance().find_pattern("DC 30 BF 30 F3 30 11 FF");
+		if (byte_pattern::temp_instance().count() > 0) {
+			// 文字列がある
+			uintptr_t address = byte_pattern::temp_instance().get_first().address();
+			LABEL label = { L"イカ娘" };
+			injector::WriteMemory<LABEL>(address, label,true);
 		}
-		else return UNKNOWN;
+
+		// Button 2
+		// MakeJMP
+		byte_pattern::temp_instance().find_pattern("48 81 C1 60 02 00 00 48 8D 15 E2 24 00 00");
+		if (byte_pattern::temp_instance().count() > 0) {
+			// add rcx,260h
+			uintptr_t address = byte_pattern::temp_instance().get_first().address();
+
+			// lea rdx,xxxxx
+			injectSampleFunc1ReturnAddress = address + 14;
+
+			injector::MakeJMP(address, injectSampleFunc1, true);
+		}
+
+		// Button 3
+		// MakeJMP
+		byte_pattern::temp_instance().find_pattern("48 81 C1 60 02 00 00 48 8D 15 D2 24 00 00");
+		if (byte_pattern::temp_instance().count() > 0) {
+			// add rcx,260h
+			uintptr_t address = byte_pattern::temp_instance().get_first().address();
+
+			injector::MakeCALL (address, injectSampleFunc2, true);
+		}
+
+		return UNKNOWN;
 	}
 
 	std::string versionString(EU4Version version) {

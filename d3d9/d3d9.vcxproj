@@ -116,7 +116,7 @@
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"</Command>
+      <Command>copy "$(TargetPath)" "C:\Users\gnagaoka\source\repos\MFCApplication1\x64\Release"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
