@@ -374,9 +374,10 @@ inline T& ReadObject(memory_pointer_tr addr, T& value, bool vp = false)
  *      Does memory unprotection if @vp is true
  */
 template<class T>
-inline void WriteMemory(memory_pointer_tr addr, T value, bool vp = false)
+inline memory_pointer_tr WriteMemory(memory_pointer_tr addr, T value, bool vp = false)
 {
     WriteObject(addr, value, vp);
+	return addr + sizeof(value);
 }
 
 /*
@@ -535,8 +536,9 @@ inline memory_pointer_raw MakeCALL(memory_pointer_tr at, memory_pointer_raw dest
 {
     auto p = GetBranchDestination(at, vp);
 	auto offset = GetRelativeOffset(dest, at + 4);
+	auto aOffset = abs((long long)offset);
 
-	if (offset > 0xFFFFFFFF) {
+	if (aOffset > 0xFFFFFFFF) {
 		WriteMemory<uint8_t>(at, 0xFF, vp); // operand ①
 		// Mod/R: [RIP + disp32]を意味する
 		//        Mod: 00b : レジスター+レジスター
@@ -553,7 +555,34 @@ inline memory_pointer_raw MakeCALL(memory_pointer_tr at, memory_pointer_raw dest
 		MakeRelativeOffset(at + 1, dest, 4, vp);
 	}
 
-    return p;
+	return p;
+}
+
+inline memory_pointer_tr MakeCALL2(memory_pointer_tr at, memory_pointer_raw dest, bool vp = true)
+{
+	auto offset = GetRelativeOffset(dest, at + 4);
+	auto aOffset = abs((long long)offset);
+
+	if (aOffset > 0xFFFFFFFF) {
+		WriteMemory<uint8_t>(at, 0xFF, vp); // operand ①
+		// Mod/R: [RIP + disp32]を意味する
+		//        Mod: 00b : レジスター+レジスター
+		//        reg: 010b :  ①と②の組み合わせでcallをnearで実施になる
+		//        r/m: 101b : x86だとdisp32のみだったがx64ではRIP（この命令の終わりのアドレス）を意味
+		WriteMemory<uint8_t>(at + 1, 0x15, vp);
+		// displacement 32には0を入れてRIPのすぐ後ろを見るようにする
+		WriteMemory<uint32_t>(at + 2, 0x0, vp);
+		// call先のアドレスを書く
+		WriteMemory<memory_pointer_raw>(at + 6, dest, vp);
+
+		return at + 14;
+	}
+	else {
+		WriteMemory<uint8_t>(at, 0xE8, vp);
+		MakeRelativeOffset(at + 1, dest, 4, vp);
+
+		return at + 5;
+	}
 }
 
 /*

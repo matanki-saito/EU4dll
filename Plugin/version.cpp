@@ -15,6 +15,15 @@ namespace Misc {
 		TCHAR text[4];
 	} LABEL;
 
+	// Encapsulates the call to static_func
+	struct Test
+	{
+		void operator()(injector::reg_pack& regs)
+		{
+			OutputDebugString(L"test");
+		}
+	};
+
 	EU4Version getVersion(){
 
 		// Button 1
@@ -34,10 +43,7 @@ namespace Misc {
 			// add rcx,260h
 			uintptr_t address = byte_pattern::temp_instance().get_first().address();
 
-			// lea rdx,xxxxx
-			injectSampleFunc1ReturnAddress = address + 14;
-
-			injector::MakeJMP(address, injectSampleFunc1, true);
+			injector::MakeInline<Test>(address, address+14);
 		}
 
 		// Button 3
