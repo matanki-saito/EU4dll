@@ -149,10 +149,10 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>Full</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PLUGIN_EXPORTS;_CRT_SECURE_NO_WARNINGS;_DISABLE_DEPRECATE_LTL_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;PLUGIN_EXPORTS;_CRT_SECURE_NO_WARNINGS;_DISABLE_DEPRECATE_LTL_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -161,6 +161,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(TargetPath)" "C:\Users\gnagaoka\source\repos\MFCApplication1\x64\Release\plugins"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="byte_pattern.cpp" />
@@ -183,9 +186,6 @@
     <Text Include="Note.txt" />
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="hook.asm">
-      <FileType>Document</FileType>
-    </MASM>
     <MASM Include="injectSample1.asm" />
     <None Include="packages.config" />
   </ItemGroup>

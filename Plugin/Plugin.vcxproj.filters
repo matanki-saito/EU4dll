@@ -64,9 +64,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="hook.asm">
-      <Filter>源文件</Filter>
-    </MASM>
     <MASM Include="injectSample1.asm">
       <Filter>源文件</Filter>
     </MASM>

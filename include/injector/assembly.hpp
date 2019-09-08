@@ -175,6 +175,9 @@ namespace injector
         }
     };
 
+	
+	
+
 	typedef struct  {
 		byte binary[25];
 	} INJECT_ASM;
@@ -198,6 +201,10 @@ namespace injector
 		memory_pointer_raw injectorAddress = injector_asm::w_make_reg_pack_and_call<functor>;
 		memory_pointer_raw jmpAddress = GetBranchDestination(injectorAddress);
 
+		if (jmpAddress == nullptr) {
+			jmpAddress = injectorAddress;
+		}
+
 		auto cursor = WriteMemory<INJECT_ASM>(jmpAddress,{{
 				0x9c, // pushrq
 				0x41, 0x57, // push r15
@@ -220,20 +227,20 @@ namespace injector
 		);
 
 		// mov rcx, rsp
-		cursor = WriteMemory<char>(cursor, 0x48,true); 
-		cursor = WriteMemory<char>(cursor, 0x89, true);
-		cursor = WriteMemory<char>(cursor, 0xE1, true);
+		cursor = WriteMemory<byte>(cursor, 0x48,true); 
+		cursor = WriteMemory<byte>(cursor, 0x89, true);
+		cursor = WriteMemory<byte>(cursor, 0xE1, true);
 
 		// push rsp
-		cursor = WriteMemory<char>(cursor, 0x54, true);
+		cursor = WriteMemory<byte>(cursor, 0x54, true);
 
 		cursor = MakeCALL2(cursor, funcAddress);
 
 		// add rsp,8
-		cursor = WriteMemory<char>(cursor, 0x48, true);
-		cursor = WriteMemory<char>(cursor, 0x83, true);
-		cursor = WriteMemory<char>(cursor, 0xC4, true);
-		cursor = WriteMemory<char>(cursor, 0x08, true);
+		cursor = WriteMemory<byte>(cursor, 0x48, true);
+		cursor = WriteMemory<byte>(cursor, 0x83, true);
+		cursor = WriteMemory<byte>(cursor, 0xC4, true);
+		cursor = WriteMemory<byte>(cursor, 0x08, true);
 
 		cursor = WriteMemory<INJECT_ASM>(cursor, { {
 				0x5f, // pop rdi
@@ -268,7 +275,7 @@ namespace injector
 		}}, true);
 
 		// ret
-		cursor = WriteMemory<char>(cursor, 0xc3,true);
+		cursor = WriteMemory<byte>(cursor, 0xc3,true);
 
         MakeCALL(at, injectorAddress);
     }

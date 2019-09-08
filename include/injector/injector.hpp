@@ -303,13 +303,6 @@ struct scoped_unprotect
     }
 };
 
-
-
-
-
-
-
-
 /*
  *  WriteMemoryRaw 
  *      Writes into memory @addr the content of @value with a sizeof @size
@@ -415,11 +408,6 @@ inline T ReadMemory(memory_pointer_tr addr, bool vp = false)
     }
     return nullptr;
  }
-
-
-
-
-
 
 /*
  *  GetAbsoluteOffset
