@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\utils">
+      <UniqueIdentifier>{4d02482f-1374-41c7-9681-9342e6af1d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app">
+      <UniqueIdentifier>{b0f560fc-646f-4c11-9924-aad90f6c68c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\core">
+      <UniqueIdentifier>{4d48b634-1fcd-4d99-90d7-907758d82ef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\debug">
+      <UniqueIdentifier>{16abc191-d140-4e60-ab51-a373f3e36b1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\version">
+      <UniqueIdentifier>{e41bb04c-0fcb-4427-99fb-580a8bd96075}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\utils">
+      <UniqueIdentifier>{6db7f006-d06f-417c-a8cc-fc30cbd35436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\app">
+      <UniqueIdentifier>{c8448304-b2e2-40e9-a8ee-2547154c3cc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\core">
+      <UniqueIdentifier>{74d98a6d-ce93-4b35-af9c-c7e7179c0ce7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="byte_pattern.h">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin_64.h">
+      <Filter>ヘッダー ファイル\app</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>ヘッダー ファイル\core</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>ヘッダー ファイル\core</Filter>
+    </ClInclude>
+    <ClInclude Include="injector.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="translator.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="calling.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="assembly.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="byte_pattern.cpp">
+      <Filter>ソース ファイル\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>ソース ファイル\core</Filter>
+    </ClCompile>
+    <ClCompile Include="dll_main.cpp">
+      <Filter>ソース ファイル\core</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
+      <Filter>ソース ファイル\app\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="version.cpp">
+      <Filter>ソース ファイル\app\version</Filter>
+    </ClCompile>
+    <ClCompile Include="hooking.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="debug.asm">
+      <Filter>ソース ファイル\app\debug</Filter>
+    </MASM>
+  </ItemGroup>
+</Project>
