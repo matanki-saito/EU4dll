@@ -7,7 +7,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
                       LPVOID lpReserved){
 
 	if (ulReasonForCall == DLL_PROCESS_ATTACH){
-		BytePattern::start_log(L"eu4_jps_2");
+		BytePattern::StartLog(L"eu4_jps_2");
 
 		// 設定
 		RunOptions options;
@@ -16,10 +16,10 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// debug
 		Debug::Init(options);
 
-		BytePattern::temp_instance().debug_output2("DLL [OK]");
+		BytePattern::LoggingInfo("DLL [OK]");
 
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
-		BytePattern::shutdown_log();
+		BytePattern::ShutdownLog();
 	}
 
     return TRUE;

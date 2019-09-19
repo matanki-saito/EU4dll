@@ -21,9 +21,9 @@ memory_pointer BytePattern::get_second() const
 	return this->get(1);
 }
 
-void BytePattern::start_log(const wchar_t* module_name)
+void BytePattern::StartLog(const wchar_t* module_name)
 {
-	shutdown_log();
+	ShutdownLog();
 
 	wchar_t exe_path[512];
 	wchar_t filename[512];
@@ -35,7 +35,7 @@ void BytePattern::start_log(const wchar_t* module_name)
 	log_stream().open(experimental::filesystem::v1::path{ exe_path }.parent_path() / filename, ios::trunc);
 }
 
-void BytePattern::shutdown_log()
+void BytePattern::ShutdownLog()
 {
 	log_stream().close();
 }
@@ -346,7 +346,7 @@ void BytePattern::debug_output() const
 	log_stream() << "--------------------------------------------------------------------------------------" << endl;
 }
 
-void BytePattern::debug_output2(const std::string message) const
+void BytePattern::LoggingInfo(const std::string message)
 {
 	if (!log_stream().is_open())
 		return;

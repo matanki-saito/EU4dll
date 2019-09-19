@@ -44,7 +44,7 @@ namespace Version {
 				;;
 			}
 
-			BytePattern::temp_instance().debug_output2(versionString(version));
+			BytePattern::LoggingInfo(versionString(version));
 
 			return version;
 		}

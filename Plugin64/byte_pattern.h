@@ -68,9 +68,9 @@ class BytePattern
 
 
 public:
-	void debug_output2(const std::string message) const;
-	static void start_log(const wchar_t* module_name);
-	static void shutdown_log();
+	static void LoggingInfo(const std::string message);
+	static void StartLog(const wchar_t* module_name);
+	static void ShutdownLog();
 
 	static BytePattern& temp_instance();
 
