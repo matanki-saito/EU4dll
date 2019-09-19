@@ -16,6 +16,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// debug
 		Debug::Init(options);
 
+		// font
+		Font::Init(options);
+
 		BytePattern::LoggingInfo("DLL [OK]");
 
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){

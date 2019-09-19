@@ -37,6 +37,9 @@
     <Filter Include="ヘッダー ファイル\core">
       <UniqueIdentifier>{74d98a6d-ce93-4b35-af9c-c7e7179c0ce7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\font">
+      <UniqueIdentifier>{225fa615-5102-4152-aaf0-529b69645e35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -86,6 +89,9 @@
     <ClCompile Include="hooking.hpp">
       <Filter>ヘッダー ファイル\utils</Filter>
     </ClCompile>
+    <ClCompile Include="font.cpp">
+      <Filter>ソース ファイル\app\font</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -93,6 +99,9 @@
   <ItemGroup>
     <MASM Include="debug_asm.asm">
       <Filter>ソース ファイル\app\debug</Filter>
+    </MASM>
+    <MASM Include="font_asm.asm">
+      <Filter>ソース ファイル\app\font</Filter>
     </MASM>
   </ItemGroup>
 </Project>

@@ -28,3 +28,7 @@ namespace Version {
 namespace Debug {
 	errno_t Init(RunOptions option);
 }
+
+namespace Font {
+	errno_t Init(RunOptions option);
+}
