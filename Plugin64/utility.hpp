@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Injectors - Utility / Helpers
  *
  *  Copyright (C) 2014 LINK/2012 <dma_2012@hotmail.com>

@@ -1,4 +1,4 @@
-//Core code from Hooking.Patterns
+﻿//Core code from Hooking.Patterns
 //https://github.com/ThirteenAG/Hooking.Patterns
 
 #pragma once

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  *  Injectors - Useful Assembly Stuff
  *
  *  Copyright (C) 2012-2014 LINK/2012 <dma_2012@hotmail.com>
@@ -128,7 +128,7 @@ namespace Injector
 
 	struct reg_pack
 	{
-		// TODO: ‚±‚ê‚Í‚È‚¢‚Ì‚Å‚Ç‚¤‚·‚é‚©l‚¦‚é
+		// TODO: ã“ã‚Œã¯ãªã„ã®ã§ã©ã†ã™ã‚‹ã‹è€ƒãˆã‚‹
 		// http://left404.com/2011/01/04/moving-x86-assembly-to-64-bit-x86-64/
 
 		// The ordering is very important, don't change
@@ -144,7 +144,7 @@ namespace Injector
 					r8, r9, r10, r11, r12, r13, r14, r15;
 			};
 		};
-		// PUSHFQ‚ğ‚Â‚©‚¤
+		// PUSHFQã‚’ã¤ã‹ã†
 		// https://www.felixcloutier.com/x86/pushf:pushfd:pushfq
 		// PUSHFD / POPFD
 		flags_register ef;
