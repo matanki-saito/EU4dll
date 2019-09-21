@@ -563,21 +563,32 @@ namespace Injector
 	 *      Gets the destination of a branch instruction at address @at
 	 *      *** Works only with JMP and CALL for now ***
 	 */
-	inline memory_pointer_raw GetBranchDestination(memory_pointer_tr at, bool vp = true)
-	{
-		switch (ReadMemory<uint8_t>(at, vp))
-		{
-			// We need to handle other instructions (and prefixes) later...
+	inline memory_pointer_raw GetBranchDestination(memory_pointer_tr at, bool vp = true){
+		switch (ReadMemory<uint8_t>(at, vp)){
+			
+		// x64 mode
+		case 0x48:
+			switch (ReadMemory<uint8_t>(at + 1, vp)){
+			case 0x8B:
+				switch (ReadMemory<uint8_t>(at + 2, vp)) {
+				case 0x0D:  // mov qword ptr [rip+addr]
+					return ReadRelativeOffset(at + 3, 4, vp);
+				}
+				break;
+			}
+			break;
+
+		// We need to handle other instructions (and prefixes) later...
 		case 0xE8:	// call rel
 		case 0xE9:	// jmp rel
 			return ReadRelativeOffset(at + 1, 4, vp);
 
 		case 0xFF:
-			switch (ReadMemory<uint8_t>(at + 1, vp))
-			{
+			switch (ReadMemory<uint8_t>(at + 1, vp)){
 			case 0x15:  // call dword ptr [addr]
 			case 0x25:  // jmp dword ptr [addr]
-				return *(ReadMemory<uintptr_t*>(at + 2, vp));
+				auto a = ReadRelativeOffset(at + 2, 4, vp);
+				return a;
 			}
 			break;
 		}
