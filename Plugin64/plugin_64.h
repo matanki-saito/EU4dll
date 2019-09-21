@@ -7,6 +7,36 @@ enum Eu4Version {
 	v1_29_1_0 = 1291
 };
 
+typedef UINT64 DllErrorCode;
+
+struct DllError{
+	union {
+		DllErrorCode code1;
+		struct {
+			bool fontBufferExpansionInjector : 1;
+			bool fontSizeLimitInjector : 1;
+			bool fontBufferHeapZeroClearInjector : 1;
+			bool debugProc1Injector : 1;
+		};
+	} version;
+
+	union {
+		DllErrorCode code2;
+		struct {
+			bool fontBufferExpansionInjector : 1;
+			bool fontSizeLimitInjector : 1;
+			bool fontBufferHeapZeroClearInjector : 1;
+			bool debugProc1Injector : 1;
+		};
+	} unmatch;
+
+	void operator |= (DllError e)
+	{
+		this->version.code1 |= e.version.code1;
+		this->unmatch.code2 |= e.unmatch.code2;
+	}
+};
+
 union T {
 	char text[0x10];
 	char* p;
@@ -27,9 +57,9 @@ namespace Version {
 }
 
 namespace Debug {
-	errno_t Init(RunOptions option);
+	DllError Init(RunOptions option);
 }
 
 namespace Font {
-	errno_t Init(RunOptions option);
+	DllError Init(RunOptions option);
 }

@@ -7,6 +7,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
                       LPVOID lpReserved){
 
 	if (ulReasonForCall == DLL_PROCESS_ATTACH){
+		DllError e = {};
+
 		BytePattern::StartLog(L"eu4_jps_2");
 
 		// 設定
@@ -14,13 +16,17 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		options.version = Version::GetVersion();
 
 		// debug
-		Debug::Init(options);
+		e |= Debug::Init(options);
 
 		// font
-		Font::Init(options);
+		e |= Font::Init(options);
 
-		BytePattern::LoggingInfo("DLL [OK]");
-
+		if (e.unmatch.code2 > 0) {
+			exit(1);
+		}
+		else {
+			BytePattern::LoggingInfo("DLL [OK]");
+		}
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
 		BytePattern::ShutdownLog();
 	}

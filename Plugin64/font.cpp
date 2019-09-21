@@ -10,7 +10,9 @@ namespace Font {
 		uintptr_t fontBufferHeapZeroClearHeapJmpAddress;
 	}
 
-	errno_t fontBufferHeapZeroClearInjector(RunOptions options) {
+	DllError fontBufferHeapZeroClearInjector(RunOptions options) {
+		DllError e = {};
+
 		switch (options.version) {
 		case v1_29_0_0:
 		case v1_29_1_0:
@@ -27,15 +29,19 @@ namespace Font {
 				fontBufferHeapZeroClearReturnAddress = address + 0x15;
 
 				Injector::MakeJMP(address, fontBufferHeapZeroClear, true);
+			} else {
+				e.unmatch.fontBufferHeapZeroClearInjector = true;
 			}
-			else return 1;
-			return NOERROR;
+		default:
+			e.version.fontBufferHeapZeroClearInjector = true;
 		}
 
-		return 1;
+		return e;
 	}
 
-	errno_t fontBufferExpansionInjector(RunOptions options) {
+	DllError fontBufferExpansionInjector(RunOptions options) {
+		DllError e = {};
+
 		switch (options.version) {
 		case v1_29_0_0:
 		case v1_29_1_0:
@@ -43,15 +49,19 @@ namespace Font {
 			if (BytePattern::temp_instance().has_size(1, "Font buffer expansion")) {
 				// mov ecx, 3D68h
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x3), 0x10, true);
+			} else {
+				e.unmatch.fontBufferExpansionInjector = true;
 			}
-			else return 1;
-			return NOERROR;
+		default:
+			e.version.fontBufferExpansionInjector = true;
 		}
-
-		return 1;
+		
+		return e;
 	}
 
-	errno_t fontSizeLimitInjector(RunOptions options) {
+	DllError fontSizeLimitInjector(RunOptions options) {
+		DllError e = {};
+
 		switch (options.version) {
 		case v1_29_0_0:
 		case v1_29_1_0:
@@ -59,18 +69,20 @@ namespace Font {
 			if (BytePattern::temp_instance().has_size(1, "Font size limit")) {
 				// cmp r14d, 1000000h
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x6), 0x04, true);
+			} else {
+				e.unmatch.fontSizeLimitInjector = true;
 			}
-			else return 1;
-			return NOERROR;
+		default:
+			e.version.fontSizeLimitInjector = true;
 		}
 
-		return 1;
+		return e;
 	}
 
 	/*-----------------------------------------------*/
 
-	errno_t Init(RunOptions options) {
-		errno_t result = 0;
+	DllError Init(RunOptions options) {
+		DllError result = {};
 
 		BytePattern::LoggingInfo("font etc fix");
 
