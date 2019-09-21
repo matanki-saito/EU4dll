@@ -18,6 +18,7 @@ struct DllError{
 			bool fontBufferHeapZeroClearInjector : 1;
 			bool debugProc1Injector : 1;
 			bool fontBufferClearInjector : 1;
+			bool mainTextProc1Injector : 1;
 		};
 	} version;
 
@@ -29,6 +30,7 @@ struct DllError{
 			bool fontBufferHeapZeroClearInjector : 1;
 			bool debugProc1Injector : 1;
 			bool fontBufferClearInjector : 1;
+			bool mainTextProc1Injector : 1;
 		};
 	} unmatch;
 
@@ -63,5 +65,9 @@ namespace Debug {
 }
 
 namespace Font {
+	DllError Init(RunOptions option);
+}
+
+namespace MainText {
 	DllError Init(RunOptions option);
 }

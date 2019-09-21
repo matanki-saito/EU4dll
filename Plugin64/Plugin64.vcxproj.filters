@@ -40,6 +40,9 @@
     <Filter Include="ソース ファイル\app\font">
       <UniqueIdentifier>{225fa615-5102-4152-aaf0-529b69645e35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\main_text">
+      <UniqueIdentifier>{028db1bf-5d62-43c3-bf89-1b7eefe2e694}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -92,6 +95,9 @@
     <ClCompile Include="font.cpp">
       <Filter>ソース ファイル\app\font</Filter>
     </ClCompile>
+    <ClCompile Include="main_text.cpp">
+      <Filter>ソース ファイル\app\main_text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -102,6 +108,9 @@
     </MASM>
     <MASM Include="font_asm.asm">
       <Filter>ソース ファイル\app\font</Filter>
+    </MASM>
+    <MASM Include="main_text_asm.asm">
+      <Filter>ソース ファイル\app\main_text</Filter>
     </MASM>
   </ItemGroup>
 </Project>

@@ -21,6 +21,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// font
 		e |= Font::Init(options);
 
+		// main text
+		e |= MainText::Init(options);
+
 		if (e.unmatch.code2 > 0) {
 			exit(1);
 		}
