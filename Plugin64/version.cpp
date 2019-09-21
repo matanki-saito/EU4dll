@@ -18,8 +18,10 @@ namespace Version {
 
 	string versionString(Eu4Version version) {
 		switch (version) {
-		case v1_29_0:
-			return "v1_29_0";
+		case v1_29_0_0:
+			return "v1_29_0_0";
+		case v1_29_1_0:
+			return "v1_29_1_0";
 		default:
 			return "UNKNOWN";
 		}
@@ -36,7 +38,9 @@ namespace Version {
 
 			switch (minor.calVer()) {
 			case 290:
-				version = v1_29_0;
+				version = v1_29_0_0;
+			case 291:
+				version = v1_29_1_0;
 				break;
 			default:
 				version = UNKNOWN;
