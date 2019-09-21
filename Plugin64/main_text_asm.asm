@@ -1,4 +1,9 @@
 EXTERN mainTextProc1ReturnAddress: QWORD
+EXTERN mainTextProc2ReturnAddress: QWORD
+EXTERN mainTextProc2BufferAddress: QWORD
+
+.DATA
+	mainTextProc2TmpCharacter	DD	0
 
 .CODE
 mainTextProc1 PROC
@@ -47,4 +52,70 @@ JMP_E:
 	push mainTextProc1ReturnAddress;
 	ret;
 mainTextProc1 ENDP
+
+;-------------------------------------------;
+
+mainTextProc2 PROC
+	movsxd  rdx, edi;
+	movsxd  rcx, r14d;
+	mov     r10, [rsp+858h-7E0h];
+
+	movzx	eax, byte ptr [rdx+r10];
+	mov		r9, mainTextProc2BufferAddress;
+	mov     byte ptr [rcx+r9], al;
+
+	inc     r14d;
+	inc		rcx;
+
+	cmp al, 10h;
+	jz JMP_A;
+	cmp al, 11h;
+	jz JMP_B;
+	cmp al, 12h;
+	jz JMP_C;
+	cmp al, 13h;
+	jz JMP_D;
+	jmp JMP_E;
+
+JMP_A:
+	movzx eax, word ptr[rdx+r10+1];
+	mov word ptr [rcx+r9], ax;
+	jmp JMP_F;
+
+JMP_B:
+	movzx	eax, word ptr[rdx+r10+1];
+	mov	word ptr [rcx+r9], ax;
+	sub eax, 0Eh;
+	jmp JMP_F;
+
+JMP_C:
+	movzx eax, word ptr [rdx+r10+1];
+	mov	word ptr [rcx+r9], ax;
+	add eax, 900h;
+	jmp JMP_F;
+
+JMP_D:
+	movzx eax, word ptr [rdx+r10+1];
+	mov	word ptr [rcx+r9], ax;
+	add eax, 8F2h;
+
+JMP_F:
+	movzx eax, ax;
+	add r14d, 2;
+	add rcx,2;
+	cmp eax, 98Fh;
+
+	ja JMP_G;
+	mov eax, 2026h;
+
+JMP_G:
+	add rdx, 2;
+	add edi, 2;
+JMP_E:
+
+	mov mainTextProc2TmpCharacter, eax;
+	
+	push mainTextProc2ReturnAddress;
+	ret;
+mainTextProc2 ENDP
 END
