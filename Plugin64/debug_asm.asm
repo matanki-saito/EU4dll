@@ -1,7 +1,7 @@
 EXTERN debugProc1ReturnAddress: QWORD
 
 .CODE
-debugProc1 proc
+debugProc1 PROC
 	mov rax, gs:[30h];
 	mov rax, [rax+60h];
 
@@ -16,5 +16,5 @@ debugProc1 proc
 
 	push debugProc1ReturnAddress;
 	ret;
-debugProc1 endp
+debugProc1 ENDP
 END

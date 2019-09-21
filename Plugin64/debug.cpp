@@ -10,7 +10,8 @@ namespace Debug {
 
 	errno_t debugProc1Injector(RunOptions options) {
 		switch (options.version) {
-		case v1_29_0:
+		case v1_29_0_0:
+		case v1_29_1_0:
 			// hook main thread head
 			// push rdi; push r12; ...
 			BytePattern::temp_instance().find_pattern("40 57 41 54 41 55 41 56 41 57 B8 F0 17 00 00");
