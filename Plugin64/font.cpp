@@ -39,6 +39,48 @@ namespace Font {
 		return e;
 	}
 
+	DllError fontBufferClear1Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_0_0:
+		case v1_29_1_0:
+			BytePattern::temp_instance().find_pattern("BA 68 3D 00 00 48 8B CF");
+			if (BytePattern::temp_instance().has_size(1, "Font buffer clear")) {
+				// mov edx, 3D68h
+				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x3), 0x10, true);
+			}
+			else {
+				e.unmatch.fontBufferClearInjector = true;
+			}
+		default:
+			e.version.fontBufferClearInjector = true;
+		}
+
+		return e;
+	}
+
+	DllError fontBufferClear2Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_0_0:
+		case v1_29_1_0:
+			BytePattern::temp_instance().find_pattern("BA 68 3D 00 00 48 8B 4D 28");
+			if (BytePattern::temp_instance().has_size(1, "Font buffer clear")) {
+				// mov edx, 3D68h
+				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x3), 0x10, true);
+			}
+			else {
+				e.unmatch.fontBufferClearInjector = true;
+			}
+		default:
+			e.version.fontBufferClearInjector = true;
+		}
+
+		return e;
+	}
+
 	DllError fontBufferExpansionInjector(RunOptions options) {
 		DllError e = {};
 
@@ -88,8 +130,13 @@ namespace Font {
 
 		/* ヒープゼロフラグの修正 */
 		result |= fontBufferHeapZeroClearInjector(options);
-		/* フォントバッファクリア */
-		//result |= bufferClear_hook(options);
+
+		/* フォントバッファクリア1 */
+		result |= fontBufferClear1Injector(options);
+
+		/* フォントバッファクリア2 */
+		result |= fontBufferClear2Injector(options);
+
 		/* フォントバッファ拡張 */
 		result |= fontBufferExpansionInjector(options);
 

@@ -17,6 +17,7 @@ struct DllError{
 			bool fontSizeLimitInjector : 1;
 			bool fontBufferHeapZeroClearInjector : 1;
 			bool debugProc1Injector : 1;
+			bool fontBufferClearInjector : 1;
 		};
 	} version;
 
@@ -27,6 +28,7 @@ struct DllError{
 			bool fontSizeLimitInjector : 1;
 			bool fontBufferHeapZeroClearInjector : 1;
 			bool debugProc1Injector : 1;
+			bool fontBufferClearInjector : 1;
 		};
 	} unmatch;
 
