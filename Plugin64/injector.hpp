@@ -566,12 +566,14 @@ namespace Injector
 	inline memory_pointer_raw GetBranchDestination(memory_pointer_tr at, bool vp = true){
 		switch (ReadMemory<uint8_t>(at, vp)){
 			
-		// x64 mode
+	
 		case 0x48:
+		case 0x4C:
 			switch (ReadMemory<uint8_t>(at + 1, vp)){
-			case 0x8B:
+			case 0x8B: // mov
+			case 0x8D: // lea
 				switch (ReadMemory<uint8_t>(at + 2, vp)) {
-				case 0x0D:  // mov qword ptr [rip+addr]
+				case 0x0D:
 					return ReadRelativeOffset(at + 3, 4, vp);
 				}
 				break;
