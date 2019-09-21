@@ -176,11 +176,11 @@ namespace Injector
 	};
 
 	typedef struct {
-		byte binary[25];
+		BYTE binary[25];
 	} INJECT_ASM;
 
 	typedef struct {
-		byte binary[20];
+		BYTE binary[20];
 	} INJECT_ASM2;
 
 	/*
