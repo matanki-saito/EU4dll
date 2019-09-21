@@ -3,7 +3,8 @@
 
 enum Eu4Version {
 	UNKNOWN = 0,
-	v1_29_0 = 129
+	v1_29_0_0 = 1290,
+	v1_29_1_0 = 1291
 };
 
 union T {
