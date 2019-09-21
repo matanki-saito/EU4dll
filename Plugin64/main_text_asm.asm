@@ -17,6 +17,7 @@ mainTextProc1 PROC
 	jz JMP_C;
 	cmp byte ptr[rax + rbx], 13h;
 	jz JMP_D;
+	movzx eax, byte ptr [rax+rbx];
 	jmp JMP_E;
 
 JMP_A:
