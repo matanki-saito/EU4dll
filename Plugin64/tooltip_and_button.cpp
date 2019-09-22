@@ -95,7 +95,7 @@ namespace TooltipAndButton {
 
 		result |= tooltipAndButtonProc1Injector(options);
 		result |= tooltipAndButtonProc2Injector(options);
-		//result |= tooltipAndButtonProc3Injector(options);
+		result |= tooltipAndButtonProc3Injector(options);
 
 		return result;
 	}

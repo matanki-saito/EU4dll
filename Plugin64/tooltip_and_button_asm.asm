@@ -35,7 +35,8 @@ JMP_A:
 	call	tooltipAndButtonProc1CallAddress;
 
 	; “h‚è‚Â‚Ô‚·
-	mov		cx, word ptr [tooltipAndButtonProc2TmpCharacterAddress+1];
+	mov		rcx, tooltipAndButtonProc2TmpCharacterAddress;
+	mov		cx, word ptr [rcx+1];
 	mov		word ptr [rax+1], cx; 
 
 JMP_B:
@@ -84,6 +85,9 @@ JMP_E:
 JMP_F:
 	movzx	eax, ax;
 	add		ebx,2;
+	add		edx,2;
+	mov		dword ptr [rbp+6E0h- 6C0h], ebx;
+
 	cmp		eax, 98Fh;
 	ja		JMP_G;
 	mov		eax, 2026h;
