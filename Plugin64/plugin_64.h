@@ -22,6 +22,9 @@ struct DllError{
 			bool mainTextProc2Injector : 1;
 			bool mainTextProc3Injector : 1;
 			bool mainTextProc4Injector : 1;
+			bool tooltipAndButtonProc1Injector : 1;
+			bool tooltipAndButtonProc2Injector : 1;
+			bool tooltipAndButtonProc3Injector : 1;
 		};
 	} version;
 
@@ -38,6 +41,9 @@ struct DllError{
 			bool mainTextProc3Injector : 1;
 			bool mainTextProc3Injector2 : 1;
 			bool mainTextProc4Injector : 1;
+			bool tooltipAndButtonProc1Injector : 1;
+			bool tooltipAndButtonProc2Injector : 1;
+			bool tooltipAndButtonProc3Injector : 1;
 		};
 	} unmatch;
 
@@ -76,5 +82,9 @@ namespace Font {
 }
 
 namespace MainText {
+	DllError Init(RunOptions option);
+}
+
+namespace TooltipAndButton {
 	DllError Init(RunOptions option);
 }

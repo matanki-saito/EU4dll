@@ -5,6 +5,7 @@ EXTERN mainTextProc3ReturnAddress1: QWORD
 EXTERN mainTextProc3ReturnAddress2: QWORD
 EXTERN mainTextProc4ReturnAddress: QWORD
 
+; 後で使うので一時的にコードポイントを入れておく
 .DATA
 	mainTextProc2TmpCharacter	DD	0
 

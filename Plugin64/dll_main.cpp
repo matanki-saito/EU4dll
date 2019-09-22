@@ -24,6 +24,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// main text
 		e |= MainText::Init(options);
 
+		// tooltip and button
+		e |= TooltipAndButton::Init(options);
+
 		if (e.unmatch.code2 > 0) {
 			exit(1);
 		}

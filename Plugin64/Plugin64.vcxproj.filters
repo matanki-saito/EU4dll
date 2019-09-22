@@ -43,6 +43,9 @@
     <Filter Include="ソース ファイル\app\main_text">
       <UniqueIdentifier>{028db1bf-5d62-43c3-bf89-1b7eefe2e694}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\tooltip_and_button">
+      <UniqueIdentifier>{c5fe84dd-9294-4bf0-8581-1c5c28290f96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -98,6 +101,9 @@
     <ClCompile Include="main_text.cpp">
       <Filter>ソース ファイル\app\main_text</Filter>
     </ClCompile>
+    <ClCompile Include="tooltip_and_button.cpp">
+      <Filter>ソース ファイル\app\tooltip_and_button</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -111,6 +117,9 @@
     </MASM>
     <MASM Include="main_text_asm.asm">
       <Filter>ソース ファイル\app\main_text</Filter>
+    </MASM>
+    <MASM Include="tooltip_and_button_asm.asm">
+      <Filter>ソース ファイル\app\tooltip_and_button</Filter>
     </MASM>
   </ItemGroup>
 </Project>
