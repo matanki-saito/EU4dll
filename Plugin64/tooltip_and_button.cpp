@@ -6,10 +6,13 @@ namespace TooltipAndButton {
 		void tooltipAndButtonProc1();
 		void tooltipAndButtonProc2();
 		void tooltipAndButtonProc3();
+		void tooltipAndButtonProc4();
 		uintptr_t tooltipAndButtonProc1ReturnAddress;
 		uintptr_t tooltipAndButtonProc1CallAddress;
 		uintptr_t tooltipAndButtonProc2ReturnAddress;
 		uintptr_t tooltipAndButtonProc3ReturnAddress;
+		uintptr_t tooltipAndButtonProc4ReturnAddress1;
+		uintptr_t tooltipAndButtonProc4ReturnAddress2;
 	}
 
 	DllError tooltipAndButtonProc1Injector(RunOptions options) {
@@ -90,12 +93,41 @@ namespace TooltipAndButton {
 		return e;
 	}
 
+	DllError tooltipAndButtonProc4Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_1_0:
+			// cmp word ptr [rcx + 6], 0
+			BytePattern::temp_instance().find_pattern("66 83 79 06 00 0F 85 05 03 00 00");
+			if (BytePattern::temp_instance().has_size(1, "èàóùÉãÅ[ÉvÇPÇÃâ¸çsèàóù")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// jnz {loc_xxxxx} / inc ebx
+				tooltipAndButtonProc4ReturnAddress1 = Injector::GetBranchDestination(address + 0x5).as_int();
+
+				// jz loc_xxxxx
+				tooltipAndButtonProc4ReturnAddress2 = address + 15;
+
+				Injector::MakeJMP(address, tooltipAndButtonProc4, true);
+			}
+			else {
+				e.unmatch.tooltipAndButtonProc4Injector = true;
+			}
+		default:
+			e.version.tooltipAndButtonProc4Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= tooltipAndButtonProc1Injector(options);
 		result |= tooltipAndButtonProc2Injector(options);
 		result |= tooltipAndButtonProc3Injector(options);
+		result |= tooltipAndButtonProc4Injector(options);
 
 		return result;
 	}

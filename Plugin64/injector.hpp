@@ -586,9 +586,11 @@ namespace Injector
 			return ReadRelativeOffset(at + 1, 4, vp);
 
 		case 0xFF:
+		case 0x0F:
 			switch (ReadMemory<uint8_t>(at + 1, vp)){
 			case 0x15:  // call dword ptr [addr]
 			case 0x25:  // jmp dword ptr [addr]
+			case 0x85:  // jne
 				auto a = ReadRelativeOffset(at + 2, 4, vp);
 				return a;
 			}

@@ -2,6 +2,8 @@ EXTERN tooltipAndButtonProc1ReturnAddress: QWORD
 EXTERN tooltipAndButtonProc1CallAddress : QWORD
 EXTERN tooltipAndButtonProc2ReturnAddress : QWORD
 EXTERN tooltipAndButtonProc3ReturnAddress : QWORD
+EXTERN tooltipAndButtonProc4ReturnAddress1 : QWORD
+EXTERN tooltipAndButtonProc4ReturnAddress2 : QWORD
 
 ; 後で使うので一時的にコードポイントを入れておく
 .DATA
@@ -154,5 +156,23 @@ JMP_G:
 	push	tooltipAndButtonProc3ReturnAddress;
 	ret;
 tooltipAndButtonProc3 ENDP
+
+;-------------------------------------------;
+
+tooltipAndButtonProc4 PROC
+	cmp		word ptr [rcx + 6], 0
+	jz		JMP_A;
+
+	cmp		tooltipAndButtonProc2TmpCharacter, 00FFh;
+	ja		JMP_A;
+
+	push	tooltipAndButtonProc4ReturnAddress1;
+	ret;
+
+JMP_A:
+	cmp     dword ptr [rbp + 6E0h - 668h], 0;
+	push	tooltipAndButtonProc4ReturnAddress2;
+	ret;
+tooltipAndButtonProc4 ENDP
 
 END
