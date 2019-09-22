@@ -3,6 +3,7 @@ EXTERN mainTextProc2ReturnAddress: QWORD
 EXTERN mainTextProc2BufferAddress: QWORD
 EXTERN mainTextProc3ReturnAddress1: QWORD
 EXTERN mainTextProc3ReturnAddress2: QWORD
+EXTERN mainTextProc4ReturnAddress: QWORD
 
 .DATA
 	mainTextProc2TmpCharacter	DD	0
@@ -144,5 +145,27 @@ JMP_B:
 	ret;
 
 mainTextProc3 ENDP
+
+;-------------------------------------------;
+
+mainTextProc4 PROC
+	; text1でとっておいたcode-pointをチェック
+	cmp mainTextProc2TmpCharacter, 00FFh;
+	ja JMP_A;
+
+	movzx eax, byte ptr[rdx + r10];
+	jmp JMP_B;
+
+JMP_A:
+	mov eax, mainTextProc2TmpCharacter;
+
+JMP_B:
+	mov rcx, qword ptr [r15 + rax*8];
+	mov qword ptr [rbp-60h],rcx;
+	test rcx,rcx;
+
+	push mainTextProc4ReturnAddress;
+	ret;
+mainTextProc4 ENDP
 
 END

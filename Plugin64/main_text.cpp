@@ -6,11 +6,13 @@ namespace MainText {
 		void mainTextProc1();
 		void mainTextProc2();
 		void mainTextProc3();
+		void mainTextProc4();
 		uintptr_t mainTextProc1ReturnAddress;
 		uintptr_t mainTextProc2ReturnAddress;
 		uintptr_t mainTextProc2BufferAddress;
 		uintptr_t mainTextProc3ReturnAddress1;
 		uintptr_t mainTextProc3ReturnAddress2;
+		uintptr_t mainTextProc4ReturnAddress;
 	}
 
 	DllError mainTextProc1Injector(RunOptions options) {
@@ -20,7 +22,7 @@ namespace MainText {
 		case v1_29_1_0:
 			// movsxd rax, edi
 			BytePattern::temp_instance().find_pattern("48 63 C7 0F B6 04 18 F3 41 0F 10 9F 48 08 00 00");
-			if (BytePattern::temp_instance().has_size(1, "テキスト処理ループ２")) {
+			if (BytePattern::temp_instance().has_size(1, "テキスト処理ループ２の文字取得修正")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// movss dword ptr [rpb+108h], xmm3
@@ -45,7 +47,7 @@ namespace MainText {
 		case v1_29_1_0:
 			// movsxd rdx, edi
 			BytePattern::temp_instance().find_pattern("48 63 D7 49 63 CE 4C 8B 54 24 78");
-			if (BytePattern::temp_instance().has_size(1, "テキスト処理ループ１")) {
+			if (BytePattern::temp_instance().has_size(1, "テキスト処理ループ１のカウント処理修正")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// cmp byte ptr [rbp+7B0h],0
@@ -73,7 +75,7 @@ namespace MainText {
 		case v1_29_1_0:
 			// cmp cs:byte_xxxxx, 0
 			BytePattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 97 01 00 00");
-			if (BytePattern::temp_instance().has_size(1, "テキスト処理ループ１の改行処理の戻り先２")) {
+			if (BytePattern::temp_instance().has_size(1, "テキスト処理ループ１の改行処理の戻り先２取得")) {
 				mainTextProc3ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
@@ -100,12 +102,38 @@ namespace MainText {
 		return e;
 	}
 
+	DllError mainTextProc4Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_1_0:
+			// movzx eax, byte ptr [rdx+r10]
+			BytePattern::temp_instance().find_pattern("42 0F B6 04 12 49 8B 0C C7");
+			if (BytePattern::temp_instance().has_size(1, "テキスト処理ループ１の文字取得修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// jz loc_xxxxx
+				mainTextProc4ReturnAddress = address + 0x10;
+
+				Injector::MakeJMP(address, mainTextProc4, true);
+			}
+			else {
+				e.unmatch.mainTextProc4Injector = true;
+			}
+		default:
+			e.version.mainTextProc4Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= mainTextProc1Injector(options);
 		result |= mainTextProc2Injector(options);
 		result |= mainTextProc3Injector(options);
+		result |= mainTextProc4Injector(options);
 
 		return result;
 	}

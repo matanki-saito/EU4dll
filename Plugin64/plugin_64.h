@@ -21,6 +21,7 @@ struct DllError{
 			bool mainTextProc1Injector : 1;
 			bool mainTextProc2Injector : 1;
 			bool mainTextProc3Injector : 1;
+			bool mainTextProc4Injector : 1;
 		};
 	} version;
 
@@ -36,6 +37,7 @@ struct DllError{
 			bool mainTextProc2Injector : 1;
 			bool mainTextProc3Injector : 1;
 			bool mainTextProc3Injector2 : 1;
+			bool mainTextProc4Injector : 1;
 		};
 	} unmatch;
 
