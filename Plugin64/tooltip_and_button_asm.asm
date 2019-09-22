@@ -143,7 +143,7 @@ JMP_E:
 
 JMP_F:
 	movzx	eax, ax;
-	add		rsi, 2;
+	add		ebx, 2;
 	cmp		eax, 98Fh;
 	ja		JMP_G;
 	mov		eax, 2026h;
