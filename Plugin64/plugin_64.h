@@ -20,6 +20,7 @@ struct DllError{
 			bool fontBufferClearInjector : 1;
 			bool mainTextProc1Injector : 1;
 			bool mainTextProc2Injector : 1;
+			bool mainTextProc3Injector : 1;
 		};
 	} version;
 
@@ -33,6 +34,8 @@ struct DllError{
 			bool fontBufferClearInjector : 1;
 			bool mainTextProc1Injector : 1;
 			bool mainTextProc2Injector : 1;
+			bool mainTextProc3Injector : 1;
+			bool mainTextProc3Injector2 : 1;
 		};
 	} unmatch;
 

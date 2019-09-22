@@ -1,6 +1,8 @@
 EXTERN mainTextProc1ReturnAddress: QWORD
 EXTERN mainTextProc2ReturnAddress: QWORD
 EXTERN mainTextProc2BufferAddress: QWORD
+EXTERN mainTextProc3ReturnAddress1: QWORD
+EXTERN mainTextProc3ReturnAddress2: QWORD
 
 .DATA
 	mainTextProc2TmpCharacter	DD	0
@@ -119,4 +121,28 @@ JMP_E:
 	push mainTextProc2ReturnAddress;
 	ret;
 mainTextProc2 ENDP
+
+;-------------------------------------------;
+
+mainTextProc3 PROC
+	cmp word ptr [rcx+6],0;
+	jnz JMP_A;
+	jmp JMP_B;
+
+JMP_A:
+	cmp mainTextProc2TmpCharacter, 00FFh;
+	ja JMP_B;
+
+	push mainTextProc3ReturnAddress2;
+	ret;
+	
+JMP_B:
+	lea     eax, dword ptr [rbx+rbx];
+	movd    xmm1, eax;
+
+	push mainTextProc3ReturnAddress1;
+	ret;
+
+mainTextProc3 ENDP
+
 END
