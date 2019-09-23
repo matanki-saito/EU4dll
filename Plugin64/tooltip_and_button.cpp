@@ -124,8 +124,7 @@ namespace TooltipAndButton {
 		return e;
 	}
 
-	// これはwin32のときはToolTipApxにあったが統合した
-	// proc1～4とは別のprocに存在する
+	// これはwin32のときはToolTipApxにあったが統合した。proc1～4とは別のprocにinjectしている
 	DllError tooltipAndButtonProc5Injector(RunOptions options) {
 		DllError e = {};
 

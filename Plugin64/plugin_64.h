@@ -30,6 +30,7 @@ struct DllError{
 			bool mapViewProc1Injector : 1;
 			bool mapViewProc2Injector : 1;
 			bool mapViewProc3Injector : 1;
+			bool mapViewProc4Injector : 1;
 		};
 	} version;
 
@@ -54,6 +55,7 @@ struct DllError{
 			bool mapViewProc1Injector : 1;
 			bool mapViewProc2Injector : 1;
 			bool mapViewProc3Injector : 1;
+			bool mapViewProc4Injector : 1;
 		};
 	} unmatch;
 

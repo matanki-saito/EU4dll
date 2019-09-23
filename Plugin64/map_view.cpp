@@ -6,10 +6,13 @@ namespace MapView {
 		void mapViewProc1();
 		void mapViewProc2();
 		void mapViewProc3();
+		void mapViewProc4();
 		uintptr_t mapViewProc1ReturnAddress;
 		uintptr_t mapViewProc2ReturnAddress;
 		uintptr_t mapViewProc3ReturnAddress;
 		uintptr_t mapViewProc3CallAddress;
+		uintptr_t mapViewProc4ReturnAddress;
+		uintptr_t mapViewProc4CallAddress;
 	}
 
 	DllError mapViewProc1Injector(RunOptions options) {
@@ -90,12 +93,45 @@ namespace MapView {
 		return e;
 	}
 
+	// これはwin32のときはmiscにあったが統合した。Proc1～3とは別のProcにinjectしている
+	// この処理はwin32のときは独立したprocであったが、win64ではinline展開されている。
+	// この処理の下の方では文字取得（49 8B 14 C7 48 85 D2 74  09 66 83 7A 06 0）があるので
+	// 別途そちらも修正する必要がある
+	DllError mapViewProc4Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_1_0:
+			// movsx ecx, byte ptr [rdi + rbx]
+			BytePattern::temp_instance().find_pattern("0F BE 0C 1F E8 72 B6 98 00 88 04 1F");
+			if (BytePattern::temp_instance().has_size(1, "マップ文字の大文字化キャンセル")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// call {sub_xxxxx}
+				mapViewProc4CallAddress = Injector::GetBranchDestination(address + 0x04).as_int();
+
+				// cmp byte ptr [rdi + r14] , 0
+				mapViewProc4ReturnAddress = address + 0x12;
+
+				Injector::MakeJMP(address, mapViewProc4, true);
+			}
+			else {
+				e.unmatch.mapViewProc4Injector = true;
+			}
+		default:
+			e.version.mapViewProc4Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= mapViewProc1Injector(options);
 		result |= mapViewProc2Injector(options);
 		result |= mapViewProc3Injector(options);
+		result |= mapViewProc4Injector(options);
 
 		return result;
 	}
