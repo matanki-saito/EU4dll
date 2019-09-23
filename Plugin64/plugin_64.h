@@ -27,6 +27,7 @@ struct DllError{
 			bool tooltipAndButtonProc3Injector : 1;
 			bool tooltipAndButtonProc4Injector : 1;
 			bool tooltipAndButtonProc5Injector : 1;
+			bool mapViewProc1Injector : 1;
 		};
 	} version;
 
@@ -48,6 +49,7 @@ struct DllError{
 			bool tooltipAndButtonProc3Injector : 1;
 			bool tooltipAndButtonProc4Injector : 1;
 			bool tooltipAndButtonProc5Injector : 1;
+			bool mapViewProc1Injector : 1;
 		};
 	} unmatch;
 
@@ -90,5 +92,9 @@ namespace MainText {
 }
 
 namespace TooltipAndButton {
+	DllError Init(RunOptions option);
+}
+
+namespace MapView {
 	DllError Init(RunOptions option);
 }

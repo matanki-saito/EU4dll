@@ -46,6 +46,9 @@
     <Filter Include="ソース ファイル\app\tooltip_and_button">
       <UniqueIdentifier>{c5fe84dd-9294-4bf0-8581-1c5c28290f96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\map_view">
+      <UniqueIdentifier>{fa3fa132-80e4-409f-a69b-38602080539f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -104,6 +107,9 @@
     <ClCompile Include="tooltip_and_button.cpp">
       <Filter>ソース ファイル\app\tooltip_and_button</Filter>
     </ClCompile>
+    <ClCompile Include="map_view.cpp">
+      <Filter>ソース ファイル\app\map_view</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -120,6 +126,9 @@
     </MASM>
     <MASM Include="tooltip_and_button_asm.asm">
       <Filter>ソース ファイル\app\tooltip_and_button</Filter>
+    </MASM>
+    <MASM Include="map_view_asm.asm">
+      <Filter>ソース ファイル\app\map_view</Filter>
     </MASM>
   </ItemGroup>
 </Project>
