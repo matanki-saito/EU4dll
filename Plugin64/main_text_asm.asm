@@ -5,56 +5,68 @@ EXTERN mainTextProc3ReturnAddress1: QWORD
 EXTERN mainTextProc3ReturnAddress2: QWORD
 EXTERN mainTextProc4ReturnAddress: QWORD
 
-; 後で使うので一時的にコードポイントを入れておく
+ESCAPE_SEQ_1	=	10h
+ESCAPE_SEQ_2	=	11h
+ESCAPE_SEQ_3	=	12h
+ESCAPE_SEQ_4	=	13h
+LOW_SHIFT		=	0Eh
+HIGH_SHIFT		=	9h
+SHIFT_2			=	LOW_SHIFT
+SHIFT_3			=	900h
+SHIFT_4			=	8F2h
+NO_FONT			=	98Fh
+NOT_DEF			=	2026h
+
+;temporary space for code point
 .DATA
 	mainTextProc2TmpCharacter	DD	0
 
 .CODE
 mainTextProc1 PROC
-	movsxd rax, edi;
+	movsxd	rax, edi;
 
-	cmp byte ptr[rax + rbx], 10h;
-	jz JMP_A;
-	cmp byte ptr[rax + rbx], 11h;
-	jz JMP_B;
-	cmp byte ptr[rax + rbx], 12h;
-	jz JMP_C;
-	cmp byte ptr[rax + rbx], 13h;
-	jz JMP_D;
-	movzx eax, byte ptr [rax+rbx];
-	jmp JMP_E;
+	cmp		byte ptr[rax + rbx], ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		byte ptr[rax + rbx], ESCAPE_SEQ_2;
+	jz		JMP_B;
+	cmp		byte ptr[rax + rbx], ESCAPE_SEQ_3;
+	jz		JMP_C;
+	cmp		byte ptr[rax + rbx], ESCAPE_SEQ_4;
+	jz		JMP_D;
+	movzx	eax, byte ptr [rax+rbx];
+	jmp		JMP_E;
 
 JMP_A:
-	movzx eax, word ptr[rax + rbx + 1];
-	jmp JMP_F;
+	movzx	eax, word ptr[rax + rbx + 1];
+	jmp		JMP_F;
 
 JMP_B:
-	movzx eax, word ptr[rax + rbx + 1];
-	sub eax, 0Eh;
-	jmp JMP_F;
+	movzx	eax, word ptr[rax + rbx + 1];
+	sub		eax, SHIFT_2;
+	jmp		JMP_F;
 
 JMP_C:
-	movzx eax, word ptr[rax + rbx + 1];
-	add eax, 900h;
-	jmp JMP_F;
+	movzx	eax, word ptr[rax + rbx + 1];
+	add		eax, SHIFT_3;
+	jmp		JMP_F;
 
 JMP_D:
-	movzx eax, word ptr[rax + rbx + 1];
-	add eax, 8F2h;
+	movzx	eax, word ptr[rax + rbx + 1];
+	add		eax, SHIFT_4;
 
 JMP_F:
-	movzx eax, ax;
-	add edi, 2;
-	cmp eax, 98Fh;
+	movzx	eax, ax;
+	add		edi, 2;
+	cmp		eax, NO_FONT;
 
-	ja JMP_E;
-	mov eax, 2026h;
+	ja		JMP_E;
+	mov		eax, NOT_DEF;
 JMP_E:
-	movss xmm3, dword ptr [r15+848h];
-	mov rbx, qword ptr [r15+rax*8];
-	mov qword ptr [rbp+100h], rbx;
+	movss	xmm3, dword ptr [r15+848h];
+	mov		rbx, qword ptr [r15+rax*8];
+	mov		qword ptr [rbp+100h], rbx;
 
-	push mainTextProc1ReturnAddress;
+	push	mainTextProc1ReturnAddress;
 	ret;
 mainTextProc1 ENDP
 
@@ -72,77 +84,77 @@ mainTextProc2 PROC
 	inc     r14d;
 	inc		rcx;
 
-	cmp al, 10h;
-	jz JMP_A;
-	cmp al, 11h;
-	jz JMP_B;
-	cmp al, 12h;
-	jz JMP_C;
-	cmp al, 13h;
-	jz JMP_D;
-	jmp JMP_E;
+	cmp		al, ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		al, ESCAPE_SEQ_2;
+	jz		JMP_B;
+	cmp		al, ESCAPE_SEQ_3;
+	jz		JMP_C;
+	cmp		al, ESCAPE_SEQ_4;
+	jz		JMP_D;
+	jmp		JMP_E;
 
 JMP_A:
-	movzx eax, word ptr[rdx+r10+1];
-	mov word ptr [rcx+r9], ax;
-	jmp JMP_F;
+	movzx	eax, word ptr[rdx+r10+1];
+	mov		word ptr [rcx+r9], ax;
+	jmp		JMP_F;
 
 JMP_B:
 	movzx	eax, word ptr[rdx+r10+1];
-	mov	word ptr [rcx+r9], ax;
-	sub eax, 0Eh;
-	jmp JMP_F;
+	mov		word ptr [rcx+r9], ax;
+	sub		eax, SHIFT_2;
+	jmp		JMP_F;
 
 JMP_C:
-	movzx eax, word ptr [rdx+r10+1];
-	mov	word ptr [rcx+r9], ax;
-	add eax, 900h;
-	jmp JMP_F;
+	movzx	eax, word ptr [rdx+r10+1];
+	mov		word ptr [rcx+r9], ax;
+	add		eax, SHIFT_3;
+	jmp		JMP_F;
 
 JMP_D:
-	movzx eax, word ptr [rdx+r10+1];
-	mov	word ptr [rcx+r9], ax;
-	add eax, 8F2h;
+	movzx	eax, word ptr [rdx+r10+1];
+	mov		word ptr [rcx+r9], ax;
+	add		eax, SHIFT_4;
 
 JMP_F:
-	movzx eax, ax;
-	add r14d, 2;
-	add rcx,2;
-	cmp eax, 98Fh;
+	movzx	eax, ax;
+	add		r14d, 2;
+	add		rcx,2;
+	cmp		eax, NO_FONT;
 
-	ja JMP_G;
-	mov eax, 2026h;
+	ja		JMP_G;
+	mov		eax, NOT_DEF;
 
 JMP_G:
-	add rdx, 2;
-	add edi, 2;
+	add		rdx, 2;
+	add		edi, 2;
 JMP_E:
 
-	mov mainTextProc2TmpCharacter, eax;
+	mov		mainTextProc2TmpCharacter, eax;
 	
-	push mainTextProc2ReturnAddress;
+	push	mainTextProc2ReturnAddress;
 	ret;
 mainTextProc2 ENDP
 
 ;-------------------------------------------;
 
 mainTextProc3 PROC
-	cmp word ptr [rcx+6],0;
-	jnz JMP_A;
-	jmp JMP_B;
+	cmp		word ptr [rcx+6],0;
+	jnz		JMP_A;
+	jmp		JMP_B;
 
 JMP_A:
-	cmp mainTextProc2TmpCharacter, 00FFh;
-	ja JMP_B;
+	cmp		mainTextProc2TmpCharacter, 00FFh;
+	ja		JMP_B;
 
-	push mainTextProc3ReturnAddress2;
+	push	mainTextProc3ReturnAddress2;
 	ret;
 	
 JMP_B:
 	lea     eax, dword ptr [rbx+rbx];
 	movd    xmm1, eax;
 
-	push mainTextProc3ReturnAddress1;
+	push	mainTextProc3ReturnAddress1;
 	ret;
 
 mainTextProc3 ENDP
@@ -150,22 +162,22 @@ mainTextProc3 ENDP
 ;-------------------------------------------;
 
 mainTextProc4 PROC
-	; text1でとっておいたcode-pointをチェック
-	cmp mainTextProc2TmpCharacter, 00FFh;
-	ja JMP_A;
+	; check code point saved proc1
+	cmp		mainTextProc2TmpCharacter, 00FFh;
+	ja		JMP_A;
 
-	movzx eax, byte ptr[rdx + r10];
-	jmp JMP_B;
+	movzx	eax, byte ptr[rdx + r10];
+	jmp		JMP_B;
 
 JMP_A:
-	mov eax, mainTextProc2TmpCharacter;
+	mov		eax, mainTextProc2TmpCharacter;
 
 JMP_B:
-	mov rcx, qword ptr [r15 + rax*8];
-	mov qword ptr [rbp-60h],rcx;
-	test rcx,rcx;
+	mov		rcx, qword ptr [r15 + rax*8];
+	mov		qword ptr [rbp-60h],rcx;
+	test	rcx,rcx;
 
-	push mainTextProc4ReturnAddress;
+	push	mainTextProc4ReturnAddress;
 	ret;
 mainTextProc4 ENDP
 

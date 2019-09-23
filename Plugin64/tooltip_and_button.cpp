@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "plugin_64.h"
 
 namespace TooltipAndButton {
@@ -25,7 +25,7 @@ namespace TooltipAndButton {
 		case v1_29_1_0:
 			// r8d, byte ptr [rax + rcx]
 			BytePattern::temp_instance().find_pattern("44 0F B6 04 08 BA 01 00 00 00");
-			if (BytePattern::temp_instance().has_size(1, "ˆ—ƒ‹[ƒv‚P‚Ì•¶šƒRƒs[")) {
+			if (BytePattern::temp_instance().has_size(1, "å‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼‘ã®æ–‡å­—ã‚³ãƒ”ãƒ¼")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call {sub_xxxxx}
@@ -53,7 +53,7 @@ namespace TooltipAndButton {
 		case v1_29_1_0:
 			// mov edx, ebx
 			BytePattern::temp_instance().find_pattern("8B D3 0F B6 04 10 49 8B 0C C7");
-			if (BytePattern::temp_instance().has_size(1, "ˆ—ƒ‹[ƒv‚P‚Ì•¶šæ“¾")) {
+			if (BytePattern::temp_instance().has_size(1, "å‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼‘ã®æ–‡å­—å–å¾—")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// test rcx,rcx
@@ -78,7 +78,7 @@ namespace TooltipAndButton {
 		case v1_29_1_0:
 			// mov ecx, ebx
 			BytePattern::temp_instance().find_pattern("8B CB F3 45 0F 10 97 48 08 00 00");
-			if (BytePattern::temp_instance().has_size(1, "ˆ—ƒ‹[ƒv‚Q‚Ì•¶šæ“¾")) {
+			if (BytePattern::temp_instance().has_size(1, "å‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼’ã®æ–‡å­—å–å¾—")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// test r11, r11
@@ -103,7 +103,7 @@ namespace TooltipAndButton {
 		case v1_29_1_0:
 			// cmp word ptr [rcx + 6], 0
 			BytePattern::temp_instance().find_pattern("66 83 79 06 00 0F 85 05 03 00 00");
-			if (BytePattern::temp_instance().has_size(1, "ˆ—ƒ‹[ƒv‚P‚Ì‰üsˆ—")) {
+			if (BytePattern::temp_instance().has_size(1, "å‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼‘ã®æ”¹è¡Œå‡¦ç†")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// jnz {loc_xxxxx} / inc ebx
@@ -124,8 +124,8 @@ namespace TooltipAndButton {
 		return e;
 	}
 
-	// ‚±‚ê‚Íwin32‚Ì‚Æ‚«‚ÍToolTipApx‚É‚ ‚Á‚½‚ª“‡‚µ‚½
-	// proc1`4‚Æ‚Í•Ê‚Ìproc‚É‘¶İ‚·‚é
+	// ã“ã‚Œã¯win32ã®ã¨ãã¯ToolTipApxã«ã‚ã£ãŸãŒçµ±åˆã—ãŸ
+	// proc1ï½4ã¨ã¯åˆ¥ã®procã«å­˜åœ¨ã™ã‚‹
 	DllError tooltipAndButtonProc5Injector(RunOptions options) {
 		DllError e = {};
 
@@ -133,7 +133,7 @@ namespace TooltipAndButton {
 		case v1_29_1_0:
 			// movaps  xmm7, [rsp+0E8h+var_48]
 			BytePattern::temp_instance().find_pattern("0F 28 BC 24 A0 00 00 00 48 8B B4 24 00 01 00 00");
-			if (BytePattern::temp_instance().has_size(1, "ƒc[ƒ‹ƒ`ƒbƒv‚Ì‰üsˆ—‚ÌƒŠƒ^[ƒ“æ‚Q")) {
+			if (BytePattern::temp_instance().has_size(1, "ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã®æ”¹è¡Œå‡¦ç†ã®ãƒªã‚¿ãƒ¼ãƒ³å…ˆï¼’")) {
 				tooltipAndButtonProc5ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
@@ -142,7 +142,7 @@ namespace TooltipAndButton {
 
 			// movzx   edx, byte ptr [rbx+r14]
 			BytePattern::temp_instance().find_pattern("42 0F B6 14 33 49 8D 8C 24 00 01 00 00");
-			if (BytePattern::temp_instance().has_size(1, "ƒc[ƒ‹ƒ`ƒbƒv‚Ì‰üsˆ—")) {
+			if (BytePattern::temp_instance().has_size(1, "ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã®æ”¹è¡Œå‡¦ç†")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// jz short loc_xxxxx

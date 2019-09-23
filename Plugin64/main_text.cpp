@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "plugin_64.h"
 
 namespace MainText {
@@ -22,7 +22,7 @@ namespace MainText {
 		case v1_29_1_0:
 			// movsxd rax, edi
 			BytePattern::temp_instance().find_pattern("48 63 C7 0F B6 04 18 F3 41 0F 10 9F 48 08 00 00");
-			if (BytePattern::temp_instance().has_size(1, "ƒeƒLƒXƒgˆ—ƒ‹[ƒv‚Q‚Ì•¶šæ“¾C³")) {
+			if (BytePattern::temp_instance().has_size(1, "ãƒ†ã‚­ã‚¹ãƒˆå‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼’ã®æ–‡å­—å–å¾—ä¿®æ­£")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// movss dword ptr [rpb+108h], xmm3
@@ -47,7 +47,7 @@ namespace MainText {
 		case v1_29_1_0:
 			// movsxd rdx, edi
 			BytePattern::temp_instance().find_pattern("48 63 D7 49 63 CE 4C 8B 54 24 78");
-			if (BytePattern::temp_instance().has_size(1, "ƒeƒLƒXƒgˆ—ƒ‹[ƒv‚P‚ÌƒJƒEƒ“ƒgˆ—C³")) {
+			if (BytePattern::temp_instance().has_size(1, "ãƒ†ã‚­ã‚¹ãƒˆå‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼‘ã®ã‚«ã‚¦ãƒ³ãƒˆå‡¦ç†ä¿®æ­£")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// cmp byte ptr [rbp+7B0h],0
@@ -75,7 +75,7 @@ namespace MainText {
 		case v1_29_1_0:
 			// cmp cs:byte_xxxxx, 0
 			BytePattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 97 01 00 00");
-			if (BytePattern::temp_instance().has_size(1, "ƒeƒLƒXƒgˆ—ƒ‹[ƒv‚P‚Ì‰üsˆ—‚Ì–ß‚èæ‚Qæ“¾")) {
+			if (BytePattern::temp_instance().has_size(1, "ãƒ†ã‚­ã‚¹ãƒˆå‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼‘ã®æ”¹è¡Œå‡¦ç†ã®æˆ»ã‚Šå…ˆï¼’å–å¾—")) {
 				mainTextProc3ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
@@ -84,7 +84,7 @@ namespace MainText {
 
 			// cmp word ptr [rcx+6],0
 			BytePattern::temp_instance().find_pattern("66 83 79 06 00 0F 85 15 01 00 00");
-			if (BytePattern::temp_instance().has_size(1, "ƒeƒLƒXƒgˆ—ƒ‹[ƒv‚P‚Ì‰üsˆ—‚ğC³")) {
+			if (BytePattern::temp_instance().has_size(1, "ãƒ†ã‚­ã‚¹ãƒˆå‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼‘ã®æ”¹è¡Œå‡¦ç†ã‚’ä¿®æ­£")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// cvtdq2ps xmm1,xmm1
@@ -109,7 +109,7 @@ namespace MainText {
 		case v1_29_1_0:
 			// movzx eax, byte ptr [rdx+r10]
 			BytePattern::temp_instance().find_pattern("42 0F B6 04 12 49 8B 0C C7");
-			if (BytePattern::temp_instance().has_size(1, "ƒeƒLƒXƒgˆ—ƒ‹[ƒv‚P‚Ì•¶šæ“¾C³")) {
+			if (BytePattern::temp_instance().has_size(1, "ãƒ†ã‚­ã‚¹ãƒˆå‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼‘ã®æ–‡å­—å–å¾—ä¿®æ­£")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// jz loc_xxxxx

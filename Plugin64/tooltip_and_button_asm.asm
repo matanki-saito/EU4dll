@@ -19,14 +19,13 @@ SHIFT_4			=	8F2h
 NO_FONT			=	98Fh
 NOT_DEF			=	2026h
 
-; 後で使うので一時的にコードポイントを入れておく
+; temporary space for code point
 .DATA
 	tooltipAndButtonProc2TmpCharacter			DD	0
 	tooltipAndButtonProc2TmpCharacterAddress	DQ	0
 
 .CODE
 tooltipAndButtonProc1 PROC
-	; 1文字目をみる
 	cmp		byte ptr [rax + rcx], ESCAPE_SEQ_1;
 	jz		JMP_A;
 	cmp		byte ptr [rax + rcx], ESCAPE_SEQ_2;
@@ -46,11 +45,11 @@ JMP_A:
 	lea		r8, qword ptr [rax + rcx];
 	mov		tooltipAndButtonProc2TmpCharacterAddress, r8;
 	movzx	r8d, byte ptr[rax + rcx];
-	mov     edx, 3; ;3byte確保されるが、先頭の1byteが３つコピーされる…
+	mov     edx, 3; The memory is allocated 3 byte, but the first byte is copied 3 times.
 	lea     rcx, qword ptr [rbp + 6E0h - 6B0h];
 	call	tooltipAndButtonProc1CallAddress;
 
-	; 塗りつぶす
+	; overwrite
 	mov		rcx, tooltipAndButtonProc2TmpCharacterAddress;
 	mov		cx, word ptr [rcx+1];
 	mov		word ptr [rax+1], cx; 
@@ -110,7 +109,7 @@ JMP_F:
 
 JMP_G:
 	mov		rcx, qword ptr [r15 + rax * 8];
-	mov		qword ptr [rbp + 6E0h - 640h], rcx; // 640h is lpMem
+	mov		qword ptr [rbp + 6E0h - 640h], rcx; ; 640h is lpMem
 
 	mov		tooltipAndButtonProc2TmpCharacter, eax;
 
