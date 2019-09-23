@@ -7,12 +7,15 @@ namespace TooltipAndButton {
 		void tooltipAndButtonProc2();
 		void tooltipAndButtonProc3();
 		void tooltipAndButtonProc4();
+		void tooltipAndButtonProc5();
 		uintptr_t tooltipAndButtonProc1ReturnAddress;
 		uintptr_t tooltipAndButtonProc1CallAddress;
 		uintptr_t tooltipAndButtonProc2ReturnAddress;
 		uintptr_t tooltipAndButtonProc3ReturnAddress;
 		uintptr_t tooltipAndButtonProc4ReturnAddress1;
 		uintptr_t tooltipAndButtonProc4ReturnAddress2;
+		uintptr_t tooltipAndButtonProc5ReturnAddress1;
+		uintptr_t tooltipAndButtonProc5ReturnAddress2;
 	}
 
 	DllError tooltipAndButtonProc1Injector(RunOptions options) {
@@ -121,6 +124,42 @@ namespace TooltipAndButton {
 		return e;
 	}
 
+	// これはwin32のときはToolTipApxにあったが統合した
+	// proc1～4とは別のprocに存在する
+	DllError tooltipAndButtonProc5Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_1_0:
+			// movaps  xmm7, [rsp+0E8h+var_48]
+			BytePattern::temp_instance().find_pattern("0F 28 BC 24 A0 00 00 00 48 8B B4 24 00 01 00 00");
+			if (BytePattern::temp_instance().has_size(1, "ツールチップの改行処理のリターン先２")) {
+				tooltipAndButtonProc5ReturnAddress2 = BytePattern::temp_instance().get_first().address();
+			}
+			else {
+				e.unmatch.tooltipAndButtonProc5Injector = true;
+			}
+
+			// movzx   edx, byte ptr [rbx+r14]
+			BytePattern::temp_instance().find_pattern("42 0F B6 14 33 49 8D 8C 24 00 01 00 00");
+			if (BytePattern::temp_instance().has_size(1, "ツールチップの改行処理")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// jz short loc_xxxxx
+				tooltipAndButtonProc5ReturnAddress1 = address + 0x14;
+
+				Injector::MakeJMP(address, tooltipAndButtonProc5, true);
+			}
+			else {
+				e.unmatch.tooltipAndButtonProc5Injector = true;
+			}
+		default:
+			e.version.tooltipAndButtonProc5Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
@@ -128,6 +167,7 @@ namespace TooltipAndButton {
 		result |= tooltipAndButtonProc2Injector(options);
 		result |= tooltipAndButtonProc3Injector(options);
 		result |= tooltipAndButtonProc4Injector(options);
+		result |= tooltipAndButtonProc5Injector(options);
 
 		return result;
 	}

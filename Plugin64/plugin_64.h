@@ -26,6 +26,7 @@ struct DllError{
 			bool tooltipAndButtonProc2Injector : 1;
 			bool tooltipAndButtonProc3Injector : 1;
 			bool tooltipAndButtonProc4Injector : 1;
+			bool tooltipAndButtonProc5Injector : 1;
 		};
 	} version;
 
@@ -46,6 +47,7 @@ struct DllError{
 			bool tooltipAndButtonProc2Injector : 1;
 			bool tooltipAndButtonProc3Injector : 1;
 			bool tooltipAndButtonProc4Injector : 1;
+			bool tooltipAndButtonProc5Injector : 1;
 		};
 	} unmatch;
 

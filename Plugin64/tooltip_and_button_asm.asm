@@ -1,25 +1,39 @@
-EXTERN tooltipAndButtonProc1ReturnAddress: QWORD
-EXTERN tooltipAndButtonProc1CallAddress : QWORD
-EXTERN tooltipAndButtonProc2ReturnAddress : QWORD
-EXTERN tooltipAndButtonProc3ReturnAddress : QWORD
-EXTERN tooltipAndButtonProc4ReturnAddress1 : QWORD
-EXTERN tooltipAndButtonProc4ReturnAddress2 : QWORD
+EXTERN	tooltipAndButtonProc1ReturnAddress	:	QWORD
+EXTERN	tooltipAndButtonProc1CallAddress	:	QWORD
+EXTERN	tooltipAndButtonProc2ReturnAddress	:	QWORD
+EXTERN	tooltipAndButtonProc3ReturnAddress	:	QWORD
+EXTERN	tooltipAndButtonProc4ReturnAddress1	:	QWORD
+EXTERN	tooltipAndButtonProc4ReturnAddress2	:	QWORD
+EXTERN	tooltipAndButtonProc5ReturnAddress1	:	QWORD
+EXTERN	tooltipAndButtonProc5ReturnAddress2	:	QWORD
+
+ESCAPE_SEQ_1	=	10h
+ESCAPE_SEQ_2	=	11h
+ESCAPE_SEQ_3	=	12h
+ESCAPE_SEQ_4	=	13h
+LOW_SHIFT		=	0Eh
+HIGH_SHIFT		=	9h
+SHIFT_2			=	LOW_SHIFT
+SHIFT_3			=	900h
+SHIFT_4			=	8F2h
+NO_FONT			=	98Fh
+NOT_DEF			=	2026h
 
 ; 後で使うので一時的にコードポイントを入れておく
 .DATA
-	tooltipAndButtonProc2TmpCharacter	DD	0
+	tooltipAndButtonProc2TmpCharacter			DD	0
 	tooltipAndButtonProc2TmpCharacterAddress	DQ	0
 
 .CODE
 tooltipAndButtonProc1 PROC
 	; 1文字目をみる
-	cmp		byte ptr [rax + rcx], 10h;
+	cmp		byte ptr [rax + rcx], ESCAPE_SEQ_1;
 	jz		JMP_A;
-	cmp		byte ptr [rax + rcx], 11h;
+	cmp		byte ptr [rax + rcx], ESCAPE_SEQ_2;
 	jz		JMP_A;
-	cmp		byte ptr [rax + rcx], 12h;
+	cmp		byte ptr [rax + rcx], ESCAPE_SEQ_3;
 	jz		JMP_A;
-	cmp		byte ptr [rax + rcx], 13h;
+	cmp		byte ptr [rax + rcx], ESCAPE_SEQ_4;
 	jz		JMP_A;
 
 	movzx	r8d, byte ptr[rax + rcx];
@@ -51,13 +65,13 @@ tooltipAndButtonProc1 ENDP
 tooltipAndButtonProc2 PROC
 	mov		edx, ebx;
 
-	cmp		byte ptr[rax+rdx], 10h;
+	cmp		byte ptr[rax+rdx], ESCAPE_SEQ_1;
 	jz		JMP_A;
-	cmp		byte ptr[rax+rdx], 11h;
+	cmp		byte ptr[rax+rdx], ESCAPE_SEQ_2;
 	jz		JMP_B;
-	cmp		byte ptr[rax+rdx], 12h;
+	cmp		byte ptr[rax+rdx], ESCAPE_SEQ_3;
 	jz		JMP_C;
-	cmp		byte ptr[rax+rdx], 13h;
+	cmp		byte ptr[rax+rdx], ESCAPE_SEQ_4;
 	jz		JMP_D;
 	jmp		JMP_E;
 
@@ -67,17 +81,17 @@ JMP_A:
 
 JMP_B:
 	movzx	eax, word ptr[rax+rdx + 1];
-	sub		eax, 0Eh;
+	sub		eax, SHIFT_2;
 	jmp		JMP_F;
 
 JMP_C:
 	movzx	eax, word ptr[rax+rdx + 1];
-	add		eax, 900h;
+	add		eax, SHIFT_3;
 	jmp		JMP_F;
 
 JMP_D:
 	movzx	eax, word ptr[rax+rdx + 1];
-	add		eax, 8F2h;
+	add		eax, SHIFT_4;
 	jmp		JMP_F;
 
 JMP_E:
@@ -90,9 +104,9 @@ JMP_F:
 	add		edx,2;
 	mov		dword ptr [rbp+6E0h- 6C0h], ebx;
 
-	cmp		eax, 98Fh;
+	cmp		eax, NO_FONT;
 	ja		JMP_G;
-	mov		eax, 2026h;
+	mov		eax, NOT_DEF;
 
 JMP_G:
 	mov		rcx, qword ptr [r15 + rax * 8];
@@ -110,13 +124,13 @@ tooltipAndButtonProc3 PROC
 	mov     ecx, ebx;
 	movss   xmm10, dword ptr [r15 + 848h];
 
-	cmp		byte ptr[rax + rcx], 10h;
+	cmp		byte ptr[rax + rcx], ESCAPE_SEQ_1;
 	jz		JMP_A;
-	cmp		byte ptr[rax + rcx], 11h;
+	cmp		byte ptr[rax + rcx], ESCAPE_SEQ_2;
 	jz		JMP_B;
-	cmp		byte ptr[rax + rcx], 12h;
+	cmp		byte ptr[rax + rcx], ESCAPE_SEQ_3;
 	jz		JMP_C;
-	cmp		byte ptr[rax + rcx], 13h;
+	cmp		byte ptr[rax + rcx], ESCAPE_SEQ_4;
 	jz		JMP_D;
 	jmp		JMP_E;
 
@@ -126,17 +140,17 @@ JMP_A:
 
 JMP_B:
 	movzx	eax, word ptr[rax + rcx + 1];
-	sub		eax, 0Eh;
+	sub		eax, SHIFT_2;
 	jmp		JMP_F;
 
 JMP_C:
 	movzx	eax, word ptr[rax + rcx + 1];
-	add		eax, 900h;
+	add		eax, SHIFT_3;
 	jmp		JMP_F;
 
 JMP_D:
 	movzx	eax, word ptr[rax + rcx + 1];
-	add		eax, 8F2h;
+	add		eax, SHIFT_4;
 	jmp		JMP_F;
 
 JMP_E:
@@ -146,9 +160,9 @@ JMP_E:
 JMP_F:
 	movzx	eax, ax;
 	add		ebx, 2;
-	cmp		eax, 98Fh;
+	cmp		eax, NO_FONT;
 	ja		JMP_G;
-	mov		eax, 2026h;
+	mov		eax, NOT_DEF;
 
 JMP_G:
 	mov     r11, qword ptr [r15 + rax * 8];
@@ -174,5 +188,66 @@ JMP_A:
 	push	tooltipAndButtonProc4ReturnAddress2;
 	ret;
 tooltipAndButtonProc4 ENDP
+
+;-------------------------------------------;
+
+tooltipAndButtonProc5 PROC
+	lea     rcx, qword ptr [r12 + 100h];
+
+	cmp		byte ptr [rbx + r14], ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		byte ptr [rbx + r14], ESCAPE_SEQ_2;
+	jz		JMP_B;
+	cmp		byte ptr [rbx + r14], ESCAPE_SEQ_3;
+	jz		JMP_C;
+	cmp		byte ptr [rbx + r14], ESCAPE_SEQ_4;
+	jz		JMP_D;
+
+	movzx   edx, byte ptr [rbx + r14];
+	jmp		JMP_G;
+
+JMP_A:
+	movzx	edx, word ptr[rbx + r14 + 1];
+	jmp		JMP_F;
+
+JMP_B:
+	movzx	edx, word ptr[rbx + r14 + 1];
+	sub		edx, SHIFT_2;
+	jmp		JMP_F;
+
+JMP_C:
+	movzx	edx, word ptr[rbx + r14 + 1];
+	add		edx, SHIFT_3;
+	jmp		JMP_F;
+
+JMP_D:
+	movzx	edx, word ptr[rbx + r14 + 1];
+	add		edx, SHIFT_4;
+
+JMP_F:
+	movzx	edx, dx;
+	cmp		edx, NO_FONT;
+	ja		JMP_H;
+	mov		edx, NOT_DEF;
+
+JMP_H:
+	add		rbx, 3;
+	add		edi, 3;
+	cmp		rbx, r13;
+	ja		JMP_J;
+	dec		rbx;
+	dec		edi;
+
+JMP_G:
+	mov     rsi, qword ptr [rcx + rdx * 8];
+	test    rsi, rsi;
+
+	push	tooltipAndButtonProc5ReturnAddress1;
+	ret;
+
+JMP_J:
+	push	tooltipAndButtonProc5ReturnAddress2;
+	ret;
+tooltipAndButtonProc5 ENDP
 
 END
