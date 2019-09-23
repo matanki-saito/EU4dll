@@ -19,16 +19,16 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		e |= Debug::Init(options);
 
 		// font
-		//e |= Font::Init(options);
+		e |= Font::Init(options);
 
 		// main text
-		//e |= MainText::Init(options);
+		e |= MainText::Init(options);
 
 		// tooltip and button
-		//e |= TooltipAndButton::Init(options);
+		e |= TooltipAndButton::Init(options);
 
 		// map view
-		//e |= MapView::Init(options);
+		e |= MapView::Init(options);
 
 		if (e.unmatch.code2 > 0) {
 			exit(1);
