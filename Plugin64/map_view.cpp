@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "plugin_64.h"
 
 namespace MapView {
@@ -6,13 +6,10 @@ namespace MapView {
 		void mapViewProc1();
 		void mapViewProc2();
 		void mapViewProc3();
-		void mapViewProc4();
 		uintptr_t mapViewProc1ReturnAddress;
 		uintptr_t mapViewProc2ReturnAddress;
 		uintptr_t mapViewProc3ReturnAddress;
 		uintptr_t mapViewProc3CallAddress;
-		uintptr_t mapViewProc4ReturnAddress;
-		uintptr_t mapViewProc4CallAddress;
 	}
 
 	DllError mapViewProc1Injector(RunOptions options) {
@@ -22,7 +19,7 @@ namespace MapView {
 		case v1_29_1_0:
 			// movzx   eax, byte ptr [rax+r8]
 			BytePattern::temp_instance().find_pattern("42 0F B6 04 00 4C 8B 1C C7 4C 89 5D 38");
-			if (BytePattern::temp_instance().has_size(1, "ˆ—ƒ‹[ƒv‚Q‚Ì•¶šæ“¾ˆ—")) {
+			if (BytePattern::temp_instance().has_size(1, "å‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼’ã®æ–‡å­—å–å¾—å‡¦ç†")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// test    r11, r11
@@ -47,7 +44,7 @@ namespace MapView {
 		case v1_29_1_0:
 			// lea     r9, [r12+100h]
 			BytePattern::temp_instance().find_pattern("4D 8D 8C 24 00 01 00 00 42 0F B6 04 38 4D 8B 24 C1");
-			if (BytePattern::temp_instance().has_size(1, "ˆ—ƒ‹[ƒv‚P‚Ì•¶šæ“¾ˆ—")) {
+			if (BytePattern::temp_instance().has_size(1, "å‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼‘ã®æ–‡å­—å–å¾—å‡¦ç†")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// test    r12, r12
@@ -72,7 +69,7 @@ namespace MapView {
 		case v1_29_1_0:
 			// movzx   r8d, byte ptr [rax+r15]
 			BytePattern::temp_instance().find_pattern("46 0F B6 04 38 BA 01 00 00 00 48 8D 4C 24 40");
-			if (BytePattern::temp_instance().has_size(1, "ˆ—ƒ‹[ƒv‚P‚Ì•¶šƒRƒs[")) {
+			if (BytePattern::temp_instance().has_size(1, "å‡¦ç†ãƒ«ãƒ¼ãƒ—ï¼‘ã®æ–‡å­—ã‚³ãƒ”ãƒ¼")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call {sub_xxxxx}
@@ -93,45 +90,12 @@ namespace MapView {
 		return e;
 	}
 
-	// ‚±‚ê‚Íwin32‚Ì‚Æ‚«‚Ímisc‚É‚ ‚Á‚½‚ª“‡‚µ‚½BProc1`3‚Æ‚Í•Ê‚ÌProc‚Éinject‚µ‚Ä‚¢‚é
-	// ‚±‚Ìˆ—‚Íwin32‚Ì‚Æ‚«‚Í“Æ—§‚µ‚½proc‚Å‚ ‚Á‚½‚ªAwin64‚Å‚Íinline“WŠJ‚³‚ê‚Ä‚¢‚éB
-	// ‚±‚Ìˆ—‚Ì‰º‚Ì•û‚Å‚Í•¶šæ“¾i49 8B 14 C7 48 85 D2 74  09 66 83 7A 06 0j‚ª‚ ‚é‚Ì‚Å
-	// •Ê“r‚»‚¿‚ç‚àC³‚·‚é•K—v‚ª‚ ‚é
-	DllError mapViewProc4Injector(RunOptions options) {
-		DllError e = {};
-
-		switch (options.version) {
-		case v1_29_1_0:
-			// movsx ecx, byte ptr [rdi + rbx]
-			BytePattern::temp_instance().find_pattern("0F BE 0C 1F E8 72 B6 98 00 88 04 1F");
-			if (BytePattern::temp_instance().has_size(1, "ƒ}ƒbƒv•¶š‚Ì‘å•¶š‰»ƒLƒƒƒ“ƒZƒ‹")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
-
-				// call {sub_xxxxx}
-				mapViewProc4CallAddress = Injector::GetBranchDestination(address + 0x04).as_int();
-
-				// cmp byte ptr [rdi + r14] , 0
-				mapViewProc4ReturnAddress = address + 0x12;
-
-				Injector::MakeJMP(address, mapViewProc4, true);
-			}
-			else {
-				e.unmatch.mapViewProc4Injector = true;
-			}
-		default:
-			e.version.mapViewProc4Injector = true;
-		}
-
-		return e;
-	}
-
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= mapViewProc1Injector(options);
 		result |= mapViewProc2Injector(options);
 		result |= mapViewProc3Injector(options);
-		result |= mapViewProc4Injector(options);
 
 		return result;
 	}

@@ -30,6 +30,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// map view
 		e |= MapView::Init(options);
 
+		// map adjustment
+		e |= MapAdjustment::Init(options);
+
 		if (e.unmatch.code2 > 0) {
 			exit(1);
 		}

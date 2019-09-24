@@ -3,8 +3,6 @@ EXTERN	mapViewProc2ReturnAddress	:	QWORD
 EXTERN	mapViewProc3ReturnAddress	:	QWORD
 EXTERN	mapViewProc3CallAddress		:	QWORD
 EXTERN	mapViewProc3CallAddress		:	QWORD
-EXTERN	mapViewProc4ReturnAddress	:	QWORD
-EXTERN	mapViewProc4CallAddress		:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -160,34 +158,4 @@ JMP_B:
 	push	mapViewProc3ReturnAddress;
 	ret;
 mapViewProc3 ENDP
-
-;-------------------------------------------;
-
-mapViewProc4 PROC
-	movsx	ecx, byte ptr[rdi + rbx];
-	cmp		ecx, ESCAPE_SEQ_1;
-	jz		JMP_A;
-	cmp		ecx, ESCAPE_SEQ_2;
-	jz		JMP_A;
-	cmp		ecx, ESCAPE_SEQ_3;
-	jz		JMP_A;
-	cmp		ecx, ESCAPE_SEQ_4;
-	jz		JMP_A;
-
-	call	mapViewProc4CallAddress;
-	mov     byte ptr [rdi + rbx], al;
-	inc     r14d;
-
-	jmp		JMP_B;
-
-JMP_A:
-	add		r14d, 3;
-
-JMP_B:
-	mov     ebx, r14d;
-
-	push	mapViewProc4ReturnAddress;
-	ret;
-mapViewProc4 ENDP
-
 END

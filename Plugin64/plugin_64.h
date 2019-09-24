@@ -31,6 +31,7 @@ struct DllError{
 			bool mapViewProc2Injector : 1;
 			bool mapViewProc3Injector : 1;
 			bool mapViewProc4Injector : 1;
+			bool mapAdjustmentProc1Injector : 1;
 		};
 	} version;
 
@@ -56,6 +57,7 @@ struct DllError{
 			bool mapViewProc2Injector : 1;
 			bool mapViewProc3Injector : 1;
 			bool mapViewProc4Injector : 1;
+			bool mapAdjustmentProc1Injector : 1;
 		};
 	} unmatch;
 
@@ -102,5 +104,9 @@ namespace TooltipAndButton {
 }
 
 namespace MapView {
+	DllError Init(RunOptions option);
+}
+
+namespace MapAdjustment {
 	DllError Init(RunOptions option);
 }
