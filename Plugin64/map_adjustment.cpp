@@ -4,14 +4,19 @@
 namespace MapAdjustment {
 	extern "C" {
 		void mapAdjustmentProc1();
+		void mapAdjustmentProc2();
+		void mapAdjustmentProc3();
+		void mapAdjustmentProc4();
 		uintptr_t mapAdjustmentProc1ReturnAddress;
 		uintptr_t mapAdjustmentProc1CallAddress;
+		uintptr_t mapAdjustmentProc2ReturnAddress;
+		uintptr_t mapAdjustmentProc3ReturnAddress1;
+		uintptr_t mapAdjustmentProc3ReturnAddress2;
+		uintptr_t mapAdjustmentProc4ReturnAddress;
 	}
 
 	// これはwin32のときはmiscにあったが統合した。
 	// この処理はwin32のときは独立したprocであったが、win64ではinline展開されている。
-	// この処理の下の方では文字取得（49 8B 14 C7 48 85 D2 74  09 66 83 7A 06 0）があるので
-	// 別途そちらも修正する必要がある
 	DllError mapAdjustmentProc1Injector(RunOptions options) {
 		DllError e = {};
 
@@ -33,6 +38,7 @@ namespace MapAdjustment {
 			else {
 				e.unmatch.mapAdjustmentProc1Injector = true;
 			}
+			break;
 		default:
 			e.version.mapAdjustmentProc1Injector = true;
 		}
@@ -40,11 +46,100 @@ namespace MapAdjustment {
 		return e;
 	}
 
+	DllError mapAdjustmentProc2Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_1_0:
+			// lea     rax, [rbp+1F0h+var_1F0]
+			BytePattern::temp_instance().find_pattern("48 8D 45 00 49 83 C8 FF 90 49 FF C0");
+			if (BytePattern::temp_instance().has_size(2, "文字チェック修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// lea     rdx, [rbp+1F0h+var_1F0]
+				mapAdjustmentProc2ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, mapAdjustmentProc2, true);
+			}
+			else {
+				e.unmatch.mapAdjustmentProc2Injector = true;
+			}
+			break;
+		default:
+			e.version.mapAdjustmentProc2Injector = true;
+		}
+
+		return e;
+	}
+
+	DllError mapAdjustmentProc3Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_1_0:
+			// r9, 0FFFFFFFFFFFFFFFFh
+			BytePattern::temp_instance().find_pattern("49 83 C9 FF 45 33 C0 48 8D 95 C0 00 00 00");
+			if (BytePattern::temp_instance().has_size(1, "文字チェックの後のコピー処理")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// call    sub_xxxxx
+				mapAdjustmentProc3ReturnAddress1 = address + 0x12;
+
+				Injector::MakeJMP(address, mapAdjustmentProc3, true);
+			}
+			else {
+				e.unmatch.mapAdjustmentProc3Injector = true;
+			}
+
+			// mov     rcx, [r12+30h]
+			BytePattern::temp_instance().find_pattern("49 8B 4C 24 30 48 8B 01 C6 44 24 30 01");
+			if (BytePattern::temp_instance().has_size(2, "文字チェックの後のコピー処理の戻り先２")) {
+				mapAdjustmentProc3ReturnAddress2 = BytePattern::temp_instance().get_second().address();
+			}
+			else {
+				e.unmatch.mapAdjustmentProc3Injector = true;
+			}
+			break;
+		default:
+			e.version.mapAdjustmentProc3Injector = true;
+		}
+
+		return e;
+	}
+
+	DllError mapAdjustmentProc4Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_1_0:
+			//  lea     rax, [rbp+1F0h+var_160]
+			BytePattern::temp_instance().find_pattern("48 8D 85 90 00 00 00 49 83 F8 10");
+			if (BytePattern::temp_instance().has_size(1, "文字取得処理修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// mov     rdx, [r15+rax*8]
+				mapAdjustmentProc4ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, mapAdjustmentProc4, true);
+			}
+			else {
+				e.unmatch.mapAdjustmentProc4Injector = true;
+			}
+			break;
+		default:
+			e.version.mapAdjustmentProc4Injector = true;
+		}
+
+		return e;
+	}
 
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= mapAdjustmentProc1Injector(options);
+		result |= mapAdjustmentProc2Injector(options);
+		result |= mapAdjustmentProc3Injector(options);
+		result |= mapAdjustmentProc4Injector(options);
 
 		return result;
 	}
