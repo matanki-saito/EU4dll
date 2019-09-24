@@ -59,11 +59,12 @@ mapAdjustmentProc2 PROC
 
 	lea     rax, qword ptr [rbp + 1F0h - 1F0h];
 	or      r8, 0FFFFFFFFFFFFFFFFh;
+	nop;
 
 JMP_B:
 	inc     r8;
 	cmp     byte ptr [rax+r8], 0;
-	jmp		JMP_B;
+	jnz		JMP_B;
 	jmp		JMP_C;
 
 JMP_A:
