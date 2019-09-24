@@ -39,6 +39,7 @@ namespace TooltipAndButton {
 			else {
 				e.unmatch.tooltipAndButtonProc1Injector = true;
 			}
+			break;
 		default:
 			e.version.tooltipAndButtonProc1Injector = true;
 		}
@@ -64,6 +65,7 @@ namespace TooltipAndButton {
 			else {
 				e.unmatch.tooltipAndButtonProc2Injector = true;
 			}
+			break;
 		default:
 			e.version.tooltipAndButtonProc2Injector = true;
 		}
@@ -89,6 +91,7 @@ namespace TooltipAndButton {
 			else {
 				e.unmatch.tooltipAndButtonProc3Injector = true;
 			}
+			break;
 		default:
 			e.version.tooltipAndButtonProc3Injector = true;
 		}
@@ -117,6 +120,7 @@ namespace TooltipAndButton {
 			else {
 				e.unmatch.tooltipAndButtonProc4Injector = true;
 			}
+			break;
 		default:
 			e.version.tooltipAndButtonProc4Injector = true;
 		}
@@ -152,6 +156,7 @@ namespace TooltipAndButton {
 			else {
 				e.unmatch.tooltipAndButtonProc5Injector = true;
 			}
+			break;
 		default:
 			e.version.tooltipAndButtonProc5Injector = true;
 		}

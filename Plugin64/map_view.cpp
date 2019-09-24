@@ -30,6 +30,7 @@ namespace MapView {
 			else {
 				e.unmatch.mapViewProc1Injector = true;
 			}
+			break;
 		default:
 			e.version.mapViewProc1Injector = true;
 		}
@@ -55,6 +56,7 @@ namespace MapView {
 			else {
 				e.unmatch.mapViewProc2Injector = true;
 			}
+			break;
 		default:
 			e.version.mapViewProc2Injector = true;
 		}
@@ -83,6 +85,7 @@ namespace MapView {
 			else {
 				e.unmatch.mapViewProc3Injector = true;
 			}
+			break;
 		default:
 			e.version.mapViewProc3Injector = true;
 		}

@@ -32,6 +32,7 @@ namespace Font {
 			} else {
 				e.unmatch.fontBufferHeapZeroClearInjector = true;
 			}
+			break;
 		default:
 			e.version.fontBufferHeapZeroClearInjector = true;
 		}
@@ -53,6 +54,7 @@ namespace Font {
 			else {
 				e.unmatch.fontBufferClearInjector = true;
 			}
+			break;
 		default:
 			e.version.fontBufferClearInjector = true;
 		}
@@ -74,6 +76,7 @@ namespace Font {
 			else {
 				e.unmatch.fontBufferClearInjector = true;
 			}
+			break;
 		default:
 			e.version.fontBufferClearInjector = true;
 		}
@@ -94,6 +97,7 @@ namespace Font {
 			} else {
 				e.unmatch.fontBufferExpansionInjector = true;
 			}
+			break;
 		default:
 			e.version.fontBufferExpansionInjector = true;
 		}
@@ -114,6 +118,7 @@ namespace Font {
 			} else {
 				e.unmatch.fontSizeLimitInjector = true;
 			}
+			break;
 		default:
 			e.version.fontSizeLimitInjector = true;
 		}

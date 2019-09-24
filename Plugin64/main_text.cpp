@@ -33,6 +33,7 @@ namespace MainText {
 			else {
 				e.unmatch.mainTextProc1Injector = true;
 			}
+			break;
 		default:
 			e.version.mainTextProc1Injector = true;
 		}
@@ -61,6 +62,7 @@ namespace MainText {
 			else {
 				e.unmatch.mainTextProc2Injector = true;
 			}
+			break;
 		default:
 			e.version.mainTextProc2Injector = true;
 		}
@@ -95,6 +97,7 @@ namespace MainText {
 			else {
 				e.unmatch.mainTextProc3Injector = true;
 			}
+			break;
 		default:
 			e.version.mainTextProc3Injector = true;
 		}
@@ -120,6 +123,7 @@ namespace MainText {
 			else {
 				e.unmatch.mainTextProc4Injector = true;
 			}
+			break;
 		default:
 			e.version.mainTextProc4Injector = true;
 		}

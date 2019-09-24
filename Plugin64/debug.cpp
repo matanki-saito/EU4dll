@@ -25,6 +25,7 @@ namespace Debug {
 			} else {
 				e.unmatch.debugProc1Injector = true;
 			}
+			break;
 		default:
 			e.version.debugProc1Injector = true;
 		}
