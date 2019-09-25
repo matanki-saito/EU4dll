@@ -1,4 +1,6 @@
-; 多分このコードは一番難しい
+; r13は文字列ループのカウンタ。フォントに文字があってもなくても関係ない
+; r10は文字列のlenght
+; edx（[rbp+1D0h+var_138]）は文字ポジションカウンタ
 
 EXTERN	mapJustifyProc1ReturnAddress1	:	QWORD
 EXTERN	mapJustifyProc1ReturnAddress2	:	QWORD
@@ -64,6 +66,7 @@ JMP_F:
 	mov		esi, NOT_DEF;
 
 JMP_G:
+	mov		mapJustifyProc1TmpFlag, 1h;
 	mov     rdi, qword ptr [rcx + rsi * 8];
 	test	rdi, rdi;
 	jz		JMP_H;
@@ -71,10 +74,10 @@ JMP_G:
 	ret;
 
 JMP_H:
-	mov		mapJustifyProc1TmpFlag, 1h;
 	add		rdx, 2;
 	mov     qword ptr [rbp + 1D0h - 138h], rdx;
 	sub		rdx, 2;
+	;add		r13, 2;
 
 JMP_I:
 	push	mapJustifyProc1ReturnAddress2;
@@ -82,18 +85,17 @@ JMP_I:
 mapJustifyProc1 ENDP
 
 ;-------------------------------------------;
-
 mapJustifyProc2 PROC
 	cmp		mapJustifyProc1TmpFlag, 1h;
 	jnz		JMP_A;
 
-	; 3byte = 1文字かどうか
+	; 3byte = 1文字かどうか r10は文字列のlength
 	cmp		r10, 3; 
 	ja		JMP_A;
-	add		edx, 2;
+	add		rdx, 2;
 	mov		qword ptr [rbp + 1D0h - 138h], rdx;
 	mov		rax, r10;
-	add		eax, 2;
+	add		rax, 2;
 	mov		r10, rax; 
 	mov		mapJustifyProc1TmpFlag, 0; 以降の処理はスキップ
 
@@ -108,11 +110,13 @@ JMP_A:
 	jmp		JMP_C;
 
 JMP_B:
-	add		edx, 2;
+	add		rdx, 2;
+	add		r13, 2;
 	mov		qword ptr [rbp + 1D0h - 138h], rdx;
 	lea     eax, [r10 - 2]; ; -2している
 
 JMP_C:
+	dec		eax;
 	movd    xmm0, eax;
 	cvtdq2ps xmm0, xmm0;
 
