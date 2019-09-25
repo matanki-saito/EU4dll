@@ -34,7 +34,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		e |= MapAdjustment::Init(options);
 
 		// map justify
-		e |= MapJustify::Init(options);
+		//e |= MapJustify::Init(options);
 
 		if (e.unmatch.code2 > 0 || e.version.code1 > 0) {
 			exit(1);

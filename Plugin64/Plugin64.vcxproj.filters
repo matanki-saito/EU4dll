@@ -52,6 +52,9 @@
     <Filter Include="ソース ファイル\app\map_adjustment">
       <UniqueIdentifier>{cefa1599-a81d-4e04-bf95-f91661b4cc5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\map_justify">
+      <UniqueIdentifier>{dbe55493-4235-438e-8a66-a6911912ee56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -116,6 +119,9 @@
     <ClCompile Include="map_adjustment.cpp">
       <Filter>ソース ファイル\app\map_adjustment</Filter>
     </ClCompile>
+    <ClCompile Include="map_justify.cpp">
+      <Filter>ソース ファイル\app\map_justify</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -138,6 +144,9 @@
     </MASM>
     <MASM Include="map_adjustment_asm.asm">
       <Filter>ソース ファイル\app\map_adjustment</Filter>
+    </MASM>
+    <MASM Include="map_justify_asm.asm">
+      <Filter>ソース ファイル\app\map_justify</Filter>
     </MASM>
   </ItemGroup>
 </Project>
