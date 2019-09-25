@@ -4,8 +4,10 @@
 namespace MapJustify {
 	extern "C" {
 		void mapJustifyProc1();
+		void mapJustifyProc2();
 		uintptr_t mapJustifyProc1ReturnAddress1;
 		uintptr_t mapJustifyProc1ReturnAddress2;
+		uintptr_t mapJustifyProc2ReturnAddress;
 	}
 
 	DllError mapJustifyProc1Injector(RunOptions options) {
@@ -43,10 +45,37 @@ namespace MapJustify {
 		return e;
 	}
 
+	DllError mapJustifyProc2Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_1_0:
+			// lea     eax, [r10-1]
+			BytePattern::temp_instance().find_pattern("41 8D 42 FF 66 0F 6E F2 66 0F 6E C0");
+			if (BytePattern::temp_instance().has_size(1, "一文字表示の調整")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// cvtdq2ps xmm6, xmm6
+				mapJustifyProc2ReturnAddress = address + 0xF;
+
+				Injector::MakeJMP(address, mapJustifyProc2, true);
+			}
+			else {
+				e.unmatch.mapJustifyProc2Injector = true;
+			}
+			break;
+		default:
+			e.version.mapJustifyProc2Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= mapJustifyProc1Injector(options);
+		result |= mapJustifyProc2Injector(options);
 
 		return result;
 	}
