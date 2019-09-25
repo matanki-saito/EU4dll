@@ -59,7 +59,10 @@ JMP_G:
 	mov     rdi, qword ptr [rcx + rsi * 8];
 	test	rdi, rdi;
 	jz		JMP_H;
-	add		r13, 2;
+	;add		r13, 2;
+	add		rdx, 2;
+	mov     [rbp + 1D0h - 138h], rdx;
+	sub		rdx, 2;
 
 JMP_H:
 	push	mapJustifyProc1ReturnAddress2;

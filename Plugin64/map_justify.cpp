@@ -13,7 +13,7 @@ namespace MapJustify {
 
 		switch (options.version) {
 		case v1_29_1_0:
-			// 
+			// movsd   xmm3, [rbp+1D0h+var_168]
 			BytePattern::temp_instance().find_pattern("F2 0F 10 5D 68 FF C2 F2 0F 10 65 20");
 			if (BytePattern::temp_instance().has_size(1, "文字取得処理リターン先２")) {
 				mapJustifyProc1ReturnAddress2 = BytePattern::temp_instance().get_first().address();
