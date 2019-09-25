@@ -75,7 +75,7 @@ JMP_A:
 	cmovnb  rdx, qword ptr [rbp + 1F0h - 160h];
 	mov		dx, word ptr [rbx + rax + 1];
 
-	mov		word ptr[rbp + 1F0h - 1F0h], dx;
+	mov		word ptr[rbp + 1F0h - 1F0h + 1], dx;
 	add		rbx, 2;
 
 JMP_C:
