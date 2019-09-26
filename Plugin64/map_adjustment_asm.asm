@@ -72,7 +72,7 @@ JMP_A:
 
 	lea     rax, qword ptr [rbp + 1F0h - 160h];
 	cmp     qword ptr [rbp + 1F0h - 148h], 10h;
-	cmovnb  rdx, qword ptr [rbp + 1F0h - 160h];
+	cmovnb  rax, qword ptr [rbp + 1F0h - 160h];
 	mov		dx, word ptr [rbx + rax + 1];
 
 	mov		word ptr[rbp + 1F0h - 1F0h + 1], dx;
