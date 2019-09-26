@@ -74,8 +74,8 @@ namespace MapJustify {
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
-		//result |= mapJustifyProc1Injector(options);
-		//result |= mapJustifyProc2Injector(options);
+		result |= mapJustifyProc1Injector(options);
+		result |= mapJustifyProc2Injector(options);
 
 		return result;
 	}

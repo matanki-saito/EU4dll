@@ -9,6 +9,7 @@ EXTERN	mapJustifyProc2ReturnAddress	:	QWORD
 ;temporary space for code point
 .DATA
 	mapJustifyProc1TmpFlag	DD	0
+	debug	DQ	0
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -25,6 +26,8 @@ NOT_DEF			=	2026h
 .CODE
 mapJustifyProc1 PROC
 	movss   xmm9, dword ptr [rcx + 848h];
+
+	mov		debug, rax;
 
 	cmp		byte ptr [rax + r13], ESCAPE_SEQ_1;
 	jz		JMP_A;
@@ -95,7 +98,8 @@ mapJustifyProc2 PROC
 	add		rdx, 2;
 	mov		qword ptr [rbp + 1D0h - 138h], rdx;
 	mov		rax, r10;
-	add		rax, 2;
+	add		rax, 3;
+	add		r13, 2;
 	mov		r10, rax; 
 	mov		mapJustifyProc1TmpFlag, 0; 以降の処理はスキップ
 
