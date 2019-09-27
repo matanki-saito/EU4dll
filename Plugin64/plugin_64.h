@@ -39,6 +39,7 @@ struct DllError{
 			bool mapJustifyProc2Injector : 1;
 			bool mapJustifyProc3Injector : 1;
 			bool mapJustifyProc4Injector : 1;
+			bool eventDialog1Injector : 1;
 		};
 	} version;
 
@@ -72,6 +73,7 @@ struct DllError{
 			bool mapJustifyProc2Injector : 1;
 			bool mapJustifyProc3Injector : 1;
 			bool mapJustifyProc4Injector : 1;
+			bool eventDialog1Injector : 1;
 		};
 	} unmatch;
 
@@ -126,5 +128,9 @@ namespace MapAdjustment {
 }
 
 namespace MapJustify {
+	DllError Init(RunOptions option);
+}
+
+namespace EventDialog {
 	DllError Init(RunOptions option);
 }
