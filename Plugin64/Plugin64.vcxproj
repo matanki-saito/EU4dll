@@ -153,6 +153,7 @@
       <PreprocessorDefinitions>NDEBUG;PLUGIN64_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -181,6 +182,7 @@
     <ClCompile Include="byte_pattern.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="dll_main.cpp" />
+    <ClCompile Include="event_dialog.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="hooking.hpp" />
     <ClCompile Include="main_text.cpp" />
@@ -202,6 +204,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
     </MASM>
+    <MASM Include="event_dialog_asm.asm" />
     <MASM Include="font_asm.asm" />
     <MASM Include="main_text_asm.asm" />
     <MASM Include="map_adjustment_asm.asm" />
