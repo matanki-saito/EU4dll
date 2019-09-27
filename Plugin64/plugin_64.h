@@ -37,6 +37,8 @@ struct DllError{
 			bool mapAdjustmentProc4Injector : 1;
 			bool mapJustifyProc1Injector : 1;
 			bool mapJustifyProc2Injector : 1;
+			bool mapJustifyProc3Injector : 1;
+			bool mapJustifyProc4Injector : 1;
 		};
 	} version;
 
@@ -68,6 +70,8 @@ struct DllError{
 			bool mapAdjustmentProc4Injector : 1;
 			bool mapJustifyProc1Injector : 1;
 			bool mapJustifyProc2Injector : 1;
+			bool mapJustifyProc3Injector : 1;
+			bool mapJustifyProc4Injector : 1;
 		};
 	} unmatch;
 

@@ -5,6 +5,7 @@
 EXTERN	mapJustifyProc1ReturnAddress1	:	QWORD
 EXTERN	mapJustifyProc1ReturnAddress2	:	QWORD
 EXTERN	mapJustifyProc2ReturnAddress	:	QWORD
+EXTERN	mapJustifyProc4ReturnAddress	:	QWORD
 
 ;temporary space for code point
 .DATA
@@ -71,16 +72,12 @@ JMP_F:
 JMP_G:
 	mov		mapJustifyProc1TmpFlag, 1h;
 	mov     rdi, qword ptr [rcx + rsi * 8];
+	mov		sil, ESCAPE_SEQ_1; // 下の方でsilを比較して'や.と比較しているのでいるので適当に埋める
+
 	test	rdi, rdi;
-	jz		JMP_H;
+	jz		JMP_I;
 	push	mapJustifyProc1ReturnAddress1;
 	ret;
-
-JMP_H:
-	add		rdx, 2;
-	mov     qword ptr [rbp + 1D0h - 138h], rdx;
-	sub		rdx, 2;
-	;add		r13, 2;
 
 JMP_I:
 	push	mapJustifyProc1ReturnAddress2;
@@ -88,20 +85,16 @@ JMP_I:
 mapJustifyProc1 ENDP
 
 ;-------------------------------------------;
+
 mapJustifyProc2 PROC
 	cmp		mapJustifyProc1TmpFlag, 1h;
 	jnz		JMP_A;
 
-	; 3byte = 1文字かどうか r10は文字列のlength
+	; 3byte = 1文字かどうか
 	cmp		r10, 3; 
 	ja		JMP_A;
-	add		rdx, 2;
-	mov		qword ptr [rbp + 1D0h - 138h], rdx;
-	mov		rax, r10;
-	add		rax, 3;
-	add		r13, 2;
-	mov		r10, rax; 
-	mov		mapJustifyProc1TmpFlag, 0; 以降の処理はスキップ
+	inc		r10;
+	mov		edx,1;
 
 JMP_A:
 	movd    xmm6, edx;
@@ -114,18 +107,41 @@ JMP_A:
 	jmp		JMP_C;
 
 JMP_B:
-	add		rdx, 2;
-	add		r13, 2;
-	mov		qword ptr [rbp + 1D0h - 138h], rdx;
 	lea     eax, [r10 - 2]; ; -2している
 
 JMP_C:
-	dec		eax;
 	movd    xmm0, eax;
 	cvtdq2ps xmm0, xmm0;
 
 	push	mapJustifyProc2ReturnAddress;
 	ret;
 mapJustifyProc2 ENDP
+
+;-------------------------------------------;
+
+mapJustifyProc4 PROC
+	movsd   xmm3, qword ptr [rbp + 1D0h - 168h];
+
+	cmp		mapJustifyProc1TmpFlag, 1h;
+	jnz		JMP_A;
+	
+	add     edx,3;
+	add     r13,3;
+
+	jmp		JMP_C;
+
+JMP_A:
+	inc     edx;
+	inc     r13;
+
+JMP_C:
+	movsd   xmm4, qword ptr [rbp + 1D0h - 1B0h];
+	movsd   xmm5, qword ptr [rbp + 1D0h - 1A8h];
+	movsxd  rax, r10d;
+	mov     qword ptr [rbp + 1D0h - 138h], rdx;
+
+	push	mapJustifyProc4ReturnAddress;
+	ret;
+mapJustifyProc4 ENDP
 
 END
