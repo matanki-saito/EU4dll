@@ -92,6 +92,7 @@
       <PreprocessorDefinitions>_DEBUG;PLUGIN64_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,8 +164,7 @@
       <EnableUAC>false</EnableUAC>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Europa Universalis IV\plugins"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
