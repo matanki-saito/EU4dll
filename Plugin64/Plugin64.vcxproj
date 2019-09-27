@@ -164,7 +164,8 @@
       <EnableUAC>false</EnableUAC>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Europa Universalis IV\plugins"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
