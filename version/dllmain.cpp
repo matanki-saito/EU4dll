@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <ShlObj.h>
 #include <Objbase.h>
+#include "auto_update.h"
 
 using namespace std;
 using namespace std::filesystem;
@@ -89,6 +90,10 @@ void Initialize(HMODULE hSelf)
 	GetModuleFileNameW(hSelf, pluginpath, MAX_PATH);
 
 	const path pluginsPath = path{ pluginpath }.parent_path() / L"plugins";
+
+	if (!InitAutoUpdate(pluginsPath)) {
+		exit(-1);
+	}
 
 	initInjector();
 
