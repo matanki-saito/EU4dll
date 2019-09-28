@@ -87,6 +87,9 @@
     <ClInclude Include="utility.hpp">
       <Filter>ヘッダー ファイル\utils</Filter>
     </ClInclude>
+    <ClInclude Include="mod_download.h">
+      <Filter>ヘッダー ファイル\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="byte_pattern.cpp">
@@ -127,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="event_dialog.cpp">
       <Filter>ソース ファイル\app\event_dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="mod_download.cpp">
+      <Filter>ソース ファイル\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

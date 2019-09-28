@@ -174,6 +174,7 @@
     <ClInclude Include="calling.hpp" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="injector.hpp" />
+    <ClInclude Include="mod_download.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="plugin_64.h" />
     <ClInclude Include="translator.hpp" />
@@ -190,6 +191,7 @@
     <ClCompile Include="map_adjustment.cpp" />
     <ClCompile Include="map_justify.cpp" />
     <ClCompile Include="map_view.cpp" />
+    <ClCompile Include="mod_download.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

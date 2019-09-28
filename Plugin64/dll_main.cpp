@@ -1,15 +1,19 @@
 ﻿// dllmain.cpp : DLL アプリケーションのエントリ ポイントを定義します。
 #include "pch.h"
 #include "plugin_64.h"
+#include "mod_download.h"
 
 BOOL APIENTRY DllMain(HMODULE hModule,
                       DWORD  ulReasonForCall,
                       LPVOID lpReserved){
 
 	if (ulReasonForCall == DLL_PROCESS_ATTACH){
+		BytePattern::StartLog(L"eu4_jps_2");
+
 		DllError e = {};
 
-		BytePattern::StartLog(L"eu4_jps_2");
+		// mod download
+		e |= ModDownload::Init();
 
 		// 設定
 		RunOptions options;
@@ -36,7 +40,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// map justify
 		e |= MapJustify::Init(options);
 
-		if (e.unmatch.code2 > 0 || e.version.code1 > 0) {
+		if (e.unmatch.code2 > 0 || e.version.code1 > 0 || e.mod.code0 > 0) {
 			exit(1);
 		}
 		else {

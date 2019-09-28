@@ -11,6 +11,15 @@ typedef UINT64 DllErrorCode;
 
 struct DllError{
 	union {
+		DllErrorCode code0;
+		struct {
+			bool timeout : 1;
+			bool waitFailed : 1;
+			bool proccessFaild : 1;
+		};
+	} mod;
+
+	union {
 		DllErrorCode code1;
 		struct {
 			bool fontBufferExpansionInjector : 1;
@@ -79,6 +88,7 @@ struct DllError{
 
 	void operator |= (DllError e)
 	{
+		this->mod.code0 |= e.mod.code0;
 		this->version.code1 |= e.version.code1;
 		this->unmatch.code2 |= e.unmatch.code2;
 	}
