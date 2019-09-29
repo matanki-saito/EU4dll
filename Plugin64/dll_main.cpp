@@ -40,6 +40,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// map justify
 		e |= MapJustify::Init(options);
 
+		// event dialog and map fix
+		e |= EventDialog::Init(options);
+
 		if (e.unmatch.code2 > 0 || e.version.code1 > 0 || e.mod.code0 > 0) {
 			exit(1);
 		}

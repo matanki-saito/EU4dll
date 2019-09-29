@@ -49,6 +49,7 @@ struct DllError{
 			bool mapJustifyProc3Injector : 1;
 			bool mapJustifyProc4Injector : 1;
 			bool eventDialog1Injector : 1;
+			bool eventDialog2Injector : 1;
 		};
 	} version;
 
@@ -83,6 +84,7 @@ struct DllError{
 			bool mapJustifyProc3Injector : 1;
 			bool mapJustifyProc4Injector : 1;
 			bool eventDialog1Injector : 1;
+			bool eventDialog2Injector : 1;
 		};
 	} unmatch;
 
