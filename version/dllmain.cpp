@@ -91,9 +91,13 @@ void Initialize(HMODULE hSelf)
 
 	const path pluginsPath = path{ pluginpath }.parent_path() / L"plugins";
 
+	#ifndef _DEBUG
 	if (!InitAutoUpdate(pluginsPath)) {
 		exit(-1);
 	}
+	#endif // DEBUG時は自動更新しない
+
+
 
 	initInjector();
 
