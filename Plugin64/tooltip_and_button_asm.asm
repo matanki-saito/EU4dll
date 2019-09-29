@@ -6,6 +6,8 @@ EXTERN	tooltipAndButtonProc4ReturnAddress1	:	QWORD
 EXTERN	tooltipAndButtonProc4ReturnAddress2	:	QWORD
 EXTERN	tooltipAndButtonProc5ReturnAddress1	:	QWORD
 EXTERN	tooltipAndButtonProc5ReturnAddress2	:	QWORD
+EXTERN	tooltipAndButtonProcTestReturnAddress1	:	QWORD
+EXTERN	tooltipAndButtonProcTestReturnAddress2	:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -23,6 +25,7 @@ NOT_DEF			=	2026h
 .DATA
 	tooltipAndButtonProc2TmpCharacter			DD	0
 	tooltipAndButtonProc2TmpCharacterAddress	DQ	0
+	tooltipAndButtonProc2TmpFlag				DD	0
 
 .CODE
 tooltipAndButtonProc1 PROC
@@ -38,10 +41,12 @@ tooltipAndButtonProc1 PROC
 	movzx	r8d, byte ptr[rax + rcx];
 	mov     edx, 1;
 	lea     rcx, qword ptr [rbp + 6E0h - 6B0h];
+	mov		tooltipAndButtonProc2TmpFlag, 0h;
 	call	tooltipAndButtonProc1CallAddress;
 
 	jmp		JMP_B;
 JMP_A:
+	mov		tooltipAndButtonProc2TmpFlag, 1h;
 	lea		r8, qword ptr [rax + rcx];
 	mov		tooltipAndButtonProc2TmpCharacterAddress, r8;
 	movzx	r8d, byte ptr[rax + rcx];
@@ -53,7 +58,6 @@ JMP_A:
 	mov		rcx, tooltipAndButtonProc2TmpCharacterAddress;
 	mov		cx, word ptr [rcx+1];
 	mov		word ptr [rax+1], cx; 
-
 JMP_B:
 	push	tooltipAndButtonProc1ReturnAddress;
 	ret;
@@ -99,9 +103,8 @@ JMP_E:
 
 JMP_F:
 	movzx	eax, ax;
-	add		ebx,2;
 	add		edx,2;
-	mov		dword ptr [rbp+6E0h- 6C0h], ebx;
+	;mov		dword ptr [rbp+6E0h- 6C0h], ebx;
 
 	cmp		eax, NO_FONT;
 	ja		JMP_G;
@@ -248,5 +251,23 @@ JMP_J:
 	push	tooltipAndButtonProc5ReturnAddress2;
 	ret;
 tooltipAndButtonProc5 ENDP
+
+tooltipAndButtonProcTest PROC
+	cmp		tooltipAndButtonProc2TmpFlag, 1;
+	jnz		JMP_A;
+
+	add		ebx,2;
+
+JMP_A:
+	inc		ebx;
+	cmp     ebx, dword ptr [rbp + 6E0h - 680h];
+	jge		JMP_B;
+	push	tooltipAndButtonProcTestReturnAddress1;
+	ret;
+
+JMP_B:
+	push	tooltipAndButtonProcTestReturnAddress2;
+	ret;
+tooltipAndButtonProcTest ENDP
 
 END
