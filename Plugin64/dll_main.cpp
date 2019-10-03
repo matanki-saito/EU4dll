@@ -13,7 +13,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		DllError e = {};
 
 		// mod download
+		#ifndef _DEBUG
 		e |= ModDownload::Init();
+		#endif
 
 		// 設定
 		RunOptions options;

@@ -22,6 +22,8 @@ namespace Version {
 			return "v1_29_0_0";
 		case v1_29_1_0:
 			return "v1_29_1_0";
+		case v1_29_2_0:
+			return "v1_29_2_0";
 		default:
 			return "UNKNOWN";
 		}
@@ -39,8 +41,12 @@ namespace Version {
 			switch (minor.calVer()) {
 			case 290:
 				version = v1_29_0_0;
+				break;
 			case 291:
 				version = v1_29_1_0;
+				break;
+			case 292:
+				version = v1_29_2_0;
 				break;
 			default:
 				version = UNKNOWN;

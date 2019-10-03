@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "plugin_64.h"
 
 namespace EventDialog {
@@ -15,9 +15,10 @@ namespace EventDialog {
 
 		switch (options.version) {
 		case v1_29_1_0:
+		case v1_29_2_0:
 			// movzx   eax, byte ptr [rcx+rax]
 			BytePattern::temp_instance().find_pattern("0F B6 04 01 49 8B 34 C2 F3 41 0F 10 8A 48 08 00 00");
-			if (BytePattern::temp_instance().has_size(1, "•¶šæ“¾ˆ—")) {
+			if (BytePattern::temp_instance().has_size(1, "æ–‡å­—å–å¾—å‡¦ç†")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// jz      loc_xxxxx
@@ -41,10 +42,11 @@ namespace EventDialog {
 
 		switch (options.version) {
 		case v1_29_1_0:
+		case v1_29_2_0:
 
 			// mov     rax, [rsp+378h+arg_20]
 			BytePattern::temp_instance().find_pattern("48 8B 84 24 A0 03 00 00 8B 00 03 C0");
-			if (BytePattern::temp_instance().has_size(1, "•ªŠòˆ—C³–ß‚èæƒAƒhƒŒƒX‚Q")) {
+			if (BytePattern::temp_instance().has_size(1, "åˆ†å²å‡¦ç†ä¿®æ­£æˆ»ã‚Šå…ˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼’")) {
 				eventDialogProc2ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
@@ -53,7 +55,7 @@ namespace EventDialog {
 
 			// cvtdq2ps xmm0, xmm0
 			BytePattern::temp_instance().find_pattern("0F 5B C0 F3 0F 59 C1 41 0F 2E C0 7A 4D");
-			if (BytePattern::temp_instance().has_size(1, "•ªŠòˆ—C³")) {
+			if (BytePattern::temp_instance().has_size(1, "åˆ†å²å‡¦ç†ä¿®æ­£")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// movd    xmm0, [rsp+378h+arg_8]
