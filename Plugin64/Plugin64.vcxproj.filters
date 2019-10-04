@@ -58,6 +58,9 @@
     <Filter Include="ソース ファイル\app\event_dialog">
       <UniqueIdentifier>{713cd3a0-5b25-43d6-af8d-c8ae58b1046c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\map_popup">
+      <UniqueIdentifier>{a7c03edc-bbe8-4a35-aa16-3c4899368d37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -134,6 +137,9 @@
     <ClCompile Include="mod_download.cpp">
       <Filter>ソース ファイル\core</Filter>
     </ClCompile>
+    <ClCompile Include="map_popup.cpp">
+      <Filter>ソース ファイル\app\map_popup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -162,6 +168,9 @@
     </MASM>
     <MASM Include="event_dialog_asm.asm">
       <Filter>ソース ファイル\app\event_dialog</Filter>
+    </MASM>
+    <MASM Include="map_popup_asm.asm">
+      <Filter>ソース ファイル\app\map_popup</Filter>
     </MASM>
   </ItemGroup>
 </Project>

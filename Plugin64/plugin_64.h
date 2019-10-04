@@ -51,6 +51,9 @@ struct DllError{
 			bool mapJustifyProc4Injector : 1;
 			bool eventDialog1Injector : 1;
 			bool eventDialog2Injector : 1;
+			bool mapPopupProc1Injector : 1;
+			bool mapPopupProc2Injector : 1;
+			bool mapPopupProc3Injector : 1;
 		};
 	} version;
 
@@ -86,6 +89,9 @@ struct DllError{
 			bool mapJustifyProc4Injector : 1;
 			bool eventDialog1Injector : 1;
 			bool eventDialog2Injector : 1;
+			bool mapPopupProc1Injector : 1;
+			bool mapPopupProc2Injector : 1;
+			bool mapPopupProc3Injector : 1;
 		};
 	} unmatch;
 
@@ -145,5 +151,9 @@ namespace MapJustify {
 }
 
 namespace EventDialog {
+	DllError Init(RunOptions option);
+}
+
+namespace MapPopup {
 	DllError Init(RunOptions option);
 }
