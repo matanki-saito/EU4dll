@@ -86,6 +86,7 @@ mapAdjustmentProc2 ENDP
 ;-------------------------------------------;
 
 mapAdjustmentProc3 PROC
+	mov		dword ptr[rbp + 1F0h - 1F0h], 0000h;
 	cmp     rbx, rdi;
 	jz		JMP_A;
 	or      r9, 0FFFFFFFFFFFFFFFFh;
