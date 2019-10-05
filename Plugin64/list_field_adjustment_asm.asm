@@ -17,6 +17,7 @@ NOT_DEF			=	2026h
 ; temporary space
 .DATA
 	listFieldAdjustmentProc1MultibyteFlag			DD	0
+	listFieldAdjustmentProc2MultibyteFlag			DD	0
 
 .CODE
 listFieldAdjustmentProc1 PROC
@@ -77,6 +78,7 @@ listFieldAdjustmentProc1 ENDP
 listFieldAdjustmentProc2 PROC
 	cmp		listFieldAdjustmentProc1MultibyteFlag, 1h;
 	jnz		JMP_A;
+	mov		listFieldAdjustmentProc2MultibyteFlag, 1h;
 	add		ebx,2;
 
 JMP_A:
@@ -94,6 +96,20 @@ listFieldAdjustmentProc2 ENDP
 ;-------------------------------------------;
 
 listFieldAdjustmentProc3 PROC
+	mov		rcx, qword ptr [rax + rcx * 8];
+	mov		r9d, dword ptr [rcx + rdx * 4];
 
+	cmp		listFieldAdjustmentProc2MultibyteFlag, 1h;
+	jnz		JMP_A;
+	mov		r9d, ebx;
+	sub		r9d, 3;
+
+JMP_A:
+	xor		r8d, r8d;
+	lea		rdx, [rsp + 180h - 160h];
+	mov		rcx, rdi;
+
+	push	listFieldAdjustmentProc3ReturnAddress;
+	ret;
 listFieldAdjustmentProc3 ENDP
 END
