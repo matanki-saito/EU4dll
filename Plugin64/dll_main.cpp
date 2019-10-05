@@ -50,6 +50,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// マップ上に浮き出る文字の表示
 		e |= MapPopup::Init(options);
 
+		// リスト表示の文字の調整
+		e |= ListFieldAdjustment::Init(options);
 
 		Validator::Validate(e,options);
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){

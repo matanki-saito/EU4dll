@@ -54,6 +54,9 @@ struct DllError{
 			bool mapPopupProc1Injector : 1;
 			bool mapPopupProc2Injector : 1;
 			bool mapPopupProc3Injector : 1;
+			bool listFieldAdjustmentProc1Injector : 1;
+			bool listFieldAdjustmentProc2Injector : 1;
+			bool listFieldAdjustmentProc3Injector : 1;
 		};
 	} version;
 
@@ -92,6 +95,9 @@ struct DllError{
 			bool mapPopupProc1Injector : 1;
 			bool mapPopupProc2Injector : 1;
 			bool mapPopupProc3Injector : 1;
+			bool listFieldAdjustmentProc1Injector : 1;
+			bool listFieldAdjustmentProc2Injector : 1;
+			bool listFieldAdjustmentProc3Injector : 1;
 		};
 	} unmatch;
 
@@ -156,6 +162,12 @@ namespace EventDialog {
 
 namespace MapPopup {
 	DllError Init(RunOptions option);
+}
+
+namespace ListFieldAdjustment {
+	DllError Init(RunOptions option);
+}
+
 namespace Validator {
 	void Validate(DllError dllError, RunOptions options);
 }
