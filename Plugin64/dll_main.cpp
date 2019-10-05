@@ -21,31 +21,33 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		RunOptions options;
 		options.version = Version::GetVersion();
 
-		// debug
+		// デバッグ用
+		#ifdef _DEBUG
 		e |= Debug::Init(options);
+		#endif
 
-		// font
+		// フォント読み込み
 		e |= Font::Init(options);
 
-		// main text
+		// UIの表示
 		e |= MainText::Init(options);
 
-		// tooltip and button
+		// ツールチップとボタンの表示
 		e |= TooltipAndButton::Init(options);
 
-		// map view
+		// マップ文字の表示
 		e |= MapView::Init(options);
 
-		// map adjustment
+		// マップ文字の調整
 		e |= MapAdjustment::Init(options);
 
-		// map justify
+		// マップ文字の調整
 		e |= MapJustify::Init(options);
 
-		// event dialog and map fix
+		// イベントダイアログとマップ文字の調整
 		e |= EventDialog::Init(options);
 
-		// map popup
+		// マップ上に浮き出る文字の表示
 		e |= MapPopup::Init(options);
 
 
