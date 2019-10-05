@@ -53,6 +53,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// リスト表示の文字の調整
 		e |= ListFieldAdjustment::Init(options);
 
+		// ファイルセーブ
+		e |= FileSave::Init(options);
+
 		Validator::Validate(e,options);
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
 		BytePattern::ShutdownLog();

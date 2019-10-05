@@ -57,6 +57,7 @@ struct DllError{
 			bool listFieldAdjustmentProc1Injector : 1;
 			bool listFieldAdjustmentProc2Injector : 1;
 			bool listFieldAdjustmentProc3Injector : 1;
+			bool fileSaveProc1Injector : 1;
 		};
 	} version;
 
@@ -98,6 +99,7 @@ struct DllError{
 			bool listFieldAdjustmentProc1Injector : 1;
 			bool listFieldAdjustmentProc2Injector : 1;
 			bool listFieldAdjustmentProc3Injector : 1;
+			bool fileSaveProc1Injector : 1;
 		};
 	} unmatch;
 
@@ -170,4 +172,8 @@ namespace ListFieldAdjustment {
 
 namespace Validator {
 	void Validate(DllError dllError, RunOptions options);
+}
+
+namespace FileSave {
+	DllError Init(RunOptions option);
 }

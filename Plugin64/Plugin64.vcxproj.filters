@@ -67,6 +67,9 @@
     <Filter Include="ソース ファイル\app\validator">
       <UniqueIdentifier>{4b34a37f-a3f8-43f0-9912-f4da0e659988}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\file_save">
+      <UniqueIdentifier>{d18df3a6-eb44-41b7-aff8-d2fd7d13b495}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -152,6 +155,9 @@
     <ClCompile Include="validator.cpp">
       <Filter>ソース ファイル\app\validator</Filter>
     </ClCompile>
+    <ClCompile Include="file_save.cpp">
+      <Filter>ソース ファイル\app\file_save</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -186,6 +192,9 @@
     </MASM>
     <MASM Include="list_field_adjustment_asm.asm">
       <Filter>ソース ファイル\app\list_field_adjustment</Filter>
+    </MASM>
+    <MASM Include="file_save_asm.asm">
+      <Filter>ソース ファイル\app\file_save</Filter>
     </MASM>
   </ItemGroup>
 </Project>
