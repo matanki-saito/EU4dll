@@ -64,7 +64,9 @@ void Initialize(HMODULE hSelf)
 
 	const path pluginsPath = path{ pluginpath }.parent_path() / L"plugins";
 
+	#ifndef _DEBUG
 	if (!InitAutoUpdate(pluginsPath)) exit(-1);
+	#endif
 
     InitD3D9();
 

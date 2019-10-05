@@ -7,12 +7,14 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
     if (reason == DLL_PROCESS_ATTACH)
     {
 		// moddownload
+		#ifndef _DEBUG
 		wchar_t myDocumentPath[MAX_PATH];
 		SHGetSpecialFolderPath(NULL, myDocumentPath, CSIDL_PERSONAL, 0);
 
 		const path gameDirPath = path{ myDocumentPath } / L"Paradox Interactive" / L"Europa Universalis IV";
 		if (!InitAutoUpdate(gameDirPath)) exit(-1);
-
+		#endif
+		
 		byte_pattern::start_log(L"eu4jps");
 
 		// versionを文字列から取得
