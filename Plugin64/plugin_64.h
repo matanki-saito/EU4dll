@@ -156,4 +156,6 @@ namespace EventDialog {
 
 namespace MapPopup {
 	DllError Init(RunOptions option);
+namespace Validator {
+	void Validate(DllError dllError, RunOptions options);
 }

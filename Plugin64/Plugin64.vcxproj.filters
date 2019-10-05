@@ -61,6 +61,9 @@
     <Filter Include="ソース ファイル\app\map_popup">
       <UniqueIdentifier>{a7c03edc-bbe8-4a35-aa16-3c4899368d37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\validator">
+      <UniqueIdentifier>{4b34a37f-a3f8-43f0-9912-f4da0e659988}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -139,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="map_popup.cpp">
       <Filter>ソース ファイル\app\map_popup</Filter>
+    </ClCompile>
+    <ClCompile Include="validator.cpp">
+      <Filter>ソース ファイル\app\validator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
