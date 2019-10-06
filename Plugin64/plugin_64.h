@@ -58,6 +58,7 @@ struct DllError{
 			bool listFieldAdjustmentProc2Injector : 1;
 			bool listFieldAdjustmentProc3Injector : 1;
 			bool fileSaveProc1Injector : 1;
+			bool fileSaveProc3Injector : 1;
 		};
 	} version;
 
@@ -100,6 +101,7 @@ struct DllError{
 			bool listFieldAdjustmentProc2Injector : 1;
 			bool listFieldAdjustmentProc3Injector : 1;
 			bool fileSaveProc1Injector : 1;
+			bool fileSaveProc3Injector : 1;
 		};
 	} unmatch;
 

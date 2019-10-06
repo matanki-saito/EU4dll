@@ -173,6 +173,7 @@
     <ClInclude Include="assembly.hpp" />
     <ClInclude Include="byte_pattern.h" />
     <ClInclude Include="calling.hpp" />
+    <ClInclude Include="escape_tool.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="injector.hpp" />
     <ClInclude Include="mod_download.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="byte_pattern.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="dll_main.cpp" />
+    <ClCompile Include="escape_tool.cpp" />
     <ClCompile Include="event_dialog.cpp" />
     <ClCompile Include="file_save.cpp" />
     <ClCompile Include="font.cpp" />
