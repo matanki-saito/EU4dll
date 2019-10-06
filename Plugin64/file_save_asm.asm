@@ -1,6 +1,12 @@
 EXTERN	fileSaveProc1ReturnAddress		:	QWORD
 EXTERN	fileSaveProc3ReturnAddress		:	QWORD
 EXTERN	fileSaveProc3CallAddress		:	QWORD
+EXTERN	fileSaveProc4CallAddress		:	QWORD
+EXTERN	fileSaveProc4MarkerAddress		:	QWORD
+EXTERN	fileSaveProc4ReturnAddress		:	QWORD
+EXTERN	fileSaveProc5CallAddress		:	QWORD
+EXTERN	fileSaveProc5MarkerAddress		:	QWORD
+EXTERN	fileSaveProc5ReturnAddress		:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -13,7 +19,6 @@ SHIFT_3			=	900h
 SHIFT_4			=	8F2h
 NO_FONT			=	98Fh
 NOT_DEF			=	2026h
-
 
 ; temporary space
 .DATA
@@ -46,4 +51,33 @@ fileSaveProc3 PROC
 	push	fileSaveProc3ReturnAddress;
 	ret;
 fileSaveProc3 ENDP
+
+;-------------------------------------------;
+
+fileSaveProc4 PROC
+	lea		rcx, [rsp + 1A8h -138h];
+	call	fileSaveProc4CallAddress;
+	mov		rcx, rax;
+
+	mov		rdx, fileSaveProc4MarkerAddress;
+	lea		r8, [rbp + 0];
+
+	push	fileSaveProc4ReturnAddress;
+	ret;
+fileSaveProc4 ENDP
+
+;-------------------------------------------;
+
+fileSaveProc5 PROC
+	
+	lea		rcx, [r14 + 598h];
+	call	fileSaveProc5CallAddress;
+	mov		r8, rax;
+
+	mov		rdx, fileSaveProc5MarkerAddress;
+	lea		rcx, [rsp + 278h - 228h];
+
+	push	fileSaveProc5ReturnAddress;
+	ret;
+fileSaveProc5 ENDP
 END
