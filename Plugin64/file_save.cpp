@@ -5,10 +5,13 @@
 namespace FileSave {
 	extern "C" {
 		void fileSaveProc1();
+		void fileSaveProc2();
 		void fileSaveProc3();
 		void fileSaveProc4();
 		void fileSaveProc5();
 		uintptr_t fileSaveProc1ReturnAddress;
+		uintptr_t fileSaveProc2ReturnAddress;
+		uintptr_t fileSaveProc2CallAddress;
 		uintptr_t fileSaveProc3ReturnAddress;
 		uintptr_t fileSaveProc3CallAddress;
 		uintptr_t fileSaveProc4ReturnAddress;
@@ -18,6 +21,7 @@ namespace FileSave {
 		uintptr_t fileSaveProc5CallAddress;
 		uintptr_t fileSaveProc5MarkerAddress;
 	}
+	
 
 	DllError fileSaveProc1Injector(RunOptions options) {
 		DllError e = {};
@@ -46,7 +50,30 @@ namespace FileSave {
 
 	DllError fileSaveProc2Injector(RunOptions options) {
 		DllError e = {};
-		// 48 8B D0 48 8D 4D EF E8  69 98 39 FF 90 48 8D 4D EF
+
+		switch (options.version) {
+		case v1_29_2_0:
+			// mov     [rbp+57h+var_50], 0Fh
+			BytePattern::temp_instance().find_pattern("48 C7 45 07 0F 00 00 00 48 89 5D FF 88 5D EF");
+			if (BytePattern::temp_instance().has_size(1, "ファイル名をUTF-8に変換して保存できるようにする")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc2CallAddress = (uintptr_t) escapedStrToUtf8;
+
+				// jnz     short loc_xxxxx
+				fileSaveProc2ReturnAddress = address + 0x11+  0xA;
+
+				// cmp word ptr [rax+18h], 10h
+				Injector::MakeJMP(address - 0xA, fileSaveProc2, true);
+			}
+			else {
+				e.unmatch.fileSaveProc2Injector = true;
+			}
+			break;
+		default:
+			e.version.fileSaveProc2Injector = true;
+		}
+
 		return e;
 	}
 
@@ -60,7 +87,7 @@ namespace FileSave {
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのタイトルを表示できるようにする")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
-				fileSaveProc3CallAddress = (uintptr_t) utf8ToEscapedStr;
+				fileSaveProc3CallAddress = (uintptr_t)utf8ToEscapedStr;
 
 				// call sub_xxxxx
 				fileSaveProc3ReturnAddress = address + 0x1A;
@@ -88,7 +115,7 @@ namespace FileSave {
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのツールチップを表示できるようにする1")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
-				fileSaveProc4CallAddress = (uintptr_t)utf8ToEscapedStrFromV;
+				fileSaveProc4CallAddress = (uintptr_t)utf8ToEscapedStr2;
 
 				// lea rdx, {aZy}
 				fileSaveProc4MarkerAddress = Injector::GetBranchDestination(address + 4).as_int();
@@ -119,7 +146,7 @@ namespace FileSave {
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのツールチップを表示できるようにする2")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
-				fileSaveProc5CallAddress = (uintptr_t)utf8ToEscapedStrFromV;
+				fileSaveProc5CallAddress = (uintptr_t)utf8ToEscapedStr2;
 
 				// lea rdx, {aZy}
 				fileSaveProc5MarkerAddress = Injector::GetBranchDestination(address + 7).as_int();
@@ -140,13 +167,14 @@ namespace FileSave {
 		return e;
 	}
 
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		/* UTF-8ファイルを列挙できない問題は解決された */
 
 		result |= fileSaveProc1Injector(options);
-		//result |= fileSaveProc2Injector(options);
+		result |= fileSaveProc2Injector(options);
 		result |= fileSaveProc3Injector(options);
 		// これは使われなくなった？
 		//result |= fileSaveProc4Injector(options);

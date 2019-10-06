@@ -1,4 +1,6 @@
 EXTERN	fileSaveProc1ReturnAddress		:	QWORD
+EXTERN	fileSaveProc2CallAddress		:	QWORD
+EXTERN	fileSaveProc2ReturnAddress		:	QWORD
 EXTERN	fileSaveProc3ReturnAddress		:	QWORD
 EXTERN	fileSaveProc3CallAddress		:	QWORD
 EXTERN	fileSaveProc4CallAddress		:	QWORD
@@ -36,6 +38,27 @@ fileSaveProc1 ENDP
 
 ;-------------------------------------------;
 
+fileSaveProc2 PROC
+	mov		rcx, rax;
+	call	fileSaveProc2CallAddress;
+
+	cmp		qword ptr [rax+18h], 10h;
+	jb		JMP_A;
+	mov		rax, [rax];
+
+JMP_A:
+
+	mov     qword ptr [rbp + 57h - 50h], 0Fh;
+	mov     qword ptr [rbp + 57h - 58h], rbx;
+	mov     byte ptr [rbp + 57h - 68h], bl;
+	cmp     byte ptr [rax], bl;
+
+	push	fileSaveProc2ReturnAddress;
+	ret;
+fileSaveProc2 ENDP
+
+;-------------------------------------------;
+
 fileSaveProc3 PROC
 	mov		rdx, OFFSET fileSaveProc3Message;
 	call	qword ptr [rax + 98h];
@@ -69,7 +92,6 @@ fileSaveProc4 ENDP
 ;-------------------------------------------;
 
 fileSaveProc5 PROC
-	
 	lea		rcx, [r14 + 598h];
 	call	fileSaveProc5CallAddress;
 	mov		r8, rax;

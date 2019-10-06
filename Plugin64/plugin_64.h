@@ -58,6 +58,7 @@ struct DllError{
 			bool listFieldAdjustmentProc2Injector : 1;
 			bool listFieldAdjustmentProc3Injector : 1;
 			bool fileSaveProc1Injector : 1;
+			bool fileSaveProc2Injector : 1;
 			bool fileSaveProc3Injector : 1;
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
@@ -103,6 +104,7 @@ struct DllError{
 			bool listFieldAdjustmentProc2Injector : 1;
 			bool listFieldAdjustmentProc3Injector : 1;
 			bool fileSaveProc1Injector : 1;
+			bool fileSaveProc2Injector : 1;
 			bool fileSaveProc3Injector : 1;
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
@@ -124,6 +126,29 @@ typedef struct {
 	} t;
 	UINT64 len;
 	UINT64 len2;
+
+	std::string getString() {
+		if (len >= 0x10) {
+			return std::string(t.p);
+		}
+		else {
+			return std::string(t.text);
+		}
+	}
+
+	void setString(std::string *src) {
+
+		auto len = src->length();
+
+		if (len >= 0x10) {
+			t.p = (char*)calloc(len, sizeof(char));
+			memcpy(&t.p, src->c_str(), len);
+		}
+		else {
+			memcpy(t.text, src->c_str(), len);
+		}
+	}
+
 } ParadoxTextObject;
 
 typedef struct {

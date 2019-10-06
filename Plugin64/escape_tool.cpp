@@ -36,6 +36,42 @@ inline wchar_t UCS2ToCP1252(int cp) {
 	return result;
 }
 
+inline wchar_t CP1252ToUCS2(char cp) {
+	wchar_t result = cp;
+	switch (cp) {
+	case 0x20AC: result = 0x80; break;
+	case 0x201A: result = 0x82; break;
+	case 0x0192: result = 0x83; break;
+	case 0x201E: result = 0x84; break;
+	case 0x2026: result = 0x85; break;
+	case 0x2020: result = 0x86; break;
+	case 0x2021: result = 0x87; break;
+	case 0x02C6: result = 0x88; break;
+	case 0x2030: result = 0x89; break;
+	case 0x0160: result = 0x8A; break;
+	case 0x2039: result = 0x8B; break;
+	case 0x0152: result = 0x8C; break;
+	case 0x017D: result = 0x8E; break;
+	case 0x2018: result = 0x91; break;
+	case 0x2019: result = 0x92; break;
+	case 0x201C: result = 0x93; break;
+	case 0x201D: result = 0x94; break;
+	case 0x2022: result = 0x95; break;
+	case 0x2013: result = 0x96; break;
+	case 0x2014: result = 0x97; break;
+	case 0x02DC: result = 0x98; break;
+	case 0x2122: result = 0x99; break;
+	case 0x0161: result = 0x9A; break;
+	case 0x203A: result = 0x9B; break;
+	case 0x0153: result = 0x9C; break;
+	case 0x017E: result = 0x9E; break;
+	case 0x0178: result = 0x9F; break;
+	}
+
+	return result;
+}
+
+
 errno_t convertWideTextToEscapedText(const wchar_t* from, char** to) {
 
 	errno_t success = 0;
@@ -140,6 +176,45 @@ A:
 	return success;
 }
 
+errno_t convertEscapedTextToWideText(const std::string *from, std::wstring *to) {
+
+	errno_t success = 0;
+	int toIndex = 0;
+	UINT64 size = 0;
+
+	/* */
+	toIndex = 0;
+	for (unsigned int fromIndex = 0; fromIndex < size; fromIndex++) {
+		char cp = from->at(fromIndex);
+		int sp = 0;
+
+		switch (cp) {
+		case 0x10:
+			sp = from->at(++fromIndex) | (from->at(++fromIndex) << 16);
+			break;
+		case 0x11:
+			sp = (from->at(++fromIndex) | (from->at(++fromIndex) << 16)) - 0xE;
+			break;
+		case 0x12:
+			sp = (from->at(++fromIndex) | (from->at(++fromIndex) << 16)) + 0x900;
+			break;
+		case 0x13:
+			sp = (from->at(++fromIndex) | (from->at(++fromIndex) << 16)) + 0x8F2;
+			break;
+		default:
+			sp = UCS2ToCP1252(cp);
+		}
+
+		if (sp > 0xFFFF || sp < 0x98F) {
+			sp = 0x2026;
+		}
+
+		to->append((wchar_t)sp, 1);
+	}
+
+	return success;
+}
+
 errno_t convertTextToWideText(const char* from, wchar_t** to) {
 
 	errno_t success = 0;
@@ -196,6 +271,62 @@ A:
 	return success;
 }
 
+errno_t convertWideTextToUtf8(const std::wstring *from, std::string* to) {
+
+	errno_t success = 0;
+	unsigned int err = 0;
+
+	/* */
+	unsigned int textSize = WideCharToMultiByte(
+		CP_UTF8,
+		NULL,
+		from->c_str(),
+		-1,
+		NULL,
+		0,
+		NULL,
+		NULL);
+
+	if (textSize == NULL) {
+		success = GetLastError();
+		goto A;
+	}
+
+	/* */
+	char* buffer = (char*)calloc(textSize, sizeof(char));
+
+	if (to == NULL) {
+		success = 3;
+		goto A;
+	}
+
+	/* */
+	err = WideCharToMultiByte(
+		CP_UTF8,
+		NULL,
+		from->c_str(),
+		-1,
+		buffer,
+		textSize,
+		NULL,
+		NULL
+	);
+
+	if (err == NULL) {
+		success = 4;
+		goto B;
+	}
+
+	to->copy(buffer, textSize);
+
+B:
+	free(to);
+
+A:
+	return success;
+}
+
+
 ParadoxTextObject* tmpParadoxTextObject = NULL;
 char* utf8ToEscapedStr(char* from) {
 
@@ -243,7 +374,7 @@ char* utf8ToEscapedStr(char* from) {
 }
 
 ParadoxTextObject* tmpZV2 = NULL;
-ParadoxTextObject* utf8ToEscapedStrFromV(ParadoxTextObject* from) {
+ParadoxTextObject* utf8ToEscapedStr2(ParadoxTextObject* from) {
 
 	if (tmpZV2 != NULL) {
 		if (tmpZV2->len > 0x10) {
@@ -285,4 +416,34 @@ ParadoxTextObject* utf8ToEscapedStrFromV(ParadoxTextObject* from) {
 	}
 
 	return tmpZV2;
+}
+
+ParadoxTextObject* tmpParadoxTextObject2 = NULL;
+ParadoxTextObject* escapedStrToUtf8(ParadoxTextObject* from) {
+
+	if (tmpParadoxTextObject2 != NULL) {
+		if (tmpParadoxTextObject2->len > 0x10) {
+			free(tmpParadoxTextObject2->t.p);
+		}
+		delete tmpParadoxTextObject2;
+	}
+	tmpParadoxTextObject2 = new ParadoxTextObject();
+
+	std::wstring* buffer = new std::wstring();
+	std::string* dest = new std::string();
+	std::string src = tmpParadoxTextObject2->getString();
+
+	// Escaped Text -> wide char (ucs2)
+	convertEscapedTextToWideText(&src, buffer);
+
+	// wide char (ucs2) ->  UTF-8
+	convertWideTextToUtf8(buffer, dest);
+
+	from->setString(dest);
+
+	delete &src;
+	delete buffer;
+	delete dest;
+
+	return tmpParadoxTextObject2;
 }
