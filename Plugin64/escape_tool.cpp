@@ -40,7 +40,7 @@ errno_t convertWideTextToEscapedText(const wchar_t* from, char** to) {
 
 	errno_t success = 0;
 	int toIndex = 0;
-	unsigned int size = 0;
+	UINT64 size = 0;
 
 	/* */
 	if (from == NULL) {
@@ -196,17 +196,17 @@ A:
 	return success;
 }
 
-ParadoxTextObject* tmpZV = NULL;
+ParadoxTextObject* tmpParadoxTextObject = NULL;
 char* utf8ToEscapedStr(char* from) {
 
-	if (tmpZV != NULL) {
-		if (tmpZV->len > 0x10) {
-			free(tmpZV->t.p);
+	if (tmpParadoxTextObject != NULL) {
+		if (tmpParadoxTextObject->len > 0x10) {
+			free(tmpParadoxTextObject->t.p);
 		}
-		delete tmpZV;
+		delete tmpParadoxTextObject;
 	}
 
-	tmpZV = new ParadoxTextObject();
+	tmpParadoxTextObject = new ParadoxTextObject();
 
 	wchar_t* tmp1 = NULL;
 	char* tmp2 = NULL;
@@ -228,16 +228,61 @@ char* utf8ToEscapedStr(char* from) {
 
 	free(tmp1);
 
-	int len = strlen(tmp2);
-	tmpZV->len = len;
-	tmpZV->len2 = len;
+	UINT64 len = strlen(tmp2);
+	tmpParadoxTextObject->len = len;
+	tmpParadoxTextObject->len2 = len;
 
 	if (len >= 0x10) {
-		tmpZV->t.p = tmp2;
+		tmpParadoxTextObject->t.p = tmp2;
 	}
 	else {
-		memcpy(tmpZV->t.text, tmp2, len);
+		memcpy(tmpParadoxTextObject->t.text, tmp2, len);
 	}
 
-	return (char*)tmpZV;
+	return (char*)tmpParadoxTextObject;
+}
+
+ParadoxTextObject* tmpZV2 = NULL;
+ParadoxTextObject* utf8ToEscapedStrFromV(ParadoxTextObject* from) {
+
+	if (tmpZV2 != NULL) {
+		if (tmpZV2->len > 0x10) {
+			free(tmpZV2->t.p);
+		}
+		delete tmpZV2;
+	}
+	tmpZV2 = new ParadoxTextObject();
+
+	wchar_t* tmp = NULL;
+	char* tmp2 = NULL;
+
+	char* src = NULL;
+
+	if (from->len >= 0x10) {
+		src = from->t.p;
+	}
+	else {
+		src = from->t.text;
+	}
+
+	//UTF-8 -> wide char (ucs2)
+	convertTextToWideText(src, &tmp);
+
+	//wide char (ucs2) -> Escaped Text
+	convertWideTextToEscapedText(tmp, &tmp2);
+
+	free(tmp);
+
+	UINT64 len = strlen(tmp2);
+	tmpZV2->len = len;
+	tmpZV2->len2 = len;
+
+	if (len >= 0x10) {
+		tmpZV2->t.p = tmp2;
+	}
+	else {
+		memcpy(tmpZV2->t.text, tmp2, len);
+	}
+
+	return tmpZV2;
 }
