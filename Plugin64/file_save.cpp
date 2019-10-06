@@ -53,18 +53,18 @@ namespace FileSave {
 
 		switch (options.version) {
 		case v1_29_2_0:
-			// mov     [rbp+57h+var_50], 0Fh
-			BytePattern::temp_instance().find_pattern("48 C7 45 07 0F 00 00 00 48 89 5D FF 88 5D EF");
+			// lea     rax, sub_xxxxx ここしか取れなかった...
+			BytePattern::temp_instance().find_pattern("48 8D 05 01 A9 A5 FF 48 3B D0 75 06 48 8D 41 30");
 			if (BytePattern::temp_instance().has_size(1, "ファイル名をUTF-8に変換して保存できるようにする")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				fileSaveProc2CallAddress = (uintptr_t) escapedStrToUtf8;
 
 				// jnz     short loc_xxxxx
-				fileSaveProc2ReturnAddress = address + 0x11+  0xA;
+				fileSaveProc2ReturnAddress = address + 0x14 + 0x1B;
 
 				// cmp word ptr [rax+18h], 10h
-				Injector::MakeJMP(address - 0xA, fileSaveProc2, true);
+				Injector::MakeJMP(address + 0x14, fileSaveProc2, true);
 			}
 			else {
 				e.unmatch.fileSaveProc2Injector = true;
