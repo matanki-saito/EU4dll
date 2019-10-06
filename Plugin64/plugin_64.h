@@ -111,16 +111,14 @@ struct DllError{
 	}
 };
 
-union T {
-	char text[0x10];
-	char* p;
-};
-
 typedef struct {
-	union T t;
-	int len;
-	int len2;
-} V;
+	union {
+		char text[0x10];
+		char* p;
+	} t;
+	UINT64 len;
+	UINT64 len2;
+} ParadoxTextObject;
 
 typedef struct {
 	Eu4Version version;

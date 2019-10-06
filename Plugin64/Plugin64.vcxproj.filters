@@ -102,6 +102,9 @@
     <ClInclude Include="mod_download.h">
       <Filter>ヘッダー ファイル\core</Filter>
     </ClInclude>
+    <ClInclude Include="escape_tool.h">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="byte_pattern.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="file_save.cpp">
       <Filter>ソース ファイル\app\file_save</Filter>
+    </ClCompile>
+    <ClCompile Include="escape_tool.cpp">
+      <Filter>ソース ファイル\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
