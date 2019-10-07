@@ -4,4 +4,4 @@
 
 char* utf8ToEscapedStr(char* from);
 ParadoxTextObject* utf8ToEscapedStr2(ParadoxTextObject* from);
-ParadoxTextObject* escapedStrToUtf8(ParadoxTextObject* from);
+char* escapedStrToUtf8(ParadoxTextObject* from);

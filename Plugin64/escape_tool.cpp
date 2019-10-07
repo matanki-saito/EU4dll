@@ -39,33 +39,34 @@ inline wchar_t UCS2ToCP1252(int cp) {
 inline wchar_t CP1252ToUCS2(char cp) {
 	wchar_t result = cp;
 	switch (cp) {
-	case 0x20AC: result = 0x80; break;
-	case 0x201A: result = 0x82; break;
-	case 0x0192: result = 0x83; break;
-	case 0x201E: result = 0x84; break;
-	case 0x2026: result = 0x85; break;
-	case 0x2020: result = 0x86; break;
-	case 0x2021: result = 0x87; break;
-	case 0x02C6: result = 0x88; break;
-	case 0x2030: result = 0x89; break;
-	case 0x0160: result = 0x8A; break;
-	case 0x2039: result = 0x8B; break;
-	case 0x0152: result = 0x8C; break;
-	case 0x017D: result = 0x8E; break;
-	case 0x2018: result = 0x91; break;
-	case 0x2019: result = 0x92; break;
-	case 0x201C: result = 0x93; break;
-	case 0x201D: result = 0x94; break;
-	case 0x2022: result = 0x95; break;
-	case 0x2013: result = 0x96; break;
-	case 0x2014: result = 0x97; break;
-	case 0x02DC: result = 0x98; break;
-	case 0x2122: result = 0x99; break;
-	case 0x0161: result = 0x9A; break;
-	case 0x203A: result = 0x9B; break;
-	case 0x0153: result = 0x9C; break;
-	case 0x017E: result = 0x9E; break;
-	case 0x0178: result = 0x9F; break;
+	case 0x80: result = 0x20AC; break;
+	case 0x82: result = 0x201A; break;
+	case 0x83: result = 0x0192; break;
+	case 0x84: result = 0x201E; break;
+	case 0x85: result = 0x2026; break;
+	case 0x86: result = 0x2020; break;
+	case 0x87: result = 0x2021; break;
+	case 0x88: result = 0x02C6; break;
+	case 0x89: result = 0x2030; break;
+	case 0x8A: result = 0x0160; break;
+	case 0x8B: result = 0x2039; break;
+	case 0x8C: result = 0x0152; break;
+	case 0x8E: result = 0x017D; break;
+	case 0x91: result = 0x2018; break;
+	case 0x92: result = 0x2019; break;
+	case 0x93: result = 0x201C; break;
+	case 0x94: result = 0x201D; break;
+	case 0x95: result = 0x2022; break;
+	case 0x96: result = 0x2013; break;
+	case 0x97: result = 0x2014; break;
+	case 0x98: result = 0x02DC; break;
+	case 0x99: result = 0x2122; break;
+	case 0x9A: result = 0x0161; break;
+	case 0x9B: result = 0x203A; break;
+	case 0x9C: result = 0x0153; break;
+	case 0x9E: result = 0x017E; break;
+	case 0x9F: result = 0x0178; break;
+	default:break;
 	}
 
 	return result;
@@ -179,37 +180,33 @@ A:
 errno_t convertEscapedTextToWideText(const std::string *from, std::wstring *to) {
 
 	errno_t success = 0;
-	int toIndex = 0;
-	UINT64 size = 0;
 
-	/* */
-	toIndex = 0;
-	for (unsigned int fromIndex = 0; fromIndex < size; fromIndex++) {
-		char cp = from->at(fromIndex);
-		int sp = 0;
+	for (unsigned int fromIndex = 0; fromIndex < from->length();) {
+		char cp = (*from)[fromIndex++];
+		wchar_t sp = 0;
 
 		switch (cp) {
 		case 0x10:
-			sp = from->at(++fromIndex) | (from->at(++fromIndex) << 16);
+			sp = ((BYTE)(*from)[fromIndex++]) | (((BYTE)(*from)[fromIndex++]) << 8);
 			break;
 		case 0x11:
-			sp = (from->at(++fromIndex) | (from->at(++fromIndex) << 16)) - 0xE;
+			sp = ((BYTE)(*from)[fromIndex++] | ((BYTE)(*from)[fromIndex++]) << 8) - 0xE;
 			break;
 		case 0x12:
-			sp = (from->at(++fromIndex) | (from->at(++fromIndex) << 16)) + 0x900;
+			sp = ((BYTE)(*from)[fromIndex++] | ((BYTE)(*from)[fromIndex++]) << 8) + 0x900;
 			break;
 		case 0x13:
-			sp = (from->at(++fromIndex) | (from->at(++fromIndex) << 16)) + 0x8F2;
+			sp = ((BYTE)(*from)[fromIndex++] | ((BYTE)(*from)[fromIndex++]) << 8) + 0x8F2;
 			break;
 		default:
-			sp = UCS2ToCP1252(cp);
+			sp = CP1252ToUCS2(cp);
 		}
 
-		if (sp > 0xFFFF || sp < 0x98F) {
+		if (sp > 0xFFFF || (sp < 0x98F && sp > 0x100)) {
 			sp = 0x2026;
 		}
 
-		to->append((wchar_t)sp, 1);
+		to->append(1,sp);
 	}
 
 	return success;
@@ -293,9 +290,9 @@ errno_t convertWideTextToUtf8(const std::wstring *from, std::string* to) {
 	}
 
 	/* */
-	char* buffer = (char*)calloc(textSize, sizeof(char));
+	char* buffer = (char*)calloc(textSize+1, sizeof(char));
 
-	if (to == NULL) {
+	if (buffer == NULL) {
 		success = 3;
 		goto A;
 	}
@@ -317,10 +314,10 @@ errno_t convertWideTextToUtf8(const std::wstring *from, std::string* to) {
 		goto B;
 	}
 
-	to->copy(buffer, textSize);
+	to->append(buffer);
 
 B:
-	free(to);
+	free(buffer);
 
 A:
 	return success;
@@ -419,7 +416,7 @@ ParadoxTextObject* utf8ToEscapedStr2(ParadoxTextObject* from) {
 }
 
 ParadoxTextObject* tmpParadoxTextObject2 = NULL;
-ParadoxTextObject* escapedStrToUtf8(ParadoxTextObject* from) {
+char* escapedStrToUtf8(ParadoxTextObject* from) {
 
 	if (tmpParadoxTextObject2 != NULL) {
 		if (tmpParadoxTextObject2->len > 0x10) {
@@ -431,7 +428,7 @@ ParadoxTextObject* escapedStrToUtf8(ParadoxTextObject* from) {
 
 	std::wstring* buffer = new std::wstring();
 	std::string* dest = new std::string();
-	std::string src = tmpParadoxTextObject2->getString();
+	std::string src = from->getString();
 
 	// Escaped Text -> wide char (ucs2)
 	convertEscapedTextToWideText(&src, buffer);
@@ -439,11 +436,10 @@ ParadoxTextObject* escapedStrToUtf8(ParadoxTextObject* from) {
 	// wide char (ucs2) ->  UTF-8
 	convertWideTextToUtf8(buffer, dest);
 
-	from->setString(dest);
+	tmpParadoxTextObject2->setString(dest);
 
-	delete &src;
 	delete buffer;
 	delete dest;
 
-	return tmpParadoxTextObject2;
+	return (char*)tmpParadoxTextObject2;
 }
