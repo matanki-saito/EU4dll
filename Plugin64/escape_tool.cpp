@@ -403,10 +403,10 @@ ParadoxTextObject* utf8ToEscapedStr2(ParadoxTextObject* from) {
 
 	UINT64 len = strlen(tmp2);
 	tmpZV2->len = len;
-	tmpZV2->len2 = len;
 
 	if (len >= 0x10) {
 		tmpZV2->t.p = tmp2;
+		tmpZV2->len2 = 0x1F;
 	}
 	else {
 		memcpy(tmpZV2->t.text, tmp2, len);

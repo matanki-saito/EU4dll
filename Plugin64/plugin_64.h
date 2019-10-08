@@ -138,10 +138,11 @@ typedef struct {
 
 	void setString(std::string *src) {
 
-		len = len2 = src->length();
+		len = src->length();
 
 		if (len >= 0x10) {
-			auto p = (char*)calloc(len, sizeof(char));
+			len2 = 0x1F;
+			auto p = (char*)calloc(len+3, sizeof(char));
 			if (p != NULL) {
 				memcpy(p, src->c_str(), len);
 				t.p = p;
