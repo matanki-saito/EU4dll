@@ -40,14 +40,14 @@ mapPopupProc1 PROC
 JMP_A:
 	lea		rdx, qword ptr [rdi + rax];
 	mov		mapPopupProc1TmpCharacterAddress, rdx;
-	mov		edx, 3;  The memory is allocated 3 byte, but the first byte is copied 3 times.
+	mov		edx, 3;  
 	lea		rcx, [rbp - 30h];
 	call	mapPopupProc1CallAddress;
 
 	; overwrite
 	mov		rcx, mapPopupProc1TmpCharacterAddress;
-	mov		cx, word ptr [rcx+1];
-	mov		word ptr [rax+1], cx; 
+	mov		ecx, dword ptr [rcx];
+	mov		dword ptr [rax], ecx; 
 
 JMP_B:
 	push	mapPopupProc1ReturnAddress;
@@ -70,21 +70,21 @@ mapPopupProc2 PROC
 	jmp		JMP_H;
 
 JMP_A:
-	movzx	eax, word ptr[eax + edi + 1];
+	movzx	eax, word ptr[rax + rdi + 1];
 	jmp		JMP_E;
 
 JMP_B:
-	movzx	eax, word ptr[eax + edi + 1];
+	movzx	eax, word ptr[rax + rdi + 1];
 	sub		eax, SHIFT_2;
 	jmp		JMP_E;
 
 JMP_C:
-	movzx	eax, word ptr[eax + edi + 1];
+	movzx	eax, word ptr[rax + rdi + 1];
 	add		eax, SHIFT_3;
 	jmp		JMP_E;
 
 JMP_D:
-	movzx	eax, word ptr[eax + edi + 1];
+	movzx	eax, word ptr[rax + rdi + 1];
 	add		eax, SHIFT_4;
 
 JMP_E:

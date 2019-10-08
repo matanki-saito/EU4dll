@@ -173,7 +173,7 @@ namespace FileSave {
 
 		/* UTF-8ファイルを列挙できない問題は解決された */
 
-		result |= fileSaveProc1Injector(options);
+		//result |= fileSaveProc1Injector(options);
 		result |= fileSaveProc2Injector(options);
 		result |= fileSaveProc3Injector(options);
 		// これは使われなくなった？
