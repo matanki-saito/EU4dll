@@ -574,6 +574,7 @@ namespace Injector
 			case 0x8D: // lea
 				switch (ReadMemory<uint8_t>(at + 2, vp)) {
 				case 0x0D:
+				case 0x15:
 					return ReadRelativeOffset(at + 3, 4, vp);
 				}
 				break;
@@ -591,6 +592,7 @@ namespace Injector
 			case 0x15:  // call dword ptr [addr]
 			case 0x25:  // jmp dword ptr [addr]
 			case 0x85:  // jne
+			case 0x84:  // jz
 				auto a = ReadRelativeOffset(at + 2, 4, vp);
 				return a;
 			}

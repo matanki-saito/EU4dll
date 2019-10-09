@@ -58,6 +58,18 @@
     <Filter Include="ソース ファイル\app\event_dialog">
       <UniqueIdentifier>{713cd3a0-5b25-43d6-af8d-c8ae58b1046c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\map_popup">
+      <UniqueIdentifier>{a7c03edc-bbe8-4a35-aa16-3c4899368d37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\list_field_adjustment">
+      <UniqueIdentifier>{ea063e43-633a-4795-a1d4-e0aead62ec8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\validator">
+      <UniqueIdentifier>{4b34a37f-a3f8-43f0-9912-f4da0e659988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\file_save">
+      <UniqueIdentifier>{d18df3a6-eb44-41b7-aff8-d2fd7d13b495}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -89,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="mod_download.h">
       <Filter>ヘッダー ファイル\core</Filter>
+    </ClInclude>
+    <ClInclude Include="escape_tool.h">
+      <Filter>ヘッダー ファイル\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +149,21 @@
     <ClCompile Include="mod_download.cpp">
       <Filter>ソース ファイル\core</Filter>
     </ClCompile>
+    <ClCompile Include="map_popup.cpp">
+      <Filter>ソース ファイル\app\map_popup</Filter>
+    </ClCompile>
+    <ClCompile Include="list_field_adjustment.cpp">
+      <Filter>ソース ファイル\app\list_field_adjustment</Filter>
+    </ClCompile>
+    <ClCompile Include="validator.cpp">
+      <Filter>ソース ファイル\app\validator</Filter>
+    </ClCompile>
+    <ClCompile Include="file_save.cpp">
+      <Filter>ソース ファイル\app\file_save</Filter>
+    </ClCompile>
+    <ClCompile Include="escape_tool.cpp">
+      <Filter>ソース ファイル\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -162,6 +192,15 @@
     </MASM>
     <MASM Include="event_dialog_asm.asm">
       <Filter>ソース ファイル\app\event_dialog</Filter>
+    </MASM>
+    <MASM Include="map_popup_asm.asm">
+      <Filter>ソース ファイル\app\map_popup</Filter>
+    </MASM>
+    <MASM Include="list_field_adjustment_asm.asm">
+      <Filter>ソース ファイル\app\list_field_adjustment</Filter>
+    </MASM>
+    <MASM Include="file_save_asm.asm">
+      <Filter>ソース ファイル\app\file_save</Filter>
     </MASM>
   </ItemGroup>
 </Project>

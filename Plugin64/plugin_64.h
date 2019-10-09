@@ -51,6 +51,17 @@ struct DllError{
 			bool mapJustifyProc4Injector : 1;
 			bool eventDialog1Injector : 1;
 			bool eventDialog2Injector : 1;
+			bool mapPopupProc1Injector : 1;
+			bool mapPopupProc2Injector : 1;
+			bool mapPopupProc3Injector : 1;
+			bool listFieldAdjustmentProc1Injector : 1;
+			bool listFieldAdjustmentProc2Injector : 1;
+			bool listFieldAdjustmentProc3Injector : 1;
+			bool fileSaveProc1Injector : 1;
+			bool fileSaveProc2Injector : 1;
+			bool fileSaveProc3Injector : 1;
+			bool fileSaveProc4Injector : 1;
+			bool fileSaveProc5Injector : 1;
 		};
 	} version;
 
@@ -86,6 +97,17 @@ struct DllError{
 			bool mapJustifyProc4Injector : 1;
 			bool eventDialog1Injector : 1;
 			bool eventDialog2Injector : 1;
+			bool mapPopupProc1Injector : 1;
+			bool mapPopupProc2Injector : 1;
+			bool mapPopupProc3Injector : 1;
+			bool listFieldAdjustmentProc1Injector : 1;
+			bool listFieldAdjustmentProc2Injector : 1;
+			bool listFieldAdjustmentProc3Injector : 1;
+			bool fileSaveProc1Injector : 1;
+			bool fileSaveProc2Injector : 1;
+			bool fileSaveProc3Injector : 1;
+			bool fileSaveProc4Injector : 1;
+			bool fileSaveProc5Injector : 1;
 		};
 	} unmatch;
 
@@ -97,16 +119,41 @@ struct DllError{
 	}
 };
 
-union T {
-	char text[0x10];
-	char* p;
-};
-
 typedef struct {
-	union T t;
-	int len;
-	int len2;
-} V;
+	union {
+		char text[0x10];
+		char* p;
+	} t;
+	UINT64 len;
+	UINT64 len2;
+
+	std::string getString() {
+		if (len >= 0x10) {
+			return std::string(t.p);
+		}
+		else {
+			return std::string(t.text);
+		}
+	}
+
+	void setString(std::string *src) {
+
+		len = src->length();
+
+		if (len >= 0x10) {
+			len2 = 0x1F;
+			auto p = (char*)calloc(len+3, sizeof(char));
+			if (p != NULL) {
+				memcpy(p, src->c_str(), len);
+				t.p = p;
+			}
+		}
+		else {
+			memcpy(t.text, src->c_str(), len);
+		}
+	}
+
+} ParadoxTextObject;
 
 typedef struct {
 	Eu4Version version;
@@ -145,5 +192,21 @@ namespace MapJustify {
 }
 
 namespace EventDialog {
+	DllError Init(RunOptions option);
+}
+
+namespace MapPopup {
+	DllError Init(RunOptions option);
+}
+
+namespace ListFieldAdjustment {
+	DllError Init(RunOptions option);
+}
+
+namespace Validator {
+	void Validate(DllError dllError, RunOptions options);
+}
+
+namespace FileSave {
 	DllError Init(RunOptions option);
 }

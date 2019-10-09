@@ -173,6 +173,7 @@
     <ClInclude Include="assembly.hpp" />
     <ClInclude Include="byte_pattern.h" />
     <ClInclude Include="calling.hpp" />
+    <ClInclude Include="escape_tool.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="injector.hpp" />
     <ClInclude Include="mod_download.h" />
@@ -185,12 +186,16 @@
     <ClCompile Include="byte_pattern.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="dll_main.cpp" />
+    <ClCompile Include="escape_tool.cpp" />
     <ClCompile Include="event_dialog.cpp" />
+    <ClCompile Include="file_save.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="hooking.hpp" />
+    <ClCompile Include="list_field_adjustment.cpp" />
     <ClCompile Include="main_text.cpp" />
     <ClCompile Include="map_adjustment.cpp" />
     <ClCompile Include="map_justify.cpp" />
+    <ClCompile Include="map_popup.cpp" />
     <ClCompile Include="map_view.cpp" />
     <ClCompile Include="mod_download.cpp" />
     <ClCompile Include="pch.cpp">
@@ -200,6 +205,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="tooltip_and_button.cpp" />
+    <ClCompile Include="validator.cpp" />
     <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -209,10 +215,13 @@
       </ExcludedFromBuild>
     </MASM>
     <MASM Include="event_dialog_asm.asm" />
+    <MASM Include="file_save_asm.asm" />
     <MASM Include="font_asm.asm" />
+    <MASM Include="list_field_adjustment_asm.asm" />
     <MASM Include="main_text_asm.asm" />
     <MASM Include="map_adjustment_asm.asm" />
     <MASM Include="map_justify_asm.asm" />
+    <MASM Include="map_popup_asm.asm" />
     <MASM Include="map_view_asm.asm" />
     <MASM Include="tooltip_and_button_asm.asm" />
     <None Include="packages.config" />
