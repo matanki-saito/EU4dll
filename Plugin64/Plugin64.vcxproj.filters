@@ -70,6 +70,9 @@
     <Filter Include="ソース ファイル\app\file_save">
       <UniqueIdentifier>{d18df3a6-eb44-41b7-aff8-d2fd7d13b495}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\date">
+      <UniqueIdentifier>{6a8bec9d-9bd3-4540-a331-491fd6d00c91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -164,6 +167,9 @@
     <ClCompile Include="escape_tool.cpp">
       <Filter>ソース ファイル\utils</Filter>
     </ClCompile>
+    <ClCompile Include="date.cpp">
+      <Filter>ソース ファイル\app\date</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -201,6 +207,9 @@
     </MASM>
     <MASM Include="file_save_asm.asm">
       <Filter>ソース ファイル\app\file_save</Filter>
+    </MASM>
+    <MASM Include="date_asm.asm">
+      <Filter>ソース ファイル\app\date</Filter>
     </MASM>
   </ItemGroup>
 </Project>

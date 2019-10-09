@@ -62,6 +62,7 @@ struct DllError{
 			bool fileSaveProc3Injector : 1;
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
+			bool dateProc1Injector : 1;
 		};
 	} version;
 
@@ -108,6 +109,7 @@ struct DllError{
 			bool fileSaveProc3Injector : 1;
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
+			bool dateProc1Injector : 1;
 		};
 	} unmatch;
 
@@ -208,5 +210,9 @@ namespace Validator {
 }
 
 namespace FileSave {
+	DllError Init(RunOptions option);
+}
+
+namespace Date {
 	DllError Init(RunOptions option);
 }
