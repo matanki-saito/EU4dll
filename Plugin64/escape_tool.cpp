@@ -270,7 +270,6 @@ A:
 
 errno_t convertWideTextToUtf8(const std::wstring *from, std::string* to) {
 
-	errno_t success = 0;
 	unsigned int err = 0;
 
 	/* */
@@ -285,16 +284,14 @@ errno_t convertWideTextToUtf8(const std::wstring *from, std::string* to) {
 		NULL);
 
 	if (textSize == NULL) {
-		success = GetLastError();
-		goto A;
+		return GetLastError();
 	}
 
 	/* */
-	char* buffer = (char*)calloc(textSize+1, sizeof(char));
+	char* buffer = (char*)calloc((UINT64)textSize + 1L, sizeof(char));
 
 	if (buffer == NULL) {
-		success = 3;
-		goto A;
+		return 3;
 	}
 
 	/* */
@@ -310,17 +307,14 @@ errno_t convertWideTextToUtf8(const std::wstring *from, std::string* to) {
 	);
 
 	if (err == NULL) {
-		success = 4;
-		goto B;
+		free(buffer);
+		return 4;
 	}
 
 	to->append(buffer);
-
-B:
 	free(buffer);
 
-A:
-	return success;
+	return 0;
 }
 
 
