@@ -16,6 +16,7 @@ SHIFT_3			=	900h
 SHIFT_4			=	8F2h
 NO_FONT			=	98Fh
 NOT_DEF			=	2026h
+MAP_LIMIT		=	2Dh-1
 
 .CODE
 mapAdjustmentProc1 PROC
@@ -140,8 +141,12 @@ JMP_D:
 
 JMP_F:
 	add		rcx, 2;
+	cmp		rcx, MAP_LIMIT;
+	ja		JMP_G;
+
 	cmp		eax, NO_FONT;
 	ja		JMP_E;
+JMP_G:
 	mov		eax, NOT_DEF;
 	movzx	eax, ax;
 
