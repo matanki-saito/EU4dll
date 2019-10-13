@@ -182,24 +182,37 @@ errno_t convertEscapedTextToWideText(const std::string *from, std::wstring *to) 
 	errno_t success = 0;
 
 	for (unsigned int fromIndex = 0; fromIndex < from->length();) {
-		char cp = (*from)[fromIndex++];
-		wchar_t sp = 0;
+		BYTE cp = (BYTE)(*from)[fromIndex++];
+		BYTE low = 0;
+		BYTE high = 0;
+		UINT32 sp = 0;
 
 		switch (cp) {
-		case 0x10:
-			sp = ((BYTE)(*from)[fromIndex++]) | (((BYTE)(*from)[fromIndex++]) << 8);
-			break;
-		case 0x11:
-			sp = ((BYTE)(*from)[fromIndex++] | ((BYTE)(*from)[fromIndex++]) << 8) - 0xE;
-			break;
-		case 0x12:
-			sp = ((BYTE)(*from)[fromIndex++] | ((BYTE)(*from)[fromIndex++]) << 8) + 0x900;
-			break;
-		case 0x13:
-			sp = ((BYTE)(*from)[fromIndex++] | ((BYTE)(*from)[fromIndex++]) << 8) + 0x8F2;
+		case 0x10:case 0x11:case 0x12:case 0x13:
+			low = (BYTE)(*from)[fromIndex++];
+			high = (BYTE)(*from)[fromIndex++];
+
+			sp = ((high) << 8) + low;
+
+			switch (cp) {
+			case 0x10:
+				break;
+			case 0x11:
+				sp -= 0xE;
+				break;
+			case 0x12:
+				sp += 0x900;
+				break;
+			case 0x13:
+				sp += 0x8F2;
+				break;
+			default:
+				break;
+			}
 			break;
 		default:
 			sp = CP1252ToUCS2(cp);
+			break;
 		}
 
 		if (sp > 0xFFFF || (sp < 0x98F && sp > 0x100)) {
