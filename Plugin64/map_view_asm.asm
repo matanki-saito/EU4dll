@@ -15,6 +15,7 @@ SHIFT_3			=	900h
 SHIFT_4			=	8F2h
 NO_FONT			=	98Fh
 NOT_DEF			=	2026h
+MAP_LIMIT		=	2Dh-1
 
 ; temporary space for code point
 .DATA
@@ -53,9 +54,13 @@ JMP_D:
 JMP_F:
 	add		ebx, 2;
 	add		r8d, 2;
+	cmp		ebx, MAP_LIMIT;
+	ja		JMP_H;
+
 	movzx	eax, ax;
 	cmp		eax, NO_FONT;
 	ja		JMP_G;
+JMP_H:
 	mov		eax, NOT_DEF;
 	jmp		JMP_G;
 
@@ -107,14 +112,18 @@ JMP_D:
 	add		eax, SHIFT_4;
 
 JMP_F:
-	movzx	eax, ax;
-	cmp		eax, NO_FONT;
-	ja		JMP_G;
-	mov		eax, NOT_DEF;
-
-JMP_G:
 	add		esi, 2;
 	add		r15, 2;
+
+	cmp		esi, MAP_LIMIT;
+	ja		JMP_G;
+
+	movzx	eax, ax;
+	cmp		eax, NO_FONT;
+	ja		JMP_E;
+
+JMP_G:
+	mov		eax, NOT_DEF;
 
 JMP_E:
 	mov     r12, qword ptr [r9 + rax * 8];

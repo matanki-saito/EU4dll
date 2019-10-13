@@ -23,6 +23,7 @@ SHIFT_3			=	900h
 SHIFT_4			=	8F2h
 NO_FONT			=	98Fh
 NOT_DEF			=	2026h
+MAP_LIMIT		=	2Dh-3
 
 .CODE
 mapJustifyProc1 PROC
@@ -64,9 +65,13 @@ JMP_D:
 	add		esi, SHIFT_4;
 
 JMP_F:
+	cmp		r13,MAP_LIMIT;
+	ja		JMP_H;
+
 	movzx	esi, si;
 	cmp		esi, NO_FONT;
 	ja		JMP_G;
+JMP_H:
 	mov		esi, NOT_DEF;
 
 JMP_G:
