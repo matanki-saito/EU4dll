@@ -135,6 +135,8 @@ mapViewProc2 ENDP
 ;-------------------------------------------;
 
 mapViewProc3 PROC
+    mov		qword ptr[rsp + 488h - 448h],0;
+
 	cmp		byte ptr [rax + r15], ESCAPE_SEQ_1;
 	jz		JMP_A;
 	cmp		byte ptr [rax + r15], ESCAPE_SEQ_2;
