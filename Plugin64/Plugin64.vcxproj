@@ -195,6 +195,7 @@
     <ClCompile Include="main_text.cpp" />
     <ClCompile Include="map_adjustment.cpp" />
     <ClCompile Include="map_justify.cpp" />
+    <ClCompile Include="map_nudge_view.cpp" />
     <ClCompile Include="map_popup.cpp" />
     <ClCompile Include="map_view.cpp" />
     <ClCompile Include="mod_download.cpp" />
@@ -223,6 +224,7 @@
     <MASM Include="main_text_asm.asm" />
     <MASM Include="map_adjustment_asm.asm" />
     <MASM Include="map_justify_asm.asm" />
+    <MASM Include="map_nudge_view_asm.asm" />
     <MASM Include="map_popup_asm.asm" />
     <MASM Include="map_view_asm.asm" />
     <MASM Include="tooltip_and_button_asm.asm" />

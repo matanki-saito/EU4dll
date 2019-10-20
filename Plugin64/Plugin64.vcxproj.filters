@@ -73,6 +73,9 @@
     <Filter Include="ソース ファイル\app\date">
       <UniqueIdentifier>{6a8bec9d-9bd3-4540-a331-491fd6d00c91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\map_nudge_view">
+      <UniqueIdentifier>{0da0e017-dd4c-4760-86a0-d4c87d409c67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -170,6 +173,9 @@
     <ClCompile Include="date.cpp">
       <Filter>ソース ファイル\app\date</Filter>
     </ClCompile>
+    <ClCompile Include="map_nudge_view.cpp">
+      <Filter>ソース ファイル\app\map_nudge_view</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -210,6 +216,9 @@
     </MASM>
     <MASM Include="date_asm.asm">
       <Filter>ソース ファイル\app\date</Filter>
+    </MASM>
+    <MASM Include="map_nudge_view_asm.asm">
+      <Filter>ソース ファイル\app\map_nudge_view</Filter>
     </MASM>
   </ItemGroup>
 </Project>
