@@ -38,6 +38,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// マップ文字の表示
 		e |= MapView::Init(options);
 
+		// マップ文字の表示（nudge）
+		e |= MapNudgeView:Init(options);
+
 		// マップ文字の調整
 		e |= MapAdjustment::Init(options);
 
@@ -58,6 +61,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 		// 日付
 		e |= Date::Init(options);
+
 
 		Validator::Validate(e,options);
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){

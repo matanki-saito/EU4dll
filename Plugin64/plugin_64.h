@@ -63,6 +63,7 @@ struct DllError{
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
 			bool dateProc1Injector : 1;
+			bool mapNudgeViewProc1Injector : 1;
 		};
 	} version;
 
@@ -110,6 +111,7 @@ struct DllError{
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
 			bool dateProc1Injector : 1;
+			bool mapNudgeViewProc1Injector : 1;
 		};
 	} unmatch;
 
@@ -214,5 +216,9 @@ namespace FileSave {
 }
 
 namespace Date {
+	DllError Init(RunOptions option);
+}
+
+namespace MapNudgeView {
 	DllError Init(RunOptions option);
 }
