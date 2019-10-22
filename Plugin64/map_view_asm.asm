@@ -15,7 +15,7 @@ SHIFT_3			=	900h
 SHIFT_4			=	8F2h
 NO_FONT			=	98Fh
 NOT_DEF			=	2026h
-MAP_LIMIT		=	2Dh-1
+MAP_LIMIT		=	3Dh
 
 ; temporary space for code point
 .DATA
@@ -135,6 +135,8 @@ mapViewProc2 ENDP
 ;-------------------------------------------;
 
 mapViewProc3 PROC
+    mov		qword ptr[rsp + 488h - 448h],0;
+
 	cmp		byte ptr [rax + r15], ESCAPE_SEQ_1;
 	jz		JMP_A;
 	cmp		byte ptr [rax + r15], ESCAPE_SEQ_2;
