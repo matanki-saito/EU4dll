@@ -15,7 +15,7 @@ SHIFT_3			=	900h
 SHIFT_4			=	8F2h
 NO_FONT			=	98Fh
 NOT_DEF			=	2026h
-MAP_LIMIT		=	2Dh-1
+MAP_LIMIT		=	3Dh
 
 ; temporary space for code point
 .DATA
