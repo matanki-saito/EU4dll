@@ -25,7 +25,7 @@ mapNudgeViewProc1 PROC
 	jz		JMP_D;
 
 	movzx	eax, byte ptr [rax + rcx];
-	jmp		JMP_E;
+	jmp		JMP_F;
 
 JMP_A:
 	movzx	eax, word ptr [rax + rcx + 1];
