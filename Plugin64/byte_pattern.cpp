@@ -212,6 +212,12 @@ void BytePattern::get_module_ranges(memory_pointer module)
 
 		range.first = module.address() + sec->VirtualAddress;
 
+		char buff[512];
+		snprintf(buff, sizeof(buff), "%s %d %d", sec->Name, secSize, sec->VirtualAddress);
+		std::string buffAsStdStr = buff;
+
+		BytePattern::LoggingInfo(buff);
+
 		if (memcmp((const char*)sec->Name, ".text", 6) == 0 || memcmp((const char*)sec->Name, ".rdata", 7) == 0)
 		{
 			range.second = range.first + secSize;
