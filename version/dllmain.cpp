@@ -83,6 +83,35 @@ void LoadScripts(const path& folder)
 	}
 }
 
+bool validateProcess() {
+	wchar_t pluginpath[MAX_PATH];
+
+	GetModuleFileNameW(NULL, pluginpath, MAX_PATH);
+
+	WCHAR szDrive[_MAX_DRIVE];
+	WCHAR szDir[_MAX_DIR];
+	WCHAR szFileName[_MAX_FNAME];
+	WCHAR szExt[_MAX_EXT];
+	WCHAR szOutput[_MAX_PATH * 5 + 1024];
+	DWORD dwRet;
+
+	//初期化
+	memset(szDrive, 0x00, sizeof(szDrive));
+	memset(szDir, 0x00, sizeof(szDir));
+	memset(szExt, 0x00, sizeof(szExt));
+	memset(szOutput, 0x00, sizeof(szOutput));
+	dwRet = 0;
+
+	_wsplitpath_s(pluginpath, szDrive, szDir, szFileName, szExt);
+
+	if (wcscmp(szFileName, L"eu4") == 0 && wcscmp(szExt, L".exe") == 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 void Initialize(HMODULE hSelf)
 {
 	wchar_t pluginpath[MAX_PATH];
@@ -107,7 +136,7 @@ void Initialize(HMODULE hSelf)
 
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
 {
-	if (reason == DLL_PROCESS_ATTACH)
+	if (reason == DLL_PROCESS_ATTACH && validateProcess())
 	{
 		Initialize(module);
 	}
