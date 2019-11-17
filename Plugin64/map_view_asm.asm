@@ -1,4 +1,4 @@
-EXTERN	mapViewProc1ReturnAddress	:	QWORD
+﻿EXTERN	mapViewProc1ReturnAddress	:	QWORD
 EXTERN	mapViewProc2ReturnAddress	:	QWORD
 EXTERN	mapViewProc3ReturnAddress	:	QWORD
 EXTERN	mapViewProc3CallAddress		:	QWORD
@@ -15,7 +15,6 @@ SHIFT_3			=	900h
 SHIFT_4			=	8F2h
 NO_FONT			=	98Fh
 NOT_DEF			=	2026h
-MAP_LIMIT		=	3Dh
 
 ; temporary space for code point
 .DATA
@@ -54,21 +53,26 @@ JMP_D:
 JMP_F:
 	add		ebx, 2;
 	add		r8d, 2;
-	cmp		ebx, MAP_LIMIT;
-	ja		JMP_H;
-
 	movzx	eax, ax;
 	cmp		eax, NO_FONT;
 	ja		JMP_G;
-JMP_H:
 	mov		eax, NOT_DEF;
 	jmp		JMP_G;
 
 JMP_E:
 	movzx	eax, byte ptr [rax + r8];
+	mov     r11, qword ptr [ rdi + rax * 8];
 
 JMP_G:
 	mov     r11, qword ptr [ rdi + rax * 8];
+
+	; なぜか存在しない値(r11 ==0)が発生するとissue-161が発生するため対策
+	cmp		r11,0;
+	jnz		JMP_N;
+	mov		eax, NOT_DEF;
+	mov     r11, qword ptr [ rdi + rax * 8];
+
+JMP_N:
 	mov     qword ptr [rbp + 38h], r11;
 	movss   dword ptr [rbp + 40h], xmm2
 
@@ -114,9 +118,6 @@ JMP_D:
 JMP_F:
 	add		esi, 2;
 	add		r15, 2;
-
-	cmp		esi, MAP_LIMIT;
-	ja		JMP_G;
 
 	movzx	eax, ax;
 	cmp		eax, NO_FONT;
