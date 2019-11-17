@@ -1,4 +1,4 @@
-﻿EXTERN	mapViewProc1ReturnAddress	:	QWORD
+EXTERN	mapViewProc1ReturnAddress	:	QWORD
 EXTERN	mapViewProc2ReturnAddress	:	QWORD
 EXTERN	mapViewProc3ReturnAddress	:	QWORD
 EXTERN	mapViewProc3CallAddress		:	QWORD
@@ -66,7 +66,7 @@ JMP_E:
 JMP_G:
 	mov     r11, qword ptr [ rdi + rax * 8];
 
-	; なぜか存在しない値(r11 ==0)が発生するとissue-161が発生するため対策
+	;issue-161
 	cmp		r11,0;
 	jnz		JMP_N;
 	mov		eax, NOT_DEF;
