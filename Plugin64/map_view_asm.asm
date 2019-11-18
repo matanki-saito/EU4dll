@@ -69,7 +69,7 @@ JMP_G:
 	;issue-161
 	cmp		r11,0;
 	jnz		JMP_N;
-	mov		eax, NOT_DEF;
+	mov		eax, 20h;
 	mov     r11, qword ptr [ rdi + rax * 8];
 
 JMP_N:
