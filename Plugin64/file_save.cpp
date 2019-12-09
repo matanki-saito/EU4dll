@@ -28,6 +28,7 @@ namespace FileSave {
 
 		switch (options.version) {
 		case v1_29_2_0:
+		case v1_29_3_0:
 			// mov     eax, [rcx+10h]
 			BytePattern::temp_instance().find_pattern("8B 41 10 85 C0 0F 84 31 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, "ファイル名を安全にしている場所を短絡する")) {
@@ -50,11 +51,17 @@ namespace FileSave {
 
 	DllError fileSaveProc2Injector(RunOptions options) {
 		DllError e = {};
+		std::string pattern;
 
 		switch (options.version) {
+		case v1_29_3_0:
+			pattern = "48 8D 05 11 92 A5 FF 48 3B D0 75 06 48 8D 41 30";
+			goto TAG;
 		case v1_29_2_0:
 			// lea     rax, sub_xxxxx ここしか取れなかった...
-			BytePattern::temp_instance().find_pattern("48 8D 05 01 A9 A5 FF 48 3B D0 75 06 48 8D 41 30");
+			pattern = "48 8D 05 01 A9 A5 FF 48 3B D0 75 06 48 8D 41 30";
+		TAG:
+			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, "ファイル名をUTF-8に変換して保存できるようにする")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
@@ -79,11 +86,17 @@ namespace FileSave {
 
 	DllError fileSaveProc3Injector(RunOptions options) {
 		DllError e = {};
+		std::string pattern;
 
 		switch (options.version) {
+		case v1_29_3_0:
+			pattern = "48 8D 15 36 11 BA 00 FF 90 98 00 00 00";
+			goto TAG;
 		case v1_29_2_0:
 			// mov     eax, [rcx+10h]
-			BytePattern::temp_instance().find_pattern("48 8D 15 46 A6 B9 00 FF 90 98 00 00 00");
+			pattern = "48 8D 15 46 A6 B9 00 FF 90 98 00 00 00";
+		TAG:
+			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのタイトルを表示できるようにする")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
@@ -110,6 +123,7 @@ namespace FileSave {
 
 		switch (options.version) {
 		case v1_29_2_0:
+		case v1_29_3_0:
 			// lea     r8, [rbp+0]
 			BytePattern::temp_instance().find_pattern("4C 8D 45 00 48 8D 15 ? ? ? ? 48 8D 4C 24 70 E8 ? ? ? ? 90");
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのツールチップを表示できるようにする1")) {
@@ -141,6 +155,7 @@ namespace FileSave {
 
 		switch (options.version) {
 		case v1_29_2_0:
+		case v1_29_3_0:
 			// lea     r8, [r14+598h]
 			BytePattern::temp_instance().find_pattern("4D 8D 86 98 05 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 50");
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのツールチップを表示できるようにする2")) {

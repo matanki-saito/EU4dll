@@ -16,6 +16,7 @@ namespace EventDialog {
 		switch (options.version) {
 		case v1_29_1_0:
 		case v1_29_2_0:
+		case v1_29_3_0:
 			// movzx   eax, byte ptr [rcx+rax]
 			BytePattern::temp_instance().find_pattern("0F B6 04 01 49 8B 34 C2 F3 41 0F 10 8A 48 08 00 00");
 			if (BytePattern::temp_instance().has_size(1, "文字取得処理")) {
@@ -43,7 +44,7 @@ namespace EventDialog {
 		switch (options.version) {
 		case v1_29_1_0:
 		case v1_29_2_0:
-
+		case v1_29_3_0:
 			// mov     rax, [rsp+378h+arg_20]
 			BytePattern::temp_instance().find_pattern("48 8B 84 24 A0 03 00 00 8B 00 03 C0");
 			if (BytePattern::temp_instance().has_size(1, "分岐処理修正戻り先アドレス２")) {
