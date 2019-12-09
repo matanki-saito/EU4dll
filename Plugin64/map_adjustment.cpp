@@ -23,6 +23,7 @@ namespace MapAdjustment {
 		switch (options.version) {
 		case v1_29_1_0:
 		case v1_29_2_0:
+		case v1_29_3_0:
 			// movsx ecx, byte ptr [rdi + rbx]
 			BytePattern::temp_instance().find_pattern("0F BE 0C 1F E8 ? ? ? ? 88 04 1F 41 FF");
 			if (BytePattern::temp_instance().has_size(1, "マップ文字の大文字化キャンセル")) {
@@ -53,6 +54,7 @@ namespace MapAdjustment {
 		switch (options.version) {
 		case v1_29_1_0:
 		case v1_29_2_0:
+		case v1_29_3_0:
 			// lea     rax, [rbp+1F0h+var_1F0]
 			BytePattern::temp_instance().find_pattern("48 8D 45 00 49 83 C8 FF 90 49 FF C0");
 			if (BytePattern::temp_instance().has_size(2, "文字チェック修正")) {
@@ -80,6 +82,7 @@ namespace MapAdjustment {
 		switch (options.version) {
 		case v1_29_1_0:
 		case v1_29_2_0:
+		case v1_29_3_0:
 			// r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern("49 83 C9 FF 45 33 C0 48 8D 95 C0 00 00 00");
 			if (BytePattern::temp_instance().has_size(1, "文字チェックの後のコピー処理")) {
@@ -116,6 +119,7 @@ namespace MapAdjustment {
 		switch (options.version) {
 		case v1_29_1_0:
 		case v1_29_2_0:
+		case v1_29_3_0:
 			//  lea     rax, [rbp+1F0h+var_160]
 			BytePattern::temp_instance().find_pattern("48 8D 85 90 00 00 00 49 83 F8 10");
 			if (BytePattern::temp_instance().has_size(1, "文字取得処理修正")) {
