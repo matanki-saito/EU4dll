@@ -86,19 +86,14 @@ namespace FileSave {
 
 	DllError fileSaveProc3Injector(RunOptions options) {
 		DllError e = {};
-		std::string pattern;
-
 		switch (options.version) {
 		case v1_29_3_0:
-			pattern = "48 8D 15 36 11 BA 00 FF 90 98 00 00 00";
-			goto TAG;
 		case v1_29_2_0:
-			// mov     eax, [rcx+10h]
-			pattern = "48 8D 15 46 A6 B9 00 FF 90 98 00 00 00";
-		TAG:
-			BytePattern::temp_instance().find_pattern(pattern);
+			//  jmp     short loc_xxxxx
+			BytePattern::temp_instance().find_pattern("EB 6E 48 8D 15 ? ? ? ? FF 90 98 00 00 00 48");
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのタイトルを表示できるようにする")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				//  lea     rdx, aSave_game_titl ; "save_game_title"
+				uintptr_t address = BytePattern::temp_instance().get_first().address() + 0x2;
 
 				fileSaveProc3CallAddress = (uintptr_t)utf8ToEscapedStr;
 
