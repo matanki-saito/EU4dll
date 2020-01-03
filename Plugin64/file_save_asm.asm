@@ -12,6 +12,8 @@ EXTERN	fileSaveProc5ReturnAddress		:	QWORD
 EXTERN	fileSaveProc6CallAddress		:	QWORD
 EXTERN	fileSaveProc6MarkerAddress		:	QWORD
 EXTERN	fileSaveProc6ReturnAddress		:	QWORD
+EXTERN	fileSaveProc7CallAddress		:	QWORD
+EXTERN	fileSaveProc7ReturnAddress		:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -119,4 +121,20 @@ fileSaveProc6 PROC
 	push	fileSaveProc6ReturnAddress;
 	ret;
 fileSaveProc6 ENDP
+
+;-------------------------------------------;
+
+fileSaveProc7 PROC
+
+	lea		rcx, [rsp + 58h - 30h];
+	call	fileSaveProc7CallAddress;
+	mov		rdx, rax;
+
+	lea		rcx, [rbx+0C8h];
+	mov		rax, qword ptr [rcx];
+
+	push	fileSaveProc7ReturnAddress;
+	ret;
+fileSaveProc7 ENDP
+
 END

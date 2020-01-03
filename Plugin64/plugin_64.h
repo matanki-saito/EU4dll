@@ -64,6 +64,7 @@ struct DllError{
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
 			bool fileSaveProc6Injector : 1;
+			bool fileSaveProc7Injector : 1;
 			bool dateProc1Injector : 1;
 			bool mapNudgeViewProc1Injector : 1;
 		};
@@ -113,6 +114,7 @@ struct DllError{
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
 			bool fileSaveProc6Injector : 1;
+			bool fileSaveProc7Injector : 1;
 			bool dateProc1Injector : 1;
 			bool mapNudgeViewProc1Injector : 1;
 		};
@@ -135,7 +137,7 @@ typedef struct {
 	UINT64 len2;
 
 	std::string getString() {
-		if (len >= 0x10) {
+		if (len2 >= 0x10) {
 			return std::string(t.p);
 		}
 		else {
