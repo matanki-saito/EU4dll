@@ -9,6 +9,7 @@ namespace FileSave {
 		void fileSaveProc3();
 		void fileSaveProc4();
 		void fileSaveProc5();
+		void fileSaveProc6();
 		uintptr_t fileSaveProc1ReturnAddress;
 		uintptr_t fileSaveProc2ReturnAddress;
 		uintptr_t fileSaveProc2CallAddress;
@@ -20,6 +21,9 @@ namespace FileSave {
 		uintptr_t fileSaveProc5ReturnAddress;
 		uintptr_t fileSaveProc5CallAddress;
 		uintptr_t fileSaveProc5MarkerAddress;
+		uintptr_t fileSaveProc6ReturnAddress;
+		uintptr_t fileSaveProc6CallAddress;
+		uintptr_t fileSaveProc6MarkerAddress;
 	}
 	
 
@@ -177,18 +181,49 @@ namespace FileSave {
 		return e;
 	}
 
+	DllError fileSaveProc6Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_3_0:
+			// lea     r8, [rbp+380h]
+			BytePattern::temp_instance().find_pattern("4C 8D 85 80 03 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 30");
+			if (BytePattern::temp_instance().has_size(1, "スタート画面でのコンティニューのツールチップ")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc6CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+				// lea r8, {aZy}
+				fileSaveProc6MarkerAddress = Injector::GetBranchDestination(address + 7).as_int();
+
+				// call sub_xxxxx
+				fileSaveProc6ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, fileSaveProc6, true);
+			}
+			else {
+				e.unmatch.fileSaveProc6Injector = true;
+			}
+			break;
+		default:
+			e.version.fileSaveProc6Injector = true;
+		}
+
+		return e;
+	}
+
 
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		/* UTF-8ファイルを列挙できない問題は解決された */
-
 		result |= fileSaveProc1Injector(options);
 		result |= fileSaveProc2Injector(options);
 		result |= fileSaveProc3Injector(options);
 		// これは使われなくなった？
 		//result |= fileSaveProc4Injector(options);
 		result |= fileSaveProc5Injector(options);
+		result |= fileSaveProc6Injector(options);
 
 		return result;
 	}

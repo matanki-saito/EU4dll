@@ -63,6 +63,7 @@ struct DllError{
 			bool fileSaveProc3Injector : 1;
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
+			bool fileSaveProc6Injector : 1;
 			bool dateProc1Injector : 1;
 			bool mapNudgeViewProc1Injector : 1;
 		};
@@ -111,6 +112,7 @@ struct DllError{
 			bool fileSaveProc3Injector : 1;
 			bool fileSaveProc4Injector : 1;
 			bool fileSaveProc5Injector : 1;
+			bool fileSaveProc6Injector : 1;
 			bool dateProc1Injector : 1;
 			bool mapNudgeViewProc1Injector : 1;
 		};
