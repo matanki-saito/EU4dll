@@ -10,6 +10,7 @@ namespace FileSave {
 		void fileSaveProc4();
 		void fileSaveProc5();
 		void fileSaveProc6();
+		void fileSaveProc7();
 		uintptr_t fileSaveProc1ReturnAddress;
 		uintptr_t fileSaveProc2ReturnAddress;
 		uintptr_t fileSaveProc2CallAddress;
@@ -24,6 +25,8 @@ namespace FileSave {
 		uintptr_t fileSaveProc6ReturnAddress;
 		uintptr_t fileSaveProc6CallAddress;
 		uintptr_t fileSaveProc6MarkerAddress;
+		uintptr_t fileSaveProc7ReturnAddress;
+		uintptr_t fileSaveProc7CallAddress;
 	}
 	
 
@@ -212,6 +215,33 @@ namespace FileSave {
 		return e;
 	}
 
+	DllError fileSaveProc7Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_3_0:
+			// lea     rcx, [rbx+0C8h]
+			BytePattern::temp_instance().find_pattern("48 8D 8B C8 00 00 00 48 8B 01 48 8D 54 24 28");
+			if (BytePattern::temp_instance().has_size(1, "セーブダイアログでのインプットテキストエリア")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc7CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+				// call    qword ptr [rax+80h]
+				fileSaveProc7ReturnAddress = address + 0xF;
+
+				Injector::MakeJMP(address, fileSaveProc7, true);
+			}
+			else {
+				e.unmatch.fileSaveProc7Injector = true;
+			}
+			break;
+		default:
+			e.version.fileSaveProc7Injector = true;
+		}
+
+		return e;
+	}
 
 	DllError Init(RunOptions options) {
 		DllError result = {};
@@ -224,6 +254,7 @@ namespace FileSave {
 		//result |= fileSaveProc4Injector(options);
 		result |= fileSaveProc5Injector(options);
 		result |= fileSaveProc6Injector(options);
+		result |= fileSaveProc7Injector(options);
 
 		return result;
 	}
