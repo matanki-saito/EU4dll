@@ -62,6 +62,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// 日付
 		e |= Date::Init(options);
 
+		// IME
+		e |= Ime::Init(options);
 
 		Validator::Validate(e,options);
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
