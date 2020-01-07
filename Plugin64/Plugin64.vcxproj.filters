@@ -76,6 +76,9 @@
     <Filter Include="ソース ファイル\app\map_nudge_view">
       <UniqueIdentifier>{0da0e017-dd4c-4760-86a0-d4c87d409c67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\ime">
+      <UniqueIdentifier>{7171d39c-fac0-4741-af23-6fac010313fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -176,6 +179,9 @@
     <ClCompile Include="map_nudge_view.cpp">
       <Filter>ソース ファイル\app\map_nudge_view</Filter>
     </ClCompile>
+    <ClCompile Include="ime.cpp">
+      <Filter>ソース ファイル\app\ime</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -219,6 +225,9 @@
     </MASM>
     <MASM Include="map_nudge_view_asm.asm">
       <Filter>ソース ファイル\app\map_nudge_view</Filter>
+    </MASM>
+    <MASM Include="ime_asm.asm">
+      <Filter>ソース ファイル\app\ime</Filter>
     </MASM>
   </ItemGroup>
 </Project>
