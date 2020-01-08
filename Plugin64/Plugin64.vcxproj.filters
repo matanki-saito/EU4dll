@@ -79,6 +79,9 @@
     <Filter Include="ソース ファイル\app\ime">
       <UniqueIdentifier>{7171d39c-fac0-4741-af23-6fac010313fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\input">
+      <UniqueIdentifier>{07d30c43-6921-4a95-af27-1fb217d3c3dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -182,6 +185,9 @@
     <ClCompile Include="ime.cpp">
       <Filter>ソース ファイル\app\ime</Filter>
     </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\app\input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -228,6 +234,9 @@
     </MASM>
     <MASM Include="ime_asm.asm">
       <Filter>ソース ファイル\app\ime</Filter>
+    </MASM>
+    <MASM Include="input_asm.asm">
+      <Filter>ソース ファイル\app\input</Filter>
     </MASM>
   </ItemGroup>
 </Project>

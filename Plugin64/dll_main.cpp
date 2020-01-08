@@ -65,6 +65,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// IME
 		e |= Ime::Init(options);
 
+		// 入力
+		e |= Input::Init(options);
+
 		Validator::Validate(e,options);
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
 		BytePattern::ShutdownLog();
