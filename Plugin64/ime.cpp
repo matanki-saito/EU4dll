@@ -61,8 +61,10 @@ namespace Ime {
 
 	// CompositionやCandidateが表示されるようにする
 	// SDL_windowkeyboard.c#IME_HandleMessageにある処理を修正している
-	// 以下のTwitterだと最初の`return SDL_FALSE`をキャンセルしているがwin32のコードから確認できなかったのでいらない？
+	// 以下のTwitterだと最初の`return SDL_FALSE`をキャンセルしているがwin32のコードから確認できなかった
 	// https://twitter.com/matanki_saito/status/1006954448583704576
+	// これはISSUE19の対応時に復活させていた
+	// https://github.com/matanki-saito/EU4dll/issues/19#issuecomment-423940649
 	DllError imeProc2Injector(RunOptions options) {
 		DllError e = {};
 
@@ -111,6 +113,8 @@ namespace Ime {
 
 			// WM_IME_COMPOSITIONのif文のIME_GetCompositionStringとIME_SendInputEventをコメントアウト（jmpさせる）
 			//  mov     r8d, 800h
+			// 二つ目のif文もスキップさせる
+			// https://github.com/matanki-saito/EU4dll/issues/19#issuecomment-423940364
 			BytePattern::temp_instance().find_pattern("41 B8 00 08 00 00 48 8B D6 48 8B CF");
 			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.cの修正")) {
 				// jz xxx -> jmp xxx
