@@ -450,3 +450,23 @@ char* escapedStrToUtf8(ParadoxTextObject* from) {
 
 	return (char*)tmpParadoxTextObject2;
 }
+
+char* utf8ToEscapedStr3buffer = NULL;
+char* utf8ToEscapedStr3(char* from) {
+	// init
+	if (utf8ToEscapedStr3buffer != NULL) {
+		free(utf8ToEscapedStr3buffer);
+	}
+
+	wchar_t* tmp = NULL;
+
+	//UTF-8 -> wide char (ucs2)
+	convertTextToWideText(from, &tmp);
+
+	//wide char (ucs2) -> Escaped Text
+	convertWideTextToEscapedText(tmp, &utf8ToEscapedStr3buffer);
+
+	free(tmp);
+
+	return utf8ToEscapedStr3buffer;
+}
