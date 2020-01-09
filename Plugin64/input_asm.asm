@@ -16,6 +16,8 @@ NOT_DEF			=	2026h
 
 .DATA
 	inputProc1Var1	DB		03,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	inputProc1Tmp	DQ		0
+	inputProc2Tmp	DQ		0
 
 .CODE
 inputProc1 PROC
@@ -26,8 +28,7 @@ inputProc1 PROC
 	jnz		JMP_A;
 	xor		bl, bl;
 
-	; JMP_C,X,Yについての説明。MakeJMPでコードが破壊されてしまうため、処理を丸ごとコピーしてきている。
-JMP_C:
+	; JMP_X,Yについての説明。MakeJMPでコードが破壊されてしまうため、処理を丸ごとコピーしてきている。
 	; ここで80hと比較しているのはUTF8でU+0000 … U+007Fかどうか確認するため
 	; https://ja.wikipedia.org/wiki/UTF-8
 	cmp		al, 80h;
@@ -50,8 +51,13 @@ JMP_Y:
 JMP_A:
 	lea		rcx,[rbp + 120h - 198h + 0Ch];
 	call	inputProc1CallAddress;
-	mov		ebx, dword ptr [rax];
+	; 変換したエスケープ済みテキストアドレスを保存。 10 81 82のようになる
+	mov		inputProc2Tmp, rax;
+	;カウンタとして使うのでもともとあったものは保存
+	mov		inputProc1Tmp,rsi;
+	xor		rsi,rsi;
 
+JMP_B:
 	; そのままコピーした
 	mov		rax, [r14];
 	lea     rdx, [rsp+200h - 1D0h];
@@ -62,6 +68,15 @@ JMP_A:
 	mov		dword ptr [rsp + 200h + 1C8h], edi;
 	movdqa  xmm0, xmmword ptr [inputProc1Var1];
 	movdqu  xmmword ptr [rsp + 200h - 198h], xmm0;
+
+	; １byte取り出す
+	mov		rbx, inputProc2Tmp;
+	mov		bl, byte ptr [rbx + rsi];
+
+	; null文字チェック
+	cmp		bl,0;
+	jz		JMP_C;
+
 	mov		byte ptr [rsp + 200h - 1C4h], bl;
 	mov		qword ptr [rsp + 200h - 1B0h], 0;
 	mov		dword ptr [rsp + 200h - 1A8h], edi;
@@ -72,7 +87,14 @@ JMP_A:
 	mov		byte ptr [rbp + 120h - 1A0h + 6], 0;
 	call	qword ptr [rax + 18h];
 
-JMP_B:
+	; 1byte進める
+	inc		rsi;
+	jmp		JMP_B;
+
+JMP_C:
+	;戻す
+	mov		rsi, inputProc1Tmp;
+
 	push	inputProc2ReturnAddress;
 	ret;
 
