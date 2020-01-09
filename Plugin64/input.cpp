@@ -7,6 +7,7 @@ namespace Input {
 	extern "C" {
 		void inputProc1();
 		uintptr_t inputProc1ReturnAddress;
+		uintptr_t inputProc2ReturnAddress;
 		uintptr_t inputProc1CallAddress;
 	}
 
@@ -30,6 +31,18 @@ namespace Input {
 			else {
 				e.unmatch.inputProc1Injector = true;
 			}
+
+			// call    qword ptr [rax+18h]
+			BytePattern::temp_instance().find_pattern("FF 50 18 E9 5C 01 00 00");
+			if (BytePattern::temp_instance().has_size(1, "入力した文字をutf8からエスケープ列へ変換する")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				// jmp     loc_{xxxxx}
+				inputProc2ReturnAddress = Injector::GetBranchDestination(address + 0x3).as_int();
+			}
+			else {
+				e.unmatch.inputProc1Injector = true;
+			}
+
 			break;
 		default:
 			e.version.inputProc1Injector = true;
