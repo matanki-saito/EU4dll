@@ -6,6 +6,7 @@ namespace Ime {
 	extern "C" {
 		void imeProc1();
 		void imeProc2();
+		void imeProc3();
 		uintptr_t imeProc1ReturnAddress1;
 		uintptr_t imeProc1ReturnAddress2;
 		uintptr_t imeProc1CallAddress;
@@ -13,6 +14,12 @@ namespace Ime {
 		uintptr_t imeProc2ReturnAddress1;
 		uintptr_t imeProc2ReturnAddress2;
 		uintptr_t rectAddress;
+		uintptr_t imeProc3ReturnAddress;
+		uintptr_t imeProc3CallAddress1;
+		uintptr_t imeProc3CallAddress2;
+		uintptr_t imeProc3CallAddress3;
+		uintptr_t imeProc3CallAddress4;
+		uintptr_t imeProc3CallAddress5;
 	}
 
 	typedef struct SDL_Rect
@@ -133,11 +140,58 @@ namespace Ime {
 		return e;
 	}
 
+	// コンポジション入力中のバックスペースや矢印キーのイベントをキャンセルする
+	// WM_KEYDOWNのみの修正で、WM_KEYUPの修正は入れていない。おそらくそれでも問題ない
+	// https://github.com/matanki-saito/EU4dll/issues/19
+	DllError imeProc3Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_3_0:
+			// 直前の部分でjmpに使う14byteを確保することができなかった。
+			// そのためWM_KEYDOWNのコードをすべて移植した
+			// mov     rcx, [rbp+0C0h+hRawInput]
+			BytePattern::temp_instance().find_pattern("48 8B 8D E8 ? ? ? ? 8B D6 E8 ? ? ? ? 33");
+			if (BytePattern::temp_instance().has_size(2, "SDL_windowsevents.cの修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// call {sub_xxxxx} / WindowsScanCodeToSDLScanCode
+				imeProc3CallAddress1 = Injector::GetBranchDestination(address + 0xA).as_int();
+
+				// call {sub_xxxxx} / SDL_GetKeyboardState
+				imeProc3CallAddress2 = Injector::GetBranchDestination(address + 0x13).as_int();
+
+				// call {sub_xxxxx} / ShouldGenerateWindowCloseOnAltF4
+				imeProc3CallAddress3 = Injector::GetBranchDestination(address + 0x36).as_int();
+
+				// call {sub_xxxxx} / SDL_SendWindowEvent
+				imeProc3CallAddress4 = Injector::GetBranchDestination(address + 0x50).as_int();
+
+				// call {sub_xxxxx} / SDL_SendKeyboardKey
+				imeProc3CallAddress5 = Injector::GetBranchDestination(address + 0x61).as_int();
+
+				// xor     edi, edi
+				imeProc3ReturnAddress = address + 0x66;
+
+				Injector::MakeJMP(address, imeProc3, true);
+			}
+			else {
+				e.unmatch.imeProc3Injector = true;
+			}
+			break;
+		default:
+			e.version.imeProc3Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= imeProc1Injector(options);
 		result |= imeProc2Injector(options);
+		result |= imeProc3Injector(options);
 
 		return result;
 	}
