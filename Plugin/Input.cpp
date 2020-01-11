@@ -343,7 +343,7 @@ namespace Input {
 			mov     al, [ecx + eax];
 			cmp     al, ESCAPE_SEQ_1;
 			jz      dd_4;
-			;			cmp     al, ESCAPE_SEQ_2;
+			cmp     al, ESCAPE_SEQ_2;
 			jz      dd_4;
 			cmp     al, ESCAPE_SEQ_3;
 			jz      dd_4;
@@ -358,7 +358,7 @@ namespace Input {
 			mov     ecx, edi;
 			test    esi, esi;
 			jz      dd_6;
-			call    dword ptr[eax + 0x0A00];
+			call    dword ptr[eax + 0x0A0];
 			jmp     dd_5;
 
 		dd_6:
