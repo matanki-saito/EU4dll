@@ -71,6 +71,7 @@ struct DllError{
 			bool imeProc2Injector : 1;
 			bool imeProc3Injector : 1;
 			bool inputProc1Injector : 1;
+			bool inputProc2Injector : 1;
 		};
 	} version;
 
@@ -125,6 +126,7 @@ struct DllError{
 			bool imeProc2Injector : 1;
 			bool imeProc3Injector : 1;
 			bool inputProc1Injector : 1;
+			bool inputProc2Injector : 1;
 		};
 	} unmatch;
 

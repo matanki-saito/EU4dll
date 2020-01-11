@@ -6,9 +6,12 @@
 namespace Input {
 	extern "C" {
 		void inputProc1();
-		uintptr_t inputProc1ReturnAddress;
-		uintptr_t inputProc2ReturnAddress;
+		uintptr_t inputProc1ReturnAddress1;
+		uintptr_t inputProc1ReturnAddress2;
 		uintptr_t inputProc1CallAddress;
+
+		void inputProc2();
+		uintptr_t inputProc2ReturnAddress;
 	}
 
 	DllError inputProc1Injector(RunOptions options) {
@@ -24,7 +27,7 @@ namespace Input {
 				inputProc1CallAddress = (uintptr_t)utf8ToEscapedStr3;
 
 				// mov     rax, [r13+0]
-				inputProc1ReturnAddress = address + 0x1E;
+				inputProc1ReturnAddress1 = address + 0x1E;
 
 				Injector::MakeJMP(address, inputProc1, true);
 			}
@@ -37,7 +40,7 @@ namespace Input {
 			if (BytePattern::temp_instance().has_size(1, "入力した文字をutf8からエスケープ列へ変換する")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 				// jmp     loc_{xxxxx}
-				inputProc2ReturnAddress = Injector::GetBranchDestination(address + 0x3).as_int();
+				inputProc1ReturnAddress2 = Injector::GetBranchDestination(address + 0x3).as_int();
 			}
 			else {
 				e.unmatch.inputProc1Injector = true;
@@ -51,10 +54,37 @@ namespace Input {
 		return e;
 	}
 
+	DllError inputProc2Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_3_0:
+			// mov     rax, [rdi]
+			BytePattern::temp_instance().find_pattern("48 8B 07 48 8B CF 85 DB 74 08 FF 90 40 01 00 00");
+			if (BytePattern::temp_instance().has_size(1, "バックスペース処理の修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// movzx   r8d, word ptr [rdi+56h]
+				inputProc2ReturnAddress = address + 0x18;
+
+				Injector::MakeJMP(address, inputProc2, true);
+			}
+			else {
+				e.unmatch.inputProc2Injector = true;
+			}
+			break;
+		default:
+			e.version.inputProc2Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= inputProc1Injector(options);
+		result |= inputProc2Injector(options);
 
 		return result;
 	}

@@ -1,6 +1,7 @@
-EXTERN	inputProc1ReturnAddress	:	QWORD
-EXTERN	inputProc2ReturnAddress	:	QWORD
-EXTERN	inputProc1CallAddress	:	QWORD
+EXTERN	inputProc1ReturnAddress1	:	QWORD
+EXTERN	inputProc1ReturnAddress2	:	QWORD
+EXTERN	inputProc1CallAddress		:	QWORD
+EXTERN	inputProc2ReturnAddress		:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -45,7 +46,7 @@ JMP_X:
 	or		bl, al;
 
 JMP_Y:
-	push	inputProc1ReturnAddress;
+	push	inputProc1ReturnAddress1;
 	ret;
 
 JMP_A:
@@ -95,8 +96,30 @@ JMP_C:
 	;戻す
 	mov		rsi, inputProc1Tmp;
 
+	push	inputProc1ReturnAddress2;
+	ret;
+inputProc1 ENDP
+
+;-------------------------------------------;
+
+; 下記はqword ptr [rax+138h];の関数（40 57 48 83 EC 20 48 8B 01 48 8B F9 48 8B 90 68 01 00 00）から割り出した
+; rdi+54h : キャレット位置
+; rdi+40h : 文字列長さ
+; rdi+30h : 文字列アドレス
+
+inputProc2 PROC
+	mov		rax, qword ptr [rdi];
+	mov		rcx, rdi;
+	test	ebx, ebx;
+	jz		JMP_A;
+	call	qword ptr [rax+140h];
+	jmp		JMP_B;
+
+JMP_A:
+	call	qword ptr [rax+138h];
+
+JMP_B:
 	push	inputProc2ReturnAddress;
 	ret;
-
-inputProc1 ENDP
+inputProc2 ENDP
 END
