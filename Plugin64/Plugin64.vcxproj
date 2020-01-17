@@ -192,6 +192,7 @@
     <ClCompile Include="font.cpp" />
     <ClCompile Include="hooking.hpp" />
     <ClCompile Include="ime.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="list_field_adjustment.cpp" />
     <ClCompile Include="main_text.cpp" />
     <ClCompile Include="map_adjustment.cpp" />
@@ -222,6 +223,7 @@
     <MASM Include="file_save_asm.asm" />
     <MASM Include="font_asm.asm" />
     <MASM Include="ime_asm.asm" />
+    <MASM Include="input_asm.asm" />
     <MASM Include="list_field_adjustment_asm.asm" />
     <MASM Include="main_text_asm.asm" />
     <MASM Include="map_adjustment_asm.asm" />

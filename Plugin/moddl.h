@@ -6,6 +6,6 @@
 #include <filesystem>
 
 using namespace std;
-using namespace std::experimental::filesystem::v1;
+using namespace std::filesystem;
 
 bool InitAutoUpdate(const path &folder);

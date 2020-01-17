@@ -1,11 +1,12 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "plugin_64.h"
 
-// 1.28.3,1.29.3“_‚ÅSDL‚Ìversion‚Í2.0.4 hg-10001:e12c38730512
+// 1.28.3,1.29.3æ™‚ç‚¹ã§SDLã®versionã¯2.0.4 hg-10001:e12c38730512
 namespace Ime {
 	extern "C" {
 		void imeProc1();
 		void imeProc2();
+		void imeProc3();
 		uintptr_t imeProc1ReturnAddress1;
 		uintptr_t imeProc1ReturnAddress2;
 		uintptr_t imeProc1CallAddress;
@@ -13,6 +14,12 @@ namespace Ime {
 		uintptr_t imeProc2ReturnAddress1;
 		uintptr_t imeProc2ReturnAddress2;
 		uintptr_t rectAddress;
+		uintptr_t imeProc3ReturnAddress;
+		uintptr_t imeProc3CallAddress1;
+		uintptr_t imeProc3CallAddress2;
+		uintptr_t imeProc3CallAddress3;
+		uintptr_t imeProc3CallAddress4;
+		uintptr_t imeProc3CallAddress5;
 	}
 
 	typedef struct SDL_Rect
@@ -23,9 +30,9 @@ namespace Ime {
 
 	SDL_Rect rect = { 0,0,0,0 };
 
-	// Composition‚âCandidate‚ª•\¦‚³‚ê‚é‚æ‚¤‚É‚·‚é
-	// SDL_windowsevents.c#WIN_WindowProc‚ÅIME_HandleMessage‚Ìif•¶‚Å`return 0`‚·‚é‚Ì‚ª–â‘è‚È‚Ì‚ÅA
-	// ŠÖ”‚Ìˆê”Ô‰º‚É‚ ‚é` if (data->wndproc)`‚Ü‚Å‚Â‚È‚°‚é
+	// Compositionã‚„CandidateãŒè¡¨ç¤ºã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹
+	// SDL_windowsevents.c#WIN_WindowProcã§IME_HandleMessageã®ifæ–‡ã§`return 0`ã™ã‚‹ã®ãŒå•é¡Œãªã®ã§ã€
+	// é–¢æ•°ã®ä¸€ç•ªä¸‹ã«ã‚ã‚‹` if (data->wndproc)`ã¾ã§ã¤ãªã’ã‚‹
 	// https://twitter.com/matanki_saito/status/1006954440736235521
 	DllError imeProc1Injector(RunOptions options) {
 		DllError e = {};
@@ -34,7 +41,7 @@ namespace Ime {
 		case v1_29_3_0:
 			// mov     edx, r13d
 			BytePattern::temp_instance().find_pattern("41 8B D5 49 8B CC E8 ? ? ? ? 85 C0 0F 85");
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowsevents.c‚ÌC³")) {
+			if (BytePattern::temp_instance().has_size(1, "SDL_windowsevents.cã®ä¿®æ­£")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call {sub_xxxxx}
@@ -59,10 +66,12 @@ namespace Ime {
 		return e;
 	}
 
-	// Composition‚âCandidate‚ª•\¦‚³‚ê‚é‚æ‚¤‚É‚·‚é
-	// SDL_windowkeyboard.c#IME_HandleMessage‚É‚ ‚éˆ—‚ğC³‚µ‚Ä‚¢‚é
-	// ˆÈ‰º‚ÌTwitter‚¾‚ÆÅ‰‚Ì`return SDL_FALSE`‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚Ä‚¢‚é‚ªwin32‚ÌƒR[ƒh‚©‚çŠm”F‚Å‚«‚È‚©‚Á‚½‚Ì‚Å‚¢‚ç‚È‚¢H
+	// Compositionã‚„CandidateãŒè¡¨ç¤ºã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹
+	// SDL_windowkeyboard.c#IME_HandleMessageã«ã‚ã‚‹å‡¦ç†ã‚’ä¿®æ­£ã—ã¦ã„ã‚‹
+	// ä»¥ä¸‹ã®Twitterã ã¨æœ€åˆã®`return SDL_FALSE`ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¦ã„ã‚‹ãŒwin32ã®ã‚³ãƒ¼ãƒ‰ã‹ã‚‰ç¢ºèªã§ããªã‹ã£ãŸ
 	// https://twitter.com/matanki_saito/status/1006954448583704576
+	// ã“ã‚Œã¯ISSUE19ã®å¯¾å¿œæ™‚ã«å¾©æ´»ã•ã›ã¦ã„ãŸ
+	// https://github.com/matanki-saito/EU4dll/issues/19#issuecomment-423940649
 	DllError imeProc2Injector(RunOptions options) {
 		DllError e = {};
 
@@ -70,18 +79,18 @@ namespace Ime {
 		case v1_29_3_0: 
 			rectAddress = (uintptr_t)&rect;
 
-			// SDL_SetTextInputRect‚ÌŠÖ”‚ğŒ©‚Â‚¯‚é
+			// SDL_SetTextInputRectã®é–¢æ•°ã‚’è¦‹ã¤ã‘ã‚‹
 			BytePattern::temp_instance().find_pattern("48 8B D1 48 8B ? ? ? ? 00 48 85 C9 74 0F"); // mov     rdx, rcx
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.c‚ÌC³")) {
+			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.cã®ä¿®æ­£")) {
 				imeProc2CallAddress = BytePattern::temp_instance().get_first().address();
 			}
 			else {
 				e.unmatch.imeProc2Injector = true;
 			}
 
-			// WM_IME_STARTCOMPOSITION‚ÅSDL_SetTextInputRect‚·‚é
+			// WM_IME_STARTCOMPOSITIONã§SDL_SetTextInputRectã™ã‚‹
 			BytePattern::temp_instance().find_pattern("81 EA BC 00 00 00 0F 84 2B 02 00 00"); // sub     edx, 0BCh
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.c‚ÌC³")) {
+			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.cã®ä¿®æ­£")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// jz {loc_xxxxx}
@@ -96,10 +105,10 @@ namespace Ime {
 				e.unmatch.imeProc2Injector = true;
 			}
 
-			// WM_IME_SETCONTEXT‚Å*lParam = 0;‚ğƒRƒƒ“ƒgƒAƒEƒg‚·‚éinop‚Å–„‚ß‚éj
+			// WM_IME_SETCONTEXTã§*lParam = 0;ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã™ã‚‹ï¼ˆnopã§åŸ‹ã‚ã‚‹ï¼‰
 			// mov     [r9], r15
 			BytePattern::temp_instance().find_pattern("4D 89 39 48 8B 74 24 40");
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.c‚ÌC³")) {
+			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.cã®ä¿®æ­£")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 				Injector::WriteMemory<uint8_t>(address, 0x90, true);
 				Injector::WriteMemory<uint8_t>(address+1, 0x90, true);
@@ -109,10 +118,12 @@ namespace Ime {
 				e.unmatch.imeProc2Injector = true;
 			}
 
-			// WM_IME_COMPOSITION‚Ìif•¶‚ÌIME_GetCompositionString‚ÆIME_SendInputEvent‚ğƒRƒƒ“ƒgƒAƒEƒgijmp‚³‚¹‚éj
+			// WM_IME_COMPOSITIONã®ifæ–‡ã®IME_GetCompositionStringã¨IME_SendInputEventã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆï¼ˆjmpã•ã›ã‚‹ï¼‰
 			//  mov     r8d, 800h
+			// äºŒã¤ç›®ã®ifæ–‡ã‚‚ã‚¹ã‚­ãƒƒãƒ—ã•ã›ã‚‹
+			// https://github.com/matanki-saito/EU4dll/issues/19#issuecomment-423940364
 			BytePattern::temp_instance().find_pattern("41 B8 00 08 00 00 48 8B D6 48 8B CF");
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.c‚ÌC³")) {
+			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.cã®ä¿®æ­£")) {
 				// jz xxx -> jmp xxx
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 				Injector::WriteMemory<uint8_t>(address - 2, 0xEB, true);
@@ -129,11 +140,58 @@ namespace Ime {
 		return e;
 	}
 
+	// ã‚³ãƒ³ãƒã‚¸ã‚·ãƒ§ãƒ³å…¥åŠ›ä¸­ã®ãƒãƒƒã‚¯ã‚¹ãƒšãƒ¼ã‚¹ã‚„çŸ¢å°ã‚­ãƒ¼ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹
+	// WM_KEYDOWNã®ã¿ã®ä¿®æ­£ã§ã€WM_KEYUPã®ä¿®æ­£ã¯å…¥ã‚Œã¦ã„ãªã„ã€‚ãŠãã‚‰ããã‚Œã§ã‚‚å•é¡Œãªã„
+	// https://github.com/matanki-saito/EU4dll/issues/19
+	DllError imeProc3Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_3_0:
+			// ç›´å‰ã®éƒ¨åˆ†ã§jmpã«ä½¿ã†14byteã‚’ç¢ºä¿ã™ã‚‹ã“ã¨ãŒã§ããªã‹ã£ãŸã€‚
+			// ãã®ãŸã‚WM_KEYDOWNã®ã‚³ãƒ¼ãƒ‰ã‚’ã™ã¹ã¦ç§»æ¤ã—ãŸ
+			// mov     rcx, [rbp+0C0h+hRawInput]
+			BytePattern::temp_instance().find_pattern("48 8B 8D E8 ? ? ? ? 8B D6 E8 ? ? ? ? 33");
+			if (BytePattern::temp_instance().has_size(2, "SDL_windowsevents.cã®ä¿®æ­£")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// call {sub_xxxxx} / WindowsScanCodeToSDLScanCode
+				imeProc3CallAddress1 = Injector::GetBranchDestination(address + 0xA).as_int();
+
+				// call {sub_xxxxx} / SDL_GetKeyboardState
+				imeProc3CallAddress2 = Injector::GetBranchDestination(address + 0x13).as_int();
+
+				// call {sub_xxxxx} / ShouldGenerateWindowCloseOnAltF4
+				imeProc3CallAddress3 = Injector::GetBranchDestination(address + 0x36).as_int();
+
+				// call {sub_xxxxx} / SDL_SendWindowEvent
+				imeProc3CallAddress4 = Injector::GetBranchDestination(address + 0x50).as_int();
+
+				// call {sub_xxxxx} / SDL_SendKeyboardKey
+				imeProc3CallAddress5 = Injector::GetBranchDestination(address + 0x61).as_int();
+
+				// xor     edi, edi
+				imeProc3ReturnAddress = address + 0x66;
+
+				Injector::MakeJMP(address, imeProc3, true);
+			}
+			else {
+				e.unmatch.imeProc3Injector = true;
+			}
+			break;
+		default:
+			e.version.imeProc3Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= imeProc1Injector(options);
 		result |= imeProc2Injector(options);
+		result |= imeProc3Injector(options);
 
 		return result;
 	}
