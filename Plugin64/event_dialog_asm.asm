@@ -1,6 +1,7 @@
 EXTERN	eventDialogProc1ReturnAddress	:	QWORD
 EXTERN	eventDialogProc2ReturnAddress1	:	QWORD
 EXTERN	eventDialogProc2ReturnAddress2	:	QWORD
+EXTERN	eventDialogProc3ReturnAddress	:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -59,7 +60,6 @@ JMP_G:
 
 JMP_F:
 	mov		eventDialogProc1Flag, 1h;
-	add		edi, 2;
 
 JMP_E:
 	mov		rsi, qword ptr [r10 + rax * 8];
@@ -76,10 +76,10 @@ eventDialogProc2 PROC
 	mulss		xmm0, xmm1;
 	ucomiss		xmm0, xmm8;
 
-	jnp			JMP_A;
-
 	cmp			eventDialogProc1Flag,1h;
-	jz			JMP_B;
+	jz			JMP_A;
+	jp			JMP_B;
+	jnz			JMP_B;
 
 JMP_A:
 	push		eventDialogProc2ReturnAddress1;
@@ -89,4 +89,22 @@ JMP_B:
 	push		eventDialogProc2ReturnAddress2;
 	ret;
 eventDialogProc2 ENDP
+
+;-------------------------------------------;
+
+eventDialogProc3 PROC
+	cmp		eventDialogProc1Flag, 1;
+	jnz		JMP_A;
+	add		edi,2;
+
+JMP_A:
+	inc		edi;
+	cmp		edi, dword ptr [rbx+10h];
+	mov		edx, dword ptr [rsp+378h+18h];
+	lea     r10, qword ptr [rsi+100h];
+	
+	push	eventDialogProc3ReturnAddress;
+	ret;
+eventDialogProc3 ENDP
+
 END
