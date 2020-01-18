@@ -174,12 +174,18 @@ typedef struct {
 
 } ParadoxTextObject;
 
-typedef struct {
+typedef struct _RunOptions {
 	Eu4Version version;
+	bool test;
+	int separateCharacterCodePoint;
 } RunOptions;
 
 namespace Version {
-	Eu4Version GetVersion();
+	void GetVersionFromExe(RunOptions *option);
+}
+
+namespace Ini {
+	void GetOptionsFromIni(RunOptions *option);
 }
 
 namespace Debug {
@@ -245,3 +251,5 @@ namespace Ime {
 namespace Input {
 	DllError Init(RunOptions option);
 }
+
+
