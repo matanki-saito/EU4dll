@@ -75,15 +75,17 @@ eventDialogProc2 PROC
 	cvtdq2ps	xmm0, xmm0;
 	mulss		xmm0, xmm1;
 	ucomiss		xmm0, xmm8;
-	jp			JMP_A;
-	jnz			JMP_A;
-	cmp			eventDialogProc1Flag,1h;
-	jz			JMP_A;
 
+	jnp			JMP_A;
+
+	cmp			eventDialogProc1Flag,1h;
+	jz			JMP_B;
+
+JMP_A:
 	push		eventDialogProc2ReturnAddress1;
 	ret;
 
-JMP_A:
+JMP_B:
 	push		eventDialogProc2ReturnAddress2;
 	ret;
 eventDialogProc2 ENDP
