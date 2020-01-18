@@ -46,6 +46,7 @@ struct DllError{
 			bool mapAdjustmentProc2Injector : 1;
 			bool mapAdjustmentProc3Injector : 1;
 			bool mapAdjustmentProc4Injector : 1;
+			bool mapAdjustmentProc5Injector : 1;
 			bool mapJustifyProc1Injector : 1;
 			bool mapJustifyProc2Injector : 1;
 			bool mapJustifyProc3Injector : 1;
@@ -101,6 +102,7 @@ struct DllError{
 			bool mapAdjustmentProc2Injector : 1;
 			bool mapAdjustmentProc3Injector : 1;
 			bool mapAdjustmentProc4Injector : 1;
+			bool mapAdjustmentProc5Injector : 1;
 			bool mapJustifyProc1Injector : 1;
 			bool mapJustifyProc2Injector : 1;
 			bool mapJustifyProc3Injector : 1;

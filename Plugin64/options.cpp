@@ -52,7 +52,7 @@ namespace Ini {
 		ret = GetPrivateProfileString(
 			L"options",
 			L"SEPARATE_CHARACTER_CODE_POINT",
-			L" ",
+			L"32",
 			buf,
 			64,
 			ini_path.c_str()

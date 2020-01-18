@@ -4,6 +4,9 @@ EXTERN	mapAdjustmentProc2ReturnAddress		:	QWORD
 EXTERN	mapAdjustmentProc3ReturnAddress1	:	QWORD
 EXTERN	mapAdjustmentProc3ReturnAddress2	:	QWORD
 EXTERN	mapAdjustmentProc4ReturnAddress		:	QWORD
+EXTERN	mapAdjustmentProc5ReturnAddress		:	QWORD
+EXTERN	mapAdjustmentProc5SeparatorAddress	:	QWORD
+
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -17,6 +20,9 @@ SHIFT_4			=	8F2h
 NO_FONT			=	98Fh
 NOT_DEF			=	2026h
 MAP_LIMIT		=	2Dh-1
+
+.DATA
+Separator	DB	"@@", 0
 
 .CODE
 mapAdjustmentProc1 PROC
@@ -38,10 +44,13 @@ mapAdjustmentProc1 PROC
 
 JMP_A:
 	add		r14d, 3;
-
 JMP_B:
 	mov     ebx, r14d;
 
+	cmp		r14d, 45;
+	jbe		JMP_C;
+	nop;
+JMP_C:
 	push	mapAdjustmentProc1ReturnAddress;
 	ret;
 mapAdjustmentProc1 ENDP
@@ -155,4 +164,14 @@ JMP_E:
 	push	mapAdjustmentProc4ReturnAddress;
 	ret;
 mapAdjustmentProc4 ENDP
+
+;-------------------------------------------;
+
+mapAdjustmentProc5 PROC
+	mov		r8,	mapAdjustmentProc5SeparatorAddress;
+	lea     rdx, [rbp+190h-118h];
+	lea     rcx, [rbp+190h-50h];
+	push	mapAdjustmentProc5ReturnAddress;
+	ret;
+mapAdjustmentProc5 ENDP
 END
