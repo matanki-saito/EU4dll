@@ -163,8 +163,8 @@ namespace MapAdjustment {
 				x[1] = 0;
 				char* escapedChar = NULL;
 				convertWideTextToEscapedText(x, &escapedChar);
-				int len = strlen(escapedChar);
-				int lenWithNull = len + 1;
+				size_t len = strlen(escapedChar);
+				size_t lenWithNull = len + 1;
 				mapAdjustmentProc5InjectorSeparateBuffer = new char[lenWithNull]();
 				memcpy(mapAdjustmentProc5InjectorSeparateBuffer, escapedChar, len);
 

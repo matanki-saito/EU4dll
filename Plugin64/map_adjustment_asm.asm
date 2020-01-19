@@ -22,7 +22,7 @@ NOT_DEF			=	2026h
 MAP_LIMIT		=	2Dh-1
 
 .DATA
-Separator	DB	"@@", 0
+DefaultSeparator	DB	" ", 0
 
 .CODE
 mapAdjustmentProc1 PROC
@@ -168,9 +168,41 @@ mapAdjustmentProc4 ENDP
 ;-------------------------------------------;
 
 mapAdjustmentProc5 PROC
-	mov		r8,	mapAdjustmentProc5SeparatorAddress;
+	; ex) {アラゴン}領シチリア ; {} = [rbp+190h-118h
 	lea     rdx, [rbp+190h-118h];
-	lea     rcx, [rbp+190h-50h];
+	movsxd	rcx,dword ptr [rdx+10h];
+	cmp		rcx , 10h;
+	jle		JMP_A;
+	mov		rdx, qword ptr [rdx];
+
+JMP_A:
+	; {}の最後の文字がマルチバイトであるかを確認する
+	;　後ろから3バイト目を取得する。2バイト以下ならばスキップ
+	cmp		rcx,3;
+	jb		JMP_B;
+
+	mov		dl, byte ptr[rdx + rcx - 3];
+
+	cmp		dl, ESCAPE_SEQ_1;
+	jz		JMP_D;
+	cmp		dl, ESCAPE_SEQ_2;
+	jz		JMP_D;
+	cmp		dl, ESCAPE_SEQ_3;
+	jz		JMP_D;
+	cmp		dl, ESCAPE_SEQ_4;
+	jz		JMP_D;
+	jmp		JMP_B;
+
+JMP_D:
+	mov		r8,	mapAdjustmentProc5SeparatorAddress;
+	jmp		JMP_C;
+
+JMP_B: ;英語
+	lea		r8,	DefaultSeparator;
+
+JMP_C:
+	lea     rcx, [rbp+190h-50h]; 元に戻す
+	lea     rdx, [rbp+190h-118h]; 元に戻す
 	push	mapAdjustmentProc5ReturnAddress;
 	ret;
 mapAdjustmentProc5 ENDP
