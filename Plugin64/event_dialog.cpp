@@ -5,9 +5,11 @@ namespace EventDialog {
 	extern "C" {
 		void eventDialogProc1();
 		void eventDialogProc2();
+		void eventDialogProc3();
 		uintptr_t eventDialogProc1ReturnAddress;
 		uintptr_t eventDialogProc2ReturnAddress1;
 		uintptr_t eventDialogProc2ReturnAddress2;
+		uintptr_t eventDialogProc3ReturnAddress;
 	}
 
 	DllError eventDialog1Injector(RunOptions options) {
@@ -75,11 +77,39 @@ namespace EventDialog {
 		return e;
 	}
 
+
+	DllError eventDialog3Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_3_0:
+			// inc     edi
+			BytePattern::temp_instance().find_pattern("FF C7 3B 7B 10 8B 94 24 90 03 00 00 4C 8D");
+			if (BytePattern::temp_instance().has_size(1, "カウントアップ")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				//  mov     r11, 0BFFFFFF43FFFFFFh
+				eventDialogProc3ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, eventDialogProc3, true);
+			}
+			else {
+				e.unmatch.eventDialog2Injector = true;
+			}
+			break;
+		default:
+			e.version.eventDialog2Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= eventDialog1Injector(options);
 		result |= eventDialog2Injector(options);
+		result |= eventDialog3Injector(options);
 
 		return result;
 	}

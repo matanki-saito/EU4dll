@@ -31,14 +31,14 @@ namespace Version {
 		}
 	}
 
-	Eu4Version GetVersion() {
+	void GetVersionFromExe(RunOptions *options) {
+		Eu4Version version;
+		
 		// EU4 v1.??.?
 		BytePattern::temp_instance().find_pattern("45 55 34 20 76 31 2E ? ? 2E ?");
 		if (BytePattern::temp_instance().count() > 0) {
 			// ??を取得する
 			Pattern minor = Injector::ReadMemory<Pattern>(BytePattern::temp_instance().get_first().address(0x7), true);
-
-			Eu4Version version;
 
 			switch (minor.calVer()) {
 			case 290:
@@ -60,9 +60,11 @@ namespace Version {
 			}
 
 			BytePattern::LoggingInfo(versionString(version));
-
-			return version;
 		}
-		else return UNKNOWN;
+		else {
+			version = UNKNOWN;
+		}
+
+		options->version = version;
 	}
 }

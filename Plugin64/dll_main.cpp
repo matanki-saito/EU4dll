@@ -19,7 +19,11 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 		// 設定
 		RunOptions options;
-		options.version = Version::GetVersion();
+
+		// Version取得
+		Version::GetVersionFromExe(&options);
+		// INIから取得
+		Ini::GetOptionsFromIni(&options);
 
 		// デバッグ用
 		#ifdef _DEBUG

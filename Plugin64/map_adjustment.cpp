@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "plugin_64.h"
+#include "escape_tool.h"
 
 namespace MapAdjustment {
 	extern "C" {
@@ -7,12 +8,15 @@ namespace MapAdjustment {
 		void mapAdjustmentProc2();
 		void mapAdjustmentProc3();
 		void mapAdjustmentProc4();
+		void mapAdjustmentProc5();
 		uintptr_t mapAdjustmentProc1ReturnAddress;
 		uintptr_t mapAdjustmentProc1CallAddress;
 		uintptr_t mapAdjustmentProc2ReturnAddress;
 		uintptr_t mapAdjustmentProc3ReturnAddress1;
 		uintptr_t mapAdjustmentProc3ReturnAddress2;
 		uintptr_t mapAdjustmentProc4ReturnAddress;
+		uintptr_t mapAdjustmentProc5ReturnAddress;
+		uintptr_t mapAdjustmentProc5SeparatorAddress;
 	}
 
 	// これはwin32のときはmiscにあったが統合した。
@@ -141,6 +145,47 @@ namespace MapAdjustment {
 		return e;
 	}
 
+	char* mapAdjustmentProc5InjectorSeparateBuffer;
+
+	DllError mapAdjustmentProc5Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_2_0:
+		case v1_29_3_0:
+			// lea r8, asc_xxxxx
+			BytePattern::temp_instance().find_pattern("4C 8D 05 ? ? ? ? 48 8D 55 78 48 8D 8D 40 01");
+			if (BytePattern::temp_instance().has_size(1, "区切り記号の変更（ISSUE-164）")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				wchar_t x[2] = { 0 };
+				x[0] = options.separateCharacterCodePoint;
+				x[1] = 0;
+				char* escapedChar = NULL;
+				convertWideTextToEscapedText(x, &escapedChar);
+				size_t len = strlen(escapedChar);
+				size_t lenWithNull = len + 1;
+				mapAdjustmentProc5InjectorSeparateBuffer = new char[lenWithNull]();
+				memcpy(mapAdjustmentProc5InjectorSeparateBuffer, escapedChar, len);
+
+				mapAdjustmentProc5SeparatorAddress = (uintptr_t)mapAdjustmentProc5InjectorSeparateBuffer;
+
+				// call sub_xxxxx
+				mapAdjustmentProc5ReturnAddress = address + 0x12;
+
+				Injector::MakeJMP(address, mapAdjustmentProc5, true);
+			}
+			else {
+				e.unmatch.mapAdjustmentProc5Injector = true;
+			}
+			break;
+		default:
+			e.version.mapAdjustmentProc5Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
@@ -148,6 +193,7 @@ namespace MapAdjustment {
 		result |= mapAdjustmentProc2Injector(options);
 		result |= mapAdjustmentProc3Injector(options);
 		result |= mapAdjustmentProc4Injector(options);
+		result |= mapAdjustmentProc5Injector(options);
 
 		return result;
 	}
