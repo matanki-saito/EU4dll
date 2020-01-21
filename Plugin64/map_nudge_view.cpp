@@ -13,6 +13,7 @@ namespace MapNudgeView {
 		switch (options.version) {
 		case v1_29_2_0:
 		case v1_29_3_0:
+		case v1_29_4_0:
 			//  movzx   eax, byte ptr [rax+rcx]
 			BytePattern::temp_instance().find_pattern("0F B6 04 08 49 8B 94 C4 00 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, "nudge view")) {
