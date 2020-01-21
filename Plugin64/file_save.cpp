@@ -36,6 +36,7 @@ namespace FileSave {
 		switch (options.version) {
 		case v1_29_2_0:
 		case v1_29_3_0:
+		case v1_29_4_0:
 			// mov     eax, [rcx+10h]
 			BytePattern::temp_instance().find_pattern("8B 41 10 85 C0 0F 84 31 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, "ファイル名を安全にしている場所を短絡する")) {
@@ -61,6 +62,10 @@ namespace FileSave {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_29_4_0:
+			pattern = "48 8D 05 91 FB A4 FF 48 3B D0 75 06 48 8D 41 30";
+			goto TAG;
+
 		case v1_29_3_0:
 			pattern = "48 8D 05 11 92 A5 FF 48 3B D0 75 06 48 8D 41 30";
 			goto TAG;
@@ -96,6 +101,7 @@ namespace FileSave {
 		switch (options.version) {
 		case v1_29_3_0:
 		case v1_29_2_0:
+		case v1_29_4_0:
 			//  jmp     short loc_xxxxx
 			BytePattern::temp_instance().find_pattern("EB 6E 48 8D 15 ? ? ? ? FF 90 98 00 00 00 48");
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのタイトルを表示できるようにする")) {
@@ -126,6 +132,7 @@ namespace FileSave {
 		switch (options.version) {
 		case v1_29_2_0:
 		case v1_29_3_0:
+		case v1_29_4_0:
 			// lea     r8, [rbp+0]
 			BytePattern::temp_instance().find_pattern("4C 8D 45 00 48 8D 15 ? ? ? ? 48 8D 4C 24 70 E8 ? ? ? ? 90");
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのツールチップを表示できるようにする1")) {
@@ -158,6 +165,7 @@ namespace FileSave {
 		switch (options.version) {
 		case v1_29_2_0:
 		case v1_29_3_0:
+		case v1_29_4_0:
 			// lea     r8, [r14+598h]
 			BytePattern::temp_instance().find_pattern("4D 8D 86 98 05 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 50");
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのツールチップを表示できるようにする2")) {
@@ -189,6 +197,7 @@ namespace FileSave {
 
 		switch (options.version) {
 		case v1_29_3_0:
+		case v1_29_4_0:
 			// lea     r8, [rbp+380h]
 			BytePattern::temp_instance().find_pattern("4C 8D 85 80 03 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 30");
 			if (BytePattern::temp_instance().has_size(1, "スタート画面でのコンティニューのツールチップ")) {
@@ -220,6 +229,7 @@ namespace FileSave {
 
 		switch (options.version) {
 		case v1_29_3_0:
+		case v1_29_4_0:
 			// lea     rcx, [rbx+0C8h]
 			BytePattern::temp_instance().find_pattern("48 8D 8B C8 00 00 00 48 8B 01 48 8D 54 24 28");
 			if (BytePattern::temp_instance().has_size(1, "セーブダイアログでのインプットテキストエリア")) {

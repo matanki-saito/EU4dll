@@ -12,7 +12,7 @@ debugProc1 PROC
 	push	r13;
 	push	r14;
 	push	r15;
-	mov		eax, 17F0h;
+	mov		eax, 1C30h;
 
 	push	debugProc1ReturnAddress;
 	ret;
