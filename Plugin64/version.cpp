@@ -56,6 +56,7 @@ namespace Version {
 				version = v1_29_3_0;
 				break;
 			case 294:
+			case 295:
 				version = v1_29_4_0;
 				break;
 			default:
