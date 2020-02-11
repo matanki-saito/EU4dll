@@ -74,6 +74,8 @@ struct DllError{
 			bool imeProc3Injector : 1;
 			bool inputProc1Injector : 1;
 			bool inputProc2Injector : 1;
+			bool wordOrderProc1Injector : 1;
+			bool wordOrderProc2Injector : 1;
 		};
 	} version;
 
@@ -130,6 +132,8 @@ struct DllError{
 			bool imeProc3Injector : 1;
 			bool inputProc1Injector : 1;
 			bool inputProc2Injector : 1;
+			bool wordOrderProc1Injector : 1;
+			bool wordOrderProc2Injector : 1;
 		};
 	} unmatch;
 
@@ -180,6 +184,7 @@ typedef struct {
 typedef struct _RunOptions {
 	Eu4Version version;
 	bool test;
+	bool reversingWordsBattleOfArea;
 	int separateCharacterCodePoint;
 } RunOptions;
 
@@ -255,4 +260,7 @@ namespace Input {
 	DllError Init(RunOptions option);
 }
 
+namespace WordOrder {
+	DllError Init(RunOptions option);
+}
 

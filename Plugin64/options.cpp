@@ -60,10 +60,26 @@ namespace Ini {
 		options->separateCharacterCodePoint  = _wtoi(buf);
 	}
 
+	void reversingWordsBattleOfArea(wstring ini_path, RunOptions* options) {
+		wchar_t buf[64] = { 0 };
+		DWORD  ret;
+
+		ret = GetPrivateProfileString(
+			L"options",
+			L"REVERSING_WORDS_BATTLE_OF_AREA",
+			L"yes",
+			buf,
+			64,
+			ini_path.c_str()
+		);
+		options->reversingWordsBattleOfArea = lstrcmpW(buf, L"yes") == 0 ? true : false;
+	}
+
 	void GetOptionsFromIni(RunOptions* options) {
 		wstring ini_path = constructIniPath();
 
 		testMode(ini_path, options);
 		separateCharacter(ini_path, options);
+		reversingWordsBattleOfArea(ini_path, options);
 	}
 }
