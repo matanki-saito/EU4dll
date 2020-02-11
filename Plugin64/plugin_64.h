@@ -184,6 +184,7 @@ typedef struct {
 typedef struct _RunOptions {
 	Eu4Version version;
 	bool test;
+	bool reversingWordsBattleOfArea;
 	int separateCharacterCodePoint;
 } RunOptions;
 
