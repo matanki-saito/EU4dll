@@ -4,6 +4,8 @@ bool createProcess(WCHAR* szCmd, DWORD flag) {
 	wstring message = L""s;
 	wstring title = L"DLL autoupdate failed"s;
 
+	DWORD errCode;
+
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	memset(&si, 0, sizeof(STARTUPINFO));
@@ -13,14 +15,15 @@ bool createProcess(WCHAR* szCmd, DWORD flag) {
 	BOOL createProcessSuccess = CreateProcess(NULL, szCmd, NULL, NULL, FALSE, flag, NULL, NULL, &si, &pi);
 
 	if (createProcessSuccess) {
-		DWORD result = WaitForSingleObject(pi.hProcess, 40 * 1000);
+		DWORD result = WaitForSingleObject(pi.hProcess, 10 * 1000);
 		switch (result){
 		case WAIT_FAILED:
-			message = L"WAIT_FAILED";
+			errCode = GetLastError();
+			message = L"DLL autoupdate WAIT_FAILED. errCode=" + errCode;
 			createProcessSuccess = false;
 			break;
 		case WAIT_TIMEOUT:
-			message = L"WAIT_TIMEOUT";
+			message = L"DLL autoupdate WAIT_TIMEOUT";
 			createProcessSuccess = false;
 			break;
 		default:
