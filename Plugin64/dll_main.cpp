@@ -72,6 +72,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		// 入力
 		e |= Input::Init(options);
 
+		// 文字列順序入れ替え
+		e |= WordOrder::Init(options);
+
 		Validator::Validate(e,options);
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
 		BytePattern::ShutdownLog();
