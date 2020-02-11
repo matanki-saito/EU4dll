@@ -41,6 +41,14 @@ It is for the alert debug.
 
 Change the character that connects the region name and the country name. See ISSUE-164
 
+#### REVERSING_WORDS_BATTLE_OF_AREA
+
+Change the words ordering.
+
+- Battle of / xxx -> xxx / Battle of
+- Siege of / xxx -> xxx / Siege of
+- Occupation of xxx -> xxx / Occupation of
+
 ### Autoupdate
 
 Plugin.dll and Plugin64.dll will be updated automatically. It requires an Internet connection at game run. If you do not need or play offline game, please DELETE "plugins/autoupdate.bat" file.
