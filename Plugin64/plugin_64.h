@@ -76,6 +76,9 @@ struct DllError{
 			bool inputProc2Injector : 1;
 			bool wordOrderProc1Injector : 1;
 			bool wordOrderProc2Injector : 1;
+			bool wordOrderProc3Injector : 1;
+			bool wordOrderProc4Injector : 1;
+			bool wordOrderProc5Injector : 1;
 		};
 	} version;
 
@@ -134,6 +137,9 @@ struct DllError{
 			bool inputProc2Injector : 1;
 			bool wordOrderProc1Injector : 1;
 			bool wordOrderProc2Injector : 1;
+			bool wordOrderProc3Injector : 1;
+			bool wordOrderProc4Injector : 1;
+			bool wordOrderProc5Injector : 1;
 		};
 	} unmatch;
 
