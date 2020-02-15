@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\utils">
+      <UniqueIdentifier>{4d02482f-1374-41c7-9681-9342e6af1d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app">
+      <UniqueIdentifier>{b0f560fc-646f-4c11-9924-aad90f6c68c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\core">
+      <UniqueIdentifier>{4d48b634-1fcd-4d99-90d7-907758d82ef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\debug">
+      <UniqueIdentifier>{16abc191-d140-4e60-ab51-a373f3e36b1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\version">
+      <UniqueIdentifier>{e41bb04c-0fcb-4427-99fb-580a8bd96075}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\utils">
+      <UniqueIdentifier>{6db7f006-d06f-417c-a8cc-fc30cbd35436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\app">
+      <UniqueIdentifier>{c8448304-b2e2-40e9-a8ee-2547154c3cc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\core">
+      <UniqueIdentifier>{74d98a6d-ce93-4b35-af9c-c7e7179c0ce7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\font">
+      <UniqueIdentifier>{225fa615-5102-4152-aaf0-529b69645e35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\main_text">
+      <UniqueIdentifier>{028db1bf-5d62-43c3-bf89-1b7eefe2e694}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\tooltip_and_button">
+      <UniqueIdentifier>{c5fe84dd-9294-4bf0-8581-1c5c28290f96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\map_view">
+      <UniqueIdentifier>{fa3fa132-80e4-409f-a69b-38602080539f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\map_adjustment">
+      <UniqueIdentifier>{cefa1599-a81d-4e04-bf95-f91661b4cc5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\map_justify">
+      <UniqueIdentifier>{dbe55493-4235-438e-8a66-a6911912ee56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\event_dialog">
+      <UniqueIdentifier>{713cd3a0-5b25-43d6-af8d-c8ae58b1046c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\map_popup">
+      <UniqueIdentifier>{a7c03edc-bbe8-4a35-aa16-3c4899368d37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\list_field_adjustment">
+      <UniqueIdentifier>{ea063e43-633a-4795-a1d4-e0aead62ec8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\validator">
+      <UniqueIdentifier>{4b34a37f-a3f8-43f0-9912-f4da0e659988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\file_save">
+      <UniqueIdentifier>{d18df3a6-eb44-41b7-aff8-d2fd7d13b495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\date">
+      <UniqueIdentifier>{6a8bec9d-9bd3-4540-a331-491fd6d00c91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\map_nudge_view">
+      <UniqueIdentifier>{0da0e017-dd4c-4760-86a0-d4c87d409c67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\ime">
+      <UniqueIdentifier>{7171d39c-fac0-4741-af23-6fac010313fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\input">
+      <UniqueIdentifier>{07d30c43-6921-4a95-af27-1fb217d3c3dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\options">
+      <UniqueIdentifier>{d09a302e-b226-490e-ad0c-f444408b198f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\app\word_order">
+      <UniqueIdentifier>{5e3e9836-52fd-4562-a3cd-6b4caeb37d21}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="byte_pattern.h">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin_64.h">
+      <Filter>ヘッダー ファイル\app</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>ヘッダー ファイル\core</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>ヘッダー ファイル\core</Filter>
+    </ClInclude>
+    <ClInclude Include="injector.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="translator.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="calling.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="assembly.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="mod_download.h">
+      <Filter>ヘッダー ファイル\core</Filter>
+    </ClInclude>
+    <ClInclude Include="escape_tool.h">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="byte_pattern.cpp">
+      <Filter>ソース ファイル\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>ソース ファイル\core</Filter>
+    </ClCompile>
+    <ClCompile Include="dll_main.cpp">
+      <Filter>ソース ファイル\core</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
+      <Filter>ソース ファイル\app\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="version.cpp">
+      <Filter>ソース ファイル\app\version</Filter>
+    </ClCompile>
+    <ClCompile Include="hooking.hpp">
+      <Filter>ヘッダー ファイル\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="font.cpp">
+      <Filter>ソース ファイル\app\font</Filter>
+    </ClCompile>
+    <ClCompile Include="main_text.cpp">
+      <Filter>ソース ファイル\app\main_text</Filter>
+    </ClCompile>
+    <ClCompile Include="tooltip_and_button.cpp">
+      <Filter>ソース ファイル\app\tooltip_and_button</Filter>
+    </ClCompile>
+    <ClCompile Include="map_view.cpp">
+      <Filter>ソース ファイル\app\map_view</Filter>
+    </ClCompile>
+    <ClCompile Include="map_adjustment.cpp">
+      <Filter>ソース ファイル\app\map_adjustment</Filter>
+    </ClCompile>
+    <ClCompile Include="map_justify.cpp">
+      <Filter>ソース ファイル\app\map_justify</Filter>
+    </ClCompile>
+    <ClCompile Include="event_dialog.cpp">
+      <Filter>ソース ファイル\app\event_dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="mod_download.cpp">
+      <Filter>ソース ファイル\core</Filter>
+    </ClCompile>
+    <ClCompile Include="map_popup.cpp">
+      <Filter>ソース ファイル\app\map_popup</Filter>
+    </ClCompile>
+    <ClCompile Include="list_field_adjustment.cpp">
+      <Filter>ソース ファイル\app\list_field_adjustment</Filter>
+    </ClCompile>
+    <ClCompile Include="validator.cpp">
+      <Filter>ソース ファイル\app\validator</Filter>
+    </ClCompile>
+    <ClCompile Include="file_save.cpp">
+      <Filter>ソース ファイル\app\file_save</Filter>
+    </ClCompile>
+    <ClCompile Include="escape_tool.cpp">
+      <Filter>ソース ファイル\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="date.cpp">
+      <Filter>ソース ファイル\app\date</Filter>
+    </ClCompile>
+    <ClCompile Include="map_nudge_view.cpp">
+      <Filter>ソース ファイル\app\map_nudge_view</Filter>
+    </ClCompile>
+    <ClCompile Include="ime.cpp">
+      <Filter>ソース ファイル\app\ime</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\app\input</Filter>
+    </ClCompile>
+    <ClCompile Include="options.cpp">
+      <Filter>ソース ファイル\app\options</Filter>
+    </ClCompile>
+    <ClCompile Include="word_order.cpp">
+      <Filter>ソース ファイル\app\word_order</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="debug_asm.asm">
+      <Filter>ソース ファイル\app\debug</Filter>
+    </MASM>
+    <MASM Include="font_asm.asm">
+      <Filter>ソース ファイル\app\font</Filter>
+    </MASM>
+    <MASM Include="main_text_asm.asm">
+      <Filter>ソース ファイル\app\main_text</Filter>
+    </MASM>
+    <MASM Include="tooltip_and_button_asm.asm">
+      <Filter>ソース ファイル\app\tooltip_and_button</Filter>
+    </MASM>
+    <MASM Include="map_view_asm.asm">
+      <Filter>ソース ファイル\app\map_view</Filter>
+    </MASM>
+    <MASM Include="map_adjustment_asm.asm">
+      <Filter>ソース ファイル\app\map_adjustment</Filter>
+    </MASM>
+    <MASM Include="map_justify_asm.asm">
+      <Filter>ソース ファイル\app\map_justify</Filter>
+    </MASM>
+    <MASM Include="event_dialog_asm.asm">
+      <Filter>ソース ファイル\app\event_dialog</Filter>
+    </MASM>
+    <MASM Include="map_popup_asm.asm">
+      <Filter>ソース ファイル\app\map_popup</Filter>
+    </MASM>
+    <MASM Include="list_field_adjustment_asm.asm">
+      <Filter>ソース ファイル\app\list_field_adjustment</Filter>
+    </MASM>
+    <MASM Include="file_save_asm.asm">
+      <Filter>ソース ファイル\app\file_save</Filter>
+    </MASM>
+    <MASM Include="date_asm.asm">
+      <Filter>ソース ファイル\app\date</Filter>
+    </MASM>
+    <MASM Include="map_nudge_view_asm.asm">
+      <Filter>ソース ファイル\app\map_nudge_view</Filter>
+    </MASM>
+    <MASM Include="ime_asm.asm">
+      <Filter>ソース ファイル\app\ime</Filter>
+    </MASM>
+    <MASM Include="input_asm.asm">
+      <Filter>ソース ファイル\app\input</Filter>
+    </MASM>
+    <MASM Include="word_order_asm.asm">
+      <Filter>ソース ファイル\app\word_order</Filter>
+    </MASM>
+  </ItemGroup>
+</Project>

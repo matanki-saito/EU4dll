@@ -11,7 +11,7 @@
 #include "filedl.h"
 
 using namespace std;
-using namespace std::experimental::filesystem::v1;
+using namespace std::filesystem;
 
 struct
 {
@@ -64,7 +64,9 @@ void Initialize(HMODULE hSelf)
 
 	const path pluginsPath = path{ pluginpath }.parent_path() / L"plugins";
 
+	#ifndef _DEBUG
 	if (!InitAutoUpdate(pluginsPath)) exit(-1);
+	#endif
 
     InitD3D9();
 

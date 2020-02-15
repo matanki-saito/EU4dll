@@ -99,6 +99,7 @@ namespace IME {
 		case v1_27_X:
 		case v1_26_X:
 		case v1_25_X:
+			// WM_IME_STARTCOMPOSITION
 			byte_pattern::temp_instance().find_pattern("0F 84 FA 01 00 00 83 E8");
 			if (byte_pattern::temp_instance().has_size(1,desc + " start")) {
 				// sub eax, 0xBC
@@ -121,6 +122,7 @@ namespace IME {
 			}
 			else return EU4_ERROR1;
 
+			// WM_IME_COMPOSITION
 			byte_pattern::temp_instance().find_pattern("68 00 08 00 00 57");
 			if (byte_pattern::temp_instance().has_size(1, desc + "skip code 1")) {
 				// push 800h
@@ -129,6 +131,7 @@ namespace IME {
 			}
 			else return EU4_ERROR1;
 
+			// WM_IME_SETCONTEXT
 			byte_pattern::temp_instance().find_pattern("8B 4D 14 89 19");
 			if (byte_pattern::temp_instance().has_size(1, desc + "skip code 2")) {
 				// mov ecx, [ebp+arg_C]

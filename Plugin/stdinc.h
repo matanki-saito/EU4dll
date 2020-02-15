@@ -16,9 +16,9 @@
 #include <filesystem>
 #include <shlobj.h>
 #include <boost/utility/string_view.hpp>
-#include "../include/injector/hooking.hpp"
-#include "../include/injector/calling.hpp"
-#include "../include/injector/assembly.hpp"
+#include "include/injector/hooking.hpp"
+#include "include/injector/calling.hpp"
+#include "include/injector/assembly.hpp"
 
 #define VALIDATE_SIZE(type,size) static_assert(sizeof(type)==size, "Type size error.");
 

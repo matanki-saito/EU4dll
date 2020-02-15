@@ -704,16 +704,16 @@ namespace FileSave {
 		/* 変換関数を探してくる */
 		result |= PHYSFS_utf8FromUcs2_hook(version);
 
-		/* タイトルを表示できるようにする */
+		/* ダイアログでのセーブエントリのタイトルを表示できるようにする */
 		result |= showTitle_hook(version);
 
 		/* UTF-8ファイルを列挙できるようにする jz(74) -> jmp(EB) */ 
 		result |= fileEnumSkip_hook(version);
 
-		/* ツールチップを表示できるようにする */
+		/* ダイアログでのセーブエントリのツールチップを表示できるようにする */
 		result |= showToolTip(version);
 
-		/* タイトルを表示できるようにする */
+		/* タイトルを表示できるようにする issue-89 */
 		result |= loadgame_showTitle_hook(version);
 
 		return result;

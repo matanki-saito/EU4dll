@@ -44,7 +44,7 @@ bool InitAutoUpdate(const path &pluginsPath)
 {
 	path exeFilePath = path{ pluginsPath } / L"claes.exe";
 
-	if (std::experimental::filesystem::exists(exeFilePath)) {
+	if (exists(exeFilePath)) {
 		return createProcess(
 			_wcsdup(exeFilePath.c_str()),
 			CREATE_NO_WINDOW
