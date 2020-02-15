@@ -79,6 +79,9 @@ struct DllError{
 			bool wordOrderProc3Injector : 1;
 			bool wordOrderProc4Injector : 1;
 			bool wordOrderProc5Injector : 1;
+			bool wordOrderProc6Injector : 1;
+			bool wordOrderProc7Injector : 1;
+			bool wordOrderProc8Injector : 1;
 		};
 	} version;
 
@@ -140,6 +143,9 @@ struct DllError{
 			bool wordOrderProc3Injector : 1;
 			bool wordOrderProc4Injector : 1;
 			bool wordOrderProc5Injector : 1;
+			bool wordOrderProc6Injector : 1;
+			bool wordOrderProc7Injector : 1;
+			bool wordOrderProc8Injector : 1;
 		};
 	} unmatch;
 
@@ -151,6 +157,7 @@ struct DllError{
 	}
 };
 
+// same std::basic_string<char>
 typedef struct {
 	union {
 		char text[0x10];

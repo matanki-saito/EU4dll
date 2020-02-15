@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "plugin_64.h"
+#include <atlstr.h>
 
 namespace WordOrder {
 	extern "C" {
@@ -7,6 +8,9 @@ namespace WordOrder {
 		void wordOrderProc3();
 		void wordOrderProc4();
 		void wordOrderProc5();
+		void wordOrderProc6();
+		void wordOrderProc7();
+		void wordOrderProc8();
 
 		uintptr_t wordOrderProc1CallAddress1;
 		uintptr_t wordOrderProc1CallAddress2;
@@ -14,6 +18,20 @@ namespace WordOrder {
 		uintptr_t wordOrderProc3ReturnAddress;
 		uintptr_t wordOrderProc4ReturnAddress;
 		uintptr_t wordOrderProc5ReturnAddress;
+		uintptr_t wordOrderProc6ReturnAddress;
+		uintptr_t wordOrderProc7ReturnAddress;
+		uintptr_t wordOrderProc8ReturnAddress;
+
+		uintptr_t wordOrderProc7CallAddress1;
+		uintptr_t wordOrderProc7CallAddress2;
+
+		uintptr_t generateCString;
+		uintptr_t concatCString;
+		uintptr_t concat2CString;
+
+		uintptr_t year;
+		uintptr_t month;
+		uintptr_t day;
 	}
 
 	DllError wordOrderProc1Injector(RunOptions options){
@@ -147,14 +165,127 @@ namespace WordOrder {
 		return e;
 	}
 
+	// 停戦日付など
+	DllError wordOrderProc6Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_4_0:
+			// nop
+			BytePattern::temp_instance().find_pattern("90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 4F FA B4 FF");
+			if (BytePattern::temp_instance().has_size(1, "M, Y → Y年M")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// nop
+				wordOrderProc6ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, wordOrderProc6, true);
+			}
+			else {
+				e.unmatch.wordOrderProc6Injector = true;
+			}
+			break;
+		default:
+			e.version.wordOrderProc6Injector = true;
+		}
+
+		return e;
+	}
+
+	DllError wordOrderProc7Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_4_0:
+			// nop
+			BytePattern::temp_instance().find_pattern("90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 9D");
+			if (BytePattern::temp_instance().has_size(1, "D M, Y → Y年MD日")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				wordOrderProc7CallAddress1 = Injector::GetBranchDestination(address + 0xF).as_int();
+				wordOrderProc7CallAddress2 = Injector::GetBranchDestination(address + 0x20).as_int();
+
+				// nop
+				wordOrderProc7ReturnAddress = address + 0x5E;
+
+				Injector::MakeJMP(address, wordOrderProc7, true);
+			}
+			else {
+				e.unmatch.wordOrderProc7Injector = true;
+			}
+			break;
+		default:
+			e.version.wordOrderProc7Injector = true;
+		}
+
+		return e;
+	}
+
+	// 外交官のポップアップなど
+	DllError wordOrderProc8Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_4_0:
+			// mov     r8d, 1
+			BytePattern::temp_instance().find_pattern("41 B8 01 00 00 00 48 8D 15 D8 E9 2A 01");
+			if (BytePattern::temp_instance().has_size(1, "M Y → Y年M")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				
+				generateCString = Injector::GetBranchDestination(address + 0x11).as_int();
+				concatCString = Injector::GetBranchDestination(address + 0x23).as_int();
+				concat2CString = Injector::GetBranchDestination(address + 0x33).as_int();
+
+				// nop
+				wordOrderProc8ReturnAddress = address + 0x38;
+
+				Injector::MakeJMP(address, wordOrderProc8, true);
+			}
+			else {
+				e.unmatch.wordOrderProc8Injector = true;
+			}
+			break;
+		default:
+			e.version.wordOrderProc8Injector = true;
+		}
+
+		return e;
+	}
+
+	ParadoxTextObject _year;
+	ParadoxTextObject _month;
+	ParadoxTextObject _day;
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
+
+		_day.t.text[0] = 0xE;
+		_day.t.text[1] = '\0';
+		_day.len = 1;
+		_day.len2 = 0xF;
+
+		_year.t.text[0] = 0xF;
+		_year.t.text[1] = '\0';
+		_year.len = 1;
+		_year.len2 = 0xF;
+
+		_month.t.text[0] = 7;
+		_month.t.text[1] = '\0';
+		_month.len = 1;
+		_month.len2 = 0xF;
+		
+		year = (uintptr_t) &_year;
+		month = (uintptr_t)&_month;
+		day = (uintptr_t)&_day;
 
 		result |= wordOrderProc1Injector(options);
 		result |= wordOrderProc2Injector(options);
 		result |= wordOrderProc3Injector(options);
 		result |= wordOrderProc4Injector(options);
 		result |= wordOrderProc5Injector(options);
+		result |= wordOrderProc6Injector(options);
+		result |= wordOrderProc7Injector(options);
+		result |= wordOrderProc8Injector(options);
 
 		return result;
 	}
