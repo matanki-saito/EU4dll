@@ -4,6 +4,19 @@ EXTERN wordOrderProc2ReturnAddress: QWORD
 EXTERN wordOrderProc3ReturnAddress: QWORD
 EXTERN wordOrderProc4ReturnAddress: QWORD
 EXTERN wordOrderProc5ReturnAddress: QWORD
+EXTERN wordOrderProc6ReturnAddress: QWORD
+EXTERN wordOrderProc7ReturnAddress: QWORD
+EXTERN wordOrderProc7CallAddress1: QWORD
+EXTERN wordOrderProc7CallAddress2: QWORD
+EXTERN wordOrderProc8ReturnAddress: QWORD
+
+EXTERN year: QWORD
+EXTERN month: QWORD
+EXTERN day: QWORD
+
+EXTERN generateCString: QWORD
+EXTERN concatCString: QWORD
+EXTERN concat2CString: QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -122,4 +135,130 @@ JMP_B:
 	push	wordOrderProc5ReturnAddress;
 	ret;
 wordOrderProc5 ENDP
+
+;-----------------------------------;
+
+wordOrderProc6 PROC
+	nop;
+
+	; 1450
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rsp+0D0h-0A8h];
+	mov		rcx, rsi;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	mov		rdx, year;
+	mov		rcx, rsi;
+	call	wordOrderProc1CallAddress2;
+	
+	; 1450年1月
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rbp+57h - 78h];
+	mov		rcx, rsi;
+	call	wordOrderProc1CallAddress2;
+
+
+	push	wordOrderProc6ReturnAddress;
+	ret;
+wordOrderProc6 ENDP
+
+;-----------------------------------;
+
+wordOrderProc7 PROC
+	; 1450
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rsp+168h-100h];
+	mov		rcx, rdi;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	mov		rdx, year;
+	mov		rcx, rdi;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年1月
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rbp+8];
+	mov		rcx, rdi;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年1月1
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rsp+168h - 140h];
+	mov		rcx, rdi;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年1月1日
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	mov		rdx, day;
+	mov		rcx, rdi;
+	call	wordOrderProc1CallAddress2;
+	nop;
+
+	; 以下開放するためだけに必要
+	lea     r8, [rsp + 168h - 120h];
+	lea     rdx, [rsp + 168h - 140h];
+	lea     rcx, [rbp - 18h];
+	call    wordOrderProc7CallAddress1;
+	nop;
+
+	lea		r8, [rbp + 8];
+	mov		rdx, rax;
+	lea		rcx, [rbp - 38h];
+	call	wordOrderProc7CallAddress2;
+	nop;
+
+	mov		r8, year;
+	mov		rdx, rax;
+	lea		rcx, [rbp-58h];
+	call	wordOrderProc7CallAddress2;
+	nop;
+
+	lea		r8, [rsp + 168h - 100h];
+	mov		rdx, rax;
+	lea		rcx, [rbp - 78h];
+	call	wordOrderProc7CallAddress1;
+
+	push	wordOrderProc7ReturnAddress;
+	ret;
+wordOrderProc7 ENDP
+
+;-----------------------------------;
+
+wordOrderProc8 PROC
+
+	; 年
+	mov		r8d, 1;
+	mov		rdx, year;
+	lea		rcx, [rbp-59h];
+	call    generateCString;
+	nop;
+
+	; 1450年
+	lea		r8, [rbp-59h];
+	lea		rdx, [rbp-31h];
+	lea		rcx, [rbp-11h];
+	call	concatCString;
+	nop;
+
+	; 1450年1月
+	lea		r8, [rbp+0Fh];
+	mov		rdx, rax;
+	mov		rcx, rdi;
+	call	concat2CString;
+
+	push	wordOrderProc8ReturnAddress;
+	ret;
+wordOrderProc8 ENDP
 END
