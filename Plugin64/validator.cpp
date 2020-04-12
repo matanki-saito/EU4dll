@@ -2,7 +2,24 @@
 #include "plugin_64.h"
 
 namespace Validator {
+	template <typename ... Args>
+	std::string format(const std::string& fmt, Args ... args)
+	{
+		size_t len = std::snprintf(nullptr, 0, fmt.c_str(), args ...);
+		std::vector<char> buf(len + 1);
+		std::snprintf(&buf[0], len + 1, fmt.c_str(), args ...);
+		return std::string(&buf[0], &buf[0] + len);
+	}
+
 	void Validate(DllError e, RunOptions options) {
+		auto message = format("e.unmatch.code2=%x , e.version.code1=%x , e.mod.code0=%x",
+			e.unmatch.code2,
+			e.version.code1,
+			e.mod.code0);
+
+
+		BytePattern::LoggingInfo("e=" + message);
+
 		if (e.unmatch.code2 > 0 || e.version.code1 > 0 || e.mod.code0 > 0) {
 			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
 
