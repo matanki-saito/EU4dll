@@ -227,10 +227,11 @@ namespace WordOrder {
 
 		switch (options.version) {
 		case v1_29_4_0:
-			// mov     r8d, 1
-			BytePattern::temp_instance().find_pattern("41 B8 01 00 00 00 48 8D 15 D8 E9 2A 01");
+			// nop 
+			BytePattern::temp_instance().find_pattern("90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 31 02");
 			if (BytePattern::temp_instance().has_size(1, "M Y Å® YîNM")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				// mov     r8d, 1
+				uintptr_t address = BytePattern::temp_instance().get_first().address() - 0x16;
 				
 				generateCString = Injector::GetBranchDestination(address + 0x11).as_int();
 				concatCString = Injector::GetBranchDestination(address + 0x23).as_int();
