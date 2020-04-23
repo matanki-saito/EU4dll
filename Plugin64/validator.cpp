@@ -12,7 +12,7 @@ namespace Validator {
 	}
 
 	void Validate(DllError e, RunOptions options) {
-		auto message = format("e.unmatch.code2=%x , e.version.code1=%x , e.mod.code0=%x",
+		auto message = format("e.unmatch.code2=%llx , e.version.code1=%llx , e.mod.code0=%llx",
 			e.unmatch.code2,
 			e.version.code1,
 			e.mod.code0);
