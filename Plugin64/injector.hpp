@@ -611,9 +611,9 @@ namespace Injector
 	{
 		auto p = GetBranchDestination(at, vp);
 
-		auto offset = GetRelativeOffset(dest, at + 4);
+		auto offset = GetRelativeOffset(dest, at + 1 + 4);
 
-		if (offset > 0xFFFFFFFF) {
+		if (offset > 0x7FFFFFFF) {
 			//WriteMemory<uint8_t>(at, 0x48, vp); // REX.w ‐ 1=オペランドサイズを64ビットにする。
 			WriteMemory<uint8_t>(at, 0xFF, vp); // operand①
 			// Mod/R: [RIP + disp32]を意味する
