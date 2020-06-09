@@ -27,53 +27,53 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 		// デバッグ用
 		#ifdef _DEBUG
-		e |= Debug::Init(options);
+		//e |= Debug::Init(options);
 		#endif
 
 		// フォント読み込み
-		e |= Font::Init(options);
+		//e |= Font::Init(options);
 
 		// UIの表示
-		e |= MainText::Init(options);
+		//e |= MainText::Init(options);
 
 		// ツールチップとボタンの表示
-		e |= TooltipAndButton::Init(options);
+		//e |= TooltipAndButton::Init(options);
 
 		// マップ文字の表示
-		e |= MapView::Init(options);
+		//e |= MapView::Init(options);
 
 		// マップ文字の表示（nudge）
-		e |= MapNudgeView::Init(options);
+		//e |= MapNudgeView::Init(options);
 
 		// マップ文字の調整
-		e |= MapAdjustment::Init(options);
+		//e |= MapAdjustment::Init(options);
 
 		// マップ文字の調整
-		e |= MapJustify::Init(options);
+		//e |= MapJustify::Init(options);
 
 		// イベントダイアログとマップ文字の調整
-		e |= EventDialog::Init(options);
+		//e |= EventDialog::Init(options);
 
 		// マップ上に浮き出る文字の表示
-		e |= MapPopup::Init(options);
+		//e |= MapPopup::Init(options);
 
 		// リスト表示の文字の調整
-		e |= ListFieldAdjustment::Init(options);
+		//e |= ListFieldAdjustment::Init(options);
 
 		// ファイルセーブ
-		e |= FileSave::Init(options);
+		//e |= FileSave::Init(options);
 
 		// 日付
-		e |= Date::Init(options);
+		//e |= Date::Init(options);
 
 		// IME
-		e |= Ime::Init(options);
+		//e |= Ime::Init(options);
 
 		// 入力
-		e |= Input::Init(options);
+		//e |= Input::Init(options);
 
 		// 文字列順序入れ替え
-		e |= WordOrder::Init(options);
+		//e |= WordOrder::Init(options);
 
 		Validator::Validate(e,options);
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
