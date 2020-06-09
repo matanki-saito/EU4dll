@@ -13,6 +13,10 @@ namespace Debug {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_30_1_0:
+			pattern = "40 57 41 54 41 55 41 56 41 57 B8 40 1C 00 00";
+			goto INJECT;
+
 		case v1_29_4_0:
 			pattern = "40 57 41 54 41 55 41 56 41 57 B8 30 1C 00 00";
 			goto INJECT;

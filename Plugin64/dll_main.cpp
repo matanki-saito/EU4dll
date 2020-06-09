@@ -27,11 +27,11 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 		// デバッグ用
 		#ifdef _DEBUG
-		//e |= Debug::Init(options);
+		e |= Debug::Init(options);
 		#endif
 
 		// フォント読み込み
-		//e |= Font::Init(options);
+		e |= Font::Init(options);
 
 		// UIの表示
 		//e |= MainText::Init(options);
