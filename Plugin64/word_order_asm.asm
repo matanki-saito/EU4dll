@@ -80,6 +80,35 @@ wordOrderProc3 ENDP
 
 ;-----------------------------------;
 
+wordOrderProc3V130 PROC
+	nop;
+
+	;ãtã^ñ‚ïÑ(0xBF)Ç™ç≈èâÇ…óàÇƒÇ¢ÇÍÇŒîΩì]Ç≥ÇπÇÈ
+	cmp		byte ptr[rax+1], 0BFh; // [0]ÇÕ0x20(white space)
+	jnz		JMP_A;
+
+	mov		qword ptr [rsp+20h], 0FFFFFFFFFFFFFFFFh;
+	xor		r9,	r9;	 // start
+	mov		r8, rax; // text
+	xor		rdx,rdx;  // pos1
+	mov		rcx, r15; // this
+	call	wordOrderProc1CallAddress1;
+	jmp		JMP_B;
+
+JMP_A:
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	mov		rdx, rax;
+	mov		rcx, r15;
+	call    wordOrderProc1CallAddress2;
+
+JMP_B:
+	push	wordOrderProc3ReturnAddress;
+	ret;
+wordOrderProc3V130 ENDP
+
+;-----------------------------------;
+
 wordOrderProc4 PROC
 	nop;
 
@@ -106,6 +135,35 @@ JMP_B:
 	push	wordOrderProc4ReturnAddress;
 	ret;
 wordOrderProc4 ENDP
+
+;-----------------------------------;
+
+wordOrderProc4V130 PROC
+	nop;
+
+	;ãtã^ñ‚ïÑ(0xBF)Ç™ç≈èâÇ…óàÇƒÇ¢ÇÍÇŒîΩì]Ç≥ÇπÇÈ
+	cmp		byte ptr[rax+1], 0BFh; // [0]ÇÕ0x20(white space)
+	jnz		JMP_A;
+
+	mov		qword ptr [rsp+20h], 0FFFFFFFFFFFFFFFFh;
+	xor		r9,	r9;	 // start
+	mov		r8, rax; // text
+	xor		rdx,rdx;  // pos1
+	mov		rcx, r15; // this
+	call	wordOrderProc1CallAddress1;
+	jmp		JMP_B;
+
+JMP_A:
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	mov		rdx, rax;
+	mov		rcx, r15;
+	call    wordOrderProc1CallAddress2;
+
+JMP_B:
+	push	wordOrderProc4ReturnAddress;
+	ret;
+wordOrderProc4V130 ENDP
 
 ;-----------------------------------;
 

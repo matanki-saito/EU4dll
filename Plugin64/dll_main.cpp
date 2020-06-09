@@ -64,16 +64,16 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		//e |= FileSave::Init(options);
 
 		// 日付
-		//e |= Date::Init(options);
+		e |= Date::Init(options);
 
 		// IME
-		//e |= Ime::Init(options);
+		e |= Ime::Init(options);
 
 		// 入力
-		//e |= Input::Init(options);
+		e |= Input::Init(options);
 
 		// 文字列順序入れ替え
-		//e |= WordOrder::Init(options);
+		e |= WordOrder::Init(options);
 
 		Validator::Validate(e,options);
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
