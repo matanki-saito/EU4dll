@@ -34,7 +34,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		e |= Font::Init(options);
 
 		// UIの表示
-		//e |= MainText::Init(options);
+		e |= MainText::Init(options);
 
 		// ツールチップとボタンの表示
 		//e |= TooltipAndButton::Init(options);
