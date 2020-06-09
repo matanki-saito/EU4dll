@@ -274,7 +274,7 @@ namespace MapAdjustment {
 		result |= mapAdjustmentProc2Injector(options);
 		result |= mapAdjustmentProc3Injector(options);
 		result |= mapAdjustmentProc4Injector(options);
-		//result |= mapAdjustmentProc5Injector(options);
+		result |= mapAdjustmentProc5Injector(options);
 
 		return result;
 	}

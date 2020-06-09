@@ -20,6 +20,7 @@ namespace MapJustify {
 		case v1_29_2_0:
 		case v1_29_3_0:
 		case v1_29_4_0:
+		case v1_30_1_0:
 			// movsd   xmm3, [rbp+1D0h+var_168]
 			BytePattern::temp_instance().find_pattern("F2 0F 10 5D 68 FF C2 F2 0F 10 65 20");
 			if (BytePattern::temp_instance().has_size(1, "文字取得処理リターン先２")) {
@@ -58,6 +59,7 @@ namespace MapJustify {
 		case v1_29_2_0:
 		case v1_29_3_0:
 		case v1_29_4_0:
+		case v1_30_1_0:
 			// lea     eax, [r10-1]
 			BytePattern::temp_instance().find_pattern("41 8D 42 FF 66 0F 6E F2 66 0F 6E C0");
 			if (BytePattern::temp_instance().has_size(1, "一文字表示の調整")) {
@@ -87,6 +89,7 @@ namespace MapJustify {
 		case v1_29_2_0:
 		case v1_29_3_0:
 		case v1_29_4_0:
+		case v1_30_1_0:
 			// movsd   xmm3, [rbp+1D0h+var_168]
 			BytePattern::temp_instance().find_pattern("F2 0F 10 5D 68 FF C2 F2 0F 10 65 20");
 			if (BytePattern::temp_instance().has_size(1, "カウント処理")) {
