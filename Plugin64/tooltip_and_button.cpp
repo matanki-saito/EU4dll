@@ -157,6 +157,29 @@ namespace TooltipAndButton {
 		case v1_29_2_0:
 		case v1_29_3_0:
 		case v1_29_4_0:
+			// movaps  xmm7, [rsp+0E8h+var_48]
+			BytePattern::temp_instance().find_pattern("0F 28 BC 24 A0 00 00 00 48 8B B4 24 00 01 00 00");
+			if (BytePattern::temp_instance().has_size(1, "ツールチップの改行処理のリターン先２")) {
+				tooltipAndButtonProc5ReturnAddress2 = BytePattern::temp_instance().get_first().address();
+			}
+			else {
+				e.unmatch.tooltipAndButtonProc5Injector = true;
+			}
+
+			// movzx   edx, byte ptr [rbx+r14]
+			BytePattern::temp_instance().find_pattern("42 0F B6 14 33 49 8D 8C 24 00 01 00 00");
+			if (BytePattern::temp_instance().has_size(1, "ツールチップの改行処理")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// jz short loc_xxxxx
+				tooltipAndButtonProc5ReturnAddress1 = address + 0x14;
+
+				Injector::MakeJMP(address, tooltipAndButtonProc5, true);
+			}
+			else {
+				e.unmatch.tooltipAndButtonProc5Injector = true;
+			}
+			break;
 		case v1_30_1_0:
 			// movaps  xmm7, [rsp+0E8h+var_48]
 			BytePattern::temp_instance().find_pattern("0F 28 BC 24 A0 00 00 00 48 8B B4 24 00 01 00 00");
