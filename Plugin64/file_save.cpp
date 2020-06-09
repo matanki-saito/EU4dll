@@ -10,6 +10,7 @@ namespace FileSave {
 		void fileSaveProc4();
 		void fileSaveProc5();
 		void fileSaveProc6();
+		void fileSaveProc6V130();
 		void fileSaveProc7();
 		uintptr_t fileSaveProc1ReturnAddress;
 		uintptr_t fileSaveProc2ReturnAddress;
@@ -64,10 +65,11 @@ namespace FileSave {
 
 		switch (options.version) {
 		case v1_30_1_0:
+			pattern = "48 8D 05 91 4E B4 FF 48 3B D0 75 06 48 8D 41 30";
+			goto TAG;
 		case v1_29_4_0:
 			pattern = "48 8D 05 91 FB A4 FF 48 3B D0 75 06 48 8D 41 30";
 			goto TAG;
-
 		case v1_29_3_0:
 			pattern = "48 8D 05 11 92 A5 FF 48 3B D0 75 06 48 8D 41 30";
 			goto TAG;
@@ -170,9 +172,28 @@ namespace FileSave {
 		case v1_29_2_0:
 		case v1_29_3_0:
 		case v1_29_4_0:
-		case v1_30_1_0:
 			// lea     r8, [r14+598h]
 			BytePattern::temp_instance().find_pattern("4D 8D 86 98 05 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 50");
+			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのツールチップを表示できるようにする2")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc5CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+				// lea rdx, {aZy}
+				fileSaveProc5MarkerAddress = Injector::GetBranchDestination(address + 7).as_int();
+
+				// call sub_xxxxx
+				fileSaveProc5ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, fileSaveProc5, true);
+			}
+			else {
+				e.unmatch.fileSaveProc5Injector = true;
+			}
+			break;
+		case v1_30_1_0:
+			// lea     r8, [r14+598h]
+			BytePattern::temp_instance().find_pattern("4D 8D 86 C0 05 00 00 48 8D 15 8A 49 AE 00");
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのツールチップを表示できるようにする2")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
@@ -203,7 +224,6 @@ namespace FileSave {
 		switch (options.version) {
 		case v1_29_3_0:
 		case v1_29_4_0:
-		case v1_30_1_0:
 			// lea     r8, [rbp+380h]
 			BytePattern::temp_instance().find_pattern("4C 8D 85 80 03 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 30");
 			if (BytePattern::temp_instance().has_size(1, "スタート画面でのコンティニューのツールチップ")) {
@@ -223,6 +243,26 @@ namespace FileSave {
 				e.unmatch.fileSaveProc6Injector = true;
 			}
 			break;
+		case v1_30_1_0:
+			// lea     r8, [rbp+730h+var_3A0]
+			BytePattern::temp_instance().find_pattern("4C 8D 85 90 03 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 30");
+			if (BytePattern::temp_instance().has_size(1, "スタート画面でのコンティニューのツールチップ")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc6CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+				// lea r8, {aZy}
+				fileSaveProc6MarkerAddress = Injector::GetBranchDestination(address + 7).as_int();
+
+				// call sub_xxxxx
+				fileSaveProc6ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, fileSaveProc6V130, true);
+			}
+			else {
+				e.unmatch.fileSaveProc6Injector = true;
+			}
+			break;
 		default:
 			e.version.fileSaveProc6Injector = true;
 		}
@@ -236,11 +276,27 @@ namespace FileSave {
 		switch (options.version) {
 		case v1_29_3_0:
 		case v1_29_4_0:
-		case v1_30_1_0:
 			// lea     rcx, [rbx+0C8h]
 			BytePattern::temp_instance().find_pattern("48 8D 8B C8 00 00 00 48 8B 01 48 8D 54 24 28");
 			if (BytePattern::temp_instance().has_size(1, "セーブダイアログでのインプットテキストエリア")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc7CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+				// call    qword ptr [rax+80h]
+				fileSaveProc7ReturnAddress = address + 0xF;
+
+				Injector::MakeJMP(address, fileSaveProc7, true);
+			}
+			else {
+				e.unmatch.fileSaveProc7Injector = true;
+			}
+			break;
+		case v1_30_1_0:
+			// lea     rcx, [rbx+0C8h]
+			BytePattern::temp_instance().find_pattern("48 8D 8B C8 00 00 00 48 8B 01 48 8D 54 24 28");
+			if (BytePattern::temp_instance().has_size(2, "セーブダイアログでのインプットテキストエリア")) {
+				uintptr_t address = BytePattern::temp_instance().get_second().address();
 
 				fileSaveProc7CallAddress = (uintptr_t)utf8ToEscapedStr2;
 
