@@ -225,7 +225,7 @@ mapAdjustmentProc4 ENDP
 ;-------------------------------------------;
 
 mapAdjustmentProc4V130 PROC
-	lea		rax, [rbp + 1F0h - 160h];
+	lea		rax, [rbp + 200h - 160h];
 	cmp		r8, 10h;
 	cmovnb	rax, r9;
 
