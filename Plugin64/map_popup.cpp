@@ -5,7 +5,9 @@ namespace MapPopup {
 	extern "C" {
 		void mapPopupProc1();
 		void mapPopupProc2();
+		void mapPopupProc2V130();
 		void mapPopupProc3();
+		void mapPopupProc3V130();
 		uintptr_t mapPopupProc1ReturnAddress;
 		uintptr_t mapPopupProc1CallAddress;
 		uintptr_t mapPopupProc2ReturnAddress;
@@ -58,6 +60,7 @@ namespace MapPopup {
 
 				Injector::MakeJMP(address, mapPopupProc2, true);
 
+				// jz xxxxx
 				mapPopupProc2ReturnAddress = address + 15;
 			}
 			else {
@@ -70,8 +73,9 @@ namespace MapPopup {
 			if (BytePattern::temp_instance().has_size(1, "ループ１の文字取得")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
-				Injector::MakeJMP(address, mapPopupProc2, true);
+				Injector::MakeJMP(address, mapPopupProc2V130, true);
 
+				// jz xxxxx
 				mapPopupProc2ReturnAddress = address + 15;
 			}
 			else {
@@ -112,7 +116,7 @@ namespace MapPopup {
 			if (BytePattern::temp_instance().has_size(1, "ループ２の文字取得")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
-				Injector::MakeJMP(address, mapPopupProc3, true);
+				Injector::MakeJMP(address, mapPopupProc3V130, true);
 
 				//  movss   dword ptr [rbp+88h], xmm3
 				mapPopupProc3ReturnAddress = address + 0x13;
