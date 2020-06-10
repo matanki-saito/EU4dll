@@ -7,8 +7,10 @@ namespace FileSave {
 		void fileSaveProc1();
 		void fileSaveProc2();
 		void fileSaveProc3();
+		void fileSaveProc3V130();
 		void fileSaveProc4();
 		void fileSaveProc5();
+		void fileSaveProc5V130();
 		void fileSaveProc6();
 		void fileSaveProc6V130();
 		void fileSaveProc7();
@@ -106,7 +108,6 @@ namespace FileSave {
 		case v1_29_3_0:
 		case v1_29_2_0:
 		case v1_29_4_0:
-		case v1_30_1_0:
 			//  jmp     short loc_xxxxx
 			BytePattern::temp_instance().find_pattern("EB 6E 48 8D 15 ? ? ? ? FF 90 98 00 00 00 48");
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのタイトルを表示できるようにする")) {
@@ -119,6 +120,24 @@ namespace FileSave {
 				fileSaveProc3ReturnAddress = address + 0x1A;
 
 				Injector::MakeJMP(address, fileSaveProc3, true);
+			}
+			else {
+				e.unmatch.fileSaveProc3Injector = true;
+			}
+			break;
+		case v1_30_1_0:
+			//  jmp     short loc_xxxxx
+			BytePattern::temp_instance().find_pattern("EB 6E 48 8D 15 ? ? ? ? FF 90 98 00 00 00 48");
+			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのタイトルを表示できるようにする")) {
+				//  lea     rdx, aSave_game_titl ; "save_game_title"
+				uintptr_t address = BytePattern::temp_instance().get_first().address() + 0x2;
+
+				fileSaveProc3CallAddress = (uintptr_t)utf8ToEscapedStr;
+
+				// call sub_xxxxx
+				fileSaveProc3ReturnAddress = address + 0x1A;
+
+				Injector::MakeJMP(address, fileSaveProc3V130, true);
 			}
 			else {
 				e.unmatch.fileSaveProc3Injector = true;
@@ -192,7 +211,7 @@ namespace FileSave {
 			}
 			break;
 		case v1_30_1_0:
-			// lea     r8, [r14+598h]
+			// lea     r8, [r14+5C0h]
 			BytePattern::temp_instance().find_pattern("4D 8D 86 C0 05 00 00 48 8D 15 8A 49 AE 00");
 			if (BytePattern::temp_instance().has_size(1, "ダイアログでのセーブエントリのツールチップを表示できるようにする2")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
@@ -205,7 +224,7 @@ namespace FileSave {
 				// call sub_xxxxx
 				fileSaveProc5ReturnAddress = address + 0x13;
 
-				Injector::MakeJMP(address, fileSaveProc5, true);
+				Injector::MakeJMP(address, fileSaveProc5V130, true);
 			}
 			else {
 				e.unmatch.fileSaveProc5Injector = true;
