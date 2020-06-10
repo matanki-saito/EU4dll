@@ -135,6 +135,59 @@ mapViewProc2 ENDP
 
 ;-------------------------------------------;
 
+mapViewProc2V130 PROC
+	lea     r9, [r12 + 120h];
+
+	cmp		byte ptr[rax + r15], ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		byte ptr[rax + r15], ESCAPE_SEQ_2;
+	jz		JMP_B;
+	cmp		byte ptr[rax + r15], ESCAPE_SEQ_3;
+	jz		JMP_C;
+	cmp		byte ptr[rax + r15], ESCAPE_SEQ_4;
+	jz		JMP_D;
+
+	movzx	eax, byte ptr[rax + r15];
+	jmp		JMP_E;
+
+JMP_A:
+	movzx	eax, word ptr[rax + r15 + 1];
+	jmp		JMP_F;
+
+JMP_B:
+	movzx	eax, word ptr[rax + r15 + 1];
+	sub		eax, SHIFT_2;
+	jmp		JMP_F;
+
+JMP_C:
+	movzx	eax, word ptr[rax + r15 + 1];
+	add		eax, SHIFT_3;
+	jmp		JMP_F;
+
+JMP_D:
+	movzx	eax, word ptr[rax + r15 + 1];
+	add		eax, SHIFT_4;
+
+JMP_F:
+	add		esi, 2;
+	add		r15, 2;
+
+	movzx	eax, ax;
+	cmp		eax, NO_FONT;
+	ja		JMP_E;
+
+JMP_G:
+	mov		eax, NOT_DEF;
+
+JMP_E:
+	mov     r12, qword ptr [r9 + rax * 8];
+
+	push	mapViewProc2ReturnAddress;
+	ret;
+mapViewProc2V130 ENDP
+
+;-------------------------------------------;
+
 mapViewProc3 PROC
     mov		qword ptr[rsp + 488h - 448h],0;
 

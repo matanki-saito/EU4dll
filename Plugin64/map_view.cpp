@@ -5,6 +5,7 @@ namespace MapView {
 	extern "C" {
 		void mapViewProc1();
 		void mapViewProc2();
+		void mapViewProc2V130();
 		void mapViewProc3();
 		uintptr_t mapViewProc1ReturnAddress;
 		uintptr_t mapViewProc2ReturnAddress;
@@ -73,7 +74,7 @@ namespace MapView {
 				// test    r12, r12
 				mapViewProc2ReturnAddress = address + 0x11;
 
-				Injector::MakeJMP(address, mapViewProc2, true);
+				Injector::MakeJMP(address, mapViewProc2V130, true);
 			}
 			else {
 				e.unmatch.mapViewProc2Injector = true;
