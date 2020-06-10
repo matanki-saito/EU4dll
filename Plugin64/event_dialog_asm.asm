@@ -107,4 +107,21 @@ JMP_A:
 	ret;
 eventDialogProc3 ENDP
 
+;-------------------------------------------;
+
+eventDialogProc3V130 PROC
+	cmp		eventDialogProc1Flag, 1;
+	jnz		JMP_A;
+	add		edi,2;
+
+JMP_A:
+	inc		edi;
+	cmp		edi, dword ptr [rbx+10h];
+	mov		edx, dword ptr [rsp+378h+18h];
+	lea     r10, qword ptr [rsi+120h];
+	
+	push	eventDialogProc3ReturnAddress;
+	ret;
+eventDialogProc3V130 ENDP
+
 END
