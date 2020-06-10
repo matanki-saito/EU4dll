@@ -194,7 +194,7 @@ tooltipAndButtonProc4 ENDP
 ;-------------------------------------------;
 
 tooltipAndButtonProc5 PROC
-	lea     rcx, qword ptr [r12 + 100h];
+	lea     rcx, qword ptr [r12 + 120h];
 
 	cmp		byte ptr [rbx + r14], ESCAPE_SEQ_1;
 	jz		JMP_A;
