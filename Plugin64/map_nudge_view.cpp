@@ -4,6 +4,7 @@
 namespace MapNudgeView {
 	extern "C" {
 		void mapNudgeViewProc1();
+		void mapNudgeViewProc1V130();
 		uintptr_t mapNudgeViewProc1ReturnAddress;
 	}
 
@@ -37,7 +38,7 @@ namespace MapNudgeView {
 				// jz      short loc_xxxxx
 				mapNudgeViewProc1ReturnAddress = address + 0xF;
 
-				Injector::MakeJMP(address, mapNudgeViewProc1, true);
+				Injector::MakeJMP(address, mapNudgeViewProc1V130, true);
 			}
 			else {
 				e.unmatch.mapNudgeViewProc1Injector = true;

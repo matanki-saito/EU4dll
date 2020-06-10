@@ -8,6 +8,7 @@ namespace TooltipAndButton {
 		void tooltipAndButtonProc3();
 		void tooltipAndButtonProc4();
 		void tooltipAndButtonProc5();
+		void tooltipAndButtonProc5V130();
 		void tooltipAndButtonProcTest();
 		uintptr_t tooltipAndButtonProc1ReturnAddress;
 		uintptr_t tooltipAndButtonProc1CallAddress;
@@ -198,7 +199,7 @@ namespace TooltipAndButton {
 				// jz short loc_xxxxx
 				tooltipAndButtonProc5ReturnAddress1 = address + 0x14;
 
-				Injector::MakeJMP(address, tooltipAndButtonProc5, true);
+				Injector::MakeJMP(address, tooltipAndButtonProc5V130, true);
 			}
 			else {
 				e.unmatch.tooltipAndButtonProc5Injector = true;
