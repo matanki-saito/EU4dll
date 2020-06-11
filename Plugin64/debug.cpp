@@ -35,7 +35,7 @@ namespace Debug {
 			// hook main thread head
 			// push rdi; push r12; ...
 			BytePattern::temp_instance().find_pattern(pattern);
-			if (BytePattern::temp_instance().has_size(1, "デバッグ")) {
+			if (BytePattern::temp_instance().has_size(1, u8"デバッグ")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call xxxxx
