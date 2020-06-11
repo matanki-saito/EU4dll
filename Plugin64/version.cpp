@@ -4,7 +4,7 @@
 using namespace std;
 
 namespace Version {
-	typedef struct {
+	typedef struct _Pattern {
 		char ascii1;
 		char ascii2;
 		char dot;

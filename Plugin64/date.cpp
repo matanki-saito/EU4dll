@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "plugin_64.h"
 
 namespace Date {
@@ -14,7 +14,7 @@ namespace Date {
 	DllError dateProc1Injector(RunOptions options) {
 		DllError e = {};
 
-		// ex) 1444”N11Œ11“ú
+		// ex) 1444å¹´11æœˆ11æ—¥
 		DateFormat isoFormat = {
 			{'y',' ',0x0F,' ','m','w',' ','d',' ',0x0E,0}
 		};
@@ -26,7 +26,7 @@ namespace Date {
 		case v1_30_1_0:
 			// d w mw w y
 			BytePattern::temp_instance().find_pattern("64 20 77 20 6D");
-			if (BytePattern::temp_instance().has_size(1, "‰Eã‚Ì•\‹L‚ğ•ÏX")) {
+			if (BytePattern::temp_instance().has_size(1, "å³ä¸Šã®è¡¨è¨˜ã‚’å¤‰æ›´")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				Injector::WriteMemory<DateFormat>(address, isoFormat,true);
