@@ -44,6 +44,8 @@ jobs:
         Move-Item resource/plugin.ini artifact/plugins/
         Move-Item resource/dllautoupdater.exe artifact/plugins/
         Move-Item resource/autoupdate64.bat artifact/plugins/
+        Move-Item resource/Plugin.dll artifact/plugins/
+        Move-Item resource/d3d9.dll artifact/
       shell: powershell
 
     - name: generate artifact zip
