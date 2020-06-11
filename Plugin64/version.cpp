@@ -4,7 +4,7 @@
 using namespace std;
 
 namespace Version {
-	typedef struct {
+	typedef struct _Pattern {
 		char ascii1;
 		char ascii2;
 		char dot;
@@ -19,17 +19,19 @@ namespace Version {
 	string versionString(Eu4Version version) {
 		switch (version) {
 		case v1_29_0_0:
-			return "v1_29_0_0";
+			return u8"v1_29_0_0";
 		case v1_29_1_0:
-			return "v1_29_1_0";
+			return u8"v1_29_1_0";
 		case v1_29_2_0:
-			return "v1_29_2_0";
+			return u8"v1_29_2_0";
 		case v1_29_3_0:
-			return "v1_29_3_0";
+			return u8"v1_29_3_0";
 		case v1_29_4_0:
-			return "v1_29_4_0";
+			return u8"v1_29_4_0";
+		case v1_30_1_0:
+			return u8"v1_30_1_0";
 		default:
-			return "UNKNOWN";
+			return u8"UNKNOWN";
 		}
 	}
 
@@ -59,6 +61,9 @@ namespace Version {
 			case 295:
 			case 296:
 				version = v1_29_4_0;
+				break;
+			case 301:
+				version = v1_30_1_0;
 				break;
 			default:
 				version = UNKNOWN;

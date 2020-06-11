@@ -82,6 +82,24 @@ fileSaveProc3 ENDP
 
 ;-------------------------------------------;
 
+fileSaveProc3V130 PROC
+	mov		rdx, OFFSET fileSaveProc3Message;
+	call	qword ptr [rax + 98h];
+	mov		fileSaveProc3Tmp,rax;
+
+	lea		rcx, [rbx +580h];
+	call	fileSaveProc3CallAddress;
+	mov		rdx, rax;
+
+	xor		r8d, r8d;
+	mov		rcx, fileSaveProc3Tmp;
+
+	push	fileSaveProc3ReturnAddress;
+	ret;
+fileSaveProc3V130 ENDP
+
+;-------------------------------------------;
+
 fileSaveProc4 PROC
 	lea		rcx, [rsp + 1A8h -138h];
 	call	fileSaveProc4CallAddress;
@@ -110,6 +128,20 @@ fileSaveProc5 ENDP
 
 ;-------------------------------------------;
 
+fileSaveProc5V130 PROC
+	lea		rcx, [r14 + 5C0h];
+	call	fileSaveProc5CallAddress;
+	mov		r8, rax;
+
+	mov		rdx, fileSaveProc5MarkerAddress;
+	lea		rcx, [rsp + 278h - 228h];
+
+	push	fileSaveProc5ReturnAddress;
+	ret;
+fileSaveProc5V130 ENDP
+
+;-------------------------------------------;
+
 fileSaveProc6 PROC
 	lea		rcx, [rbp + 380h];
 	call	fileSaveProc6CallAddress;
@@ -121,6 +153,20 @@ fileSaveProc6 PROC
 	push	fileSaveProc6ReturnAddress;
 	ret;
 fileSaveProc6 ENDP
+
+;-------------------------------------------;
+
+fileSaveProc6V130 PROC
+	lea		rcx, [rbp +730h - 3A0h];
+	call	fileSaveProc6CallAddress;
+	mov		r8, rax;
+
+	mov		rdx, fileSaveProc6MarkerAddress;
+	lea		rcx, [rsp + 830h - 800h];
+
+	push	fileSaveProc6ReturnAddress;
+	ret;
+fileSaveProc6V130 ENDP
 
 ;-------------------------------------------;
 

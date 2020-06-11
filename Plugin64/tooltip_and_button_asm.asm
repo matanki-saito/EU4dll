@@ -252,6 +252,69 @@ JMP_J:
 	ret;
 tooltipAndButtonProc5 ENDP
 
+;-------------------------------------------;
+
+tooltipAndButtonProc5V130 PROC
+	lea     rcx, qword ptr [r12 + 120h];
+
+	cmp		byte ptr [rbx + r14], ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		byte ptr [rbx + r14], ESCAPE_SEQ_2;
+	jz		JMP_B;
+	cmp		byte ptr [rbx + r14], ESCAPE_SEQ_3;
+	jz		JMP_C;
+	cmp		byte ptr [rbx + r14], ESCAPE_SEQ_4;
+	jz		JMP_D;
+
+	movzx   edx, byte ptr [rbx + r14];
+	jmp		JMP_G;
+
+JMP_A:
+	movzx	edx, word ptr[rbx + r14 + 1];
+	jmp		JMP_F;
+
+JMP_B:
+	movzx	edx, word ptr[rbx + r14 + 1];
+	sub		edx, SHIFT_2;
+	jmp		JMP_F;
+
+JMP_C:
+	movzx	edx, word ptr[rbx + r14 + 1];
+	add		edx, SHIFT_3;
+	jmp		JMP_F;
+
+JMP_D:
+	movzx	edx, word ptr[rbx + r14 + 1];
+	add		edx, SHIFT_4;
+
+JMP_F:
+	movzx	edx, dx;
+	cmp		edx, NO_FONT;
+	ja		JMP_H;
+	mov		edx, NOT_DEF;
+
+JMP_H:
+	add		rbx, 3;
+	add		edi, 3;
+	cmp		rbx, r13;
+	ja		JMP_J;
+	dec		rbx;
+	dec		edi;
+
+JMP_G:
+	mov     rsi, qword ptr [rcx + rdx * 8];
+	test    rsi, rsi;
+
+	push	tooltipAndButtonProc5ReturnAddress1;
+	ret;
+
+JMP_J:
+	push	tooltipAndButtonProc5ReturnAddress2;
+	ret;
+tooltipAndButtonProc5V130 ENDP
+
+;-------------------------------------------;
+
 tooltipAndButtonProcTest PROC
 	cmp		tooltipAndButtonProc2TmpFlag, 1;
 	jnz		JMP_A;

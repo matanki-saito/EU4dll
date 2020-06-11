@@ -1,2 +1,16 @@
 event army_professionalism_events.12
 debug
+event army_professionalism_events.12
+event fra.6
+event fra.6.t
+event flavorfra.6
+event flavorfra.6.t
+event army_professionalism_events.12
+event fra.6
+event flavor.fra.6
+event EVOPTC111
+event EVTOPTC1
+event flavornov
+event flavor_nov
+event flavor_fra
+event flavor_fra.7

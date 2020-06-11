@@ -1,0 +1,78 @@
+name: DllBuild
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build:
+    runs-on: windows-latest
+    if: "! contains(github.event.head_commit.message, '[ci skip]')"
+
+    steps:
+    - name: Get source
+      uses: actions/checkout@v2
+
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+      with:
+        nuget-version: '4.4.1'
+
+    - name: Restore nuget db
+      run: nuget restore EU4JPS.sln
+
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+
+    - name: Build source
+      run: msbuild EU4JPS.sln -p:Configuration=release -p:platform=x64
+      shell: cmd
+    
+    - name: Make artifact package
+      run: |
+        New-Item artifact -ItemType Directory
+        New-Item artifact/plugins -ItemType Directory
+      shell: powershell
+
+    - name: Move files to artifact package
+      run: |
+        Move-Item README.md artifact/
+        Move-Item resource/.dist.v1.json artifact/
+        Move-Item x64/Release/version.dll artifact/
+        Move-Item x64/Release/plugin64.dll artifact/plugins/
+        Move-Item resource/plugin.ini artifact/plugins/
+        Move-Item resource/dllautoupdater.exe artifact/plugins/
+        Move-Item resource/autoupdate64.bat artifact/plugins/
+        Move-Item resource/Plugin.dll artifact/plugins/
+        Move-Item resource/d3d9.dll artifact/
+      shell: powershell
+
+    - name: generate artifact zip
+      run: |
+        compress-archive -Path artifact/* -DestinationPath steam_EU4_1.30_fixdll_build_${{ github.run_number }}.zip
+      shell: powershell
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.run_number }}
+        release_name: Release ${{ github.run_number }}
+        body: |
+          new dll release!
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} 
+        asset_path: ./steam_EU4_1.30_fixdll_build_${{ github.run_number }}.zip
+        asset_name: steam_EU4_1.30_fixdll_build_${{ github.run_number }}.zip
+        asset_content_type: application/json

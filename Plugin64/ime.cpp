@@ -40,9 +40,10 @@ namespace Ime {
 		switch (options.version) {
 		case v1_29_3_0:
 		case v1_29_4_0:
+		case v1_30_1_0:
 			// mov     edx, r13d
 			BytePattern::temp_instance().find_pattern("41 8B D5 49 8B CC E8 ? ? ? ? 85 C0 0F 85");
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowsevents.cの修正")) {
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowsevents.cの修正")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call {sub_xxxxx}
@@ -79,11 +80,12 @@ namespace Ime {
 		switch (options.version) {
 		case v1_29_3_0:
 		case v1_29_4_0:
+		case v1_30_1_0:
 			rectAddress = (uintptr_t)&rect;
 
 			// SDL_SetTextInputRectの関数を見つける
 			BytePattern::temp_instance().find_pattern("48 8B D1 48 8B ? ? ? ? 00 48 85 C9 74 0F"); // mov     rdx, rcx
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.cの修正")) {
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowskeyboard.cの修正")) {
 				imeProc2CallAddress = BytePattern::temp_instance().get_first().address();
 			}
 			else {
@@ -92,7 +94,7 @@ namespace Ime {
 
 			// WM_IME_STARTCOMPOSITIONでSDL_SetTextInputRectする
 			BytePattern::temp_instance().find_pattern("81 EA BC 00 00 00 0F 84 2B 02 00 00"); // sub     edx, 0BCh
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.cの修正")) {
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowskeyboard.cの修正")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// jz {loc_xxxxx}
@@ -110,7 +112,7 @@ namespace Ime {
 			// WM_IME_SETCONTEXTで*lParam = 0;をコメントアウトする（nopで埋める）
 			// mov     [r9], r15
 			BytePattern::temp_instance().find_pattern("4D 89 39 48 8B 74 24 40");
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.cの修正")) {
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowskeyboard.cの修正")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 				Injector::WriteMemory<uint8_t>(address, 0x90, true);
 				Injector::WriteMemory<uint8_t>(address+1, 0x90, true);
@@ -125,7 +127,7 @@ namespace Ime {
 			// 二つ目のif文もスキップさせる
 			// https://github.com/matanki-saito/EU4dll/issues/19#issuecomment-423940364
 			BytePattern::temp_instance().find_pattern("41 B8 00 08 00 00 48 8B D6 48 8B CF");
-			if (BytePattern::temp_instance().has_size(1, "SDL_windowskeyboard.cの修正")) {
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowskeyboard.cの修正")) {
 				// jz xxx -> jmp xxx
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 				Injector::WriteMemory<uint8_t>(address - 2, 0xEB, true);
@@ -151,11 +153,12 @@ namespace Ime {
 		switch (options.version) {
 		case v1_29_3_0:
 		case v1_29_4_0:
+		case v1_30_1_0:
 			// 直前の部分でjmpに使う14byteを確保することができなかった。
 			// そのためWM_KEYDOWNのコードをすべて移植した
 			// mov     rcx, [rbp+0C0h+hRawInput]
 			BytePattern::temp_instance().find_pattern("48 8B 8D E8 ? ? ? ? 8B D6 E8 ? ? ? ? 33");
-			if (BytePattern::temp_instance().has_size(2, "SDL_windowsevents.cの修正")) {
+			if (BytePattern::temp_instance().has_size(2, u8"SDL_windowsevents.cの修正")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call {sub_xxxxx} / WindowsScanCodeToSDLScanCode

@@ -344,12 +344,6 @@ namespace Injector
 
 	};
 
-
-
-
-
-
-
 	/*
 	 *  ProtectMemory
 	 *      Makes the address @addr have a protection of @protection
