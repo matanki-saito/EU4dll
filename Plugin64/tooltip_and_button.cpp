@@ -34,7 +34,7 @@ namespace TooltipAndButton {
 		case v1_30_1_0:
 			// r8d, byte ptr [rax + rcx]
 			BytePattern::temp_instance().find_pattern("44 0F B6 04 08 BA 01 00 00 00");
-			if (BytePattern::temp_instance().has_size(1, "処理ループ１の文字コピー")) {
+			if (BytePattern::temp_instance().has_size(1, u8"処理ループ１の文字コピー")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call {sub_xxxxx}
@@ -67,7 +67,7 @@ namespace TooltipAndButton {
 		case v1_30_1_0:
 			// mov edx, ebx
 			BytePattern::temp_instance().find_pattern("8B D3 0F B6 04 10 49 8B 0C C7");
-			if (BytePattern::temp_instance().has_size(1, "処理ループ１の文字取得")) {
+			if (BytePattern::temp_instance().has_size(1, u8"処理ループ１の文字取得")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// test rcx,rcx

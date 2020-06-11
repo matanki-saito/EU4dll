@@ -44,7 +44,7 @@ namespace WordOrder {
 		case v1_30_1_0:
 			// mov     [rsp+arg_10], rbx
 			BytePattern::temp_instance().find_pattern("48 89 5C 24 18 55 41 56 41 57 48 83 EC 20 4D 8B F0");
-			if (BytePattern::temp_instance().has_size(1, "std::basic_string<char>#insertをフック")) {
+			if (BytePattern::temp_instance().has_size(1, u8"std::basic_string<char>#insertをフック")) {
 				wordOrderProc1CallAddress1 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
