@@ -42,7 +42,7 @@ namespace Ime {
 		case v1_29_4_0:
 		case v1_30_1_0:
 			// mov     edx, r13d
-			BytePattern::temp_instance().find_pattern("41 8B D5 49 8B CC E8 ? ? ? ? 85 C0 0F 85");
+			BytePattern::temp_instance().find_pattern(u8"41 8B D5 49 8B CC E8 ? ? ? ? 85 C0 0F 85");
 			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowsevents.cの修正")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 

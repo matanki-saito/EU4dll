@@ -132,7 +132,7 @@ namespace Font {
 		case v1_29_4_0:
 		case v1_30_1_0:
 			BytePattern::temp_instance().find_pattern("41 81 FE 00 00 00 01");
-			if (BytePattern::temp_instance().has_size(1, "Font size limit")) {
+			if (BytePattern::temp_instance().has_size(1, u8"Font size limit")) {
 				// cmp r14d, 1000000h
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x6), 0x04, true);
 			} else {
@@ -151,7 +151,7 @@ namespace Font {
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
-		BytePattern::LoggingInfo("font etc fix");
+		BytePattern::LoggingInfo(u8"font etc fix");
 
 		/* ヒープゼロフラグの修正 */
 		result |= fontBufferHeapZeroClearInjector(options);

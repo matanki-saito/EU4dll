@@ -12,7 +12,7 @@ namespace Validator {
 	}
 
 	void Validate(DllError e, RunOptions options) {
-		auto message = format("e.unmatch.code2=%llx , e.version.code1=%llx , e.mod.code0=%llx",
+		auto message = format(u8"e.unmatch.code2=%llx , e.version.code1=%llx , e.mod.code0=%llx",
 			e.unmatch.code2,
 			e.version.code1,
 			e.mod.code0);
@@ -81,12 +81,12 @@ namespace Validator {
 
 			MessageBoxW(NULL, message, caption, MB_OK);
 
-			BytePattern::LoggingInfo("DLL [NG]");
+			BytePattern::LoggingInfo(u8"DLL [NG]");
 
 			exit(-1);
 		}
 		else {
-			BytePattern::LoggingInfo("DLL [OK]");
+			BytePattern::LoggingInfo(u8"DLL [OK]");
 		}
 	}
 }

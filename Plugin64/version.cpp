@@ -19,19 +19,19 @@ namespace Version {
 	string versionString(Eu4Version version) {
 		switch (version) {
 		case v1_29_0_0:
-			return "v1_29_0_0";
+			return u8"v1_29_0_0";
 		case v1_29_1_0:
-			return "v1_29_1_0";
+			return u8"v1_29_1_0";
 		case v1_29_2_0:
-			return "v1_29_2_0";
+			return u8"v1_29_2_0";
 		case v1_29_3_0:
-			return "v1_29_3_0";
+			return u8"v1_29_3_0";
 		case v1_29_4_0:
-			return "v1_29_4_0";
+			return u8"v1_29_4_0";
 		case v1_30_1_0:
-			return "v1_30_1_0";
+			return u8"v1_30_1_0";
 		default:
-			return "UNKNOWN";
+			return u8"UNKNOWN";
 		}
 	}
 
