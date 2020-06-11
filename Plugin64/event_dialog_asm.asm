@@ -17,7 +17,7 @@ NOT_DEF			=	2026h
 
 ;temporary space for code point
 .DATA
-	eventDialogProc1Flag	DD	0
+	eventDialogProc1Flag	DQ	0
 
 .CODE
 eventDialogProc1 PROC
@@ -77,16 +77,16 @@ eventDialogProc2 PROC
 	ucomiss		xmm0, xmm8;
 
 	cmp			eventDialogProc1Flag,1h;
-	jz			JMP_A;
+	jz			JMP_B;
 	jp			JMP_B;
 	jnz			JMP_B;
 
 JMP_A:
-	push		eventDialogProc2ReturnAddress1;
+	push		eventDialogProc2ReturnAddress2;
 	ret;
 
 JMP_B:
-	push		eventDialogProc2ReturnAddress2;
+	push		eventDialogProc2ReturnAddress1;
 	ret;
 eventDialogProc2 ENDP
 
