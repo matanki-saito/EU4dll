@@ -29,6 +29,7 @@ namespace MapNudgeView {
 				e.unmatch.mapNudgeViewProc1Injector = true;
 			}
 			break;
+		case v1_30_2_0:
 		case v1_30_1_0:
 			//  movzx   eax, byte ptr [rax+rcx]
 			BytePattern::temp_instance().find_pattern("0F B6 04 08 49 8B 94 C4 20 01 00 00");
