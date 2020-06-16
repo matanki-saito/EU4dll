@@ -65,6 +65,8 @@ JMP_D:
 	add		esi, SHIFT_4;
 
 JMP_F:
+	; ‚±‚±‚Ìdec‚ª•¶š‚Ì‚Â‚Ü‚è‚ğ§Œä‚µ‚Ä‚¢‚é
+	dec		r10;
 	cmp		r13,MAP_LIMIT;
 	ja		JMP_H;
 
@@ -96,8 +98,9 @@ mapJustifyProc2 PROC
 	jnz		JMP_A;
 
 	; 3byte = 1•¶š‚©‚Ç‚¤‚©
-	cmp		r10, 3; 
+	cmp		r10, 2; 
 	ja		JMP_A;
+	inc		r10;
 	inc		r10;
 	mov		edx,1;
 

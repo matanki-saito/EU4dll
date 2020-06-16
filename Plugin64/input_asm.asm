@@ -142,15 +142,12 @@ JMP_A:
 
 JMP_B:
 	; そのままコピーした
-	mov		rax, [r14];
-	lea     rdx, [rsp+220h - 1F0h];
-	xorps	xmm0, xmm0;
-	; mov		qword ptr [rsp+220h - 1E0h], bl; を下の方に移動
-	movdqu	xmmword ptr [rsp + 220h - 1F0h], xmm0;
-	mov		rcx, r14;
-	mov		dword ptr [rsp + 220h + 1CCh], 0;
-	movdqa  xmm0, xmmword ptr [inputProc1Var1];
-	xorps   xmm1, xmm1;
+	mov		rax, [r13 + 0];
+	xor		r9d,r9d;
+	mov		r8d, [rbp + 120h - 184h];
+	mov		edx,303h;
+	mov		rcx,r13;
+	call	qword ptr [rax + 20h];
 
 	; １byte取り出す
 	mov		rbx, inputProc2Tmp;
@@ -160,8 +157,18 @@ JMP_B:
 	cmp		bl,0;
 	jz		JMP_C;
 
-	mov		byte ptr [rsp + 220h - 1E0h], bl;
+	; カウント補正
+	mov		dword ptr [r14+44h] , 2
 
+	mov		rax, [r14];
+	lea     rdx, [rsp+220h - 1F0h];
+	xorps	xmm0, xmm0;
+	mov		byte ptr [rsp + 220h - 1E0h], bl;
+	movdqu	xmmword ptr [rsp + 220h - 1F0h], xmm0;
+	mov		rcx, r14;
+	mov		dword ptr [rsp + 220h + 1CCh], 0;
+	movdqa  xmm0, xmmword ptr [inputProc1Var1];
+	xorps   xmm1, xmm1;
 	movdqu  xmmword ptr [rsp + 220h - 1B8h], xmm0;
 	mov		dword ptr [rsp + 220h - 1C4h], esi;
 	movdqu	xmmword ptr [rsp + 220h - 1DCh], xmm1;
