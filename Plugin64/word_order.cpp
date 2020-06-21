@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "plugin_64.h"
 #include <atlstr.h>
 
@@ -6,7 +6,9 @@ namespace WordOrder {
 	extern "C" {
 		void wordOrderProc2();
 		void wordOrderProc3();
+		void wordOrderProc3V130();
 		void wordOrderProc4();
+		void wordOrderProc4V130();
 		void wordOrderProc5();
 		void wordOrderProc6();
 		void wordOrderProc7();
@@ -39,9 +41,11 @@ namespace WordOrder {
 
 		switch (options.version) {
 		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
 			// mov     [rsp+arg_10], rbx
 			BytePattern::temp_instance().find_pattern("48 89 5C 24 18 55 41 56 41 57 48 83 EC 20 4D 8B F0");
-			if (BytePattern::temp_instance().has_size(1, "std::basic_string<char>#insert‚ğƒtƒbƒN")) {
+			if (BytePattern::temp_instance().has_size(1, u8"std::basic_string<char>#insertã‚’ãƒ•ãƒƒã‚¯")) {
 				wordOrderProc1CallAddress1 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
@@ -64,8 +68,24 @@ namespace WordOrder {
 		case v1_29_4_0:
 			// nop
 			BytePattern::temp_instance().find_pattern("90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 13 70 EB FF");
-			if (BytePattern::temp_instance().has_size(1, "Battle of area‚ğ‹t“]‚³‚¹‚é")) {
+			if (BytePattern::temp_instance().has_size(1, u8"Battle of areaã‚’é€†è»¢ã•ã›ã‚‹")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// nop
+				wordOrderProc2ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, wordOrderProc2, true);
+			}
+			else {
+				e.unmatch.wordOrderProc2Injector = true;
+			}
+			break;
+		case v1_30_2_0:
+		case v1_30_1_0:
+			// mov     rcx, [rdi+30h]
+			BytePattern::temp_instance().find_pattern("48 8B 4F 30 48 83 C1 10 48 8B 01");
+			if (BytePattern::temp_instance().has_size(2, u8"Battle of areaã‚’é€†è»¢ã•ã›ã‚‹")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address(0x3B);
 
 				// nop
 				wordOrderProc2ReturnAddress = address + 0x13;
@@ -87,17 +107,39 @@ namespace WordOrder {
 	DllError wordOrderProc3Injector(RunOptions options) {
 		DllError e = {};
 
+		std::string pattern;
+
 		switch (options.version) {
 		case v1_29_4_0:
 			// or      r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern("49 83 C9 FF 45 33 C0 48 8B D0 49 8B CC E8 0B 1F");
-			if (BytePattern::temp_instance().has_size(1, "MDEATH_HEIR_SUCCEEDS heir name‚ğ‹t“]‚³‚¹‚é")) {
+			if (BytePattern::temp_instance().has_size(1, u8"MDEATH_HEIR_SUCCEEDS heir nameã‚’é€†è»¢ã•ã›ã‚‹")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
 				wordOrderProc3ReturnAddress = address + 0x12;
 
 				Injector::MakeJMP(address, wordOrderProc3, true);
+			}
+			else {
+				e.unmatch.wordOrderProc3Injector = true;
+			}
+			break;
+		case v1_30_2_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 43 A1 DD FF";
+			goto JMP;
+		case v1_30_1_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 A3 A1 DD FF";
+			JMP:
+			// or      r9, 0FFFFFFFFFFFFFFFFh
+			BytePattern::temp_instance().find_pattern(pattern);
+			if (BytePattern::temp_instance().has_size(1, u8"MDEATH_HEIR_SUCCEEDS heir nameã‚’é€†è»¢ã•ã›ã‚‹")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// nop
+				wordOrderProc3ReturnAddress = address + 0x12;
+
+				Injector::MakeJMP(address, wordOrderProc3V130, true);
 			}
 			else {
 				e.unmatch.wordOrderProc3Injector = true;
@@ -112,21 +154,47 @@ namespace WordOrder {
 
 	DllError wordOrderProc4Injector(RunOptions options) {
 		DllError e = {};
+		std::string pattern;
 
 		switch (options.version) {
 		case v1_29_4_0:
 			// or      r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern("49 83 C9 FF 45 33 C0 48 8B D0 49 8B CC E8 B8 1E");
-			if (BytePattern::temp_instance().has_size(1, "MDEATH_REGENCY_RULE heir name‚ğ‹t“]‚³‚¹‚é")) {
+			if (BytePattern::temp_instance().has_size(1, u8"MDEATH_REGENCY_RULE heir nameã‚’é€†è»¢ã•ã›ã‚‹")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
 				wordOrderProc4ReturnAddress = address + 0x12;
 
-				// call {xxxxx} std::basic_string<char>#append‚ğƒtƒbƒNB’¼Ú‚ÍƒoƒCƒiƒŠƒpƒ^[ƒ“‚ª‘½‚·‚¬‚ÅƒtƒbƒN‚Å‚«‚È‚©‚Á‚½
+				// call {xxxxx} std::basic_string<char>#appendã‚’ãƒ•ãƒƒã‚¯ã€‚ç›´æ¥ã¯ãƒã‚¤ãƒŠãƒªãƒ‘ã‚¿ãƒ¼ãƒ³ãŒå¤šã™ãã§ãƒ•ãƒƒã‚¯ã§ããªã‹ã£ãŸ
 				wordOrderProc1CallAddress2 = Injector::GetBranchDestination(address + 0xD).as_int();
 
 				Injector::MakeJMP(address, wordOrderProc4, true);
+			}
+			else {
+				e.unmatch.wordOrderProc4Injector = true;
+			}
+			break;
+		case v1_30_2_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 E6 A0 DD FF";
+			goto JMP;
+
+		case v1_30_1_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 46 A1 DD FF";
+
+			JMP:
+			// or      r9, 0FFFFFFFFFFFFFFFFh
+			BytePattern::temp_instance().find_pattern(pattern);
+			if (BytePattern::temp_instance().has_size(1, u8"MDEATH_REGENCY_RULE heir nameã‚’é€†è»¢ã•ã›ã‚‹")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// nop
+				wordOrderProc4ReturnAddress = address + 0x12;
+
+				// call {xxxxx} std::basic_string<char>#appendã‚’ãƒ•ãƒƒã‚¯ã€‚ç›´æ¥ã¯ãƒã‚¤ãƒŠãƒªãƒ‘ã‚¿ãƒ¼ãƒ³ãŒå¤šã™ãã§ãƒ•ãƒƒã‚¯ã§ããªã‹ã£ãŸ
+				wordOrderProc1CallAddress2 = Injector::GetBranchDestination(address + 0xD).as_int();
+
+				Injector::MakeJMP(address, wordOrderProc4V130, true);
 			}
 			else {
 				e.unmatch.wordOrderProc4Injector = true;
@@ -141,12 +209,22 @@ namespace WordOrder {
 
 	DllError wordOrderProc5Injector(RunOptions options) {
 		DllError e = {};
+		std::string pattern;
 
 		switch (options.version) {
 		case v1_29_4_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 41";
+			goto JMP;
+		case v1_30_2_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 B7 1D 91 FF";
+			goto JMP;
+		case v1_30_1_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 1D";
+
+			JMP:
 			// or      r9, 0FFFFFFFFFFFFFFFFh
-			BytePattern::temp_instance().find_pattern("49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 41");
-			if (BytePattern::temp_instance().has_size(1, "name‚ğ‹t“]‚³‚¹‚é")) {
+			BytePattern::temp_instance().find_pattern(pattern);
+			if (BytePattern::temp_instance().has_size(1, u8"nameã‚’é€†è»¢ã•ã›ã‚‹")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
@@ -165,15 +243,24 @@ namespace WordOrder {
 		return e;
 	}
 
-	// ’âí“ú•t‚È‚Ç
+	// åœæˆ¦æ—¥ä»˜ãªã©
 	DllError wordOrderProc6Injector(RunOptions options) {
 		DllError e = {};
+		std::string pattern;
 
 		switch (options.version) {
 		case v1_29_4_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 4F FA B4 FF";
+			goto JMP;
+		case v1_30_2_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 AF 7B AD";
+			goto JMP;
+		case v1_30_1_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 0F 7B AD";
+			JMP:
 			// nop
-			BytePattern::temp_instance().find_pattern("90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 4F FA B4 FF");
-			if (BytePattern::temp_instance().has_size(1, "M, Y ¨ Y”NM")) {
+			BytePattern::temp_instance().find_pattern(pattern);
+			if (BytePattern::temp_instance().has_size(1, u8"M, Y â†’ Yå¹´M")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
@@ -194,12 +281,21 @@ namespace WordOrder {
 
 	DllError wordOrderProc7Injector(RunOptions options) {
 		DllError e = {};
+		std::string pattern;
 
 		switch (options.version) {
 		case v1_29_4_0:
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 9D";
+			goto JMP;
+		case v1_30_2_0:
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 45 6B";
+			goto JMP;
+		case v1_30_1_0:
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 6A";
+			JMP:
 			// nop
-			BytePattern::temp_instance().find_pattern("90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 9D");
-			if (BytePattern::temp_instance().has_size(1, "D M, Y ¨ Y”NMD“ú")) {
+			BytePattern::temp_instance().find_pattern(pattern);
+			if (BytePattern::temp_instance().has_size(1, u8"D M, Y â†’ Yå¹´MDæ—¥")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				wordOrderProc7CallAddress1 = Injector::GetBranchDestination(address + 0xF).as_int();
@@ -221,18 +317,27 @@ namespace WordOrder {
 		return e;
 	}
 
-	// ŠOŒğŠ¯‚Ìƒ|ƒbƒvƒAƒbƒv‚È‚Ç
+	// å¤–äº¤å®˜ã®ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãªã©
 	DllError wordOrderProc8Injector(RunOptions options) {
 		DllError e = {};
+		std::string pattern;
 
 		switch (options.version) {
 		case v1_29_4_0:
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 31 02";
+			goto JMP;
+		case v1_30_2_0:
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 61 E2";
+			goto JMP;
+		case v1_30_1_0:
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 81 E1";
+			JMP:
 			// nop 
-			BytePattern::temp_instance().find_pattern("90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 31 02");
-			if (BytePattern::temp_instance().has_size(1, "M Y ¨ Y”NM")) {
+			BytePattern::temp_instance().find_pattern(pattern);
+			if (BytePattern::temp_instance().has_size(1, u8"M Y â†’ Yå¹´M")) {
 				// mov     r8d, 1
 				uintptr_t address = BytePattern::temp_instance().get_first().address() - 0x16;
-				
+
 				generateCString = Injector::GetBranchDestination(address + 0x11).as_int();
 				concatCString = Injector::GetBranchDestination(address + 0x23).as_int();
 				concat2CString = Injector::GetBranchDestination(address + 0x33).as_int();

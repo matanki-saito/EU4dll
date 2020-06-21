@@ -7,7 +7,9 @@ enum Eu4Version {
 	v1_29_1_0 = 1291,
 	v1_29_2_0 = 1292,
 	v1_29_3_0 = 1293,
-	v1_29_4_0 = 1294
+	v1_29_4_0 = 1294,
+	v1_30_1_0 = 1301,
+	v1_30_2_0 = 1302
 };
 
 typedef UINT64 DllErrorCode;
@@ -158,7 +160,7 @@ struct DllError{
 };
 
 // same std::basic_string<char>
-typedef struct {
+typedef struct _ParadoxTextObject {
 	union {
 		char text[0x10];
 		char* p;

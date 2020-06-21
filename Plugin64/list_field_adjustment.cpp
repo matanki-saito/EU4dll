@@ -18,9 +18,11 @@ namespace ListFieldAdjustment {
 		case v1_29_2_0:
 		case v1_29_3_0:
 		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
 			// mov     r8, [rbp+0B0h+var_118]
 			BytePattern::temp_instance().find_pattern("4C 8B 45 98 F3 41 0F 10 B0 48 08 00 00");
-			if (BytePattern::temp_instance().has_size(1, "フォント読み出し")) {
+			if (BytePattern::temp_instance().has_size(1, u8"フォント読み出し")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// jz loc_xxxxx
@@ -46,9 +48,11 @@ namespace ListFieldAdjustment {
 		case v1_29_2_0:
 		case v1_29_3_0:
 		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
 			// inc     ebx
 			BytePattern::temp_instance().find_pattern("FF C3 4C 8B 4F 10 0F B6 95 F8 00 00 00");
-			if (BytePattern::temp_instance().has_size(1, "カウントを進める")) {
+			if (BytePattern::temp_instance().has_size(1, u8"カウントを進める")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// jge     loc_xxxxx
@@ -74,9 +78,11 @@ namespace ListFieldAdjustment {
 		case v1_29_2_0:
 		case v1_29_3_0:
 		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
 			// mov     rcx, [rax+rcx*8]
 			BytePattern::temp_instance().find_pattern("48 8B 0C C8 44 8B 0C 91 45 33 C0 48 8D 54 24 20");
-			if (BytePattern::temp_instance().has_size(2, "文字列切り取り処理")) {
+			if (BytePattern::temp_instance().has_size(2, u8"文字列切り取り処理")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call sub_xxxxx

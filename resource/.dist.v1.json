@@ -1,4 +1,4 @@
 {
-    "filter":["Plugin64.dll$"],
+    "filter":["(P|p)lugin64.dll$"],
     "isArchive":false
 }

@@ -13,6 +13,11 @@ namespace Debug {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_30_2_0:
+		case v1_30_1_0:
+			pattern = "40 57 41 54 41 55 41 56 41 57 B8 40 1C 00 00";
+			goto INJECT;
+
 		case v1_29_4_0:
 			pattern = "40 57 41 54 41 55 41 56 41 57 B8 30 1C 00 00";
 			goto INJECT;
@@ -31,7 +36,7 @@ namespace Debug {
 			// hook main thread head
 			// push rdi; push r12; ...
 			BytePattern::temp_instance().find_pattern(pattern);
-			if (BytePattern::temp_instance().has_size(1, "デバッグ")) {
+			if (BytePattern::temp_instance().has_size(1, u8"デバッグ")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call xxxxx
