@@ -43,6 +43,7 @@ namespace WordOrder {
 		case v1_29_4_0:
 		case v1_30_1_0:
 		case v1_30_2_0:
+		case v1_30_3_0:
 			// mov     [rsp+arg_10], rbx
 			BytePattern::temp_instance().find_pattern("48 89 5C 24 18 55 41 56 41 57 48 83 EC 20 4D 8B F0");
 			if (BytePattern::temp_instance().has_size(1, u8"std::basic_string<char>#insertをフック")) {
@@ -80,6 +81,7 @@ namespace WordOrder {
 				e.unmatch.wordOrderProc2Injector = true;
 			}
 			break;
+		case v1_30_3_0:
 		case v1_30_2_0:
 		case v1_30_1_0:
 			// mov     rcx, [rdi+30h]
@@ -125,6 +127,9 @@ namespace WordOrder {
 				e.unmatch.wordOrderProc3Injector = true;
 			}
 			break;
+		case v1_30_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 53 A1 DD FF";
+			goto JMP;
 		case v1_30_2_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 43 A1 DD FF";
 			goto JMP;
@@ -175,6 +180,10 @@ namespace WordOrder {
 				e.unmatch.wordOrderProc4Injector = true;
 			}
 			break;
+		case v1_30_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F6 A0 DD FF";
+			goto JMP;
+
 		case v1_30_2_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 E6 A0 DD FF";
 			goto JMP;
@@ -215,6 +224,9 @@ namespace WordOrder {
 		case v1_29_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 41";
 			goto JMP;
+		case v1_30_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 C7 1D 91 FF";
+			goto JMP;
 		case v1_30_2_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 B7 1D 91 FF";
 			goto JMP;
@@ -252,6 +264,9 @@ namespace WordOrder {
 		case v1_29_4_0:
 			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 4F FA B4 FF";
 			goto JMP;
+		case v1_30_3_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 CF 7B AD";
+			goto JMP;
 		case v1_30_2_0:
 			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 AF 7B AD";
 			goto JMP;
@@ -286,6 +301,9 @@ namespace WordOrder {
 		switch (options.version) {
 		case v1_29_4_0:
 			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 9D";
+			goto JMP;
+		case v1_30_3_0:
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 6B";
 			goto JMP;
 		case v1_30_2_0:
 			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 45 6B";
@@ -325,6 +343,9 @@ namespace WordOrder {
 		switch (options.version) {
 		case v1_29_4_0:
 			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 31 02";
+			goto JMP;
+		case v1_30_3_0:
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 11 E2";
 			goto JMP;
 		case v1_30_2_0:
 			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 61 E2";
