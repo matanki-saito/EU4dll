@@ -255,6 +255,7 @@ namespace ListFieldAdjustment {
 
 namespace Validator {
 	void Validate(DllError dllError, RunOptions options);
+	bool ValidateVersion(DllError dllError, RunOptions options);
 }
 
 namespace FileSave {

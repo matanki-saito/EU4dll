@@ -12,70 +12,75 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 		DllError e = {};
 
-		// mod download
-		#ifndef _DEBUG
-		e |= ModDownload::Init();
-		#endif
-
 		// 設定
 		RunOptions options;
 
 		// Version取得
 		Version::GetVersionFromExe(&options);
+
 		// INIから取得
 		Ini::GetOptionsFromIni(&options);
 
-		// デバッグ用
-		#ifdef _DEBUG
-		e |= Debug::Init(options);
-		#endif
+		// Versionチェック
+		if (Validator::ValidateVersion(e, options)) {
 
-		// フォント読み込み
-		e |= Font::Init(options);
+			// mod download
+			#ifndef _DEBUG
+			e |= ModDownload::Init();
+			#endif
 
-		// UIの表示
-		e |= MainText::Init(options);
+			// デバッグ用
+			#ifdef _DEBUG
+			e |= Debug::Init(options);
+			#endif
 
-		// ツールチップとボタンの表示
-		e |= TooltipAndButton::Init(options);
+			// フォント読み込み
+			e |= Font::Init(options);
 
-		// マップ文字の表示
-		e |= MapView::Init(options);
+			// UIの表示
+			e |= MainText::Init(options);
 
-		// マップ文字の表示（nudge）
-		e |= MapNudgeView::Init(options);
+			// ツールチップとボタンの表示
+			e |= TooltipAndButton::Init(options);
 
-		// マップ文字の調整
-		e |= MapAdjustment::Init(options);
+			// マップ文字の表示
+			e |= MapView::Init(options);
 
-		// マップ文字の調整
-		e |= MapJustify::Init(options);
+			// マップ文字の表示（nudge）
+			e |= MapNudgeView::Init(options);
 
-		// イベントダイアログとマップ文字の調整
-		e |= EventDialog::Init(options);
+			// マップ文字の調整
+			e |= MapAdjustment::Init(options);
 
-		// マップ上に浮き出る文字の表示
-		e |= MapPopup::Init(options);
+			// マップ文字の調整
+			e |= MapJustify::Init(options);
 
-		// リスト表示の文字の調整
-		e |= ListFieldAdjustment::Init(options);
+			// イベントダイアログとマップ文字の調整
+			e |= EventDialog::Init(options);
 
-		// ファイルセーブ
-		e |= FileSave::Init(options);
+			// マップ上に浮き出る文字の表示
+			e |= MapPopup::Init(options);
 
-		// 日付
-		e |= Date::Init(options);
+			// リスト表示の文字の調整
+			e |= ListFieldAdjustment::Init(options);
 
-		// IME
-		e |= Ime::Init(options);
+			// ファイルセーブ
+			e |= FileSave::Init(options);
 
-		// 入力
-		e |= Input::Init(options);
+			// 日付
+			e |= Date::Init(options);
 
-		// 文字列順序入れ替え
-		e |= WordOrder::Init(options);
+			// IME
+			e |= Ime::Init(options);
 
-		Validator::Validate(e,options);
+			// 入力
+			e |= Input::Init(options);
+
+			// 文字列順序入れ替え
+			e |= WordOrder::Init(options);
+
+			Validator::Validate(e, options);
+		}
 	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
 		BytePattern::ShutdownLog();
 	}
