@@ -49,6 +49,7 @@ namespace MapAdjustment {
 				e.unmatch.mapAdjustmentProc1Injector = true;
 			}
 			break;
+		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
 		case v1_30_1_0:
@@ -98,6 +99,7 @@ namespace MapAdjustment {
 				e.unmatch.mapAdjustmentProc2Injector = true;
 			}
 			break;
+		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
 		case v1_30_1_0:
@@ -153,6 +155,7 @@ namespace MapAdjustment {
 				e.unmatch.mapAdjustmentProc3Injector = true;
 			}
 			break;
+		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
 		case v1_30_1_0:
@@ -208,6 +211,7 @@ namespace MapAdjustment {
 				e.unmatch.mapAdjustmentProc4Injector = true;
 			}
 			break;
+		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
 		case v1_30_1_0:
@@ -244,6 +248,7 @@ namespace MapAdjustment {
 		case v1_30_1_0:
 		case v1_30_2_0:
 		case v1_30_3_0:
+		case v1_30_4_0:
 			// lea r8, asc_xxxxx
 			BytePattern::temp_instance().find_pattern("4C 8D 05 ? ? ? ? 48 8D 55 78 48 8D 8D 40 01");
 			if (BytePattern::temp_instance().has_size(1, u8"区切り記号の変更（ISSUE-164）")) {
