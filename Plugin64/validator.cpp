@@ -89,4 +89,44 @@ namespace Validator {
 			BytePattern::LoggingInfo(u8"DLL [OK]");
 		}
 	}
+
+	bool ValidateVersion(DllError e, RunOptions options) {
+		if (options.version == UNKNOWN) {
+			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
+
+			const WCHAR* message;
+			const WCHAR* caption;
+
+			switch (sysDefLcid) {
+			case MAKELANGID(LANG_JAPANESE, SUBLANG_JAPANESE_JAPAN):
+				caption = L"未対応バージョン";
+				message = L""
+					L"日本語化dllはこのバージョンに未対応です。起動を優先しますか？";
+				break;
+
+			case MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US):
+			default:
+				caption = L"NO SUPPORT VERSION";
+				message = L""
+					L"Multibyte DLL hasn't supported this game version yet.\n"
+					L"Do you want to start a game?";
+				break;
+			}
+
+			int result = MessageBoxW(NULL, message, caption, MB_YESNO);
+
+			if (result == IDYES) {
+				BytePattern::LoggingInfo("DLL [SKIP]");
+				return false;
+			}
+			else {
+				BytePattern::LoggingInfo("DLL [VERSION MISMATCH]");
+				exit(-1);
+			}
+		}
+		else {
+			BytePattern::LoggingInfo("DLL [MATCH VERSION]");
+			return true;
+		}
+	}
 }

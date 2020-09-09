@@ -10,7 +10,8 @@ enum Eu4Version {
 	v1_29_4_0 = 1294,
 	v1_30_1_0 = 1301,
 	v1_30_2_0 = 1302,
-	v1_30_3_0 = 1303
+	v1_30_3_0 = 1303,
+	v1_30_4_0 = 1304
 };
 
 typedef UINT64 DllErrorCode;
@@ -254,6 +255,7 @@ namespace ListFieldAdjustment {
 
 namespace Validator {
 	void Validate(DllError dllError, RunOptions options);
+	bool ValidateVersion(DllError dllError, RunOptions options);
 }
 
 namespace FileSave {

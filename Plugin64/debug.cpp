@@ -13,6 +13,7 @@ namespace Debug {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
 		case v1_30_1_0:
