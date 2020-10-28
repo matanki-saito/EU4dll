@@ -19,7 +19,7 @@ namespace ModDownload{
 			error.mod.proccessFaild = true;
 		}
 		else {
-			DWORD result = WaitForSingleObject(pi.hProcess, 10 * 1000); // 10 sec
+			DWORD result = WaitForSingleObject(pi.hProcess, 20 * 1000); // 20 sec
 			switch (result)
 			{
 			case WAIT_FAILED:
