@@ -44,6 +44,7 @@ namespace FileSave {
 		case v1_30_2_0:
 		case v1_30_3_0:
 		case v1_30_4_0:
+		case v1_30_5_0:
 			// mov     eax, [rcx+10h]
 			BytePattern::temp_instance().find_pattern("8B 41 10 85 C0 0F 84 31 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"ファイル名を安全にしている場所を短絡する")) {
@@ -69,6 +70,7 @@ namespace FileSave {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_30_5_0:
 		case v1_30_4_0:
 			pattern = "48 8D 05 ? ? B4 FF 48 3B D0 75 06 48 8D 41 30";
 			goto TAG;
@@ -135,6 +137,7 @@ namespace FileSave {
 				e.unmatch.fileSaveProc3Injector = true;
 			}
 			break;
+		case v1_30_5_0:
 		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
@@ -174,6 +177,7 @@ namespace FileSave {
 		case v1_30_2_0:
 		case v1_30_3_0:
 		case v1_30_4_0:
+		case v1_30_5_0:
 			// lea     r8, [rbp+0]
 			BytePattern::temp_instance().find_pattern("4C 8D 45 00 48 8D 15 ? ? ? ? 48 8D 4C 24 70 E8 ? ? ? ? 90");
 			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのツールチップを表示できるようにする1")) {
@@ -227,6 +231,7 @@ namespace FileSave {
 				e.unmatch.fileSaveProc5Injector = true;
 			}
 			break;
+		case v1_30_5_0:
 		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
@@ -282,6 +287,7 @@ namespace FileSave {
 				e.unmatch.fileSaveProc6Injector = true;
 			}
 			break;
+		case v1_30_5_0:
 		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
@@ -334,6 +340,7 @@ namespace FileSave {
 				e.unmatch.fileSaveProc7Injector = true;
 			}
 			break;
+		case v1_30_5_0:
 		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
