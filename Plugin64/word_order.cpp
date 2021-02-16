@@ -40,6 +40,7 @@ namespace WordOrder {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_30_5_0:
 		case v1_29_4_0:
 		case v1_30_1_0:
 		case v1_30_2_0:
@@ -82,6 +83,7 @@ namespace WordOrder {
 				e.unmatch.wordOrderProc2Injector = true;
 			}
 			break;
+		case v1_30_5_0:
 		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
@@ -130,22 +132,12 @@ namespace WordOrder {
 				e.unmatch.wordOrderProc3Injector = true;
 			}
 			break;
+		case v1_30_5_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 B3 9F DD FF";
+			goto JMP;
 		case v1_30_4_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 ? A1 DD FF";
-			// or      r9, 0FFFFFFFFFFFFFFFFh
-			BytePattern::temp_instance().find_pattern(pattern);
-			if (BytePattern::temp_instance().has_size(2, u8"MDEATH_HEIR_SUCCEEDS heir nameを逆転させる")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
-
-				// nop
-				wordOrderProc3ReturnAddress = address + 0x12;
-
-				Injector::MakeJMP(address, wordOrderProc3V130, true);
-			}
-			else {
-				e.unmatch.wordOrderProc3Injector = true;
-			}
-			break;
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F3 A1 DD FF";
+			goto JMP;
 		case v1_30_3_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 53 A1 DD FF";
 			goto JMP;
@@ -201,6 +193,7 @@ namespace WordOrder {
 			}
 			break;
 		case v1_30_4_0:
+		case v1_30_5_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 ? A1 DD FF";
 			// or      r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern(pattern);
@@ -265,24 +258,12 @@ namespace WordOrder {
 		case v1_29_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 41";
 			goto JMP;
+		case v1_30_5_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 D7 1E 91 FF";
+			goto JMP;
 		case v1_30_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 ? 1D 91 FF";
-
-			// or      r9, 0FFFFFFFFFFFFFFFFh
-			BytePattern::temp_instance().find_pattern(pattern);
-			if (BytePattern::temp_instance().has_size(1, u8"nameを逆転させる")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
-
-				// nop
-				wordOrderProc5ReturnAddress = address + 0x12;
-
-				Injector::MakeJMP(address, wordOrderProc5, true);
-			}
-			else {
-				e.unmatch.wordOrderProc5Injector = true;
-			}
-			break;
-
+			goto JMP;
 		case v1_30_3_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 C7 1D 91 FF";
 			goto JMP;
@@ -324,6 +305,7 @@ namespace WordOrder {
 		case v1_29_4_0:
 			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 4F FA B4 FF";
 			goto JMP;
+		case v1_30_5_0:
 		case v1_30_4_0:
 		case v1_30_3_0:
 			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 ? ? AD";
@@ -363,6 +345,9 @@ namespace WordOrder {
 		switch (options.version) {
 		case v1_29_4_0:
 			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 9D";
+			goto JMP;
+		case v1_30_5_0:
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 D5 63 B1 FF";
 			goto JMP;
 		case v1_30_4_0:
 		case v1_30_3_0:
@@ -407,6 +392,9 @@ namespace WordOrder {
 		switch (options.version) {
 		case v1_29_4_0:
 			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 31 02";
+			goto JMP;
+		case v1_30_5_0:
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 B1 DA";
 			goto JMP;
 		case v1_30_4_0:
 		case v1_30_3_0:

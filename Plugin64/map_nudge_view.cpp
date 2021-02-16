@@ -29,6 +29,7 @@ namespace MapNudgeView {
 				e.unmatch.mapNudgeViewProc1Injector = true;
 			}
 			break;
+		case v1_30_5_0:
 		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:

@@ -15,15 +15,15 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup Nuget.exe
-      uses: warrenbuckley/Setup-Nuget@v1
+      uses: nuget/setup-nuget@v1
       with:
-        nuget-version: '4.4.1'
+        nuget-version: '5.3.1'
 
     - name: Restore nuget db
       run: nuget restore EU4JPS.sln
 
     - name: Setup MSBuild.exe
-      uses: warrenbuckley/Setup-MSBuild@v1
+      uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Build source
       run: msbuild EU4JPS.sln -p:Configuration=release -p:platform=x64

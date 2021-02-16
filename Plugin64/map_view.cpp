@@ -25,6 +25,7 @@ namespace MapView {
 		case v1_30_2_0:
 		case v1_30_3_0:
 		case v1_30_4_0:
+		case v1_30_5_0:
 			// movzx   eax, byte ptr [rax+r8]
 			BytePattern::temp_instance().find_pattern("42 0F B6 04 00 4C 8B 1C C7 4C 89 5D 38");
 			if (BytePattern::temp_instance().has_size(1, u8"処理ループ２の文字取得処理")) {
@@ -68,6 +69,7 @@ namespace MapView {
 				e.unmatch.mapViewProc2Injector = true;
 			}
 			break;
+		case v1_30_5_0:
 		case v1_30_4_0:
 		case v1_30_3_0:
 		case v1_30_2_0:
@@ -105,6 +107,7 @@ namespace MapView {
 		case v1_30_2_0:
 		case v1_30_3_0:
 		case v1_30_4_0:
+		case v1_30_5_0:
 			// movzx   r8d, byte ptr [rax+r15]
 			BytePattern::temp_instance().find_pattern("46 0F B6 04 38 BA 01 00 00 00 48 8D 4C 24 40");
 			if (BytePattern::temp_instance().has_size(1, u8"処理ループ１の文字コピー")) {
