@@ -133,7 +133,7 @@ namespace WordOrder {
 			}
 			break;
 		case v1_30_5_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 B3 9F DD FF";
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D3 9C DD FF";
 			goto JMP;
 		case v1_30_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F3 A1 DD FF";
@@ -192,26 +192,13 @@ namespace WordOrder {
 				e.unmatch.wordOrderProc4Injector = true;
 			}
 			break;
-		case v1_30_4_0:
 		case v1_30_5_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 95 9E DD FF";
+			goto JMP;
+
+		case v1_30_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 ? A1 DD FF";
-			// or      r9, 0FFFFFFFFFFFFFFFFh
-			BytePattern::temp_instance().find_pattern(pattern);
-			if (BytePattern::temp_instance().has_size(1, u8"MDEATH_REGENCY_RULE heir nameを逆転させる")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
-
-				// nop
-				wordOrderProc4ReturnAddress = address + 0x12;
-
-				// call {xxxxx} std::basic_string<char>#appendをフック。直接はバイナリパターンが多すぎでフックできなかった
-				wordOrderProc1CallAddress2 = Injector::GetBranchDestination(address + 0xD).as_int();
-
-				Injector::MakeJMP(address, wordOrderProc4V130, true);
-			}
-			else {
-				e.unmatch.wordOrderProc4Injector = true;
-			}
-			break;
+			goto JMP;
 
 		case v1_30_3_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F6 A0 DD FF";
@@ -259,7 +246,7 @@ namespace WordOrder {
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 41";
 			goto JMP;
 		case v1_30_5_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 D7 1E 91 FF";
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 ? FF 90 FF";
 			goto JMP;
 		case v1_30_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 ? 1D 91 FF";
@@ -347,7 +334,7 @@ namespace WordOrder {
 			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 9D";
 			goto JMP;
 		case v1_30_5_0:
-			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 D5 63 B1 FF";
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 05 61 B1 FF";
 			goto JMP;
 		case v1_30_4_0:
 		case v1_30_3_0:
@@ -394,7 +381,7 @@ namespace WordOrder {
 			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 31 02";
 			goto JMP;
 		case v1_30_5_0:
-			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 B1 DA";
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF";
 			goto JMP;
 		case v1_30_4_0:
 		case v1_30_3_0:

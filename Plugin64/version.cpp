@@ -96,6 +96,7 @@ namespace Version {
 			Pattern minor = Injector::ReadMemory<Pattern>(BytePattern::temp_instance().get_first().address(10), true);
 
 			switch (minor.calVer()) {
+			case 306:
 			case 305:
 				version = v1_30_5_0;
 				break;
