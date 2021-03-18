@@ -71,6 +71,8 @@ namespace FileSave {
 
 		switch (options.version) {
 		case v1_30_5_0:
+			pattern = "48 8D 05 51 D1 B3 FF 48 3B D0 75 06 48 8D 41 30";
+			goto TAG;
 		case v1_30_4_0:
 			pattern = "48 8D 05 ? ? B4 FF 48 3B D0 75 06 48 8D 41 30";
 			goto TAG;
