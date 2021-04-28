@@ -138,6 +138,72 @@ mainTextProc2 ENDP
 
 ;-------------------------------------------;
 
+mainTextProc2_v131 PROC
+	movsxd  rdx, edi;
+	movsxd  rcx, r14d;
+	mov     r10, [rbp+750h-7D0h];
+
+	movzx	eax, byte ptr [rdx+r10];
+	mov		r9, mainTextProc2BufferAddress;
+	mov     byte ptr [rcx+r9], al;
+
+	inc     r14d;
+	inc		rcx;
+
+	cmp		al, ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		al, ESCAPE_SEQ_2;
+	jz		JMP_B;
+	cmp		al, ESCAPE_SEQ_3;
+	jz		JMP_C;
+	cmp		al, ESCAPE_SEQ_4;
+	jz		JMP_D;
+	jmp		JMP_E;
+
+JMP_A:
+	movzx	eax, word ptr[rdx+r10+1];
+	mov		word ptr [rcx+r9], ax;
+	jmp		JMP_F;
+
+JMP_B:
+	movzx	eax, word ptr[rdx+r10+1];
+	mov		word ptr [rcx+r9], ax;
+	sub		eax, SHIFT_2;
+	jmp		JMP_F;
+
+JMP_C:
+	movzx	eax, word ptr [rdx+r10+1];
+	mov		word ptr [rcx+r9], ax;
+	add		eax, SHIFT_3;
+	jmp		JMP_F;
+
+JMP_D:
+	movzx	eax, word ptr [rdx+r10+1];
+	mov		word ptr [rcx+r9], ax;
+	add		eax, SHIFT_4;
+
+JMP_F:
+	movzx	eax, ax;
+	add		r14d, 2;
+	add		rcx,2;
+	cmp		eax, NO_FONT;
+
+	ja		JMP_G;
+	mov		eax, NOT_DEF;
+
+JMP_G:
+	add		rdx, 2;
+	add		edi, 2;
+JMP_E:
+
+	mov		mainTextProc2TmpCharacter, eax;
+	
+	push	mainTextProc2ReturnAddress;
+	ret;
+mainTextProc2_v131 ENDP
+
+;-------------------------------------------;
+
 mainTextProc3 PROC
 	cmp		word ptr [rcx+6],0;
 	jnz		JMP_A;

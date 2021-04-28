@@ -49,6 +49,7 @@ namespace Input {
 			}
 
 			break;
+		case v1_31_1_0:
 		case v1_30_5_0:
 		case v1_30_4_0:
 		case v1_30_3_0:
@@ -100,6 +101,7 @@ namespace Input {
 		case v1_30_3_0:
 		case v1_30_4_0:
 		case v1_30_5_0:
+		case v1_31_1_0:
 			// mov     rax, [rdi]
 			BytePattern::temp_instance().find_pattern("48 8B 07 48 8B CF 85 DB 74 08 FF 90 40 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"バックスペース処理の修正")) {
