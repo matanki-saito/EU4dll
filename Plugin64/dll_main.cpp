@@ -30,9 +30,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			#endif
 
 			// デバッグ用
-			#ifdef _DEBUG
-			e |= Debug::Init(options);
-			#endif
+			//#ifdef _DEBUG
+			//e |= Debug::Init(options);
+			//#endif
 
 			// フォント読み込み
 			e |= Font::Init(options);
@@ -77,7 +77,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= Input::Init(options);
 
 			// 文字列順序入れ替え
-			e |= WordOrder::Init(options);
+			//e |= WordOrder::Init(options);
 
 			Validator::Validate(e, options);
 		}
