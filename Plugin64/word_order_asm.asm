@@ -196,6 +196,34 @@ wordOrderProc5 ENDP
 
 ;-----------------------------------;
 
+wordOrderProc5V131 PROC
+
+	;逆疑問符(0xBF)が最初に来ていれば反転させる
+	cmp		byte ptr[rax+1], 0BFh; // [0]は0x20(white space)
+	jnz		JMP_A;
+
+	mov		qword ptr [rsp+20h], 0FFFFFFFFFFFFFFFFh; end (stack渡し
+	mov		r9, 1;	 // start
+	mov		r8, rax; // text
+	xor		rdx,rdx;  // pos1
+	mov		rcx, rbx; // this
+	call	wordOrderProc1CallAddress1;
+	jmp		JMP_B;
+
+JMP_A:
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor     r8d, r8d;
+	mov     rdx, rax;
+	mov     rcx, rbx;
+	call    wordOrderProc1CallAddress2;
+
+JMP_B:
+	push	wordOrderProc5ReturnAddress;
+	ret;
+wordOrderProc5V131 ENDP
+
+;-----------------------------------;
+
 wordOrderProc6 PROC
 	nop;
 
@@ -224,6 +252,37 @@ wordOrderProc6 PROC
 	push	wordOrderProc6ReturnAddress;
 	ret;
 wordOrderProc6 ENDP
+
+;-----------------------------------;
+
+wordOrderProc6V131 PROC
+	nop;
+
+	; 1450
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rsp+0D0h-0A8h];
+	mov		rcx, rsi;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	mov		rdx, year;
+	mov		rcx, rsi;
+	call	wordOrderProc1CallAddress2;
+	
+	; 1450年1月
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rbp+57h - 78h];
+	mov		rcx, rsi;
+	call	wordOrderProc1CallAddress2;
+
+
+	push	wordOrderProc6ReturnAddress;
+	ret;
+wordOrderProc6V131 ENDP
 
 ;-----------------------------------;
 
@@ -291,6 +350,74 @@ wordOrderProc7 PROC
 	push	wordOrderProc7ReturnAddress;
 	ret;
 wordOrderProc7 ENDP
+
+
+;----;
+
+wordOrderProc7V131 PROC
+	; 1450
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rsp+168h-100h];
+	mov		rcx, rbx;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	mov		rdx, year;
+	mov		rcx, rbx;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年1月
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rbp+30h];
+	mov		rcx, rbx;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年1月1
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	lea		rdx, [rsp+168h - 140h];
+	mov		rcx, rbx;
+	call	wordOrderProc1CallAddress2;
+
+	; 1450年1月1日
+	or		r9, 0FFFFFFFFFFFFFFFFh;
+	xor		r8d, r8d;
+	mov		rdx, day;
+	mov		rcx, rbx;
+	call	wordOrderProc1CallAddress2;
+	nop;
+
+	; 以下開放するためだけに必要
+	lea     r8, [rsp + 168h - 120h];
+	lea     rdx, [rsp + 168h - 140h];
+	lea     rcx, [rbp - 18h];
+	call    wordOrderProc7CallAddress1;
+	nop;
+
+	lea		r8, [rbp + 30h];
+	mov		rdx, rax;
+	lea		rcx, [rbp - 38h];
+	call	wordOrderProc7CallAddress2;
+	nop;
+
+	mov		r8, year;
+	mov		rdx, rax;
+	lea		rcx, [rbp-58h];
+	call	wordOrderProc7CallAddress2;
+	nop;
+
+	lea		r8, [rsp + 168h - 100h];
+	mov		rdx, rax;
+	lea		rcx, [rbp - 78h];
+	call	wordOrderProc7CallAddress1;
+
+	push	wordOrderProc7ReturnAddress;
+	ret;
+wordOrderProc7V131 ENDP
 
 ;-----------------------------------;
 
