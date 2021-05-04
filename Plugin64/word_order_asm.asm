@@ -33,6 +33,9 @@ NOT_DEF			=	2026h
 ;temporary space for code point
 .DATA
 	mainTextProc2TmpCharacter	DD	0
+	dayA	DB	"DD", 0
+	monthA	DB	"MONTH", 0
+	yearA	DB	"YYYY", 0
 
 .CODE
 wordOrderProc2 PROC
@@ -352,71 +355,26 @@ wordOrderProc7 PROC
 wordOrderProc7 ENDP
 
 
-;----;
+;-----------------------------------;
 
 wordOrderProc7V131 PROC
-	; 1450
-	or		r9, 0FFFFFFFFFFFFFFFFh;
-	xor		r8d, r8d;
-	lea		rdx, [rsp+168h-100h];
-	mov		rcx, rbx;
-	call	wordOrderProc1CallAddress2;
-
-	; 1450年
-	or		r9, 0FFFFFFFFFFFFFFFFh;
-	xor		r8d, r8d;
-	mov		rdx, year;
-	mov		rcx, rbx;
-	call	wordOrderProc1CallAddress2;
-
-	; 1450年1月
-	or		r9, 0FFFFFFFFFFFFFFFFh;
-	xor		r8d, r8d;
-	lea		rdx, [rbp+30h];
-	mov		rcx, rbx;
-	call	wordOrderProc1CallAddress2;
-
-	; 1450年1月1
-	or		r9, 0FFFFFFFFFFFFFFFFh;
-	xor		r8d, r8d;
-	lea		rdx, [rsp+168h - 140h];
-	mov		rcx, rbx;
-	call	wordOrderProc1CallAddress2;
-
-	; 1450年1月1日
-	or		r9, 0FFFFFFFFFFFFFFFFh;
-	xor		r8d, r8d;
-	mov		rdx, day;
-	mov		rcx, rbx;
-	call	wordOrderProc1CallAddress2;
-	nop;
-
-	; 以下開放するためだけに必要
-	lea     r8, [rsp + 168h - 120h];
-	lea     rdx, [rsp + 168h - 140h];
-	lea     rcx, [rbp - 18h];
-	call    wordOrderProc7CallAddress1;
-	nop;
-
-	lea		r8, [rbp + 30h];
-	mov		rdx, rax;
-	lea		rcx, [rbp - 38h];
-	call	wordOrderProc7CallAddress2;
-	nop;
-
-	mov		r8, year;
-	mov		rdx, rax;
-	lea		rcx, [rbp-58h];
-	call	wordOrderProc7CallAddress2;
-	nop;
-
-	lea		r8, [rsp + 168h - 100h];
-	mov		rdx, rax;
-	lea		rcx, [rbp - 78h];
-	call	wordOrderProc7CallAddress1;
+	mov     rax, [rsp + 1A8h + 40h]; // arg_38 =+40h
+	mov     qword ptr [rsp + 1A8h - 160h], rax;
+	lea     rax, dayA;
+	mov     qword ptr [rsp + 1A8h - 168h ], rax;
+	mov     rax, qword ptr [rsp + 1A8h + 30h]; //  arg_28=+30h
+	mov     qword ptr [rsp + 1A8h - 170h], rax;
+	lea     rax, monthA;
+	mov     qword ptr [rsp + 1A8h - 178h], rax;
+	mov     qword ptr [rsp + 1A8h - 180h], rbx;
+	lea     rax, yearA;
+	mov     qword ptr [rsp + 1A8h - 188h], rax
+	lea     r8, qword ptr [rsp + 1A8h - 148h];
+	mov     rcx, rdi;
 
 	push	wordOrderProc7ReturnAddress;
 	ret;
+
 wordOrderProc7V131 ENDP
 
 ;-----------------------------------;
