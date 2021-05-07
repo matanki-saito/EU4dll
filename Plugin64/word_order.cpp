@@ -378,19 +378,7 @@ namespace WordOrder {
 		switch (options.version) {
 
 		case v1_31_2_0:
-			// mov     rax, [rsp+1A8h+arg_38]
-			BytePattern::temp_instance().find_pattern("48 8B 84 24 E8 01 00 00 48 89 44 24 48 48 8D 05 8F 73 4F 01");
-			if (BytePattern::temp_instance().has_size(1, u8"D M, Y → Y年MD日")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
-
-				// call xxxxx
-				wordOrderProc7ReturnAddress = address + 0x4B;
-
-				Injector::MakeJMP(address, wordOrderProc7V131, true);
-			}
-			else {
-				e.unmatch.wordOrderProc7Injector = true;
-			}
+			// 処理は不要になった
 			break;
 		case v1_30_5_0:
 			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 05 61 B1 FF";
