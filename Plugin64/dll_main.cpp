@@ -77,7 +77,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= Input::Init(options);
 
 			// 文字列順序入れ替え
-			e |= WordOrder::Init(options);
+			//e |= WordOrder::Init(options);
 
 			Validator::Validate(e, options);
 		}
