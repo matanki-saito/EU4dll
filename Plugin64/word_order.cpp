@@ -378,22 +378,7 @@ namespace WordOrder {
 		switch (options.version) {
 
 		case v1_31_2_0:
-			// nop
-			BytePattern::temp_instance().find_pattern("");
-			if (BytePattern::temp_instance().has_size(1, u8"D M, Y → Y年MD日")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
-
-				wordOrderProc7CallAddress1 = Injector::GetBranchDestination(address + 0xF).as_int();
-				wordOrderProc7CallAddress2 = Injector::GetBranchDestination(address + 0x20).as_int();
-
-				// nop
-				wordOrderProc7ReturnAddress = address + 0x5B;
-
-				Injector::MakeJMP(address, wordOrderProc7V131, true);
-			}
-			else {
-				e.unmatch.wordOrderProc7Injector = true;
-			}
+			// 処理は不要になった
 			break;
 		case v1_30_5_0:
 			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 05 61 B1 FF";
@@ -534,8 +519,8 @@ namespace WordOrder {
 		result |= wordOrderProc6Injector(options);
 
 		// 年号の表示がD M, YからY年MD日になる
-		// 確認方法）
-		//result |= wordOrderProc7Injector(options);
+		// 確認方法）スタート画面のセーブデータの日付を見る
+		result |= wordOrderProc7Injector(options);
 
 		// 年号の表示がM YからY年Mになる
 		// 確認方法）外交官のポップアップを表示し、年号を確認する
