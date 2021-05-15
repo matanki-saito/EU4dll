@@ -82,14 +82,15 @@ struct DllError{
 			bool imeProc3Injector : 1;
 			bool inputProc1Injector : 1;
 			bool inputProc2Injector : 1;
-			bool wordOrderProc1Injector : 1;
-			bool wordOrderProc2Injector : 1;
-			bool wordOrderProc3Injector : 1;
-			bool wordOrderProc4Injector : 1;
-			bool wordOrderProc5Injector : 1;
-			bool wordOrderProc6Injector : 1;
-			bool wordOrderProc7Injector : 1;
-			bool wordOrderProc8Injector : 1;
+			bool localizationProc1Injector : 1;
+			bool localizationProc2Injector : 1;
+			bool localizationProc3Injector : 1;
+			bool localizationProc4Injector : 1;
+			bool localizationProc5Injector : 1;
+			bool localizationProc6Injector : 1;
+			bool localizationProc7Injector : 1;
+			bool localizationProc8Injector : 1;
+			bool localizationProc9Injector : 1;
 		};
 	} version;
 
@@ -146,14 +147,15 @@ struct DllError{
 			bool imeProc3Injector : 1;
 			bool inputProc1Injector : 1;
 			bool inputProc2Injector : 1;
-			bool wordOrderProc1Injector : 1;
-			bool wordOrderProc2Injector : 1;
-			bool wordOrderProc3Injector : 1;
-			bool wordOrderProc4Injector : 1;
-			bool wordOrderProc5Injector : 1;
-			bool wordOrderProc6Injector : 1;
-			bool wordOrderProc7Injector : 1;
-			bool wordOrderProc8Injector : 1;
+			bool localizationProc1Injector : 1;
+			bool localizationProc2Injector : 1;
+			bool localizationProc3Injector : 1;
+			bool localizationProc4Injector : 1;
+			bool localizationProc5Injector : 1;
+			bool localizationProc6Injector : 1;
+			bool localizationProc7Injector : 1;
+			bool localizationProc8Injector : 1;
+			bool localizationProc9Injector : 1;
 		};
 	} unmatch;
 
@@ -282,7 +284,7 @@ namespace Input {
 	DllError Init(RunOptions option);
 }
 
-namespace WordOrder {
+namespace Localization {
 	DllError Init(RunOptions option);
 }
 

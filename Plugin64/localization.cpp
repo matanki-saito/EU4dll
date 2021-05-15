@@ -2,32 +2,32 @@
 #include "plugin_64.h"
 #include <atlstr.h>
 
-namespace WordOrder {
+namespace Localization {
 	extern "C" {
-		void wordOrderProc2();
-		void wordOrderProc3();
-		void wordOrderProc3V130();
-		void wordOrderProc4();
-		void wordOrderProc4V130();
-		void wordOrderProc5();
-		void wordOrderProc5V131();
-		void wordOrderProc6();
-		void wordOrderProc7();
-		void wordOrderProc7V131();
-		void wordOrderProc8();
+		void localizationProc2();
+		void localizationProc3();
+		void localizationProc3V130();
+		void localizationProc4();
+		void localizationProc4V130();
+		void localizationProc5();
+		void localizationProc5V131();
+		void localizationProc6();
+		void localizationProc7();
+		void localizationProc7V131();
+		void localizationProc8();
 
-		uintptr_t wordOrderProc1CallAddress1;
-		uintptr_t wordOrderProc1CallAddress2;
-		uintptr_t wordOrderProc2ReturnAddress;
-		uintptr_t wordOrderProc3ReturnAddress;
-		uintptr_t wordOrderProc4ReturnAddress;
-		uintptr_t wordOrderProc5ReturnAddress;
-		uintptr_t wordOrderProc6ReturnAddress;
-		uintptr_t wordOrderProc7ReturnAddress;
-		uintptr_t wordOrderProc8ReturnAddress;
+		uintptr_t localizationProc1CallAddress1;
+		uintptr_t localizationProc1CallAddress2;
+		uintptr_t localizationProc2ReturnAddress;
+		uintptr_t localizationProc3ReturnAddress;
+		uintptr_t localizationProc4ReturnAddress;
+		uintptr_t localizationProc5ReturnAddress;
+		uintptr_t localizationProc6ReturnAddress;
+		uintptr_t localizationProc7ReturnAddress;
+		uintptr_t localizationProc8ReturnAddress;
 
-		uintptr_t wordOrderProc7CallAddress1;
-		uintptr_t wordOrderProc7CallAddress2;
+		uintptr_t localizationProc7CallAddress1;
+		uintptr_t localizationProc7CallAddress2;
 
 		uintptr_t generateCString;
 		uintptr_t concatCString;
@@ -38,7 +38,7 @@ namespace WordOrder {
 		uintptr_t day;
 	}
 
-	DllError wordOrderProc1Injector(RunOptions options){
+	DllError localizationProc1Injector(RunOptions options){
 		DllError e = {};
 
 		switch (options.version) {
@@ -49,23 +49,24 @@ namespace WordOrder {
 		case v1_30_3_0:
 		case v1_30_4_0:
 		case v1_31_2_0:
+		case v1_31_3_0:
 			// mov     [rsp+arg_10], rbx
 			BytePattern::temp_instance().find_pattern("48 89 5C 24 18 55 41 56 41 57 48 83 EC 20 4D 8B F0");
 			if (BytePattern::temp_instance().has_size(1, u8"std::basic_string<char>#insertをフック")) {
-				wordOrderProc1CallAddress1 = BytePattern::temp_instance().get_first().address();
+				localizationProc1CallAddress1 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.wordOrderProc1Injector = true;
+				e.unmatch.localizationProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.wordOrderProc1Injector = true;
+			e.version.localizationProc1Injector = true;
 		}
 
 		return e;
 	}
 
-	DllError wordOrderProc2Injector(RunOptions options) {
+	DllError localizationProc2Injector(RunOptions options) {
 		DllError e = {};
 
 		if (!options.reversingWordsBattleOfArea) return e;
@@ -78,12 +79,12 @@ namespace WordOrder {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
-				wordOrderProc2ReturnAddress = address + 0x13;
+				localizationProc2ReturnAddress = address + 0x13;
 
-				Injector::MakeJMP(address, wordOrderProc2, true);
+				Injector::MakeJMP(address, localizationProc2, true);
 			}
 			else {
-				e.unmatch.wordOrderProc2Injector = true;
+				e.unmatch.localizationProc2Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -98,15 +99,16 @@ namespace WordOrder {
 				uintptr_t address = BytePattern::temp_instance().get_first().address(0x3B);
 
 				// nop
-				wordOrderProc2ReturnAddress = address + 0x13;
+				localizationProc2ReturnAddress = address + 0x13;
 
-				Injector::MakeJMP(address, wordOrderProc2, true);
+				Injector::MakeJMP(address, localizationProc2, true);
 			}
 			else {
-				e.unmatch.wordOrderProc2Injector = true;
+				e.unmatch.localizationProc2Injector = true;
 			}
 			break;
 		case v1_31_2_0:
+		case v1_31_3_0:
 			// mov     rax, [rdi+30h]
 			BytePattern::temp_instance().find_pattern("48 8B 47 30 4C 8B 40 28 49 83 C0 10");
 			if (BytePattern::temp_instance().has_size(1, u8"Battle of areaを逆転させる")) {
@@ -114,24 +116,24 @@ namespace WordOrder {
 				uintptr_t address = BytePattern::temp_instance().get_first().address(0x1D);
 
 				// nop
-				wordOrderProc2ReturnAddress = address + 0x13;
+				localizationProc2ReturnAddress = address + 0x13;
 
-				Injector::MakeJMP(address, wordOrderProc2, true);
+				Injector::MakeJMP(address, localizationProc2, true);
 			}
 			else {
-				e.unmatch.wordOrderProc2Injector = true;
+				e.unmatch.localizationProc2Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"Battle of areaを逆転させる [NG]");
-			e.version.wordOrderProc2Injector = true;
+			e.version.localizationProc2Injector = true;
 		}
 
 		return e;
 	}
 
 
-	DllError wordOrderProc3Injector(RunOptions options) {
+	DllError localizationProc3Injector(RunOptions options) {
 		DllError e = {};
 
 		std::string pattern;
@@ -144,14 +146,15 @@ namespace WordOrder {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
-				wordOrderProc3ReturnAddress = address + 0x12;
+				localizationProc3ReturnAddress = address + 0x12;
 
-				Injector::MakeJMP(address, wordOrderProc3, true);
+				Injector::MakeJMP(address, localizationProc3, true);
 			}
 			else {
-				e.unmatch.wordOrderProc3Injector = true;
+				e.unmatch.localizationProc3Injector = true;
 			}
 			break;
+		case v1_31_3_0:
 		case v1_31_2_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D3 58 DC FF";
 			goto JMP;
@@ -176,23 +179,23 @@ namespace WordOrder {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
-				wordOrderProc3ReturnAddress = address + 0x12;
+				localizationProc3ReturnAddress = address + 0x12;
 
-				Injector::MakeJMP(address, wordOrderProc3V130, true);
+				Injector::MakeJMP(address, localizationProc3V130, true);
 			}
 			else {
-				e.unmatch.wordOrderProc3Injector = true;
+				e.unmatch.localizationProc3Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"MDEATH_HEIR_SUCCEEDS heir nameを逆転させる [NG]");
-			e.version.wordOrderProc3Injector = true;
+			e.version.localizationProc3Injector = true;
 		}
 
 		return e;
 	}
 
-	DllError wordOrderProc4Injector(RunOptions options) {
+	DllError localizationProc4Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
 
@@ -204,17 +207,21 @@ namespace WordOrder {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
-				wordOrderProc4ReturnAddress = address + 0x12;
+				localizationProc4ReturnAddress = address + 0x12;
 
 				// call {xxxxx} std::basic_string<char>#appendをフック。直接はバイナリパターンが多すぎでフックできなかった
-				wordOrderProc1CallAddress2 = Injector::GetBranchDestination(address + 0xD).as_int();
+				localizationProc1CallAddress2 = Injector::GetBranchDestination(address + 0xD).as_int();
 
 				// Injector::MakeJMP(address, wordOrderProc4, true);
 			}
 			else {
-				e.unmatch.wordOrderProc4Injector = true;
+				e.unmatch.localizationProc4Injector = true;
 			}
 			break;
+		case v1_31_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 08 63 DC FF";
+			goto JMP;
+
 		case v1_31_2_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F8 5B DC FF";
 			goto JMP;
@@ -245,44 +252,48 @@ namespace WordOrder {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
-				wordOrderProc4ReturnAddress = address + 0x12;
+				localizationProc4ReturnAddress = address + 0x12;
 
 				// call {xxxxx} std::basic_string<char>#appendをフック。直接はバイナリパターンが多すぎでフックできなかった
-				wordOrderProc1CallAddress2 = Injector::GetBranchDestination(address + 0xD).as_int();
+				localizationProc1CallAddress2 = Injector::GetBranchDestination(address + 0xD).as_int();
 
-				Injector::MakeJMP(address, wordOrderProc4V130, true);
+				Injector::MakeJMP(address, localizationProc4V130, true);
 			}
 			else {
-				e.unmatch.wordOrderProc4Injector = true;
+				e.unmatch.localizationProc4Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"MDEATH_REGENCY_RULE heir nameを逆転させる [NG]");
-			e.version.wordOrderProc4Injector = true;
+			e.version.localizationProc4Injector = true;
 		}
 
 		return e;
 	}
 
-	DllError wordOrderProc5Injector(RunOptions options) {
+	DllError localizationProc5Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_31_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 23 C1 76 FF";
+			goto JMP2;
 		case v1_31_2_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 83 BA 76 FF";
+		JMP2:
 			// or      r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, u8"nameを逆転させる")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
-				wordOrderProc5ReturnAddress = address + 0x12;
+				localizationProc5ReturnAddress = address + 0x12;
 
-				Injector::MakeJMP(address, wordOrderProc5V131, true);
+				Injector::MakeJMP(address, localizationProc5V131, true);
 			}
 			else {
-				e.unmatch.wordOrderProc5Injector = true;
+				e.unmatch.localizationProc5Injector = true;
 			}
 			break;
 
@@ -310,27 +321,30 @@ namespace WordOrder {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
-				wordOrderProc5ReturnAddress = address + 0x12;
+				localizationProc5ReturnAddress = address + 0x12;
 
-				Injector::MakeJMP(address, wordOrderProc5, true);
+				Injector::MakeJMP(address, localizationProc5, true);
 			}
 			else {
-				e.unmatch.wordOrderProc5Injector = true;
+				e.unmatch.localizationProc5Injector = true;
 			}
 			break;
 		default:
-			e.version.wordOrderProc5Injector = true;
+			e.version.localizationProc5Injector = true;
 			BytePattern::LoggingInfo(u8"nameを逆転させる [NG]");
 		}
 
 		return e;
 	}
 
-	DllError wordOrderProc6Injector(RunOptions options) {
+	DllError localizationProc6Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_31_3_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 CF AD A6";
+			goto JMP;
 		case v1_31_2_0:
 			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 DF 9C A6";
 			goto JMP;
@@ -355,28 +369,28 @@ namespace WordOrder {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// nop
-				wordOrderProc6ReturnAddress = address + 0x13;
+				localizationProc6ReturnAddress = address + 0x13;
 
-				Injector::MakeJMP(address, wordOrderProc6, true);
+				Injector::MakeJMP(address, localizationProc6, true);
 			}
 			else {
-				e.unmatch.wordOrderProc6Injector = true;
+				e.unmatch.localizationProc6Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"M, Y → Y年M [NG]");
-			e.version.wordOrderProc6Injector = true;
+			e.version.localizationProc6Injector = true;
 		}
 
 		return e;
 	}
 
-	DllError wordOrderProc7Injector(RunOptions options) {
+	DllError localizationProc7Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
 
 		switch (options.version) {
-
+		case v1_31_3_0:
 		case v1_31_2_0:
 			// 処理は不要になった
 			break;
@@ -401,31 +415,32 @@ namespace WordOrder {
 			if (BytePattern::temp_instance().has_size(1, u8"D M, Y → Y年MD日")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
-				wordOrderProc7CallAddress1 = Injector::GetBranchDestination(address + 0xF).as_int();
-				wordOrderProc7CallAddress2 = Injector::GetBranchDestination(address + 0x20).as_int();
+				localizationProc7CallAddress1 = Injector::GetBranchDestination(address + 0xF).as_int();
+				localizationProc7CallAddress2 = Injector::GetBranchDestination(address + 0x20).as_int();
 
 				// nop
-				wordOrderProc7ReturnAddress = address + 0x5E;
+				localizationProc7ReturnAddress = address + 0x5E;
 
-				Injector::MakeJMP(address, wordOrderProc7, true);
+				Injector::MakeJMP(address, localizationProc7, true);
 			}
 			else {
-				e.unmatch.wordOrderProc7Injector = true;
+				e.unmatch.localizationProc7Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"D M, Y → Y年MD日 [NG]");
-			e.version.wordOrderProc7Injector = true;
+			e.version.localizationProc7Injector = true;
 		}
 
 		return e;
 	}
 
-	DllError wordOrderProc8Injector(RunOptions options) {
+	DllError localizationProc8Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_31_3_0:
 		case v1_31_2_0:
 		case v1_30_5_0:
 			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF";
@@ -454,17 +469,41 @@ namespace WordOrder {
 				concat2CString = Injector::GetBranchDestination(address + 0x33).as_int();
 
 				// nop
-				wordOrderProc8ReturnAddress = address + 0x38;
+				localizationProc8ReturnAddress = address + 0x38;
 
-				Injector::MakeJMP(address, wordOrderProc8, true);
+				Injector::MakeJMP(address, localizationProc8, true);
 			}
 			else {
-				e.unmatch.wordOrderProc8Injector = true;
+				e.unmatch.localizationProc8Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"M Y → Y年M [NG]");
-			e.version.wordOrderProc8Injector = true;
+			e.version.localizationProc8Injector = true;
+		}
+
+		return e;
+	}
+
+	DllError localizationProc9Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_31_3_0:
+			BytePattern::temp_instance().find_pattern("20 2D 20 00 4D 4F 4E 54 48 53 00 00");
+			if (BytePattern::temp_instance().has_size(1, u8"Replace space")) {
+				intptr_t address = BytePattern::temp_instance().get_first().address();
+				Injector::WriteMemory<byte>(address+0, 0x20,true);
+				Injector::WriteMemory<byte>(address+1, 0x2D, true);
+				Injector::WriteMemory<byte>(address+2, 0x20, true);
+			}
+			else {
+				e.unmatch.localizationProc9Injector = true;
+			}
+			break;
+		default:
+			BytePattern::LoggingInfo(u8"Replace space [NG]");
+			e.version.localizationProc9Injector = true;
 		}
 
 		return e;
@@ -497,34 +536,37 @@ namespace WordOrder {
 		day = (uintptr_t)&_day;
 
 		// 関数アドレス取得
-		result |= wordOrderProc1Injector(options);
+		result |= localizationProc1Injector(options);
 
 		// Battle of areaを逆転させる
 		// 確認方法）敵軍と戦い、結果のポップアップのタイトルを確認する
-		result |= wordOrderProc2Injector(options);
+		result |= localizationProc2Injector(options);
 
 		// MDEATH_HEIR_SUCCEEDS heir nameを逆転させる
-		//result |= wordOrderProc3Injector(options);
+		//result |= localizationProc3Injector(options);
 
 		// MDEATH_REGENCY_RULE heir nameを逆転させる
-		// ※wordOrderProc1CallAddress2のhookもこれで実行している
-		result |= wordOrderProc4Injector(options);
+		// ※localizationProc1CallAddress2のhookもこれで実行している
+		result |= localizationProc4Injector(options);
 
 		// nameを逆転させる
 		// 確認方法）sub modを入れた状態で日本の大名を選択する。大名の名前が逆転しているかを確認する
-		result |= wordOrderProc5Injector(options);
+		result |= localizationProc5Injector(options);
 
 		// 年号の表示がM, YからY年M
 		// 確認方法）オスマンで画面上部の停戦アラートのポップアップの年号を確認する
-		result |= wordOrderProc6Injector(options);
+		result |= localizationProc6Injector(options);
 
 		// 年号の表示がD M, YからY年MD日になる
 		// 確認方法）スタート画面のセーブデータの日付を見る
-		result |= wordOrderProc7Injector(options);
+		result |= localizationProc7Injector(options);
 
 		// 年号の表示がM YからY年Mになる
 		// 確認方法）外交官のポップアップを表示し、年号を確認する
-		result |= wordOrderProc8Injector(options);
+		result |= localizationProc8Injector(options);
+
+		// スペースを変更
+		//result |= localizationProc9Injector(options);
 
 		return result;
 	}
