@@ -17,6 +17,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_31_4_0:
 		case v1_31_3_0:
 		case v1_31_2_0:
 		case v1_31_1_0:
@@ -67,6 +68,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_31_4_0:
 		case v1_31_3_0:
 		case v1_31_2_0:
 		case v1_31_1_0:
@@ -128,6 +130,7 @@ namespace ListFieldAdjustment {
 		case v1_31_1_0:
 		case v1_31_2_0:
 		case v1_31_3_0:
+		case v1_31_4_0:
 			// mov     rcx, [rax+rcx*8]
 			BytePattern::temp_instance().find_pattern("48 8B 0C C8 44 8B 0C 91 45 33 C0 48 8D 54 24 20");
 			if (BytePattern::temp_instance().has_size(2, u8"文字列切り取り処理")) {
