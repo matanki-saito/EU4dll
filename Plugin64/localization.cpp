@@ -51,6 +51,7 @@ namespace Localization {
 		case v1_31_2_0:
 		case v1_31_3_0:
 		case v1_31_4_0:
+		case v1_31_5_0:
 			// mov     [rsp+arg_10], rbx
 			BytePattern::temp_instance().find_pattern("48 89 5C 24 18 55 41 56 41 57 48 83 EC 20 4D 8B F0");
 			if (BytePattern::temp_instance().has_size(1, u8"std::basic_string<char>#insertをフック")) {
@@ -111,6 +112,7 @@ namespace Localization {
 		case v1_31_2_0:
 		case v1_31_3_0:
 		case v1_31_4_0:
+		case v1_31_5_0:
 			// mov     rax, [rdi+30h]
 			BytePattern::temp_instance().find_pattern("48 8B 47 30 4C 8B 40 28 49 83 C0 10");
 			if (BytePattern::temp_instance().has_size(1, u8"Battle of areaを逆転させる")) {
@@ -156,6 +158,7 @@ namespace Localization {
 				e.unmatch.localizationProc3Injector = true;
 			}
 			break;
+		case v1_31_5_0:
 		case v1_31_4_0:
 		case v1_31_3_0:
 		case v1_31_2_0:
@@ -221,6 +224,10 @@ namespace Localization {
 				e.unmatch.localizationProc4Injector = true;
 			}
 			break;
+		case v1_31_5_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D8 5E DC FF";
+			goto JMP;
+
 		case v1_31_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 88 7B DC FF";
 			goto JMP;
@@ -283,6 +290,9 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_31_5_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 63 70 76 FF";
+			goto JMP2;
 		case v1_31_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 33 C0 76 FF";
 			goto JMP2;
@@ -352,6 +362,9 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_31_5_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 7F 61 A6";
+			goto JMP;
 		case v1_31_4_0:
 			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 3F AD A6";
 			goto JMP;
@@ -403,6 +416,7 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_31_5_0:
 		case v1_31_4_0:
 		case v1_31_3_0:
 		case v1_31_2_0:
@@ -454,6 +468,7 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_31_5_0:
 		case v1_31_4_0:
 		case v1_31_3_0:
 		case v1_31_2_0:
@@ -504,6 +519,7 @@ namespace Localization {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_31_5_0:
 		case v1_31_4_0:
 		case v1_31_3_0:
 			BytePattern::temp_instance().find_pattern("20 2D 20 00 4D 4F 4E 54 48 53 00 00");
