@@ -291,7 +291,10 @@ namespace Localization {
 
 		switch (options.version) {
 		case v1_31_5_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 63 70 76 FF";
+			// 1.31.5.0
+			// pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 63 70 76 FF";
+			// 1.31.5.1
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 03 6F 76 FF";
 			goto JMP2;
 		case v1_31_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 33 C0 76 FF";
