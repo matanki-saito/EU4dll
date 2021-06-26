@@ -50,7 +50,7 @@ jobs:
 
     - name: generate artifact zip
       run: |
-        compress-archive -Path artifact/* -DestinationPath steam_EU4_1.30_fixdll_build_${{ github.run_number }}.zip
+        compress-archive -Path artifact/* -DestinationPath steam_EU4_1.31_fixdll_build_${{ github.run_number }}.zip
       shell: powershell
 
     - name: Create Release
