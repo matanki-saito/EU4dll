@@ -85,7 +85,7 @@
     <Filter Include="ソース ファイル\app\options">
       <UniqueIdentifier>{d09a302e-b226-490e-ad0c-f444408b198f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\app\word_order">
+    <Filter Include="ソース ファイル\app\localization">
       <UniqueIdentifier>{5e3e9836-52fd-4562-a3cd-6b4caeb37d21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -197,8 +197,8 @@
     <ClCompile Include="options.cpp">
       <Filter>ソース ファイル\app\options</Filter>
     </ClCompile>
-    <ClCompile Include="word_order.cpp">
-      <Filter>ソース ファイル\app\word_order</Filter>
+    <ClCompile Include="localization.cpp">
+      <Filter>ソース ファイル\app\localization</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,8 +250,8 @@
     <MASM Include="input_asm.asm">
       <Filter>ソース ファイル\app\input</Filter>
     </MASM>
-    <MASM Include="word_order_asm.asm">
-      <Filter>ソース ファイル\app\word_order</Filter>
+    <MASM Include="localization_asm.asm">
+      <Filter>ソース ファイル\app\localization</Filter>
     </MASM>
   </ItemGroup>
 </Project>

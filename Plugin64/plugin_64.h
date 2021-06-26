@@ -12,7 +12,12 @@ enum Eu4Version {
 	v1_30_2_0 = 1302,
 	v1_30_3_0 = 1303,
 	v1_30_4_0 = 1304,
-	v1_30_5_0 = 1305
+	v1_30_5_0 = 1305,
+	v1_31_1_0 = 1311,
+	v1_31_2_0 = 1320,
+	v1_31_3_0 = 1330,
+	v1_31_4_0 = 1340,
+	v1_31_5_0 = 1350
 };
 
 typedef UINT64 DllErrorCode;
@@ -79,14 +84,15 @@ struct DllError{
 			bool imeProc3Injector : 1;
 			bool inputProc1Injector : 1;
 			bool inputProc2Injector : 1;
-			bool wordOrderProc1Injector : 1;
-			bool wordOrderProc2Injector : 1;
-			bool wordOrderProc3Injector : 1;
-			bool wordOrderProc4Injector : 1;
-			bool wordOrderProc5Injector : 1;
-			bool wordOrderProc6Injector : 1;
-			bool wordOrderProc7Injector : 1;
-			bool wordOrderProc8Injector : 1;
+			bool localizationProc1Injector : 1;
+			bool localizationProc2Injector : 1;
+			bool localizationProc3Injector : 1;
+			bool localizationProc4Injector : 1;
+			bool localizationProc5Injector : 1;
+			bool localizationProc6Injector : 1;
+			bool localizationProc7Injector : 1;
+			bool localizationProc8Injector : 1;
+			bool localizationProc9Injector : 1;
 		};
 	} version;
 
@@ -143,14 +149,15 @@ struct DllError{
 			bool imeProc3Injector : 1;
 			bool inputProc1Injector : 1;
 			bool inputProc2Injector : 1;
-			bool wordOrderProc1Injector : 1;
-			bool wordOrderProc2Injector : 1;
-			bool wordOrderProc3Injector : 1;
-			bool wordOrderProc4Injector : 1;
-			bool wordOrderProc5Injector : 1;
-			bool wordOrderProc6Injector : 1;
-			bool wordOrderProc7Injector : 1;
-			bool wordOrderProc8Injector : 1;
+			bool localizationProc1Injector : 1;
+			bool localizationProc2Injector : 1;
+			bool localizationProc3Injector : 1;
+			bool localizationProc4Injector : 1;
+			bool localizationProc5Injector : 1;
+			bool localizationProc6Injector : 1;
+			bool localizationProc7Injector : 1;
+			bool localizationProc8Injector : 1;
+			bool localizationProc9Injector : 1;
 		};
 	} unmatch;
 
@@ -279,7 +286,7 @@ namespace Input {
 	DllError Init(RunOptions option);
 }
 
-namespace WordOrder {
+namespace Localization {
 	DllError Init(RunOptions option);
 }
 
