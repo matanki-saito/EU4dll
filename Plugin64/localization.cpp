@@ -225,7 +225,10 @@ namespace Localization {
 			}
 			break;
 		case v1_31_5_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D8 5E DC FF";
+			// 1.31.5.1
+			//pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D8 5E DC FF";
+			// 1.31.5.2
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 88 5E DC FF";
 			goto JMP;
 
 		case v1_31_4_0:
@@ -294,7 +297,9 @@ namespace Localization {
 			// 1.31.5.0
 			// pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 63 70 76 FF";
 			// 1.31.5.1
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 03 6F 76 FF";
+			//pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 03 6F 76 FF";
+			// 1.31.5.2
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 73 81 76 FF";
 			goto JMP2;
 		case v1_31_4_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 33 C0 76 FF";
@@ -366,7 +371,10 @@ namespace Localization {
 
 		switch (options.version) {
 		case v1_31_5_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 7F 61 A6";
+			// 1.31.5.1
+			//pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 7F 61 A6";
+			// 1.31.5.2
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 8F 74 A6";
 			goto JMP;
 		case v1_31_4_0:
 			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 3F AD A6";
