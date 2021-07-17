@@ -320,6 +320,27 @@ namespace TooltipAndButton {
 		return e;
 	}
 
+	DllError tooltipAndButtonProc6Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_31_5_0:
+			// inc edx
+			BytePattern::temp_instance().find_pattern("A7 52 2D 20 00 00 00 00");
+			if (BytePattern::temp_instance().has_size(1, u8"空白をノーブレークスペースに変換")) {
+				Injector::WriteMemory(BytePattern::temp_instance().get_first().address() + 3, 0xA0, true);
+			}
+			else {
+				e.unmatch.tooltipAndButtonProc5Injector = true;
+			}
+			break;
+		default:
+			e.version.tooltipAndButtonProc5Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
@@ -329,6 +350,7 @@ namespace TooltipAndButton {
 		result |= tooltipAndButtonProc3Injector(options);
 		result |= tooltipAndButtonProc4Injector(options);
 		result |= tooltipAndButtonProc5Injector(options);
+		result |= tooltipAndButtonProc6Injector(options);
 
 		return result;
 	}
