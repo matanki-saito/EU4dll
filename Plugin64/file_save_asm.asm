@@ -3,6 +3,7 @@ EXTERN	fileSaveProc2CallAddress		:	QWORD
 EXTERN	fileSaveProc2ReturnAddress		:	QWORD
 EXTERN	fileSaveProc3ReturnAddress		:	QWORD
 EXTERN	fileSaveProc3CallAddress		:	QWORD
+EXTERN  fileSaveProc3CallAddress2       :   QWORD
 EXTERN	fileSaveProc4CallAddress		:	QWORD
 EXTERN	fileSaveProc4MarkerAddress		:	QWORD
 EXTERN	fileSaveProc4ReturnAddress		:	QWORD
@@ -97,6 +98,22 @@ fileSaveProc3V130 PROC
 	push	fileSaveProc3ReturnAddress;
 	ret;
 fileSaveProc3V130 ENDP
+
+
+;-------------------------------------------;
+
+fileSaveProc3V1316 PROC
+	lea		rcx, dword ptr [rbx +580h];
+	call	fileSaveProc3CallAddress;
+	mov		rdx, rax;
+
+	xor		r8d, r8d;
+	mov		rcx, r14
+	call	fileSaveProc3CallAddress2;
+
+	push	fileSaveProc3ReturnAddress;
+	ret;
+fileSaveProc3V1316 ENDP
 
 ;-------------------------------------------;
 

@@ -8,6 +8,7 @@ namespace FileSave {
 		void fileSaveProc2();
 		void fileSaveProc3();
 		void fileSaveProc3V130();
+		void fileSaveProc3V1316();
 		void fileSaveProc4();
 		void fileSaveProc5();
 		void fileSaveProc5V130();
@@ -19,6 +20,7 @@ namespace FileSave {
 		uintptr_t fileSaveProc2CallAddress;
 		uintptr_t fileSaveProc3ReturnAddress;
 		uintptr_t fileSaveProc3CallAddress;
+		uintptr_t fileSaveProc3CallAddress2;
 		uintptr_t fileSaveProc4ReturnAddress;
 		uintptr_t fileSaveProc4CallAddress;
 		uintptr_t fileSaveProc4MarkerAddress;
@@ -163,7 +165,6 @@ namespace FileSave {
 		case v1_31_3_0:
 		case v1_31_4_0:
 		case v1_31_5_0:
-		case v1_31_6_0:
 			//  jmp     short loc_xxxxx
 			BytePattern::temp_instance().find_pattern("EB 6E 48 8D 15 ? ? ? ? FF 90 98 00 00 00 48");
 			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのタイトルを表示できるようにする")) {
@@ -176,6 +177,26 @@ namespace FileSave {
 				fileSaveProc3ReturnAddress = address + 0x1A;
 
 				Injector::MakeJMP(address, fileSaveProc3V130, true);
+			}
+			else {
+				e.unmatch.fileSaveProc3Injector = true;
+			}
+			break;
+		case v1_31_6_0:
+			BytePattern::temp_instance().find_pattern("45 33 C0 48 8D 93 80 05 00 00 49 8B CE");
+			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのタイトルを表示できるようにする")) {
+				//  xor     r8d, r8d
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc3CallAddress = (uintptr_t)utf8ToEscapedStr;
+
+				// call {xxxxx}
+				fileSaveProc3CallAddress2 = Injector::GetBranchDestination(address + 0xD).as_int();
+
+				// test rsi,rsi
+				fileSaveProc3ReturnAddress = address + 0x12;
+
+				Injector::MakeJMP(address, fileSaveProc3V1316, true);
 			}
 			else {
 				e.unmatch.fileSaveProc3Injector = true;
@@ -423,7 +444,7 @@ namespace FileSave {
 		result |= fileSaveProc3Injector(options);
 		// これは使われなくなった？
 		//result |= fileSaveProc4Injector(options);
-		result |= fileSaveProc5Injector(options);
+		//result |= fileSaveProc5Injector(options);
 		result |= fileSaveProc6Injector(options);
 		result |= fileSaveProc7Injector(options);
 
