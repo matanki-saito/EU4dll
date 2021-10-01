@@ -21,6 +21,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_31_6_0:
 		case v1_31_5_0:
 			// mov     rcx, [rbp+0D0h+var_130]
 			BytePattern::temp_instance().find_pattern("48 8B 4D A0 F3 0F 10 B1 48 08 00 00 42 0F B6 04 20");
@@ -87,6 +88,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_31_6_0:
 		case v1_31_5_0:
 			// inc     ebx
 			BytePattern::temp_instance().find_pattern("FF C3 4C 8B 4F 10 41 3B D9 0F 8D 20 02 00 00");
@@ -157,6 +159,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_31_6_0:
 		case v1_31_5_0:
 			// mov     rcx, [rax+rcx*8]
 			BytePattern::temp_instance().find_pattern("48 8B 0C C8 44 8B 0C 91 45 33 C0 48 8D 54 24 28");
