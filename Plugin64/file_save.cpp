@@ -8,9 +8,11 @@ namespace FileSave {
 		void fileSaveProc2();
 		void fileSaveProc3();
 		void fileSaveProc3V130();
+		void fileSaveProc3V1316();
 		void fileSaveProc4();
 		void fileSaveProc5();
 		void fileSaveProc5V130();
+		void fileSaveProc5V1316();
 		void fileSaveProc6();
 		void fileSaveProc6V130();
 		void fileSaveProc7();
@@ -19,6 +21,7 @@ namespace FileSave {
 		uintptr_t fileSaveProc2CallAddress;
 		uintptr_t fileSaveProc3ReturnAddress;
 		uintptr_t fileSaveProc3CallAddress;
+		uintptr_t fileSaveProc3CallAddress2;
 		uintptr_t fileSaveProc4ReturnAddress;
 		uintptr_t fileSaveProc4CallAddress;
 		uintptr_t fileSaveProc4MarkerAddress;
@@ -50,6 +53,7 @@ namespace FileSave {
 		case v1_31_3_0:
 		case v1_31_4_0:
 		case v1_31_5_0:
+		case v1_31_6_0:
 			// mov     eax, [rcx+10h]
 			BytePattern::temp_instance().find_pattern("8B 41 10 85 C0 0F 84 31 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"ファイル名を安全にしている場所を短絡する")) {
@@ -75,6 +79,7 @@ namespace FileSave {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_31_6_0:
 		case v1_31_5_0:
 		case v1_31_4_0:
 		case v1_31_3_0:
@@ -178,6 +183,26 @@ namespace FileSave {
 				e.unmatch.fileSaveProc3Injector = true;
 			}
 			break;
+		case v1_31_6_0:
+			BytePattern::temp_instance().find_pattern("45 33 C0 48 8D 93 80 05 00 00 49 8B CE");
+			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのタイトルを表示できるようにする")) {
+				//  xor     r8d, r8d
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc3CallAddress = (uintptr_t)utf8ToEscapedStr;
+
+				// call {xxxxx}
+				fileSaveProc3CallAddress2 = Injector::GetBranchDestination(address + 0xD).as_int();
+
+				// test rsi,rsi
+				fileSaveProc3ReturnAddress = address + 0x12;
+
+				Injector::MakeJMP(address, fileSaveProc3V1316, true);
+			}
+			else {
+				e.unmatch.fileSaveProc3Injector = true;
+			}
+			break;
 		default:
 			e.version.fileSaveProc3Injector = true;
 		}
@@ -202,6 +227,7 @@ namespace FileSave {
 		case v1_31_3_0:
 		case v1_31_4_0:
 		case v1_31_5_0:
+		case v1_31_6_0:
 			// lea     r8, [rbp+0]
 			BytePattern::temp_instance().find_pattern("4C 8D 45 00 48 8D 15 ? ? ? ? 48 8D 4C 24 70 E8 ? ? ? ? 90");
 			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのツールチップを表示できるようにする1")) {
@@ -284,6 +310,26 @@ namespace FileSave {
 				e.unmatch.fileSaveProc5Injector = true;
 			}
 			break;
+		case v1_31_6_0:
+			// lea     r8, [r14+5C0h]
+			BytePattern::temp_instance().find_pattern("4D 8D 86 C0 05 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 60");
+			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのツールチップを表示できるようにする2")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc5CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+				// lea rdx, {aZy}
+				fileSaveProc5MarkerAddress = Injector::GetBranchDestination(address + 7).as_int();
+
+				// call sub_xxxxx
+				fileSaveProc5ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, fileSaveProc5V1316, true);
+			}
+			else {
+				e.unmatch.fileSaveProc5Injector = true;
+			}
+			break;
 		default:
 			e.version.fileSaveProc5Injector = true;
 		}
@@ -326,6 +372,7 @@ namespace FileSave {
 		case v1_31_3_0:
 		case v1_31_4_0:
 		case v1_31_5_0:
+		case v1_31_6_0:
 			// lea     r8, [rbp+730h+var_3A0]
 			BytePattern::temp_instance().find_pattern("4C 8D 85 90 03 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 30");
 			if (BytePattern::temp_instance().has_size(1, u8"スタート画面でのコンティニューのツールチップ")) {
@@ -384,6 +431,7 @@ namespace FileSave {
 		case v1_31_3_0:
 		case v1_31_4_0:
 		case v1_31_5_0:
+		case v1_31_6_0:
 			// lea     rcx, [rbx+0C8h]
 			BytePattern::temp_instance().find_pattern("48 8D 8B C8 00 00 00 48 8B 01 48 8D 54 24 28");
 			if (BytePattern::temp_instance().has_size(2, u8"セーブダイアログでのインプットテキストエリア")) {
