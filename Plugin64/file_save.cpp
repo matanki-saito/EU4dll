@@ -12,6 +12,7 @@ namespace FileSave {
 		void fileSaveProc4();
 		void fileSaveProc5();
 		void fileSaveProc5V130();
+		void fileSaveProc5V1316();
 		void fileSaveProc6();
 		void fileSaveProc6V130();
 		void fileSaveProc7();
@@ -290,7 +291,6 @@ namespace FileSave {
 		case v1_31_3_0:
 		case v1_31_4_0:
 		case v1_31_5_0:
-		case v1_31_6_0:
 			// lea     r8, [r14+5C0h]
 			BytePattern::temp_instance().find_pattern("4D 8D 86 C0 05 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 50");
 			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのツールチップを表示できるようにする2")) {
@@ -305,6 +305,26 @@ namespace FileSave {
 				fileSaveProc5ReturnAddress = address + 0x13;
 
 				Injector::MakeJMP(address, fileSaveProc5V130, true);
+			}
+			else {
+				e.unmatch.fileSaveProc5Injector = true;
+			}
+			break;
+		case v1_31_6_0:
+			// lea     r8, [r14+5C0h]
+			BytePattern::temp_instance().find_pattern("4D 8D 86 C0 05 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 60");
+			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのツールチップを表示できるようにする2")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc5CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+				// lea rdx, {aZy}
+				fileSaveProc5MarkerAddress = Injector::GetBranchDestination(address + 7).as_int();
+
+				// call sub_xxxxx
+				fileSaveProc5ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, fileSaveProc5V1316, true);
 			}
 			else {
 				e.unmatch.fileSaveProc5Injector = true;
@@ -444,7 +464,7 @@ namespace FileSave {
 		result |= fileSaveProc3Injector(options);
 		// これは使われなくなった？
 		//result |= fileSaveProc4Injector(options);
-		//result |= fileSaveProc5Injector(options);
+		result |= fileSaveProc5Injector(options);
 		result |= fileSaveProc6Injector(options);
 		result |= fileSaveProc7Injector(options);
 

@@ -159,6 +159,20 @@ fileSaveProc5V130 ENDP
 
 ;-------------------------------------------;
 
+fileSaveProc5V1316 PROC
+	lea		rcx, [r14 + 5C0h];
+	call	fileSaveProc5CallAddress;
+	mov		r8, rax;
+
+	mov		rdx, fileSaveProc5MarkerAddress;
+	lea		rcx, [rsp + 288h - 228h];
+
+	push	fileSaveProc5ReturnAddress;
+	ret;
+fileSaveProc5V1316 ENDP
+
+;-------------------------------------------;
+
 fileSaveProc6 PROC
 	lea		rcx, [rbp + 380h];
 	call	fileSaveProc6CallAddress;
