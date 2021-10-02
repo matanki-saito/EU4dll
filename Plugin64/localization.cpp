@@ -609,11 +609,11 @@ namespace Localization {
 
 		// nameを逆転させる
 		// 確認方法）sub modを入れた状態で日本の大名を選択する。大名の名前が逆転しているかを確認する
-		result |= localizationProc5Injector(options);
+		//result |= localizationProc5Injector(options);
 
 		// 年号の表示がM, YからY年M
 		// 確認方法）オスマンで画面上部の停戦アラートのポップアップの年号を確認する
-		result |= localizationProc6Injector(options);
+		//result |= localizationProc6Injector(options);
 
 		// 年号の表示がD M, YからY年MD日になる
 		// 確認方法）スタート画面のセーブデータの日付を見る
