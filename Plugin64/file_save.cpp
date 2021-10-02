@@ -117,7 +117,7 @@ namespace FileSave {
 		TAG:
 			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, u8"ファイル名をUTF-8に変換して保存できるようにする")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address() + offset;
+				uintptr_t address = BytePattern::temp_instance().get_first().address(offset);
 
 				fileSaveProc2CallAddress = (uintptr_t) escapedStrToUtf8;
 

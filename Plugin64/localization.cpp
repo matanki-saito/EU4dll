@@ -297,10 +297,12 @@ namespace Localization {
 	DllError localizationProc5Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
+		int offset = 0;
 
 		switch (options.version) {
 		case v1_31_6_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 23 72 76 FF";
+			pattern = "48 8B 4F 68 48 8B 01 FF 50 08 84 C0 74 5F 48 8B 07";
+			offset = 0x40;
 			goto JMP2;
 		case v1_31_5_0:
 			// 1.31.5.0
@@ -322,7 +324,7 @@ namespace Localization {
 			// or      r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, u8"nameを逆転させる")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				uintptr_t address = BytePattern::temp_instance().get_first().address(offset);
 
 				// nop
 				localizationProc5ReturnAddress = address + 0x12;
@@ -377,10 +379,12 @@ namespace Localization {
 	DllError localizationProc6Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
+		int offset = 0;
 
 		switch (options.version) {
 		case v1_31_6_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 DF 71 A6 FF";
+			pattern = "4C 8D 05 ? ? ? ? 48 8D 55 DF 48 8D 4D BF E8 ? ? ? ? 90";
+			offset = 0x28;
 			goto JMP;
 		case v1_31_5_0:
 			// 1.31.5.1
@@ -415,7 +419,7 @@ namespace Localization {
 			// nop
 			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, u8"M, Y → Y年M")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				uintptr_t address = BytePattern::temp_instance().get_first().address(offset);
 
 				// nop
 				localizationProc6ReturnAddress = address + 0x13;
@@ -609,11 +613,11 @@ namespace Localization {
 
 		// nameを逆転させる
 		// 確認方法）sub modを入れた状態で日本の大名を選択する。大名の名前が逆転しているかを確認する
-		//result |= localizationProc5Injector(options);
+		result |= localizationProc5Injector(options);
 
 		// 年号の表示がM, YからY年M
 		// 確認方法）オスマンで画面上部の停戦アラートのポップアップの年号を確認する
-		//result |= localizationProc6Injector(options);
+		result |= localizationProc6Injector(options);
 
 		// 年号の表示がD M, YからY年MD日になる
 		// 確認方法）スタート画面のセーブデータの日付を見る
