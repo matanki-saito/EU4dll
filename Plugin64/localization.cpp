@@ -384,7 +384,7 @@ namespace Localization {
 		switch (options.version) {
 		case v1_31_6_0:
 			pattern = "4C 8D 05 ? ? ? ? 48 8D 55 DF 48 8D 4D BF E8 ? ? ? ? 90";
-			offset = 0x28;
+			offset = 0x26;
 			goto JMP;
 		case v1_31_5_0:
 			// 1.31.5.1
