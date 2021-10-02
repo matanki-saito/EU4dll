@@ -297,10 +297,12 @@ namespace Localization {
 	DllError localizationProc5Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
+		int offset = 0;
 
 		switch (options.version) {
 		case v1_31_6_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 23 72 76 FF";
+			pattern = "48 8B 4F 68 48 8B 01 FF 50 08 84 C0 74 5F 48 8B 07";
+			offset = 0x40;
 			goto JMP2;
 		case v1_31_5_0:
 			// 1.31.5.0
@@ -322,7 +324,7 @@ namespace Localization {
 			// or      r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, u8"nameを逆転させる")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				uintptr_t address = BytePattern::temp_instance().get_first().address(offset);
 
 				// nop
 				localizationProc5ReturnAddress = address + 0x12;
@@ -377,10 +379,12 @@ namespace Localization {
 	DllError localizationProc6Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
+		int offset = 0;
 
 		switch (options.version) {
 		case v1_31_6_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 DF 71 A6 FF";
+			pattern = "4C 8D 05 ? ? ? ? 48 8D 55 DF 48 8D 4D BF E8 ? ? ? ? 90";
+			offset = 0x26;
 			goto JMP;
 		case v1_31_5_0:
 			// 1.31.5.1
@@ -415,7 +419,7 @@ namespace Localization {
 			// nop
 			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, u8"M, Y → Y年M")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				uintptr_t address = BytePattern::temp_instance().get_first().address(offset);
 
 				// nop
 				localizationProc6ReturnAddress = address + 0x13;

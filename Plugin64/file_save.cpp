@@ -77,15 +77,20 @@ namespace FileSave {
 	DllError fileSaveProc2Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
+		int offset = 0;
 
 		switch (options.version) {
 		case v1_31_6_0:
+			// mov     [rbp+57h+var_90], 0FFFFFFFFFFFFFFFEh
+			pattern = "48 C7 45 C7 FE FF FF FF 48 89 9C 24 F0 00 00 00 48 8B F9 33 DB";
+			offset = 0x54;
+			goto TAG;
 		case v1_31_5_0:
 		case v1_31_4_0:
 		case v1_31_3_0:
 		case v1_31_2_0:
 		case v1_31_1_0:
-			pattern = "48 8D 05 ? ? A7 FF 48 3B D0 75 06 48 8D 41 30";
+			pattern = "48 8D 05 ? ? ? FF 48 3B D0 75 06 48 8D 41 30 EB 02 FF D2 48 83 78 18 10 72";
 			goto TAG;
 		case v1_30_5_0:
 			pattern = "48 8D 05 51 D1 B3 FF 48 3B D0 75 06 48 8D 41 30";
@@ -112,7 +117,7 @@ namespace FileSave {
 		TAG:
 			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, u8"ファイル名をUTF-8に変換して保存できるようにする")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				uintptr_t address = BytePattern::temp_instance().get_first().address(offset);
 
 				fileSaveProc2CallAddress = (uintptr_t) escapedStrToUtf8;
 
