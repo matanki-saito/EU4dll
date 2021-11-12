@@ -53,6 +53,7 @@ namespace Localization {
 		case v1_31_4_0:
 		case v1_31_5_0:
 		case v1_31_6_0:
+		case v1_32_0_1:
 			// mov     [rsp+arg_10], rbx
 			BytePattern::temp_instance().find_pattern("48 89 5C 24 18 55 41 56 41 57 48 83 EC 20 4D 8B F0");
 			if (BytePattern::temp_instance().has_size(1, u8"std::basic_string<char>#insertをフック")) {
@@ -115,6 +116,7 @@ namespace Localization {
 		case v1_31_4_0:
 		case v1_31_5_0:
 		case v1_31_6_0:
+		case v1_32_0_1:
 			// mov     rax, [rdi+30h]
 			BytePattern::temp_instance().find_pattern("48 8B 47 30 4C 8B 40 28 49 83 C0 10");
 			if (BytePattern::temp_instance().has_size(1, u8"Battle of areaを逆転させる")) {
@@ -160,6 +162,7 @@ namespace Localization {
 				e.unmatch.localizationProc3Injector = true;
 			}
 			break;
+		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
 		case v1_31_4_0:
@@ -227,6 +230,9 @@ namespace Localization {
 				e.unmatch.localizationProc4Injector = true;
 			}
 			break;
+		case v1_32_0_1:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 9A 2D DC FF";
+			goto JMP;
 		case v1_31_6_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D8 5D DC FF";
 			goto JMP;
@@ -300,6 +306,7 @@ namespace Localization {
 		int offset = 0;
 
 		switch (options.version) {
+		case v1_32_0_1:
 		case v1_31_6_0:
 			pattern = "48 8B 4F 68 48 8B 01 FF 50 08 84 C0 74 5F 48 8B 07";
 			offset = 0x40;
@@ -382,6 +389,7 @@ namespace Localization {
 		int offset = 0;
 
 		switch (options.version) {
+		case v1_32_0_1:
 		case v1_31_6_0:
 			pattern = "4C 8D 05 ? ? ? ? 48 8D 55 DF 48 8D 4D BF E8 ? ? ? ? 90";
 			offset = 0x26;
@@ -443,6 +451,7 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
 		case v1_31_4_0:
@@ -496,6 +505,7 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
 		case v1_31_4_0:
@@ -548,6 +558,7 @@ namespace Localization {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
 		case v1_31_4_0:

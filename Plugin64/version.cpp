@@ -111,7 +111,7 @@ namespace Version {
 
 			switch (minor.calVer()) {
 			case 321:
-				version = v1_31_6_0;
+				version = v1_32_0_1;
 				break;
 			case 316:
 				version = v1_31_6_0;
