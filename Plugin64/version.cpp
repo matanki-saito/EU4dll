@@ -50,6 +50,8 @@ namespace Version {
 			return u8"v1_31_5_0";
 		case v1_31_6_0:
 			return u8"v1_31_6_0";
+		case v1_32_0_1:
+			return u8"v1_32_0_1";
 		default:
 			return u8"UNKNOWN";
 		}
@@ -108,6 +110,9 @@ namespace Version {
 			Pattern minor = Injector::ReadMemory<Pattern>(BytePattern::temp_instance().get_first().address(10), true);
 
 			switch (minor.calVer()) {
+			case 321:
+				version = v1_32_0_1;
+				break;
 			case 316:
 				version = v1_31_6_0;
 				break;
