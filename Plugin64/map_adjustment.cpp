@@ -329,31 +329,7 @@ namespace MapAdjustment {
 			}
 			break;
 		case v1_32_0_1:
-			// lea r8, asc_xxxxx
-			BytePattern::temp_instance().find_pattern("4C 8D 05 ? ? ? ? 48 8D 55 78 48 8D 8D 40 01");
-			if (BytePattern::temp_instance().has_size(1, u8"区切り記号の変更（ISSUE-164）")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
-
-				wchar_t x[2] = { 0 };
-				x[0] = options.separateCharacterCodePoint;
-				x[1] = 0;
-				char* escapedChar = NULL;
-				convertWideTextToEscapedText(x, &escapedChar);
-				size_t len = strlen(escapedChar);
-				size_t lenWithNull = len + 1;
-				mapAdjustmentProc5InjectorSeparateBuffer = new char[lenWithNull]();
-				memcpy(mapAdjustmentProc5InjectorSeparateBuffer, escapedChar, len);
-
-				mapAdjustmentProc5SeparatorAddress = (uintptr_t)mapAdjustmentProc5InjectorSeparateBuffer;
-
-				// call sub_xxxxx
-				mapAdjustmentProc5ReturnAddress = address + 0x12;
-
-				Injector::MakeJMP(address, mapAdjustmentProc5, true);
-			}
-			else {
-				e.unmatch.mapAdjustmentProc5Injector = true;
-			}
+			// localization/tmm_l_english.ymlのENCLAVE_NAME_FORMATで対応された
 			break;
 
 		default:
@@ -370,7 +346,7 @@ namespace MapAdjustment {
 		result |= mapAdjustmentProc2Injector(options);
 		result |= mapAdjustmentProc3Injector(options);
 		result |= mapAdjustmentProc4Injector(options);
-		//result |= mapAdjustmentProc5Injector(options);
+		result |= mapAdjustmentProc5Injector(options);
 
 		return result;
 	}
