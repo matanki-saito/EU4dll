@@ -21,6 +21,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
 			// mov     rcx, [rbp+0D0h+var_130]
@@ -88,6 +89,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
 			// inc     ebx
@@ -159,6 +161,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
 			// mov     rcx, [rax+rcx*8]

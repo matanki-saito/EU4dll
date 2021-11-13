@@ -60,6 +60,7 @@ namespace MapAdjustment {
 		case v1_31_4_0:
 		case v1_31_5_0:
 		case v1_31_6_0:
+		case v1_32_0_1:
 			// movsx ecx, byte ptr [rdi + rbx]
 			BytePattern::temp_instance().find_pattern("0F BE 0C 1F E8 ? ? ? ? 88 04 1F 41 FF");
 			if (BytePattern::temp_instance().has_size(2, u8"マップ文字の大文字化キャンセル")) {
@@ -131,6 +132,21 @@ namespace MapAdjustment {
 				e.unmatch.mapAdjustmentProc2Injector = true;
 			}
 			break;
+		case v1_32_0_1:
+			// lea     rax, [rbp+200h+var_200]
+			BytePattern::temp_instance().find_pattern("48 8D 45 00 49 83 C8 FF 90 49 FF C0");
+			if (BytePattern::temp_instance().has_size(2, u8"文字チェック修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// lea     rdx, [rbp+200h+var_200]
+				mapAdjustmentProc2ReturnAddress = address + 0x13;
+
+				Injector::MakeJMP(address, mapAdjustmentProc2V130, true);
+			}
+			else {
+				e.unmatch.mapAdjustmentProc2Injector = true;
+			}
+			break;
 		default:
 			e.version.mapAdjustmentProc2Injector = true;
 		}
@@ -180,6 +196,7 @@ namespace MapAdjustment {
 		case v1_31_4_0:
 		case v1_31_5_0:
 		case v1_31_6_0:
+		case v1_32_0_1:
 			// r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern("49 83 C9 FF 45 33 C0 48 8D 95 D0 00 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"文字チェックの後のコピー処理")) {
@@ -243,6 +260,7 @@ namespace MapAdjustment {
 		case v1_31_4_0:
 		case v1_31_5_0:
 		case v1_31_6_0:
+		case v1_32_0_1:
 			//  lea     rax, [rbp+200h+var_160]
 			BytePattern::temp_instance().find_pattern("48 8D 85 A0 00 00 00 49 83 F8 10");
 			if (BytePattern::temp_instance().has_size(1, u8"文字取得処理修正")) {
@@ -310,6 +328,34 @@ namespace MapAdjustment {
 				e.unmatch.mapAdjustmentProc5Injector = true;
 			}
 			break;
+		case v1_32_0_1:
+			// lea r8, asc_xxxxx
+			BytePattern::temp_instance().find_pattern("4C 8D 05 ? ? ? ? 48 8D 55 78 48 8D 8D 40 01");
+			if (BytePattern::temp_instance().has_size(1, u8"区切り記号の変更（ISSUE-164）")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				wchar_t x[2] = { 0 };
+				x[0] = options.separateCharacterCodePoint;
+				x[1] = 0;
+				char* escapedChar = NULL;
+				convertWideTextToEscapedText(x, &escapedChar);
+				size_t len = strlen(escapedChar);
+				size_t lenWithNull = len + 1;
+				mapAdjustmentProc5InjectorSeparateBuffer = new char[lenWithNull]();
+				memcpy(mapAdjustmentProc5InjectorSeparateBuffer, escapedChar, len);
+
+				mapAdjustmentProc5SeparatorAddress = (uintptr_t)mapAdjustmentProc5InjectorSeparateBuffer;
+
+				// call sub_xxxxx
+				mapAdjustmentProc5ReturnAddress = address + 0x12;
+
+				Injector::MakeJMP(address, mapAdjustmentProc5, true);
+			}
+			else {
+				e.unmatch.mapAdjustmentProc5Injector = true;
+			}
+			break;
+
 		default:
 			e.version.mapAdjustmentProc5Injector = true;
 		}
@@ -324,7 +370,7 @@ namespace MapAdjustment {
 		result |= mapAdjustmentProc2Injector(options);
 		result |= mapAdjustmentProc3Injector(options);
 		result |= mapAdjustmentProc4Injector(options);
-		result |= mapAdjustmentProc5Injector(options);
+		//result |= mapAdjustmentProc5Injector(options);
 
 		return result;
 	}
