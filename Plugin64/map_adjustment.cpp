@@ -135,7 +135,8 @@ namespace MapAdjustment {
 		case v1_32_0_1:
 			// lea     rax, [rbp+200h+var_200]
 			BytePattern::temp_instance().find_pattern("48 8D 45 00 49 83 C8 FF 90 49 FF C0");
-			if (BytePattern::temp_instance().has_size(2, u8"文字チェック修正")) {
+			if (BytePattern::temp_instance().has_size(1, u8"文字チェック修正") ||
+				BytePattern::temp_instance().has_size(2, u8"文字チェック修正")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// lea     rdx, [rbp+200h+var_200]

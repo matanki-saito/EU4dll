@@ -445,20 +445,29 @@ namespace FileSave {
 		case v1_31_6_0:
 		case v1_32_0_1:
 			// lea     rcx, [rbx+0C8h]
+			uintptr_t address;
+
+			// epic
 			BytePattern::temp_instance().find_pattern("48 8D 8B C8 00 00 00 48 8B 01 48 8D 54 24 28");
-			if (BytePattern::temp_instance().has_size(2, u8"セーブダイアログでのインプットテキストエリア")) {
-				uintptr_t address = BytePattern::temp_instance().get_second().address();
-
-				fileSaveProc7CallAddress = (uintptr_t)utf8ToEscapedStr2;
-
-				// call    qword ptr [rax+80h]
-				fileSaveProc7ReturnAddress = address + 0xF;
-
-				Injector::MakeJMP(address, fileSaveProc7, true);
+			if (BytePattern::temp_instance().has_size(1, u8"セーブダイアログでのインプットテキストエリア")) {
+				address = BytePattern::temp_instance().get_first().address();
+			}
+			// steam
+			else if (BytePattern::temp_instance().has_size(2, u8"セーブダイアログでのインプットテキストエリア")) {
+				address = BytePattern::temp_instance().get_second().address();
 			}
 			else {
 				e.unmatch.fileSaveProc7Injector = true;
+				break;
 			}
+
+			fileSaveProc7CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+			// call    qword ptr [rax+80h]
+			fileSaveProc7ReturnAddress = address + 0xF;
+
+			Injector::MakeJMP(address, fileSaveProc7, true);
+
 			break;
 		default:
 			e.version.fileSaveProc7Injector = true;

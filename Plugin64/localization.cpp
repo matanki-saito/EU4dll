@@ -210,6 +210,7 @@ namespace Localization {
 	DllError localizationProc4Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
+		int offset = 0;
 
 		switch (options.version) {
 		case v1_29_4_0:
@@ -231,7 +232,8 @@ namespace Localization {
 			}
 			break;
 		case v1_32_0_1:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 9A 2D DC FF";
+			offset = 0x3C;
+			pattern = "48 8B D8 48 8B 8E 70 19 00 00 48 89 8D A0 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D A0 00 00 00 E8 ? ? ? ? 4C 8B C8 48 89 7C 24 38 48 89 5C 24 28";
 			goto JMP;
 		case v1_31_6_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D8 5D DC FF";
@@ -278,7 +280,7 @@ namespace Localization {
 			// or      r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, u8"MDEATH_REGENCY_RULE heir nameを逆転させる")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				uintptr_t address = BytePattern::temp_instance().get_first().address(offset);
 
 				// nop
 				localizationProc4ReturnAddress = address + 0x12;
