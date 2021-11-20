@@ -43,7 +43,7 @@ namespace ModDownload{
 		DllError error = {};
 
 		wchar_t myDocumentPath[MAX_PATH];
-		SHGetSpecialFolderPath(NULL, myDocumentPath, CSIDL_PERSONAL, 0);
+		SHGetSpecialFolderPath(NULL, myDocumentPath, CSIDL_PERSONAL | CSIDL_FLAG_NO_ALIAS, 0);
 
 		const path gameDirPath = path{ myDocumentPath } / L"Paradox Interactive" / L"Europa Universalis IV";
 		path downloaderExePath = path{ gameDirPath } / L"claes.exe";

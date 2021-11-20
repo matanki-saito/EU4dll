@@ -118,7 +118,7 @@
       <ModuleDefinitionFile>version.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Europa Universalis IV"</Command>
+      <Command>copy "$(TargetPath)" "C:\Program Files\Epic Games\EuropaUniversalis4"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
