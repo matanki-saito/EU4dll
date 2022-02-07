@@ -49,6 +49,7 @@ namespace EventDialog {
 			}
 			break;
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// movzx   eax, byte ptr [rdx+rax]
 			BytePattern::temp_instance().find_pattern("0F B6 04 02 49 8B 34 C2 F3 41 0F 10 8A 48 08 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"文字取得処理")) {
@@ -113,6 +114,7 @@ namespace EventDialog {
 			}
 			break;
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// mov     rax, [rsp+1158h+arg_20]
 			BytePattern::temp_instance().find_pattern("48 8B 84 24 80 11 00 00 8B 00 03 C0");
 			if (BytePattern::temp_instance().has_size(1, u8"分岐処理修正戻り先アドレス２")) {
@@ -190,6 +192,7 @@ namespace EventDialog {
 			}
 			break;
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// inc     edi
 			BytePattern::temp_instance().find_pattern("FF C7 3B 7B 10 44 8B 84 24 70 11 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"カウントアップ")) {

@@ -52,6 +52,7 @@ namespace Ime {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// mov     edx, r13d
 			BytePattern::temp_instance().find_pattern("41 8B D5 49 8B CC E8 ? ? ? ? 85 C0 0F 85");
 			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowsevents.cの修正")) {
@@ -103,6 +104,7 @@ namespace Ime {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			rectAddress = (uintptr_t)&rect;
 
 			// SDL_SetTextInputRectの関数を見つける
@@ -187,6 +189,7 @@ namespace Ime {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// 直前の部分でjmpに使う14byteを確保することができなかった。
 			// そのためWM_KEYDOWNのコードをすべて移植した
 			// mov     rcx, [rbp+0C0h+hRawInput]

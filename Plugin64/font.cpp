@@ -31,6 +31,7 @@ namespace Font {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// mov rcx,cs:hHeap
 			BytePattern::temp_instance().find_pattern("48 8B 0D ? ? ? ? 4C 8B C3 33 D2");
 			if (BytePattern::temp_instance().has_size(1, "Font buffer heap zero clear")) {
@@ -76,6 +77,7 @@ namespace Font {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			BytePattern::temp_instance().find_pattern("BA 88 3D 00 00 48 8B CF");
 			if (BytePattern::temp_instance().has_size(1, "Font buffer clear")) {
 				// mov edx, 3D68h
@@ -113,6 +115,7 @@ namespace Font {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			BytePattern::temp_instance().find_pattern("BA 88 3D 00 00 48 8B 4D 28");
 			if (BytePattern::temp_instance().has_size(1, "Font buffer clear")) {
 				// mov edx, 3D68h
@@ -150,6 +153,7 @@ namespace Font {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			BytePattern::temp_instance().find_pattern("B9 88 3D 00 00");
 			if (BytePattern::temp_instance().has_size(1, "Font buffer expansion")) {
 				// mov ecx, 3D68h
@@ -186,6 +190,7 @@ namespace Font {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			BytePattern::temp_instance().find_pattern("41 81 FE 00 00 00 01");
 			if (BytePattern::temp_instance().has_size(1, u8"Font size limit")) {
 				// cmp r14d, 1000000h
