@@ -52,6 +52,8 @@ namespace Version {
 			return u8"v1_31_6_0";
 		case v1_32_0_1:
 			return u8"v1_32_0_1";
+		case v1_33_0_0:
+			return u8"v1_33_0_1";
 		default:
 			return u8"UNKNOWN";
 		}
@@ -93,52 +95,9 @@ namespace Version {
 			case 303:
 				version = v1_30_3_0;
 				break;
-			default:
-				version = UNKNOWN;
-				break;
-				;;
-			}
-		}
-		else {
-			version = UNKNOWN;
-		}
-
-		// release_v1.??.?
-		BytePattern::temp_instance().find_pattern("72 65 6C 65 61 73 65 5F 31 2E ? ? 2E ? 00");
-		if (BytePattern::temp_instance().count() > 0) {
-			// ??を取得する
-			Pattern minor = Injector::ReadMemory<Pattern>(BytePattern::temp_instance().get_first().address(10), true);
-
-			switch (minor.calVer()) {
-			case 322:
-			case 321:
+			case 330:
 				version = v1_32_0_1;
 				break;
-			case 316:
-				version = v1_31_6_0;
-				break;
-			case 315:
-				version = v1_31_5_0;
-				break;
-			case 314:
-				version = v1_31_4_0;
-				break;
-			case 313:
-				version = v1_31_3_0;
-				break;
-			case 312:
-				version = v1_31_2_0;
-				break;
-			case 311:
-				version = v1_31_1_0;
-				break;
-			case 306:
-			case 305:
-				version = v1_30_5_0;
-				break;
-			case 304:
-				version = v1_30_4_0;
-				break;
 			default:
 				version = UNKNOWN;
 				break;
@@ -146,7 +105,51 @@ namespace Version {
 			}
 		}
 		else {
-			version = UNKNOWN;
+			// release_v1.??.?
+			BytePattern::temp_instance().find_pattern("72 65 6C 65 61 73 65 5F 31 2E ? ? 2E ? 00");
+			if (BytePattern::temp_instance().count() > 0) {
+				// ??を取得する
+				Pattern minor = Injector::ReadMemory<Pattern>(BytePattern::temp_instance().get_first().address(10), true);
+
+				switch (minor.calVer()) {
+				case 322:
+				case 321:
+					version = v1_32_0_1;
+					break;
+				case 316:
+					version = v1_31_6_0;
+					break;
+				case 315:
+					version = v1_31_5_0;
+					break;
+				case 314:
+					version = v1_31_4_0;
+					break;
+				case 313:
+					version = v1_31_3_0;
+					break;
+				case 312:
+					version = v1_31_2_0;
+					break;
+				case 311:
+					version = v1_31_1_0;
+					break;
+				case 306:
+				case 305:
+					version = v1_30_5_0;
+					break;
+				case 304:
+					version = v1_30_4_0;
+					break;
+				default:
+					version = UNKNOWN;
+					break;
+					;;
+				}
+			}
+			else {
+				version = UNKNOWN;
+			}
 		}
 
 		BytePattern::LoggingInfo(versionString(version));
