@@ -10,6 +10,49 @@ namespace Font {
 		uintptr_t fontBufferHeapZeroClearHeapJmpAddress;
 	}
 
+	DllError charCodePointLimiterPatchInjector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_0_0:
+		case v1_29_1_0:
+		case v1_29_2_0:
+		case v1_29_3_0:
+		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
+		case v1_30_3_0:
+		case v1_30_4_0:
+		case v1_30_5_0:
+		case v1_31_1_0:
+		case v1_31_2_0:
+		case v1_31_3_0:
+		case v1_31_4_0:
+		case v1_31_5_0:
+		case v1_31_6_0:
+		case v1_32_0_1:
+			/* 1.33.0.0 betaで初めて確認された */
+			break;
+
+		case v1_33_0_0:
+			// cmp     edi, 0FFh
+			// 81 FF FF 00 00 00
+			BytePattern::temp_instance().find_pattern("81 FF FF 00 00 00 0F 87 2C 01 00 00 83");
+			if (BytePattern::temp_instance().has_size(1, "Char Code Point Limiter")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				Injector::WriteMemory<BYTE>(address + 3, 0xFF,true);
+			}
+			else {
+				e.unmatch.fontBufferHeapZeroClearInjector = true;
+			}
+			break;
+		default:
+			e.version.fontBufferHeapZeroClearInjector = true;
+		}
+
+		return e;
+	}
+
 	DllError fontBufferHeapZeroClearInjector(RunOptions options) {
 		DllError e = {};
 
@@ -80,7 +123,7 @@ namespace Font {
 		case v1_33_0_0:
 			BytePattern::temp_instance().find_pattern("BA 88 3D 00 00 48 8B CF");
 			if (BytePattern::temp_instance().has_size(1, "Font buffer clear")) {
-				// mov edx, 3D68h
+				// mov edx, 3D88h
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x3), 0x10, true);
 			}
 			else {
@@ -118,7 +161,7 @@ namespace Font {
 		case v1_33_0_0:
 			BytePattern::temp_instance().find_pattern("BA 88 3D 00 00 48 8B 4D 28");
 			if (BytePattern::temp_instance().has_size(1, "Font buffer clear")) {
-				// mov edx, 3D68h
+				// mov edx, 3D88h
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x3), 0x10, true);
 			}
 			else {
@@ -156,7 +199,7 @@ namespace Font {
 		case v1_33_0_0:
 			BytePattern::temp_instance().find_pattern("B9 88 3D 00 00");
 			if (BytePattern::temp_instance().has_size(1, "Font buffer expansion")) {
-				// mov ecx, 3D68h
+				// mov ecx, 3D88h
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x3), 0x10, true);
 			} else {
 				e.unmatch.fontBufferExpansionInjector = true;
@@ -212,6 +255,9 @@ namespace Font {
 		DllError result = {};
 
 		BytePattern::LoggingInfo(u8"font etc fix");
+
+		/* codePointが0xFFまでしか入らないようにしている箇所にパッチを当てる*/
+		result |= charCodePointLimiterPatchInjector(options);
 
 		/* ヒープゼロフラグの修正 */
 		result |= fontBufferHeapZeroClearInjector(options);
