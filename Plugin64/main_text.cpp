@@ -48,11 +48,11 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc1, true);
 			}
 			else {
-				e.unmatch.mainTextProc1Injector = true;
+				e.mainText.unmatchdMainTextProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mainTextProc1Injector = true;
+			e.mainText.versionMainTextProc11njector = true;
 		}
 
 		return e;
@@ -84,7 +84,7 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc2_v131, true);
 			}
 			else {
-				e.unmatch.mainTextProc2Injector = true;
+				e.mainText.unmatchdMainTextProc2Injector = true;
 			}
 			break;
 		case v1_29_1_0:
@@ -110,11 +110,11 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc2, true);
 			}
 			else {
-				e.unmatch.mainTextProc2Injector = true;
+				e.mainText.unmatchdMainTextProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.mainTextProc2Injector = true;
+			e.mainText.versionMainTextProc2Injector = true;
 		}
 
 		return e;
@@ -132,7 +132,7 @@ namespace MainText {
 				mainTextProc3ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.mainTextProc3Injector2 = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 
 			// cmp word ptr [rcx+6],0
@@ -146,7 +146,7 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc3, true);
 			}
 			else {
-				e.unmatch.mainTextProc3Injector = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 			break;
 
@@ -162,7 +162,7 @@ namespace MainText {
 				mainTextProc3ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.mainTextProc3Injector2 = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 
 			// cmp word ptr [rcx+6],0
@@ -176,7 +176,7 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc3, true);
 			}
 			else {
-				e.unmatch.mainTextProc3Injector = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 			break;
 		case v1_29_1_0:
@@ -194,7 +194,7 @@ namespace MainText {
 				mainTextProc3ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.mainTextProc3Injector2 = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 
 			// cmp word ptr [rcx+6],0
@@ -208,11 +208,11 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc3, true);
 			}
 			else {
-				e.unmatch.mainTextProc3Injector = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.mainTextProc3Injector = true;
+			e.mainText.versionMainTextProc3Injector = true;
 		}
 
 		return e;
@@ -250,11 +250,11 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc4, true);
 			}
 			else {
-				e.unmatch.mainTextProc4Injector = true;
+				e.mainText.unmatchdMainTextProc4Injector = true;
 			}
 			break;
 		default:
-			e.version.mainTextProc4Injector = true;
+			e.mainText.versionMainTextProc4Injector = true;
 		}
 
 		return e;

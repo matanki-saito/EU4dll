@@ -43,11 +43,11 @@ namespace Font {
 				Injector::WriteMemory<BYTE>(address + 3, 0xFF,true);
 			}
 			else {
-				e.unmatch.fontBufferHeapZeroClearInjector = true;
+				e.font.unmatchdCharCodePointLimiterPatchInjector = true;
 			}
 			break;
 		default:
-			e.version.fontBufferHeapZeroClearInjector = true;
+			e.font.versionCharCodePointLimiterPatchInjector = true;
 		}
 
 		return e;
@@ -89,11 +89,11 @@ namespace Font {
 
 				Injector::MakeJMP(address, fontBufferHeapZeroClear, true);
 			} else {
-				e.unmatch.fontBufferHeapZeroClearInjector = true;
+				e.font.unmatchdFontBufferHeapZeroClearInjector = true;
 			}
 			break;
 		default:
-			e.version.fontBufferHeapZeroClearInjector = true;
+			e.font.unmatchdFontBufferHeapZeroClearInjector = true;
 		}
 
 		return e;
@@ -127,11 +127,11 @@ namespace Font {
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x3), 0x10, true);
 			}
 			else {
-				e.unmatch.fontBufferClearInjector = true;
+				e.font.unmatchdFontBufferClear1Injector = true;
 			}
 			break;
 		default:
-			e.version.fontBufferClearInjector = true;
+			e.font.versionFontBufferClear1Injector = true;
 		}
 
 		return e;
@@ -165,11 +165,11 @@ namespace Font {
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x3), 0x10, true);
 			}
 			else {
-				e.unmatch.fontBufferClearInjector = true;
+				e.font.unmatchdFontBufferClear2Injector = true;
 			}
 			break;
 		default:
-			e.version.fontBufferClearInjector = true;
+			e.font.versionFontBufferClear2Injector = true;
 		}
 
 		return e;
@@ -202,11 +202,11 @@ namespace Font {
 				// mov ecx, 3D88h
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x3), 0x10, true);
 			} else {
-				e.unmatch.fontBufferExpansionInjector = true;
+				e.font.unmatchdFontBufferExpansionInjector = true;
 			}
 			break;
 		default:
-			e.version.fontBufferExpansionInjector = true;
+			e.font.versionFontBufferExpansionInjector = true;
 		}
 		
 		return e;
@@ -239,11 +239,11 @@ namespace Font {
 				// cmp r14d, 1000000h
 				Injector::WriteMemory<uint8_t>(BytePattern::temp_instance().get_first().address(0x6), 0x04, true);
 			} else {
-				e.unmatch.fontSizeLimitInjector = true;
+				e.font.unmatchdFontSizeLimitInjector = true;
 			}
 			break;
 		default:
-			e.version.fontSizeLimitInjector = true;
+			e.font.versionFontSizeLimitInjector = true;
 		}
 
 		return e;

@@ -61,11 +61,11 @@ namespace Localization {
 				localizationProc1CallAddress1 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.localizationProc1Injector = true;
+				e.localization.unmatchdLocalizationProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.localizationProc1Injector = true;
+			e.localization.versionLocalizationProc1Injector = true;
 		}
 
 		return e;
@@ -89,7 +89,7 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc2, true);
 			}
 			else {
-				e.unmatch.localizationProc2Injector = true;
+				e.localization.unmatchdLocalizationProc2Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -109,7 +109,7 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc2, true);
 			}
 			else {
-				e.unmatch.localizationProc2Injector = true;
+				e.localization.unmatchdLocalizationProc2Injector = true;
 			}
 			break;
 		case v1_31_2_0:
@@ -131,12 +131,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc2, true);
 			}
 			else {
-				e.unmatch.localizationProc2Injector = true;
+				e.localization.unmatchdLocalizationProc2Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"Battle of areaを逆転させる [NG]");
-			e.version.localizationProc2Injector = true;
+			e.localization.versionLocalizationProc2njector = true;
 		}
 
 		return e;
@@ -161,7 +161,7 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc3, true);
 			}
 			else {
-				e.unmatch.localizationProc3Injector = true;
+				e.localization.unmatchdLocalizationProc3Injector = true;
 			}
 			break;
 		case v1_33_0_0:
@@ -199,12 +199,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc3V130, true);
 			}
 			else {
-				e.unmatch.localizationProc3Injector = true;
+				e.localization.unmatchdLocalizationProc3Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"MDEATH_HEIR_SUCCEEDS heir nameを逆転させる [NG]");
-			e.version.localizationProc3Injector = true;
+			e.localization.versionLocalizationProc3njector = true;
 		}
 
 		return e;
@@ -231,7 +231,7 @@ namespace Localization {
 				// Injector::MakeJMP(address, wordOrderProc4, true);
 			}
 			else {
-				e.unmatch.localizationProc4Injector = true;
+				e.localization.unmatchdLocalizationProc4Injector = true;
 			}
 			break;
 		case v1_33_0_0:
@@ -295,12 +295,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc4V130, true);
 			}
 			else {
-				e.unmatch.localizationProc4Injector = true;
+				e.localization.unmatchdLocalizationProc4Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"MDEATH_REGENCY_RULE heir nameを逆転させる [NG]");
-			e.version.localizationProc4Injector = true;
+			e.localization.versionLocalizationProc4Injector = true;
 		}
 
 		return e;
@@ -346,7 +346,7 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc5V131, true);
 			}
 			else {
-				e.unmatch.localizationProc5Injector = true;
+				e.localization.unmatchdLocalizationProc5Injector = true;
 			}
 			break;
 
@@ -379,11 +379,11 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc5, true);
 			}
 			else {
-				e.unmatch.localizationProc5Injector = true;
+				e.localization.unmatchdLocalizationProc5Injector = true;
 			}
 			break;
 		default:
-			e.version.localizationProc5Injector = true;
+			e.localization.versionLocalizationProc5Injector = true;
 			BytePattern::LoggingInfo(u8"nameを逆転させる [NG]");
 		}
 
@@ -445,12 +445,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc6, true);
 			}
 			else {
-				e.unmatch.localizationProc6Injector = true;
+				e.localization.unmatchdLocalizationProc6Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"M, Y → Y年M [NG]");
-			e.version.localizationProc6Injector = true;
+			e.localization.versionLocalizationProc6Injector = true;
 		}
 
 		return e;
@@ -500,12 +500,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc7, true);
 			}
 			else {
-				e.unmatch.localizationProc7Injector = true;
+				e.localization.unmatchdLocalizationProc7Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"D M, Y → Y年MD日 [NG]");
-			e.version.localizationProc7Injector = true;
+			e.localization.versionLocalizationProc7Injector = true;
 		}
 
 		return e;
@@ -555,12 +555,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc8, true);
 			}
 			else {
-				e.unmatch.localizationProc8Injector = true;
+				e.localization.unmatchdLocalizationProc8Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"M Y → Y年M [NG]");
-			e.version.localizationProc8Injector = true;
+			e.localization.versionLocalizationProc8Injector = true;
 		}
 
 		return e;
@@ -584,12 +584,12 @@ namespace Localization {
 				Injector::WriteMemory<byte>(address+2, 0x20, true);
 			}
 			else {
-				e.unmatch.localizationProc9Injector = true;
+				e.localization.unmatchdLocalizationProc9Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"Replace space [NG]");
-			e.version.localizationProc9Injector = true;
+			e.localization.versionLocalizationProc9Injector = true;
 		}
 
 		return e;

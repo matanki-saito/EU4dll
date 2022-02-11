@@ -48,11 +48,11 @@ namespace MapPopup {
 				mapPopupProc1ReturnAddress = address + 19;
 			}
 			else {
-				e.unmatch.mapPopupProc1Injector = true;
+				e.mapPopup.unmatchdMapPopupProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mapPopupProc1Injector = true;
+			e.mapPopup.versionMapPopupProc1Injector = true;
 		}
 
 		return e;
@@ -76,7 +76,7 @@ namespace MapPopup {
 				mapPopupProc2ReturnAddress = address + 15;
 			}
 			else {
-				e.unmatch.mapPopupProc2Injector = true;
+				e.mapPopup.unmatchdMapPopupProc2Injector = true;
 			}
 			break;
 		case v1_30_1_0:
@@ -103,11 +103,11 @@ namespace MapPopup {
 				mapPopupProc2ReturnAddress = address + 15;
 			}
 			else {
-				e.unmatch.mapPopupProc2Injector = true;
+				e.mapPopup.unmatchdMapPopupProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.mapPopupProc2Injector = true;
+			e.mapPopup.versionMapPopupProc2Injector = true;
 		}
 
 		return e;
@@ -131,7 +131,7 @@ namespace MapPopup {
 				mapPopupProc3ReturnAddress = address + 0x13;
 			}
 			else {
-				e.unmatch.mapPopupProc3Injector = true;
+				e.mapPopup.unmatchdMapPopupProc3Injector = true;
 			}
 			break;
 		case v1_30_1_0:
@@ -158,11 +158,11 @@ namespace MapPopup {
 				mapPopupProc3ReturnAddress = address + 0x13;
 			}
 			else {
-				e.unmatch.mapPopupProc3Injector = true;
+				e.mapPopup.unmatchdMapPopupProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.mapPopupProc3Injector = true;
+			e.mapPopup.versionMapPopupProc3Injector = true;
 		}
 
 		return e;

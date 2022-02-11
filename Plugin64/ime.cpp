@@ -70,11 +70,11 @@ namespace Ime {
 				Injector::MakeJMP(address, imeProc1, true);
 			}
 			else {
-				e.unmatch.imeProc1Injector = true;
+				e.ime.unmatchdImeProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.imeProc1Injector = true;
+			e.ime.versionImeProc1Injector = true;
 		}
 
 		return e;
@@ -113,7 +113,7 @@ namespace Ime {
 				imeProc2CallAddress = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.imeProc2Injector = true;
+				e.ime.unmatchdImeProc2Injector = true;
 			}
 
 			// WM_IME_STARTCOMPOSITIONでSDL_SetTextInputRectする
@@ -130,7 +130,7 @@ namespace Ime {
 				Injector::MakeJMP(address, imeProc2, true);
 			}
 			else {
-				e.unmatch.imeProc2Injector = true;
+				e.ime.unmatchdImeProc2Injector = true;
 			}
 
 			// WM_IME_SETCONTEXTで*lParam = 0;をコメントアウトする（nopで埋める）
@@ -143,7 +143,7 @@ namespace Ime {
 				Injector::WriteMemory<uint8_t>(address+2, 0x90, true);
 			}
 			else {
-				e.unmatch.imeProc2Injector = true;
+				e.ime.unmatchdImeProc2Injector = true;
 			}
 
 			// WM_IME_COMPOSITIONのif文のIME_GetCompositionStringとIME_SendInputEventをコメントアウト（jmpさせる）
@@ -158,11 +158,11 @@ namespace Ime {
 				Injector::WriteMemory<uint8_t>(address - 1, 0x49, true);
 			}
 			else {
-				e.unmatch.imeProc2Injector = true;
+				e.ime.unmatchdImeProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.imeProc2Injector = true;
+			e.ime.unmatchdImeProc2Injector = true;
 		}
 
 		return e;
@@ -218,11 +218,11 @@ namespace Ime {
 				Injector::MakeJMP(address, imeProc3, true);
 			}
 			else {
-				e.unmatch.imeProc3Injector = true;
+				e.ime.unmatchdImeProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.imeProc3Injector = true;
+			e.ime.versionImeProc3Injector = true;
 		}
 
 		return e;

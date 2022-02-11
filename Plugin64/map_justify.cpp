@@ -39,7 +39,7 @@ namespace MapJustify {
 				mapJustifyProc1ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.mapJustifyProc1Injector = true;
+				e.mapJustify.unmatchdMapJustifyProc1Injector = true;
 			}
 
 			// movzx   esi, byte ptr [rax+r13]
@@ -53,11 +53,11 @@ namespace MapJustify {
 				Injector::MakeJMP(address, mapJustifyProc1, true);
 			}
 			else {
-				e.unmatch.mapJustifyProc1Injector = true;
+				e.mapJustify.unmatchdMapJustifyProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mapJustifyProc1Injector = true;
+			e.mapJustify.versionMapJustifyProc1Injector = true;
 		}
 
 		return e;
@@ -95,11 +95,11 @@ namespace MapJustify {
 				Injector::MakeJMP(address, mapJustifyProc2, true);
 			}
 			else {
-				e.unmatch.mapJustifyProc2Injector = true;
+				e.mapJustify.unmatchdMapJustifyProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.mapJustifyProc2Injector = true;
+			e.mapJustify.versionMapJustifyProc2Injector = true;
 		}
 
 		return e;
@@ -137,11 +137,11 @@ namespace MapJustify {
 				Injector::MakeJMP(address, mapJustifyProc4, true);
 			}
 			else {
-				e.unmatch.mapJustifyProc4Injector = true;
+				e.mapJustify.unmatchdMapJustifyProc4Injector = true;
 			}
 			break;
 		default:
-			e.version.mapJustifyProc4Injector = true;
+			e.mapJustify.versionMapJustifyProc4Injector = true;
 		}
 
 		return e;

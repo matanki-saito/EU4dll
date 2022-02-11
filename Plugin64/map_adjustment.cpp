@@ -46,7 +46,7 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc1, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc1Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc1Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -76,11 +76,11 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc1, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc1Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mapAdjustmentProc1Injector = true;
+			e.mapAdjustment.versionMapAdjustmentProc1Injector = true;
 		}
 
 		return e;
@@ -105,7 +105,7 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc2, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc2Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc2Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -130,7 +130,7 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc2V130, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc2Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc2Injector = true;
 			}
 			break;
 		case v1_32_0_1:
@@ -147,11 +147,11 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc2V130, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc2Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.mapAdjustmentProc2Injector = true;
+			e.mapAdjustment.versionMapAdjustmentProc2Injector = true;
 		}
 
 		return e;
@@ -176,7 +176,7 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc3, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc3Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc3Injector = true;
 			}
 
 			// mov     rcx, [r12+30h]
@@ -185,7 +185,7 @@ namespace MapAdjustment {
 				mapAdjustmentProc3ReturnAddress2 = BytePattern::temp_instance().get_second().address();
 			}
 			else {
-				e.unmatch.mapAdjustmentProc3Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc3Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -212,7 +212,7 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc3V130, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc3Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc3Injector = true;
 			}
 
 			// mov     rcx, [r12+30h]
@@ -221,11 +221,11 @@ namespace MapAdjustment {
 				mapAdjustmentProc3ReturnAddress2 = BytePattern::temp_instance().get_second().address();
 			}
 			else {
-				e.unmatch.mapAdjustmentProc3Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.mapAdjustmentProc3Injector = true;
+			e.mapAdjustment.versionMapAdjustmentProc3Injector = true;
 		}
 
 		return e;
@@ -250,7 +250,7 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc4, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc4Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc4Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -277,11 +277,11 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc4V130, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc4Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc4Injector = true;
 			}
 			break;
 		default:
-			e.version.mapAdjustmentProc4Injector = true;
+			e.mapAdjustment.versionMapAdjustmentProc4Injector = true;
 		}
 
 		return e;
@@ -330,7 +330,7 @@ namespace MapAdjustment {
 				Injector::MakeJMP(address, mapAdjustmentProc5, true);
 			}
 			else {
-				e.unmatch.mapAdjustmentProc5Injector = true;
+				e.mapAdjustment.unmatchdMapAdjustmentProc5Injector = true;
 			}
 			break;
 		case v1_32_0_1:
@@ -339,7 +339,7 @@ namespace MapAdjustment {
 			break;
 
 		default:
-			e.version.mapAdjustmentProc5Injector = true;
+			e.mapAdjustment.versionMapAdjustmentProc5Injector = true;
 		}
 
 		return e;

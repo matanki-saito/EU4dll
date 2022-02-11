@@ -44,11 +44,11 @@ namespace Date {
 				Injector::WriteMemory<DateFormat>(address, isoFormat,true);
 			}
 			else {
-				e.unmatch.dateProc1Injector = true;
+				e.date.unmatchdDateProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.dateProc1Injector = true;
+			e.date.versionDateProc1Injector = true;
 		}
 
 		return e;

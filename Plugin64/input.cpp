@@ -34,7 +34,7 @@ namespace Input {
 				Injector::MakeJMP(address, inputProc1, true);
 			}
 			else {
-				e.unmatch.inputProc1Injector = true;
+				e.input.unmatchdInputProc1Injector = true;
 			}
 
 			// call    qword ptr [rax+18h]
@@ -45,7 +45,7 @@ namespace Input {
 				inputProc1ReturnAddress2 = Injector::GetBranchDestination(address + 0x3).as_int();
 			}
 			else {
-				e.unmatch.inputProc1Injector = true;
+				e.input.unmatchdInputProc1Injector = true;
 			}
 
 			break;
@@ -75,7 +75,7 @@ namespace Input {
 				Injector::MakeJMP(address, inputProc1V130, true);
 			}
 			else {
-				e.unmatch.inputProc1Injector = true;
+				e.input.unmatchdInputProc1Injector = true;
 			}
 
 			// call    qword ptr [rax+18h]
@@ -86,12 +86,12 @@ namespace Input {
 				inputProc1ReturnAddress2 = Injector::GetBranchDestination(address + 0x3).as_int();
 			}
 			else {
-				e.unmatch.inputProc1Injector = true;
+				e.input.unmatchdInputProc1Injector = true;
 			}
 
 			break;
 		default:
-			e.version.inputProc1Injector = true;
+			e.input.versionInputProc1Injector = true;
 		}
 
 		return e;
@@ -127,11 +127,11 @@ namespace Input {
 				Injector::MakeJMP(address, inputProc2, true);
 			}
 			else {
-				e.unmatch.inputProc2Injector = true;
+				e.input.unmatchdInputProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.inputProc2Injector = true;
+			e.input.versionInputProc2Injector = true;
 		}
 
 		return e;

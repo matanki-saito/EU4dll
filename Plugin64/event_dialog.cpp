@@ -45,7 +45,7 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc1, true);
 			}
 			else {
-				e.unmatch.eventDialog1Injector = true;
+				e.eventDialog.unmatchdEventDialog1Injector = true;
 			}
 			break;
 		case v1_32_0_1:
@@ -61,11 +61,11 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc1V132, true);
 			}
 			else {
-				e.unmatch.eventDialog1Injector = true;
+				e.eventDialog.unmatchdEventDialog1Injector = true;
 			}
 			break;
 		default:
-			e.version.eventDialog1Injector = true;
+			e.eventDialog.versionEventDialog1Injector = true;
 		}
 
 		return e;
@@ -96,7 +96,7 @@ namespace EventDialog {
 				eventDialogProc2ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.eventDialog1Injector = true;
+				e.eventDialog.unmatchdEventDialog2Injector = true;
 			}
 
 			// cvtdq2ps xmm0, xmm0
@@ -110,7 +110,7 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc2, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog2Injector = true;
 			}
 			break;
 		case v1_32_0_1:
@@ -121,7 +121,7 @@ namespace EventDialog {
 				eventDialogProc2ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.eventDialog1Injector = true;
+				e.eventDialog.unmatchdEventDialog2Injector = true;
 			}
 
 			// cvtdq2ps xmm0, xmm0
@@ -135,11 +135,11 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc2, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog2Injector = true;
 			}
 			break;
 		default:
-			e.version.eventDialog2Injector = true;
+			e.eventDialog.versionEventDialog2Injector = true;
 		}
 
 		return e;
@@ -163,7 +163,7 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc3, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog3Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -188,7 +188,7 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc3V130, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog3Injector = true;
 			}
 			break;
 		case v1_32_0_1:
@@ -204,11 +204,11 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc3V132, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog3Injector = true;
 			}
 			break;
 		default:
-			e.version.eventDialog2Injector = true;
+			e.eventDialog.versionEventDialog3Injector = true;
 		}
 
 		return e;

@@ -26,7 +26,7 @@ namespace MapNudgeView {
 				Injector::MakeJMP(address, mapNudgeViewProc1, true);
 			}
 			else {
-				e.unmatch.mapNudgeViewProc1Injector = true;
+				e.mapNudge.unmatchdMapNudgeViewProc1Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -53,11 +53,11 @@ namespace MapNudgeView {
 				Injector::MakeJMP(address, mapNudgeViewProc1V130, true);
 			}
 			else {
-				e.unmatch.mapNudgeViewProc1Injector = true;
+				e.mapNudge.unmatchdMapNudgeViewProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mapNudgeViewProc1Injector = true;
+			e.mapNudge.versionMapNudgeViewProc1Injector = true;
 		}
 
 		return e;

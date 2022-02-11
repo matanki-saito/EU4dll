@@ -66,11 +66,11 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc1, true);
 			}
 			else {
-				e.unmatch.fileSaveProc1Injector = true;
+				e.fileSave.unmatchdFileSaveProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.fileSaveProc1Injector = true;
+			e.fileSave.versionFileSaveProc1Injector = true;
 		}
 
 		return e;
@@ -132,11 +132,11 @@ namespace FileSave {
 				Injector::MakeJMP(address + 0x14, fileSaveProc2, true);
 			}
 			else {
-				e.unmatch.fileSaveProc2Injector = true;
+				e.fileSave.unmatchdFileSaveProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.fileSaveProc2Injector = true;
+			e.fileSave.versionFileSaveProc2Injector = true;
 		}
 
 		return e;
@@ -162,7 +162,7 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc3, true);
 			}
 			else {
-				e.unmatch.fileSaveProc3Injector = true;
+				e.fileSave.unmatchdFileSaveProc3Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -189,7 +189,7 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc3V130, true);
 			}
 			else {
-				e.unmatch.fileSaveProc3Injector = true;
+				e.fileSave.unmatchdFileSaveProc3Injector = true;
 			}
 			break;
 		case v1_33_0_0:
@@ -211,11 +211,11 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc3V1316, true);
 			}
 			else {
-				e.unmatch.fileSaveProc3Injector = true;
+				e.fileSave.unmatchdFileSaveProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.fileSaveProc3Injector = true;
+			e.fileSave.versionFileSaveProc3Injector = true;
 		}
 
 		return e;
@@ -257,11 +257,11 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc4, true);
 			}
 			else {
-				e.unmatch.fileSaveProc4Injector = true;
+				e.fileSave.unmatchdFileSaveProc4Injector = true;
 			}
 			break;
 		default:
-			e.version.fileSaveProc4Injector = true;
+			e.fileSave.versionFileSaveProc4Injector = true;
 		}
 
 		return e;
@@ -291,7 +291,7 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc5, true);
 			}
 			else {
-				e.unmatch.fileSaveProc5Injector = true;
+				e.fileSave.unmatchdFileSaveProc5Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -320,7 +320,7 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc5V130, true);
 			}
 			else {
-				e.unmatch.fileSaveProc5Injector = true;
+				e.fileSave.unmatchdFileSaveProc5Injector = true;
 			}
 			break;
 		case v1_33_0_0:
@@ -342,11 +342,11 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc5V1316, true);
 			}
 			else {
-				e.unmatch.fileSaveProc5Injector = true;
+				e.fileSave.unmatchdFileSaveProc5Injector = true;
 			}
 			break;
 		default:
-			e.version.fileSaveProc5Injector = true;
+			e.fileSave.versionFileSaveProc5Injector = true;
 		}
 
 		return e;
@@ -374,7 +374,7 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc6, true);
 			}
 			else {
-				e.unmatch.fileSaveProc6Injector = true;
+				e.fileSave.unmatchdFileSaveProc6Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -406,11 +406,11 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc6V130, true);
 			}
 			else {
-				e.unmatch.fileSaveProc6Injector = true;
+				e.fileSave.unmatchdFileSaveProc6Injector = true;
 			}
 			break;
 		default:
-			e.version.fileSaveProc6Injector = true;
+			e.fileSave.versionFileSaveProc6Injector = true;
 		}
 
 		return e;
@@ -435,7 +435,7 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc7, true);
 			}
 			else {
-				e.unmatch.fileSaveProc7Injector = true;
+				e.fileSave.unmatchdFileSaveProc7Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -464,7 +464,7 @@ namespace FileSave {
 				address = BytePattern::temp_instance().get_second().address();
 			}
 			else {
-				e.unmatch.fileSaveProc7Injector = true;
+				e.fileSave.unmatchdFileSaveProc7Injector = true;
 				break;
 			}
 
@@ -477,7 +477,7 @@ namespace FileSave {
 
 			break;
 		default:
-			e.version.fileSaveProc7Injector = true;
+			e.fileSave.versionFileSaveProc7Injector = true;
 		}
 
 		return e;

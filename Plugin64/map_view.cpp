@@ -45,11 +45,11 @@ namespace MapView {
 				Injector::MakeJMP(address, mapViewProc1, true);
 			}
 			else {
-				e.unmatch.mapViewProc1Injector = true;
+				e.mapView.unmatchdMapViewProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mapViewProc1Injector = true;
+			e.mapView.versionMapViewProc1Injector = true;
 		}
 
 		return e;
@@ -74,7 +74,7 @@ namespace MapView {
 				Injector::MakeJMP(address, mapViewProc2, true);
 			}
 			else {
-				e.unmatch.mapViewProc2Injector = true;
+				e.mapView.unmatchdMapViewProc2Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -101,11 +101,11 @@ namespace MapView {
 				Injector::MakeJMP(address, mapViewProc2V130, true);
 			}
 			else {
-				e.unmatch.mapViewProc2Injector = true;
+				e.mapView.unmatchdMapViewProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.mapViewProc2Injector = true;
+			e.mapView.versionMapViewProc2Injector = true;
 		}
 
 		return e;
@@ -146,11 +146,11 @@ namespace MapView {
 				Injector::MakeJMP(address, mapViewProc3, true);
 			}
 			else {
-				e.unmatch.mapViewProc3Injector = true;
+				e.mapView.unmatchdMapViewProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.mapViewProc3Injector = true;
+			e.mapView.versionMapViewProc3Injector = true;
 		}
 
 		return e;

@@ -36,7 +36,7 @@ namespace ListFieldAdjustment {
 				Injector::MakeJMP(address, listFieldAdjustmentProc1_v1315, true);
 			}
 			else {
-				e.unmatch.listFieldAdjustmentProc1Injector = true;
+				e.listFiledAdjustment.unmatchdListFieldAdjustmentProc1Injector = true;
 			}
 			break;
 		case v1_31_4_0:
@@ -54,7 +54,7 @@ namespace ListFieldAdjustment {
 				Injector::MakeJMP(address, listFieldAdjustmentProc1_v131, true);
 			}
 			else {
-				e.unmatch.listFieldAdjustmentProc1Injector = true;
+				e.listFiledAdjustment.unmatchdListFieldAdjustmentProc1Injector = true;
 			}
 			break;
 		case v1_29_2_0:
@@ -76,11 +76,11 @@ namespace ListFieldAdjustment {
 				Injector::MakeJMP(address, listFieldAdjustmentProc1, true);
 			}
 			else {
-				e.unmatch.listFieldAdjustmentProc1Injector = true;
+				e.listFiledAdjustment.unmatchdListFieldAdjustmentProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.listFieldAdjustmentProc1Injector = true;
+			e.listFiledAdjustment.versionListFieldAdjustmentProc1Injector = true;
 		}
 
 		return e;
@@ -109,7 +109,7 @@ namespace ListFieldAdjustment {
 				Injector::MakeJMP(address, listFieldAdjustmentProc2_v1315, true);
 			}
 			else {
-				e.unmatch.listFieldAdjustmentProc2Injector = true;
+				e.listFiledAdjustment.unmatchdListFieldAdjustmentProc2Injector = true;
 			}
 			break;
 		case v1_31_4_0:
@@ -127,7 +127,7 @@ namespace ListFieldAdjustment {
 				Injector::MakeJMP(address, listFieldAdjustmentProc2_v131, true);
 			}
 			else {
-				e.unmatch.listFieldAdjustmentProc2Injector = true;
+				e.listFiledAdjustment.unmatchdListFieldAdjustmentProc2Injector = true;
 			}
 			break;
 		case v1_29_2_0:
@@ -149,11 +149,11 @@ namespace ListFieldAdjustment {
 				Injector::MakeJMP(address, listFieldAdjustmentProc2, true);
 			}
 			else {
-				e.unmatch.listFieldAdjustmentProc2Injector = true;
+				e.listFiledAdjustment.unmatchdListFieldAdjustmentProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.listFieldAdjustmentProc2Injector = true;
+			e.listFiledAdjustment.versionListFieldAdjustmentProc2Injector = true;
 		}
 
 		return e;
@@ -178,7 +178,7 @@ namespace ListFieldAdjustment {
 				Injector::MakeJMP(address, listFieldAdjustmentProc3_v1315, true);
 			}
 			else {
-				e.unmatch.listFieldAdjustmentProc3Injector = true;
+				e.listFiledAdjustment.unmatchdListFieldAdjustmentProc3Injector = true;
 			}
 			break;
 		case v1_29_2_0:
@@ -204,11 +204,11 @@ namespace ListFieldAdjustment {
 				Injector::MakeJMP(address, listFieldAdjustmentProc3, true);
 			}
 			else {
-				e.unmatch.listFieldAdjustmentProc3Injector = true;
+				e.listFiledAdjustment.unmatchdListFieldAdjustmentProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.listFieldAdjustmentProc3Injector = true;
+			e.listFiledAdjustment.versionListFieldAdjustmentProc3Injector = true;
 		}
 
 		return e;
