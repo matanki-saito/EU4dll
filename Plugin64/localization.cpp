@@ -54,17 +54,18 @@ namespace Localization {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// mov     [rsp+arg_10], rbx
 			BytePattern::temp_instance().find_pattern("48 89 5C 24 18 55 41 56 41 57 48 83 EC 20 4D 8B F0");
 			if (BytePattern::temp_instance().has_size(1, u8"std::basic_string<char>#insertをフック")) {
 				localizationProc1CallAddress1 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.localizationProc1Injector = true;
+				e.localization.unmatchdLocalizationProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.localizationProc1Injector = true;
+			e.localization.versionLocalizationProc1Injector = true;
 		}
 
 		return e;
@@ -88,7 +89,7 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc2, true);
 			}
 			else {
-				e.unmatch.localizationProc2Injector = true;
+				e.localization.unmatchdLocalizationProc2Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -108,7 +109,7 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc2, true);
 			}
 			else {
-				e.unmatch.localizationProc2Injector = true;
+				e.localization.unmatchdLocalizationProc2Injector = true;
 			}
 			break;
 		case v1_31_2_0:
@@ -117,6 +118,7 @@ namespace Localization {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// mov     rax, [rdi+30h]
 			BytePattern::temp_instance().find_pattern("48 8B 47 30 4C 8B 40 28 49 83 C0 10");
 			if (BytePattern::temp_instance().has_size(1, u8"Battle of areaを逆転させる")) {
@@ -129,12 +131,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc2, true);
 			}
 			else {
-				e.unmatch.localizationProc2Injector = true;
+				e.localization.unmatchdLocalizationProc2Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"Battle of areaを逆転させる [NG]");
-			e.version.localizationProc2Injector = true;
+			e.localization.versionLocalizationProc2njector = true;
 		}
 
 		return e;
@@ -159,9 +161,10 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc3, true);
 			}
 			else {
-				e.unmatch.localizationProc3Injector = true;
+				e.localization.unmatchdLocalizationProc3Injector = true;
 			}
 			break;
+		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
@@ -196,12 +199,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc3V130, true);
 			}
 			else {
-				e.unmatch.localizationProc3Injector = true;
+				e.localization.unmatchdLocalizationProc3Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"MDEATH_HEIR_SUCCEEDS heir nameを逆転させる [NG]");
-			e.version.localizationProc3Injector = true;
+			e.localization.versionLocalizationProc3njector = true;
 		}
 
 		return e;
@@ -228,9 +231,10 @@ namespace Localization {
 				// Injector::MakeJMP(address, wordOrderProc4, true);
 			}
 			else {
-				e.unmatch.localizationProc4Injector = true;
+				e.localization.unmatchdLocalizationProc4Injector = true;
 			}
 			break;
+		case v1_33_0_0:
 		case v1_32_0_1:
 			offset = 0x3C;
 			pattern = "48 8B D8 48 8B 8E 70 19 00 00 48 89 8D A0 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D A0 00 00 00 E8 ? ? ? ? 4C 8B C8 48 89 7C 24 38 48 89 5C 24 28";
@@ -291,12 +295,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc4V130, true);
 			}
 			else {
-				e.unmatch.localizationProc4Injector = true;
+				e.localization.unmatchdLocalizationProc4Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"MDEATH_REGENCY_RULE heir nameを逆転させる [NG]");
-			e.version.localizationProc4Injector = true;
+			e.localization.versionLocalizationProc4Injector = true;
 		}
 
 		return e;
@@ -308,6 +312,7 @@ namespace Localization {
 		int offset = 0;
 
 		switch (options.version) {
+		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
 			pattern = "48 8B 4F 68 48 8B 01 FF 50 08 84 C0 74 5F 48 8B 07";
@@ -341,7 +346,7 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc5V131, true);
 			}
 			else {
-				e.unmatch.localizationProc5Injector = true;
+				e.localization.unmatchdLocalizationProc5Injector = true;
 			}
 			break;
 
@@ -374,11 +379,11 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc5, true);
 			}
 			else {
-				e.unmatch.localizationProc5Injector = true;
+				e.localization.unmatchdLocalizationProc5Injector = true;
 			}
 			break;
 		default:
-			e.version.localizationProc5Injector = true;
+			e.localization.versionLocalizationProc5Injector = true;
 			BytePattern::LoggingInfo(u8"nameを逆転させる [NG]");
 		}
 
@@ -391,6 +396,9 @@ namespace Localization {
 		int offset = 0;
 
 		switch (options.version) {
+		case v1_33_0_0:
+			/* 処理は不要になった。tmm_l_english.ymlのLONG_EU3_DATE_STRINGで代用される*/
+			break;
 		case v1_32_0_1:
 		case v1_31_6_0:
 			pattern = "4C 8D 05 ? ? ? ? 48 8D 55 DF 48 8D 4D BF E8 ? ? ? ? 90";
@@ -437,12 +445,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc6, true);
 			}
 			else {
-				e.unmatch.localizationProc6Injector = true;
+				e.localization.unmatchdLocalizationProc6Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"M, Y → Y年M [NG]");
-			e.version.localizationProc6Injector = true;
+			e.localization.versionLocalizationProc6Injector = true;
 		}
 
 		return e;
@@ -453,6 +461,7 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
@@ -491,12 +500,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc7, true);
 			}
 			else {
-				e.unmatch.localizationProc7Injector = true;
+				e.localization.unmatchdLocalizationProc7Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"D M, Y → Y年MD日 [NG]");
-			e.version.localizationProc7Injector = true;
+			e.localization.versionLocalizationProc7Injector = true;
 		}
 
 		return e;
@@ -507,6 +516,7 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
@@ -545,12 +555,12 @@ namespace Localization {
 				Injector::MakeJMP(address, localizationProc8, true);
 			}
 			else {
-				e.unmatch.localizationProc8Injector = true;
+				e.localization.unmatchdLocalizationProc8Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"M Y → Y年M [NG]");
-			e.version.localizationProc8Injector = true;
+			e.localization.versionLocalizationProc8Injector = true;
 		}
 
 		return e;
@@ -560,6 +570,7 @@ namespace Localization {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
@@ -573,12 +584,12 @@ namespace Localization {
 				Injector::WriteMemory<byte>(address+2, 0x20, true);
 			}
 			else {
-				e.unmatch.localizationProc9Injector = true;
+				e.localization.unmatchdLocalizationProc9Injector = true;
 			}
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"Replace space [NG]");
-			e.version.localizationProc9Injector = true;
+			e.localization.versionLocalizationProc9Injector = true;
 		}
 
 		return e;

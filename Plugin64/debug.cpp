@@ -50,11 +50,11 @@ namespace Debug {
 
 				Injector::MakeJMP(address, debugProc1, true);
 			} else {
-				e.unmatch.debugProc1Injector = true;
+				e.debug.unmatchdDebugProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.debugProc1Injector = true;
+			e.debug.versionDebugProc1Injector = true;
 		}
 
 		return e;

@@ -52,6 +52,7 @@ namespace Ime {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// mov     edx, r13d
 			BytePattern::temp_instance().find_pattern("41 8B D5 49 8B CC E8 ? ? ? ? 85 C0 0F 85");
 			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowsevents.cの修正")) {
@@ -69,11 +70,11 @@ namespace Ime {
 				Injector::MakeJMP(address, imeProc1, true);
 			}
 			else {
-				e.unmatch.imeProc1Injector = true;
+				e.ime.unmatchdImeProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.imeProc1Injector = true;
+			e.ime.versionImeProc1Injector = true;
 		}
 
 		return e;
@@ -103,6 +104,7 @@ namespace Ime {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			rectAddress = (uintptr_t)&rect;
 
 			// SDL_SetTextInputRectの関数を見つける
@@ -111,7 +113,7 @@ namespace Ime {
 				imeProc2CallAddress = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.imeProc2Injector = true;
+				e.ime.unmatchdImeProc2Injector = true;
 			}
 
 			// WM_IME_STARTCOMPOSITIONでSDL_SetTextInputRectする
@@ -128,7 +130,7 @@ namespace Ime {
 				Injector::MakeJMP(address, imeProc2, true);
 			}
 			else {
-				e.unmatch.imeProc2Injector = true;
+				e.ime.unmatchdImeProc2Injector = true;
 			}
 
 			// WM_IME_SETCONTEXTで*lParam = 0;をコメントアウトする（nopで埋める）
@@ -141,7 +143,7 @@ namespace Ime {
 				Injector::WriteMemory<uint8_t>(address+2, 0x90, true);
 			}
 			else {
-				e.unmatch.imeProc2Injector = true;
+				e.ime.unmatchdImeProc2Injector = true;
 			}
 
 			// WM_IME_COMPOSITIONのif文のIME_GetCompositionStringとIME_SendInputEventをコメントアウト（jmpさせる）
@@ -156,11 +158,11 @@ namespace Ime {
 				Injector::WriteMemory<uint8_t>(address - 1, 0x49, true);
 			}
 			else {
-				e.unmatch.imeProc2Injector = true;
+				e.ime.unmatchdImeProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.imeProc2Injector = true;
+			e.ime.unmatchdImeProc2Injector = true;
 		}
 
 		return e;
@@ -187,6 +189,7 @@ namespace Ime {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// 直前の部分でjmpに使う14byteを確保することができなかった。
 			// そのためWM_KEYDOWNのコードをすべて移植した
 			// mov     rcx, [rbp+0C0h+hRawInput]
@@ -215,11 +218,11 @@ namespace Ime {
 				Injector::MakeJMP(address, imeProc3, true);
 			}
 			else {
-				e.unmatch.imeProc3Injector = true;
+				e.ime.unmatchdImeProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.imeProc3Injector = true;
+			e.ime.versionImeProc3Injector = true;
 		}
 
 		return e;

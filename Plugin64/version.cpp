@@ -52,13 +52,15 @@ namespace Version {
 			return u8"v1_31_6_0";
 		case v1_32_0_1:
 			return u8"v1_32_0_1";
+		case v1_33_0_0:
+			return u8"v1_33_0_0";
 		default:
 			return u8"UNKNOWN";
 		}
 	}
 
 	void GetVersionFromExe(RunOptions *options) {
-		Eu4Version version;
+		Eu4Version version = UNKNOWN;
 		
 		// EU4 v1.??.?
 		BytePattern::temp_instance().find_pattern("45 55 34 20 76 31 2E ? ? 2E ?");
@@ -93,19 +95,15 @@ namespace Version {
 			case 303:
 				version = v1_30_3_0;
 				break;
-			default:
-				version = UNKNOWN;
+			case 330:
+				version = v1_33_0_0;
 				break;
-				;;
 			}
-		}
-		else {
-			version = UNKNOWN;
 		}
 
 		// release_v1.??.?
 		BytePattern::temp_instance().find_pattern("72 65 6C 65 61 73 65 5F 31 2E ? ? 2E ? 00");
-		if (BytePattern::temp_instance().count() > 0) {
+		if (version == UNKNOWN && version == BytePattern::temp_instance().count() > 0) {
 			// ??を取得する
 			Pattern minor = Injector::ReadMemory<Pattern>(BytePattern::temp_instance().get_first().address(10), true);
 
@@ -139,14 +137,7 @@ namespace Version {
 			case 304:
 				version = v1_30_4_0;
 				break;
-			default:
-				version = UNKNOWN;
-				break;
-				;;
 			}
-		}
-		else {
-			version = UNKNOWN;
 		}
 
 		BytePattern::LoggingInfo(versionString(version));

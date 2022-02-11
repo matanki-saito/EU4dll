@@ -45,10 +45,11 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc1, true);
 			}
 			else {
-				e.unmatch.eventDialog1Injector = true;
+				e.eventDialog.unmatchdEventDialog1Injector = true;
 			}
 			break;
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// movzx   eax, byte ptr [rdx+rax]
 			BytePattern::temp_instance().find_pattern("0F B6 04 02 49 8B 34 C2 F3 41 0F 10 8A 48 08 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"文字取得処理")) {
@@ -60,11 +61,11 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc1V132, true);
 			}
 			else {
-				e.unmatch.eventDialog1Injector = true;
+				e.eventDialog.unmatchdEventDialog1Injector = true;
 			}
 			break;
 		default:
-			e.version.eventDialog1Injector = true;
+			e.eventDialog.versionEventDialog1Injector = true;
 		}
 
 		return e;
@@ -95,7 +96,7 @@ namespace EventDialog {
 				eventDialogProc2ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.eventDialog1Injector = true;
+				e.eventDialog.unmatchdEventDialog2Injector = true;
 			}
 
 			// cvtdq2ps xmm0, xmm0
@@ -109,17 +110,18 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc2, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog2Injector = true;
 			}
 			break;
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// mov     rax, [rsp+1158h+arg_20]
 			BytePattern::temp_instance().find_pattern("48 8B 84 24 80 11 00 00 8B 00 03 C0");
 			if (BytePattern::temp_instance().has_size(1, u8"分岐処理修正戻り先アドレス２")) {
 				eventDialogProc2ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.eventDialog1Injector = true;
+				e.eventDialog.unmatchdEventDialog2Injector = true;
 			}
 
 			// cvtdq2ps xmm0, xmm0
@@ -133,11 +135,11 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc2, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog2Injector = true;
 			}
 			break;
 		default:
-			e.version.eventDialog2Injector = true;
+			e.eventDialog.versionEventDialog2Injector = true;
 		}
 
 		return e;
@@ -161,7 +163,7 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc3, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog3Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -186,10 +188,11 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc3V130, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog3Injector = true;
 			}
 			break;
 		case v1_32_0_1:
+		case v1_33_0_0:
 			// inc     edi
 			BytePattern::temp_instance().find_pattern("FF C7 3B 7B 10 44 8B 84 24 70 11 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"カウントアップ")) {
@@ -201,11 +204,11 @@ namespace EventDialog {
 				Injector::MakeJMP(address, eventDialogProc3V132, true);
 			}
 			else {
-				e.unmatch.eventDialog2Injector = true;
+				e.eventDialog.unmatchdEventDialog3Injector = true;
 			}
 			break;
 		default:
-			e.version.eventDialog2Injector = true;
+			e.eventDialog.versionEventDialog3Injector = true;
 		}
 
 		return e;

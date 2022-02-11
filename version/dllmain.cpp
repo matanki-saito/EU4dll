@@ -134,9 +134,15 @@ void Initialize(HMODULE hSelf)
 
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
 {
-	if (reason == DLL_PROCESS_ATTACH && validateProcess())
+	if (reason == DLL_PROCESS_ATTACH)
 	{
-		Initialize(module);
+		if (validateProcess())
+		{
+			Initialize(module);
+		}
+		else {
+			initInjector();
+		}
 	}
 
 	return TRUE;
