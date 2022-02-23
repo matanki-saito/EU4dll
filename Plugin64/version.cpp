@@ -99,6 +99,7 @@ namespace Version {
 				version = v1_33_0_0;
 				break;
 			case 331:
+			case 332:
 				version = v1_33_0_0;
 				break;
 			}
@@ -106,7 +107,7 @@ namespace Version {
 
 		// release_v1.??.?
 		BytePattern::temp_instance().find_pattern("72 65 6C 65 61 73 65 5F 31 2E ? ? 2E ? 00");
-		if (version == UNKNOWN && version == BytePattern::temp_instance().count() > 0) {
+		if (version == UNKNOWN && BytePattern::temp_instance().count() > 0) {
 			// ??を取得する
 			Pattern minor = Injector::ReadMemory<Pattern>(BytePattern::temp_instance().get_first().address(10), true);
 
