@@ -1,6 +1,5 @@
 ﻿#include "pch.h"
 #include "plugin_64.h"
-#include <atlstr.h>
 
 namespace Localization {
 	extern "C" {
@@ -579,9 +578,9 @@ namespace Localization {
 			BytePattern::temp_instance().find_pattern("20 2D 20 00 4D 4F 4E 54 48 53 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"Replace space")) {
 				intptr_t address = BytePattern::temp_instance().get_first().address();
-				Injector::WriteMemory<byte>(address+0, 0x20,true);
-				Injector::WriteMemory<byte>(address+1, 0x2D, true);
-				Injector::WriteMemory<byte>(address+2, 0x20, true);
+				Injector::WriteMemory<BYTE>(address+0, 0x20,true);
+				Injector::WriteMemory<BYTE>(address+1, 0x2D, true);
+				Injector::WriteMemory<BYTE>(address+2, 0x20, true);
 			}
 			else {
 				e.localization.unmatchdLocalizationProc9Injector = true;
