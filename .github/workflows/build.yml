@@ -50,7 +50,7 @@ jobs:
 
     - name: generate artifact zip
       run: |
-        compress-archive -Path artifact/* -DestinationPath steam_EU4_1.32_fixdll_build_${{ github.run_number }}.zip
+        compress-archive -Path artifact/* -DestinationPath steam_EU4_fixdll_build_${{ github.run_number }}.zip
       shell: powershell
 
     - name: Create Release
@@ -73,6 +73,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} 
-        asset_path: ./steam_EU4_1.32_fixdll_build_${{ github.run_number }}.zip
-        asset_name: steam_EU4_1.32_fixdll_build_${{ github.run_number }}.zip
+        asset_path: ./steam_EU4_fixdll_build_${{ github.run_number }}.zip
+        asset_name: steam_EU4_fixdll_build_${{ github.run_number }}.zip
         asset_content_type: application/json
