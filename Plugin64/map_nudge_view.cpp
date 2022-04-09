@@ -26,7 +26,7 @@ namespace MapNudgeView {
 				Injector::MakeJMP(address, mapNudgeViewProc1, true);
 			}
 			else {
-				e.unmatch.mapNudgeViewProc1Injector = true;
+				e.mapNudge.unmatchdMapNudgeViewProc1Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -41,6 +41,8 @@ namespace MapNudgeView {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
 			//  movzx   eax, byte ptr [rax+rcx]
 			BytePattern::temp_instance().find_pattern("0F B6 04 08 49 8B 94 C4 20 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"nudge view")) {
@@ -52,11 +54,11 @@ namespace MapNudgeView {
 				Injector::MakeJMP(address, mapNudgeViewProc1V130, true);
 			}
 			else {
-				e.unmatch.mapNudgeViewProc1Injector = true;
+				e.mapNudge.unmatchdMapNudgeViewProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mapNudgeViewProc1Injector = true;
+			e.mapNudge.versionMapNudgeViewProc1Injector = true;
 		}
 
 		return e;

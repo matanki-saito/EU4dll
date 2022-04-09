@@ -36,6 +36,8 @@ namespace MainText {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
 			// movsxd rax, edi
 			BytePattern::temp_instance().find_pattern("48 63 C7 0F B6 04 18 F3 41 0F 10 9F 48 08 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"テキスト処理ループ２の文字取得修正")) {
@@ -47,11 +49,11 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc1, true);
 			}
 			else {
-				e.unmatch.mainTextProc1Injector = true;
+				e.mainText.unmatchdMainTextProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mainTextProc1Injector = true;
+			e.mainText.versionMainTextProc11njector = true;
 		}
 
 		return e;
@@ -61,6 +63,7 @@ namespace MainText {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
 		case v1_31_5_0:
@@ -68,6 +71,7 @@ namespace MainText {
 		case v1_31_3_0:
 		case v1_31_2_0:
 		case v1_31_1_0:
+		case v1_33_3_0:
 			// movsxd rdx, edi
 			BytePattern::temp_instance().find_pattern("48 63 D7 49 63 CE 4C 8B 55 80");
 			if (BytePattern::temp_instance().has_size(1, u8"テキスト処理ループ１のカウント処理修正")) {
@@ -82,7 +86,7 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc2_v131, true);
 			}
 			else {
-				e.unmatch.mainTextProc2Injector = true;
+				e.mainText.unmatchdMainTextProc2Injector = true;
 			}
 			break;
 		case v1_29_1_0:
@@ -108,11 +112,11 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc2, true);
 			}
 			else {
-				e.unmatch.mainTextProc2Injector = true;
+				e.mainText.unmatchdMainTextProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.mainTextProc2Injector = true;
+			e.mainText.versionMainTextProc2Injector = true;
 		}
 
 		return e;
@@ -122,6 +126,8 @@ namespace MainText {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_33_3_0:
+		case v1_33_0_0:
 		case v1_32_0_1:
 			// cmp cs:byte_xxxxx, 0
 			BytePattern::temp_instance().find_pattern("80 3D ? ? ? ? 00 0F 84 9A 01 00 00");
@@ -129,7 +135,7 @@ namespace MainText {
 				mainTextProc3ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.mainTextProc3Injector2 = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 
 			// cmp word ptr [rcx+6],0
@@ -143,7 +149,7 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc3, true);
 			}
 			else {
-				e.unmatch.mainTextProc3Injector = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 			break;
 
@@ -159,7 +165,7 @@ namespace MainText {
 				mainTextProc3ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.mainTextProc3Injector2 = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 
 			// cmp word ptr [rcx+6],0
@@ -173,7 +179,7 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc3, true);
 			}
 			else {
-				e.unmatch.mainTextProc3Injector = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 			break;
 		case v1_29_1_0:
@@ -191,7 +197,7 @@ namespace MainText {
 				mainTextProc3ReturnAddress2 = BytePattern::temp_instance().get_first().address();
 			}
 			else {
-				e.unmatch.mainTextProc3Injector2 = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 
 			// cmp word ptr [rcx+6],0
@@ -205,11 +211,11 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc3, true);
 			}
 			else {
-				e.unmatch.mainTextProc3Injector = true;
+				e.mainText.unmatchdMainTextProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.mainTextProc3Injector = true;
+			e.mainText.versionMainTextProc3Injector = true;
 		}
 
 		return e;
@@ -235,6 +241,8 @@ namespace MainText {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
 			// movzx eax, byte ptr [rdx+r10]
 			BytePattern::temp_instance().find_pattern("42 0F B6 04 12 49 8B 0C C7");
 			if (BytePattern::temp_instance().has_size(1, u8"テキスト処理ループ１の文字取得修正")) {
@@ -246,11 +254,11 @@ namespace MainText {
 				Injector::MakeJMP(address, mainTextProc4, true);
 			}
 			else {
-				e.unmatch.mainTextProc4Injector = true;
+				e.mainText.unmatchdMainTextProc4Injector = true;
 			}
 			break;
 		default:
-			e.version.mainTextProc4Injector = true;
+			e.mainText.versionMainTextProc4Injector = true;
 		}
 
 		return e;

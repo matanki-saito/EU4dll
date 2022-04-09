@@ -33,6 +33,8 @@ namespace MapPopup {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
 			// movzx   r8d, byte ptr [rdi+rax]
 			BytePattern::temp_instance().find_pattern("44 0F B6 04 07 BA 01 00 00 00 48 8D 4D D0");
 			if (BytePattern::temp_instance().has_size(1, u8"ループ１の文字列コピー")) {
@@ -47,11 +49,11 @@ namespace MapPopup {
 				mapPopupProc1ReturnAddress = address + 19;
 			}
 			else {
-				e.unmatch.mapPopupProc1Injector = true;
+				e.mapPopup.unmatchdMapPopupProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mapPopupProc1Injector = true;
+			e.mapPopup.versionMapPopupProc1Injector = true;
 		}
 
 		return e;
@@ -75,7 +77,7 @@ namespace MapPopup {
 				mapPopupProc2ReturnAddress = address + 15;
 			}
 			else {
-				e.unmatch.mapPopupProc2Injector = true;
+				e.mapPopup.unmatchdMapPopupProc2Injector = true;
 			}
 			break;
 		case v1_30_1_0:
@@ -90,6 +92,8 @@ namespace MapPopup {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
 			//  movzx   eax, byte ptr [rax+rdi]
 			BytePattern::temp_instance().find_pattern("0F B6 04 38 4D 8B B4 C7 20 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"ループ１の文字取得")) {
@@ -101,11 +105,11 @@ namespace MapPopup {
 				mapPopupProc2ReturnAddress = address + 15;
 			}
 			else {
-				e.unmatch.mapPopupProc2Injector = true;
+				e.mapPopup.unmatchdMapPopupProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.mapPopupProc2Injector = true;
+			e.mapPopup.versionMapPopupProc2Injector = true;
 		}
 
 		return e;
@@ -129,7 +133,7 @@ namespace MapPopup {
 				mapPopupProc3ReturnAddress = address + 0x13;
 			}
 			else {
-				e.unmatch.mapPopupProc3Injector = true;
+				e.mapPopup.unmatchdMapPopupProc3Injector = true;
 			}
 			break;
 		case v1_30_1_0:
@@ -144,6 +148,8 @@ namespace MapPopup {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
 			//  movzx   eax, byte ptr [rbx+rax]
 			BytePattern::temp_instance().find_pattern("0F B6 04 03 4D 8B 9C C7 20 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"ループ２の文字取得")) {
@@ -155,11 +161,11 @@ namespace MapPopup {
 				mapPopupProc3ReturnAddress = address + 0x13;
 			}
 			else {
-				e.unmatch.mapPopupProc3Injector = true;
+				e.mapPopup.unmatchdMapPopupProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.mapPopupProc3Injector = true;
+			e.mapPopup.versionMapPopupProc3Injector = true;
 		}
 
 		return e;

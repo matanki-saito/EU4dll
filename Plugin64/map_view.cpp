@@ -33,6 +33,8 @@ namespace MapView {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
 			// movzx   eax, byte ptr [rax+r8]
 			BytePattern::temp_instance().find_pattern("42 0F B6 04 00 4C 8B 1C C7 4C 89 5D 38");
 			if (BytePattern::temp_instance().has_size(1, u8"処理ループ２の文字取得処理")) {
@@ -44,11 +46,11 @@ namespace MapView {
 				Injector::MakeJMP(address, mapViewProc1, true);
 			}
 			else {
-				e.unmatch.mapViewProc1Injector = true;
+				e.mapView.unmatchdMapViewProc1Injector = true;
 			}
 			break;
 		default:
-			e.version.mapViewProc1Injector = true;
+			e.mapView.versionMapViewProc1Injector = true;
 		}
 
 		return e;
@@ -73,7 +75,7 @@ namespace MapView {
 				Injector::MakeJMP(address, mapViewProc2, true);
 			}
 			else {
-				e.unmatch.mapViewProc2Injector = true;
+				e.mapView.unmatchdMapViewProc2Injector = true;
 			}
 			break;
 		case v1_30_5_0:
@@ -88,6 +90,8 @@ namespace MapView {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
 			// lea     r9, [r12+120h]
 			BytePattern::temp_instance().find_pattern("4D 8D 8C 24 20 01 00 00 42 0F B6 04 38 4D 8B 24 C1");
 			if (BytePattern::temp_instance().has_size(1, u8"処理ループ１の文字取得処理")) {
@@ -99,11 +103,11 @@ namespace MapView {
 				Injector::MakeJMP(address, mapViewProc2V130, true);
 			}
 			else {
-				e.unmatch.mapViewProc2Injector = true;
+				e.mapView.unmatchdMapViewProc2Injector = true;
 			}
 			break;
 		default:
-			e.version.mapViewProc2Injector = true;
+			e.mapView.versionMapViewProc2Injector = true;
 		}
 
 		return e;
@@ -129,6 +133,8 @@ namespace MapView {
 		case v1_31_5_0:
 		case v1_31_6_0:
 		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
 			// movzx   r8d, byte ptr [rax+r15]
 			BytePattern::temp_instance().find_pattern("46 0F B6 04 38 BA 01 00 00 00 48 8D 4C 24 40");
 			if (BytePattern::temp_instance().has_size(1, u8"処理ループ１の文字コピー")) {
@@ -143,11 +149,11 @@ namespace MapView {
 				Injector::MakeJMP(address, mapViewProc3, true);
 			}
 			else {
-				e.unmatch.mapViewProc3Injector = true;
+				e.mapView.unmatchdMapViewProc3Injector = true;
 			}
 			break;
 		default:
-			e.version.mapViewProc3Injector = true;
+			e.mapView.versionMapViewProc3Injector = true;
 		}
 
 		return e;
