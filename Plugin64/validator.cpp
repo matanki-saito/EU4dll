@@ -7,7 +7,7 @@ namespace Validator {
 	void Validate(DllError e, RunOptions options) {
 		auto message = e.print();
 
-		BytePattern::LoggingInfo("e=" + message);
+		BytePattern::LoggingInfo(message);
 
 		if (e.errorCheck()) {
 			const DWORD sysDefLcid = ::GetSystemDefaultLCID();

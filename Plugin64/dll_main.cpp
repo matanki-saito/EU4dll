@@ -29,11 +29,6 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= ModDownload::Init();
 			#endif
 
-			// デバッグ用
-			//#ifdef _DEBUG
-			//e |= Debug::Init(options);
-			//#endif
-
 			// フォント読み込み
 			e |= Font::Init(options);
 

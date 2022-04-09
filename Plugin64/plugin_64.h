@@ -21,10 +21,19 @@ enum Eu4Version {
 	v1_31_5_0 = 1315,
 	v1_31_6_0 = 1316,
 	v1_32_0_1 = 1321,
-	v1_33_0_0 = 1330
+	v1_33_0_0 = 1330,
+	v1_33_3_0 = 1333
 };
 
 typedef UINT64 DllErrorCode;
+
+inline std::string BoolToString(bool b)
+{
+	return b ? "NG" : "OK";
+}
+
+#define PL( f ) BoolToString(f) + ":" +  #f + "\n"
+#define P( f ) #f ":" + BoolToString(f)
 
 struct DllError{
 	union {
@@ -34,6 +43,12 @@ struct DllError{
 			bool waitFailed : 1;
 			bool proccessFaild : 1;
 		};
+
+		std::string print() {
+			return PL(timeout)
+				+ PL(waitFailed)
+				+ PL(proccessFaild);
+		}
 	} mod;
 
 	union {
@@ -42,6 +57,11 @@ struct DllError{
 			bool unmatchdDateProc1Injector : 1;
 			bool versionDateProc1Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdDateProc1Injector)
+				+ PL(versionDateProc1Injector);
+		}
 	} date;
 
 	union {
@@ -54,6 +74,14 @@ struct DllError{
 			bool unmatchdEventDialog3Injector : 1;
 			bool versionEventDialog3Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdEventDialog1Injector)
+				+ PL(versionEventDialog1Injector)
+				+ PL(unmatchdEventDialog2Injector)
+				+ PL(versionEventDialog2Injector)
+				+ PL(versionEventDialog3Injector);
+		}
 	} eventDialog;
 
 	union {
@@ -74,6 +102,23 @@ struct DllError{
 			bool unmatchdFileSaveProc7Injector : 1;
 			bool versionFileSaveProc7Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdFileSaveProc1Injector)
+				+ PL(versionFileSaveProc1Injector)
+				+ PL(unmatchdFileSaveProc2Injector)
+				+ PL(versionFileSaveProc2Injector)
+				+ PL(unmatchdFileSaveProc3Injector)
+				+ PL(versionFileSaveProc3Injector)
+				+ PL(unmatchdFileSaveProc4Injector)
+				+ PL(versionFileSaveProc4Injector)
+				+ PL(unmatchdFileSaveProc5Injector)
+				+ PL(versionFileSaveProc5Injector)
+				+ PL(unmatchdFileSaveProc6Injector)
+				+ PL(versionFileSaveProc6Injector)
+				+ PL(unmatchdFileSaveProc7Injector)
+				+ PL(versionFileSaveProc7Injector);
+		}
 	} fileSave;
 
 	union {
@@ -92,6 +137,21 @@ struct DllError{
 			bool unmatchdFontSizeLimitInjector : 1;
 			bool versionFontSizeLimitInjector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdCharCodePointLimiterPatchInjector)
+				+ PL(versionCharCodePointLimiterPatchInjector)
+				+ PL(unmatchdFontBufferHeapZeroClearInjector)
+				+ PL(versionFontBufferHeapZeroClearInjector)
+				+ PL(unmatchdFontBufferClear1Injector)
+				+ PL(versionFontBufferClear1Injector)
+				+ PL(unmatchdFontBufferClear2Injector)
+				+ PL(versionFontBufferClear2Injector)
+				+ PL(unmatchdFontBufferExpansionInjector)
+				+ PL(versionFontBufferExpansionInjector)
+				+ PL(unmatchdFontSizeLimitInjector)
+				+ PL(versionFontSizeLimitInjector);
+		}
 	} font;
 
 	union {
@@ -104,6 +164,15 @@ struct DllError{
 			bool unmatchdImeProc3Injector : 1;
 			bool versionImeProc3Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdImeProc1Injector)
+				+ PL(versionImeProc1Injector)
+				+ PL(unmatchdImeProc2Injector)
+				+ PL(versionImeProc2Injector)
+				+ PL(unmatchdImeProc3Injector)
+				+ PL(versionImeProc3Injector);
+		}
 	} ime;
 
 	union {
@@ -114,6 +183,14 @@ struct DllError{
 			bool unmatchdInputProc2Injector : 1;
 			bool versionInputProc2Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdInputProc1Injector)
+				+ PL(versionInputProc1Injector)
+				+ PL(unmatchdInputProc2Injector)
+				+ PL(versionInputProc2Injector);
+		}
+
 	} input;
 
 	union {
@@ -126,6 +203,16 @@ struct DllError{
 			bool unmatchdListFieldAdjustmentProc3Injector : 1;
 			bool versionListFieldAdjustmentProc3Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdListFieldAdjustmentProc1Injector)
+				+ PL(versionListFieldAdjustmentProc1Injector)
+				+ PL(unmatchdListFieldAdjustmentProc2Injector)
+				+ PL(versionListFieldAdjustmentProc2Injector)
+				+ PL(unmatchdListFieldAdjustmentProc3Injector)
+				+ PL(versionListFieldAdjustmentProc3Injector);
+		}
+
 	} listFiledAdjustment;
 
 	union {
@@ -150,6 +237,28 @@ struct DllError{
 			bool unmatchdLocalizationProc9Injector : 1;
 			bool versionLocalizationProc9Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdLocalizationProc1Injector)
+				+ PL(versionLocalizationProc1Injector)
+				+ PL(unmatchdLocalizationProc2Injector)
+				+ PL(versionLocalizationProc2njector)
+				+ PL(unmatchdLocalizationProc3Injector)
+				+ PL(versionLocalizationProc3njector)
+				+ PL(unmatchdLocalizationProc4Injector)
+				+ PL(versionLocalizationProc4Injector)
+				+ PL(unmatchdLocalizationProc5Injector)
+				+ PL(versionLocalizationProc5Injector)
+				+ PL(unmatchdLocalizationProc6Injector)
+				+ PL(versionLocalizationProc6Injector)
+				+ PL(unmatchdLocalizationProc7Injector)
+				+ PL(versionLocalizationProc7Injector)
+				+ PL(unmatchdLocalizationProc8Injector)
+				+ PL(versionLocalizationProc8Injector)
+				+ PL(unmatchdLocalizationProc9Injector)
+				+ PL(versionLocalizationProc9Injector);
+		}
+
 	} localization;
 
 	union {
@@ -164,6 +273,17 @@ struct DllError{
 			bool unmatchdMainTextProc4Injector : 1;
 			bool versionMainTextProc4Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdMainTextProc1Injector)
+				+ PL(versionMainTextProc11njector)
+				+ PL(unmatchdMainTextProc2Injector)
+				+ PL(versionMainTextProc2Injector)
+				+ PL(unmatchdMainTextProc3Injector)
+				+ PL(versionMainTextProc3Injector)
+				+ PL(unmatchdMainTextProc4Injector)
+				+ PL(versionMainTextProc4Injector);
+		}
 	} mainText;
 
 	union {
@@ -180,6 +300,19 @@ struct DllError{
 			bool unmatchdMapAdjustmentProc5Injector : 1;
 			bool versionMapAdjustmentProc5Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdMapAdjustmentProc1Injector)
+				+ PL(versionMapAdjustmentProc1Injector)
+				+ PL(unmatchdMapAdjustmentProc2Injector)
+				+ PL(versionMapAdjustmentProc2Injector)
+				+ PL(unmatchdMapAdjustmentProc3Injector)
+				+ PL(versionMapAdjustmentProc3Injector)
+				+ PL(unmatchdMapAdjustmentProc4Injector)
+				+ PL(versionMapAdjustmentProc4Injector)
+				+ PL(unmatchdMapAdjustmentProc5Injector)
+				+ PL(versionMapAdjustmentProc5Injector);
+		}
 	} mapAdjustment;
 
 	union {
@@ -194,6 +327,17 @@ struct DllError{
 			bool unmatchdMapJustifyProc4Injector : 1;
 			bool versionMapJustifyProc4Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdMapJustifyProc1Injector)
+				+ PL(versionMapJustifyProc1Injector)
+				+ PL(unmatchdMapJustifyProc2Injector)
+				+ PL(versionMapJustifyProc2Injector)
+				+ PL(unmatchdMapJustifyProc3Injector)
+				+ PL(versionMapJustifyProc3Injector)
+				+ PL(unmatchdMapJustifyProc4Injector)
+				+ PL(versionMapJustifyProc4Injector);
+		}
 	} mapJustify;
 
 	union {
@@ -202,6 +346,11 @@ struct DllError{
 			bool unmatchdMapNudgeViewProc1Injector : 1;
 			bool versionMapNudgeViewProc1Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdMapNudgeViewProc1Injector)
+				+ PL(versionMapNudgeViewProc1Injector);
+		}
 	} mapNudge;
 
 	union {
@@ -214,6 +363,15 @@ struct DllError{
 			bool unmatchdMapPopupProc3Injector : 1;
 			bool versionMapPopupProc3Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdMapPopupProc1Injector)
+				+ PL(versionMapPopupProc1Injector)
+				+ PL(unmatchdMapPopupProc2Injector)
+				+ PL(versionMapPopupProc2Injector)
+				+ PL(unmatchdMapPopupProc3Injector)
+				+ PL(versionMapPopupProc3Injector);
+		}
 	} mapPopup;
 
 	union {
@@ -226,6 +384,16 @@ struct DllError{
 			bool unmatchdMapViewProc3Injector : 1;
 			bool versionMapViewProc3Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdMapViewProc1Injector)
+				+ PL(versionMapViewProc1Injector)
+				+ PL(unmatchdMapViewProc2Injector)
+				+ PL(versionMapViewProc2Injector)
+				+ PL(unmatchdMapViewProc3Injector)
+				+ PL(versionMapViewProc3Injector);
+		}
+
 	} mapView;
 
 	union {
@@ -234,6 +402,11 @@ struct DllError{
 			bool unmatchdDebugProc1Injector : 1;
 			bool versionDebugProc1Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdDebugProc1Injector)
+				+ PL(versionDebugProc1Injector);
+		}
 	} debug;
 
 	union {
@@ -254,6 +427,22 @@ struct DllError{
 			bool unmatchdTooltipAndButtonProc7Injector : 1;
 			bool versionTooltipAndButtonProc7Injector : 1;
 		};
+
+		std::string print() {
+			return PL(unmatchdTooltipAndButtonProc1Injector)
+				+ PL(versionTooltipAndButtonProc1Injector)
+				+ PL(unmatchdTooltipAndButtonProc2Injector)
+				+ PL(versionTooltipAndButtonProc2Injector)
+				+ PL(versionTooltipAndButtonProc3Injector)
+				+ PL(unmatchdTooltipAndButtonProc4Injector)
+				+ PL(versionTooltipAndButtonProc4Injector)
+				+ PL(unmatchdTooltipAndButtonProc5Injector)
+				+ PL(versionTooltipAndButtonProc5Injector)
+				+ PL(unmatchdTooltipAndButtonProc6Injector)
+				+ PL(versionTooltipAndButtonProc6Injector)
+				+ PL(unmatchdTooltipAndButtonProc7Injector)
+				+ PL(versionTooltipAndButtonProc7Injector);
+		}
 	} tooltipAndButton;
 
 	void operator |= (DllError e)
@@ -298,27 +487,39 @@ struct DllError{
 	}
 
 	std::string print() {
-		return format(u8"mod=%llx,date=%llx,eventDialog=%llx,fileSave=%llx," 
-			"font=%llx,ime=%llx,input=%llx,listFiledAdjustment=%llx,localization=%llx"
-			"mainText=%llx,mapAdjustment=%llx,mapJustify=%llx,mapNudge=%llx,mapPopup=%llx"
-			"mapPopup=%llx,mapView=%llx,tooltipAndButton=%llx,debug=%llx",
-			this->mod.code,
-			this->date.code,
-			this->eventDialog.code,
-			this->fileSave.code,
-			this->font.code,
-			this->ime.code,
-			this->input.code,
-			this->listFiledAdjustment.code,
-			this->localization.code,
-			this->mainText.code,
-			this->mapAdjustment.code,
-			this->mapJustify.code,
-			this->mapNudge.code,
-			this->mapPopup.code,
-			this->mapView.code,
-			this->tooltipAndButton.code,
-			this->debug.code);
+		return this->tooltipAndButton.print()
+			+ "--------------\n"
+			+ this->mapView.print()
+			+ "--------------\n"
+			+ this->debug.print()
+			+ "--------------\n"
+			+ this->mapPopup.print()
+			+ "--------------\n"
+			+ this->mapNudge.print()
+			+ "--------------\n"
+			+ this->mapJustify.print()
+			+ "--------------\n"
+			+ this->mapAdjustment.print()
+			+ "--------------\n"
+			+ this->mainText.print()
+			+ "--------------\n"
+			+ this->localization.print()
+			+ "--------------\n"
+			+ this->listFiledAdjustment.print()
+			+ "--------------\n"
+			+ this->input.print()
+			+ "--------------\n"
+			+ this->ime.print()
+			+ "--------------\n"
+			+ this->font.print()
+			+ "--------------\n"
+			+ this->fileSave.print()
+			+ "--------------\n"
+			+ this->eventDialog.print()
+			+ "--------------\n"
+			+ this->date.print()
+			+ "--------------\n"
+			+ this->mod.print();
 	}
 
 	template <typename ... Args>

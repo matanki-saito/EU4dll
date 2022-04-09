@@ -62,6 +62,7 @@ namespace MapAdjustment {
 		case v1_31_6_0:
 		case v1_32_0_1:
 		case v1_33_0_0:
+		case v1_33_3_0:
 			// movsx ecx, byte ptr [rdi + rbx]
 			BytePattern::temp_instance().find_pattern("0F BE 0C 1F E8 ? ? ? ? 88 04 1F 41 FF");
 			if (BytePattern::temp_instance().has_size(2, u8"マップ文字の大文字化キャンセル")) {
@@ -135,6 +136,7 @@ namespace MapAdjustment {
 			break;
 		case v1_32_0_1:
 		case v1_33_0_0:
+		case v1_33_3_0:
 			// lea     rax, [rbp+200h+var_200]
 			BytePattern::temp_instance().find_pattern("48 8D 45 00 49 83 C8 FF 90 49 FF C0");
 			if (BytePattern::temp_instance().has_size(1, u8"文字チェック修正") ||
@@ -201,6 +203,7 @@ namespace MapAdjustment {
 		case v1_31_6_0:
 		case v1_32_0_1:
 		case v1_33_0_0:
+		case v1_33_3_0:
 			// r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern("49 83 C9 FF 45 33 C0 48 8D 95 D0 00 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"文字チェックの後のコピー処理")) {
@@ -266,6 +269,7 @@ namespace MapAdjustment {
 		case v1_31_6_0:
 		case v1_32_0_1:
 		case v1_33_0_0:
+		case v1_33_3_0:
 			//  lea     rax, [rbp+200h+var_160]
 			BytePattern::temp_instance().find_pattern("48 8D 85 A0 00 00 00 49 83 F8 10");
 			if (BytePattern::temp_instance().has_size(1, u8"文字取得処理修正")) {
@@ -335,6 +339,7 @@ namespace MapAdjustment {
 			break;
 		case v1_32_0_1:
 		case v1_33_0_0:
+		case v1_33_3_0:
 			// localization/tmm_l_english.ymlのENCLAVE_NAME_FORMATで対応された
 			break;
 

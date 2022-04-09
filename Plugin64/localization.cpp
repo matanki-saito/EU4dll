@@ -54,6 +54,7 @@ namespace Localization {
 		case v1_31_6_0:
 		case v1_32_0_1:
 		case v1_33_0_0:
+		case v1_33_3_0:
 			// mov     [rsp+arg_10], rbx
 			BytePattern::temp_instance().find_pattern("48 89 5C 24 18 55 41 56 41 57 48 83 EC 20 4D 8B F0");
 			if (BytePattern::temp_instance().has_size(1, u8"std::basic_string<char>#insertをフック")) {
@@ -118,6 +119,7 @@ namespace Localization {
 		case v1_31_6_0:
 		case v1_32_0_1:
 		case v1_33_0_0:
+		case v1_33_3_0:
 			// mov     rax, [rdi+30h]
 			BytePattern::temp_instance().find_pattern("48 8B 47 30 4C 8B 40 28 49 83 C0 10");
 			if (BytePattern::temp_instance().has_size(1, u8"Battle of areaを逆転させる")) {
@@ -163,6 +165,7 @@ namespace Localization {
 				e.localization.unmatchdLocalizationProc3Injector = true;
 			}
 			break;
+		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
@@ -233,6 +236,7 @@ namespace Localization {
 				e.localization.unmatchdLocalizationProc4Injector = true;
 			}
 			break;
+		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
 			offset = 0x3C;
@@ -311,6 +315,7 @@ namespace Localization {
 		int offset = 0;
 
 		switch (options.version) {
+		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
@@ -395,6 +400,7 @@ namespace Localization {
 		int offset = 0;
 
 		switch (options.version) {
+		case v1_33_3_0:
 		case v1_33_0_0:
 			/* 処理は不要になった。tmm_l_english.ymlのLONG_EU3_DATE_STRINGで代用される*/
 			break;
@@ -460,6 +466,7 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
@@ -515,6 +522,7 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
+		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
@@ -569,6 +577,7 @@ namespace Localization {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
 		case v1_31_6_0:
