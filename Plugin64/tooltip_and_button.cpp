@@ -33,6 +33,7 @@ namespace TooltipAndButton {
 		uintptr_t tooltipAndButtonProc9ReturnAddress2;
 		uintptr_t tooltipAndButtonProc10ReturnAddress1;
 		uintptr_t tooltipAndButtonProc10ReturnAddress2;
+		uintptr_t tooltipAndButtonProc10BufferWidth;
 	}
 
 	DllError tooltipAndButtonProc1Injector(RunOptions options) {
@@ -538,6 +539,8 @@ namespace TooltipAndButton {
 		switch (options.version) {
 		case v1_33_3_0:
 			// 
+			tooltipAndButtonProc10BufferWidth = options.lineBreakBufferWidth;
+
 			BytePattern::temp_instance().find_pattern("0F 28 B4 24 C0 00 00 00 48 81 C4 F0 00 00 00 41");
 			if (BytePattern::temp_instance().has_size(1, u8"DEBUG")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
@@ -570,7 +573,7 @@ namespace TooltipAndButton {
 		result |= tooltipAndButtonProc7Injector(options);
 		//result |= tooltipAndButtonProc8Injector(options);
 		//result |= tooltipAndButtonProc9Injector(options);
-		//result |= tooltipAndButtonProc10Injector(options);
+		result |= tooltipAndButtonProc10Injector(options);
 
 		return result;
 	}

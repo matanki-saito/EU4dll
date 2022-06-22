@@ -60,6 +60,21 @@ namespace Ini {
 		options->separateCharacterCodePoint  = _wtoi(buf);
 	}
 
+	void lineBreakBufferWidth(wstring ini_path, RunOptions* options) {
+		wchar_t buf[64] = { 0 };
+		DWORD  ret;
+
+		ret = GetPrivateProfileString(
+			L"options",
+			L"LINE_BREAK_BUFFER_WIDTH",
+			L"5",
+			buf,
+			64,
+			ini_path.c_str()
+		);
+		options->lineBreakBufferWidth = _wtoi(buf);
+	}
+
 	void reversingWordsBattleOfArea(wstring ini_path, RunOptions* options) {
 		wchar_t buf[64] = { 0 };
 		DWORD  ret;
@@ -81,5 +96,6 @@ namespace Ini {
 		testMode(ini_path, options);
 		separateCharacter(ini_path, options);
 		reversingWordsBattleOfArea(ini_path, options);
+		lineBreakBufferWidth(ini_path, options);
 	}
 }

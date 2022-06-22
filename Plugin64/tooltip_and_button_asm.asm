@@ -12,6 +12,7 @@ EXTERN	tooltipAndButtonProc8ReturnAddress1	:	QWORD
 EXTERN	tooltipAndButtonProc9ReturnAddress1	:	QWORD
 EXTERN	tooltipAndButtonProc9ReturnAddress2	:	QWORD
 EXTERN	tooltipAndButtonProc10ReturnAddress1	:	QWORD
+EXTERN	tooltipAndButtonProc10BufferWidth	:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -419,9 +420,7 @@ JMP_F:
 JMP_H:
 	add		rbx, 3;
 	add		edi, 3;
-	sub		rbx, 3;
 	cmp		rbx, r13;
-	add		rbx, 3
 	ja		JMP_J;
 	dec		rbx;
 	dec		edi;
@@ -434,6 +433,7 @@ JMP_G:
 	ret;
 
 JMP_J:
+	movd    xmm0, eax
 	push	tooltipAndButtonProc5ReturnAddress2;
 	ret;
 tooltipAndButtonProc5V130 ENDP
@@ -523,6 +523,8 @@ tooltipAndButtonProc9 ENDP
 
 tooltipAndButtonProc10 PROC
 	movaps  xmm6, [rsp + 0F8h - 38h]
+	mov		r15, tooltipAndButtonProc10BufferWidth;
+	add		rax, r15
 	add     rsp, 0F0h
 	pop     r15
 

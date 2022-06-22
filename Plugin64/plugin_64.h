@@ -586,6 +586,7 @@ typedef struct _RunOptions {
 	bool test;
 	bool reversingWordsBattleOfArea;
 	int separateCharacterCodePoint;
+	int lineBreakBufferWidth;
 } RunOptions;
 
 namespace Version {
