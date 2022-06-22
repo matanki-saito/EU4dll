@@ -8,6 +8,10 @@ EXTERN	tooltipAndButtonProc5ReturnAddress1	:	QWORD
 EXTERN	tooltipAndButtonProc5ReturnAddress2	:	QWORD
 EXTERN	tooltipAndButtonProc7ReturnAddress1	:	QWORD
 EXTERN	tooltipAndButtonProc7ReturnAddress2	:	QWORD
+EXTERN	tooltipAndButtonProc8ReturnAddress1	:	QWORD
+EXTERN	tooltipAndButtonProc9ReturnAddress1	:	QWORD
+EXTERN	tooltipAndButtonProc9ReturnAddress2	:	QWORD
+EXTERN	tooltipAndButtonProc10ReturnAddress1	:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -84,6 +88,10 @@ tooltipAndButtonProc1V133 PROC
 	jmp		JMP_B;
 JMP_A:
 	mov		tooltipAndButtonProc2TmpFlag, 1h;
+
+	; debug
+	mov		r8, qword ptr [rbp + 21D0h - 2220h];
+
 	lea		r8, qword ptr [rax + rcx];
 	mov		tooltipAndButtonProc2TmpCharacterAddress, r8;
 	movzx	r8d, byte ptr[rax + rcx];
@@ -292,10 +300,13 @@ tooltipAndButtonProc4V133 PROC
 	jz		JMP_A;
 
 	cmp		tooltipAndButtonProc2TmpCharacter, 00FFh;
-	ja		JMP_A;
+	ja		JMP_X;
 
 	push	tooltipAndButtonProc4ReturnAddress1;
 	ret;
+
+JMP_X:
+	nop;
 
 JMP_A:
 	cmp     dword ptr [rbp + 21D0h - 2210h], 0;
@@ -408,7 +419,9 @@ JMP_F:
 JMP_H:
 	add		rbx, 3;
 	add		edi, 3;
+	sub		rbx, 3;
 	cmp		rbx, r13;
+	add		rbx, 3
 	ja		JMP_J;
 	dec		rbx;
 	dec		edi;
@@ -461,8 +474,60 @@ JMP_A:
 	ret;
 
 JMP_B:
+	; debug
+	mov		rdi, qword ptr [rbp + 21D0h - 2220h];
+
 	push	tooltipAndButtonProc7ReturnAddress2;
 	ret;
 tooltipAndButtonProc7V133 ENDP
+
+
+;-------------------------------------------;
+
+tooltipAndButtonProc8 PROC
+	mov     eax, [rbp + 22A0h - 2294h]
+	xorps   xmm0, xmm0
+	cvtsi2ss xmm0, rax
+	comiss  xmm1, xmm0
+
+	push	tooltipAndButtonProc8ReturnAddress1;
+	ret;
+tooltipAndButtonProc8 ENDP
+
+;-------------------------------------------;
+
+tooltipAndButtonProc9 PROC
+	lea     rax, [rsp + 22D0h - 2280h]
+	cmp     rdi, 10h
+	cmovnb  rax, rsi
+	cmp     byte ptr [rax+rdx], 0Ah
+	jz      JMP_A;
+
+	lea     rax, [rsp + 22D0h - 2280h]
+	cmp     rdi, 10h
+	cmovnb  rax, rsi
+	cmp     byte ptr [rax + rdx], 0Dh
+	jnz     JMP_B;
+
+JMP_A:
+	push	tooltipAndButtonProc9ReturnAddress1;
+	ret;
+
+JMP_B:
+	push	tooltipAndButtonProc9ReturnAddress2;
+	ret;
+
+tooltipAndButtonProc9 ENDP
+
+;-------------------------------------------;
+
+tooltipAndButtonProc10 PROC
+	movaps  xmm6, [rsp + 0F8h - 38h]
+	add     rsp, 0F0h
+	pop     r15
+
+	push	tooltipAndButtonProc10ReturnAddress1;
+	ret;
+tooltipAndButtonProc10 ENDP
 
 END

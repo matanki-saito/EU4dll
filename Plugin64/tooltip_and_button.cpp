@@ -14,6 +14,10 @@ namespace TooltipAndButton {
 		void tooltipAndButtonProc5V130();
 		void tooltipAndButtonProc7();
 		void tooltipAndButtonProc7V133();
+		void tooltipAndButtonProc8();
+		void tooltipAndButtonProc9();
+		void tooltipAndButtonProc10();
+
 		uintptr_t tooltipAndButtonProc1ReturnAddress;
 		uintptr_t tooltipAndButtonProc1CallAddress;
 		uintptr_t tooltipAndButtonProc2ReturnAddress;
@@ -24,6 +28,11 @@ namespace TooltipAndButton {
 		uintptr_t tooltipAndButtonProc5ReturnAddress2;
 		uintptr_t tooltipAndButtonProc7ReturnAddress1;
 		uintptr_t tooltipAndButtonProc7ReturnAddress2;
+		uintptr_t tooltipAndButtonProc8ReturnAddress1;
+		uintptr_t tooltipAndButtonProc9ReturnAddress1;
+		uintptr_t tooltipAndButtonProc9ReturnAddress2;
+		uintptr_t tooltipAndButtonProc10ReturnAddress1;
+		uintptr_t tooltipAndButtonProc10ReturnAddress2;
 	}
 
 	DllError tooltipAndButtonProc1Injector(RunOptions options) {
@@ -470,6 +479,85 @@ namespace TooltipAndButton {
 		return e;
 	}
 
+	DllError tooltipAndButtonProc8Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_33_3_0:
+			// mov     eax, [rbp+22A0h+var_2294]
+			BytePattern::temp_instance().find_pattern("8B 44 24 4C 0F 57 C0 F3 48 0F 2A C0 0F 2F C8");
+			if (BytePattern::temp_instance().has_size(2, u8"改行処理")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// jg loc_xxxxx
+				tooltipAndButtonProc8ReturnAddress1 = Injector::GetBranchDestination(address + 0xF).as_int();
+
+				Injector::MakeJMP(address, tooltipAndButtonProc8, true);
+			}
+			else {
+				e.tooltipAndButton.unmatchdTooltipAndButtonProc8Injector = true;
+			}
+			break;
+		default:
+			e.tooltipAndButton.versionTooltipAndButtonProc8Injector = true;
+		}
+
+		return e;
+	}
+
+	DllError tooltipAndButtonProc9Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_33_3_0:
+			// 
+			BytePattern::temp_instance().find_pattern("48 8D 44 24 50 48 83 FF 10 48 0F 43 C6 80 3C 10 0A");
+			if (BytePattern::temp_instance().has_size(1, u8"文字がないときの改行処理？")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				tooltipAndButtonProc9ReturnAddress1 = address + 0x2A;
+				tooltipAndButtonProc9ReturnAddress2 = Injector::GetBranchDestination(address + 0x24).as_int();
+
+
+				Injector::MakeJMP(address, tooltipAndButtonProc9, true);
+			}
+			else {
+				e.tooltipAndButton.unmatchdTooltipAndButtonProc9Injector = true;
+			}
+			break;
+		default:
+			e.tooltipAndButton.versionTooltipAndButtonProc9Injector = true;
+		}
+
+		return e;
+	}
+
+	DllError tooltipAndButtonProc10Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_33_3_0:
+			// 
+			BytePattern::temp_instance().find_pattern("0F 28 B4 24 C0 00 00 00 48 81 C4 F0 00 00 00 41");
+			if (BytePattern::temp_instance().has_size(1, u8"DEBUG")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// retn
+				tooltipAndButtonProc10ReturnAddress1 = address + 0x11;
+
+				Injector::MakeJMP(address, tooltipAndButtonProc10, true);
+			}
+			else {
+				e.tooltipAndButton.unmatchdTooltipAndButtonProc9Injector = true;
+			}
+			break;
+		default:
+			e.tooltipAndButton.versionTooltipAndButtonProc9Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
@@ -480,6 +568,9 @@ namespace TooltipAndButton {
 		result |= tooltipAndButtonProc5Injector(options);
 		result |= tooltipAndButtonProc6Injector(options);
 		result |= tooltipAndButtonProc7Injector(options);
+		//result |= tooltipAndButtonProc8Injector(options);
+		//result |= tooltipAndButtonProc9Injector(options);
+		//result |= tooltipAndButtonProc10Injector(options);
 
 		return result;
 	}

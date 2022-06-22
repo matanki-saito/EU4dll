@@ -426,6 +426,12 @@ struct DllError{
 			bool versionTooltipAndButtonProc6Injector : 1;
 			bool unmatchdTooltipAndButtonProc7Injector : 1;
 			bool versionTooltipAndButtonProc7Injector : 1;
+			bool unmatchdTooltipAndButtonProc8Injector : 1;
+			bool versionTooltipAndButtonProc8Injector : 1;
+			bool unmatchdTooltipAndButtonProc9Injector : 1;
+			bool versionTooltipAndButtonProc9Injector : 1;
+			bool unmatchdTooltipAndButtonProc10Injector : 1;
+			bool versionTooltipAndButtonProc10Injector : 1;
 		};
 
 		std::string print() {
@@ -441,7 +447,13 @@ struct DllError{
 				+ PL(unmatchdTooltipAndButtonProc6Injector)
 				+ PL(versionTooltipAndButtonProc6Injector)
 				+ PL(unmatchdTooltipAndButtonProc7Injector)
-				+ PL(versionTooltipAndButtonProc7Injector);
+				+ PL(versionTooltipAndButtonProc7Injector)
+				+ PL(unmatchdTooltipAndButtonProc8Injector)
+				+ PL(versionTooltipAndButtonProc8Injector)
+				+ PL(unmatchdTooltipAndButtonProc9Injector)
+				+ PL(versionTooltipAndButtonProc9Injector)
+				+ PL(unmatchdTooltipAndButtonProc10Injector)
+				+ PL(versionTooltipAndButtonProc10Injector);
 		}
 	} tooltipAndButton;
 
