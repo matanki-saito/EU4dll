@@ -16,6 +16,7 @@ namespace FileSave {
 		void fileSaveProc6();
 		void fileSaveProc6V130();
 		void fileSaveProc7();
+		void fileSaveProc8();
 		uintptr_t fileSaveProc1ReturnAddress;
 		uintptr_t fileSaveProc2ReturnAddress;
 		uintptr_t fileSaveProc2CallAddress;
@@ -490,6 +491,30 @@ namespace FileSave {
 		return e;
 	}
 
+	DllError fileSaveProc8Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_33_3_0:
+			// nop
+			BytePattern::temp_instance().find_pattern("90 48 8D 55 0F 48 8D 4D EF E8");
+			if (BytePattern::temp_instance().has_size(3, u8"ISSUE-231")) {
+				uintptr_t address = BytePattern::temp_instance().get(2).address();
+
+				Injector::MakeRangedNOP(address, address + 0xE);
+			}
+			else {
+				e.fileSave.unmatchdFileSaveProc8Injector = true;
+			}
+
+			break;
+		default:
+			e.fileSave.versionFileSaveProc8Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
@@ -502,6 +527,7 @@ namespace FileSave {
 		result |= fileSaveProc5Injector(options);
 		result |= fileSaveProc6Injector(options);
 		result |= fileSaveProc7Injector(options);
+		result |= fileSaveProc8Injector(options);
 
 		return result;
 	}
