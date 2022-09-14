@@ -21,6 +21,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
@@ -91,6 +92,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
@@ -165,6 +167,7 @@ namespace ListFieldAdjustment {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:

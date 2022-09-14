@@ -40,6 +40,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 			// r8d, byte ptr [rax + rcx]
 			BytePattern::temp_instance().find_pattern("44 0F B6 04 08 BA 01 00 00 00");
@@ -103,6 +104,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 			// mov edx, ebx
 			BytePattern::temp_instance().find_pattern("8B D3 0F B6 04 10 49 8B 0C C7");
@@ -178,6 +180,7 @@ namespace TooltipAndButton {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
 			// mov ecx, ebx
 			BytePattern::temp_instance().find_pattern("8B CB F3 45 0F 10 97 48 08 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"処理ループ２の文字取得")) {
@@ -254,6 +257,7 @@ namespace TooltipAndButton {
 				e.tooltipAndButton.unmatchdTooltipAndButtonProc4Injector = true;
 			}
 			break;
+		case v1_34_2_0:
 		case v1_33_3_0:
 			// cmp word ptr [rcx + 6], 0
 			BytePattern::temp_instance().find_pattern("66 83 79 06 00 0F 85 03 03 00 00");
@@ -348,6 +352,7 @@ namespace TooltipAndButton {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
 			// movaps  xmm8, [rsp+0F8h+var_58]
 			BytePattern::temp_instance().find_pattern("44 0F 28 84 24 A0 00 00 00 0F 28 BC 24 B0 00 00 00 48");
 			if (BytePattern::temp_instance().has_size(1, u8"ツールチップの改行処理のリターン先２")) {
@@ -382,6 +387,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
@@ -407,6 +413,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 			// inc ebx
 			BytePattern::temp_instance().find_pattern("FF C3 3B 5D A8 7D 1D E9 79 F7 FF FF E8");
@@ -484,6 +491,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 			// mov     eax, [rbp+22A0h+var_2294]
 			BytePattern::temp_instance().find_pattern("8B 44 24 4C 0F 57 C0 F3 48 0F 2A C0 0F 2F C8");
@@ -510,6 +518,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 			// 
 			BytePattern::temp_instance().find_pattern("48 8D 44 24 50 48 83 FF 10 48 0F 43 C6 80 3C 10 0A");
@@ -537,6 +546,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_34_2_0:
 		case v1_33_3_0:
 			// 
 			tooltipAndButtonProc10BufferWidth = options.lineBreakBufferWidth;
