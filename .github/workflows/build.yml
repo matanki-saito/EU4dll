@@ -39,7 +39,7 @@ jobs:
       run: |
         Move-Item README.md artifact/
         Move-Item resource/.dist.v1.json artifact/
-        Move-Item x64/Release/version.dll artifact/
+        Move-Item resource/version.dll artifact/
         Move-Item x64/Release/plugin64.dll artifact/plugins/
         Move-Item resource/plugin.ini artifact/plugins/
         Move-Item resource/dllautoupdater.exe artifact/plugins/
