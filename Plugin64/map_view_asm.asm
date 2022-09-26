@@ -71,8 +71,8 @@ JMP_G:
 	jnz		JMP_N;
 
 	; issue-237
-	cmp		rax, 0ADh;
-	jz		JMP_N;
+	cmp		rax, 0FFh;
+	jl		JMP_N;
 	
 	mov		eax, 2dh ; -
 	mov     r11, qword ptr [ rdi + rax * 8];
