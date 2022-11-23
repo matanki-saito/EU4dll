@@ -112,6 +112,7 @@ namespace Version {
 			case 342:
 			case 343:
 			case 344:
+			case 345:
 				version = v1_34_2_0;
 				break;
 			}
