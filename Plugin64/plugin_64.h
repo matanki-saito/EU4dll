@@ -24,6 +24,7 @@ enum Eu4Version {
 	v1_33_0_0 = 1330,
 	v1_33_3_0 = 1333,
 	v1_34_2_0 = 1342,
+	v1_35_1_0 = 1351
 };
 
 typedef UINT64 DllErrorCode;

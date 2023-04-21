@@ -39,6 +39,7 @@ namespace MainText {
 		case v1_33_0_0:
 		case v1_33_3_0:
 		case v1_34_2_0:
+		case v1_35_1_0:
 			// movsxd rax, edi
 			BytePattern::temp_instance().find_pattern("48 63 C7 0F B6 04 18 F3 41 0F 10 9F 48 08 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"テキスト処理ループ２の文字取得修正")) {
@@ -74,6 +75,7 @@ namespace MainText {
 		case v1_31_1_0:
 		case v1_33_3_0:
 		case v1_34_2_0:
+		case v1_35_1_0:
 			// movsxd rdx, edi
 			BytePattern::temp_instance().find_pattern("48 63 D7 49 63 CE 4C 8B 55 80");
 			if (BytePattern::temp_instance().has_size(1, u8"テキスト処理ループ１のカウント処理修正")) {
@@ -128,6 +130,7 @@ namespace MainText {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
@@ -247,6 +250,7 @@ namespace MainText {
 		case v1_33_0_0:
 		case v1_33_3_0:
 		case v1_34_2_0:
+		case v1_35_1_0:
 			// movzx eax, byte ptr [rdx+r10]
 			BytePattern::temp_instance().find_pattern("42 0F B6 04 12 49 8B 0C C7");
 			if (BytePattern::temp_instance().has_size(1, u8"テキスト処理ループ１の文字取得修正")) {

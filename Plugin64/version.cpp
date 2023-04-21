@@ -58,6 +58,8 @@ namespace Version {
 			return u8"v1_33_3_0";
 		case v1_34_2_0:
 			return u8"v1_34_2_0";
+		case v1_35_1_0:
+			return u8"v1_35_1_0";
 		default:
 			return u8"UNKNOWN";
 		}
@@ -114,6 +116,9 @@ namespace Version {
 			case 344:
 			case 345:
 				version = v1_34_2_0;
+				break;
+			case 351:
+				version = v1_35_1_0;
 				break;
 			}
 		}
