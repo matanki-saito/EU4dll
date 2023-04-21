@@ -59,6 +59,7 @@ namespace FileSave {
 		case v1_33_0_0:
 		case v1_33_3_0:
 		case v1_34_2_0:
+		case v1_35_1_0:
 			// mov     eax, [rcx+10h]
 			BytePattern::temp_instance().find_pattern("8B 41 10 85 C0 0F 84 31 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"ファイル名を安全にしている場所を短絡する")) {
@@ -85,6 +86,7 @@ namespace FileSave {
 		int offset = 0;
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
@@ -197,6 +199,7 @@ namespace FileSave {
 				e.fileSave.unmatchdFileSaveProc3Injector = true;
 			}
 			break;
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
@@ -250,6 +253,7 @@ namespace FileSave {
 		case v1_33_0_0:
 		case v1_33_3_0:
 		case v1_34_2_0:
+		case v1_35_1_0:
 			// lea     r8, [rbp+0]
 			BytePattern::temp_instance().find_pattern("4C 8D 45 00 48 8D 15 ? ? ? ? 48 8D 4C 24 70 E8 ? ? ? ? 90");
 			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのツールチップを表示できるようにする1")) {
@@ -332,6 +336,7 @@ namespace FileSave {
 				e.fileSave.unmatchdFileSaveProc5Injector = true;
 			}
 			break;
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
@@ -403,6 +408,7 @@ namespace FileSave {
 		case v1_33_0_0:
 		case v1_33_3_0:
 		case v1_34_2_0:
+		case v1_35_1_0:
 			// lea     r8, [rbp+730h+var_3A0]
 			BytePattern::temp_instance().find_pattern("4C 8D 85 90 03 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 30");
 			if (BytePattern::temp_instance().has_size(1, u8"スタート画面でのコンティニューのツールチップ")) {
@@ -466,6 +472,7 @@ namespace FileSave {
 		case v1_33_0_0:
 		case v1_33_3_0:
 		case v1_34_2_0:
+		case v1_35_1_0:
 			// lea     rcx, [rbx+0C8h]
 			uintptr_t address;
 
@@ -502,6 +509,7 @@ namespace FileSave {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 			// nop

@@ -40,6 +40,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 			// r8d, byte ptr [rax + rcx]
@@ -104,6 +105,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 			// mov edx, ebx
@@ -181,6 +183,7 @@ namespace TooltipAndButton {
 		case v1_33_0_0:
 		case v1_33_3_0:
 		case v1_34_2_0:
+		case v1_35_1_0:
 			// mov ecx, ebx
 			BytePattern::temp_instance().find_pattern("8B CB F3 45 0F 10 97 48 08 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"処理ループ２の文字取得")) {
@@ -257,6 +260,7 @@ namespace TooltipAndButton {
 				e.tooltipAndButton.unmatchdTooltipAndButtonProc4Injector = true;
 			}
 			break;
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 			// cmp word ptr [rcx + 6], 0
@@ -353,6 +357,7 @@ namespace TooltipAndButton {
 		case v1_33_0_0:
 		case v1_33_3_0:
 		case v1_34_2_0:
+		case v1_35_1_0:
 			// movaps  xmm8, [rsp+0F8h+var_58]
 			BytePattern::temp_instance().find_pattern("44 0F 28 84 24 A0 00 00 00 0F 28 BC 24 B0 00 00 00 48");
 			if (BytePattern::temp_instance().has_size(1, u8"ツールチップの改行処理のリターン先２")) {
@@ -387,6 +392,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
@@ -413,6 +419,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 			// inc ebx
@@ -491,6 +498,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 			// mov     eax, [rbp+22A0h+var_2294]
@@ -518,6 +526,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 			// 
@@ -546,6 +555,7 @@ namespace TooltipAndButton {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
 			// 
