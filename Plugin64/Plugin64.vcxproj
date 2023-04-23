@@ -212,6 +212,7 @@ copy "$(TargetPath)" "C:\Program Files\Epic Games\EuropaUniversalis4\plugins"</C
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="date.cpp" />
+    <ClCompile Include="c_bitmap_font.cpp" />
     <ClCompile Include="tooltip_and_button.cpp" />
     <ClCompile Include="validator.cpp" />
     <ClCompile Include="version.cpp" />
@@ -236,6 +237,7 @@ copy "$(TargetPath)" "C:\Program Files\Epic Games\EuropaUniversalis4\plugins"</C
     <MASM Include="map_nudge_view_asm.asm" />
     <MASM Include="map_popup_asm.asm" />
     <MASM Include="map_view_asm.asm" />
+    <MASM Include="c_bitmap_font_asm.asm" />
     <MASM Include="tooltip_and_button_asm.asm" />
     <MASM Include="localization_asm.asm" />
     <None Include="packages.config" />

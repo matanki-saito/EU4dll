@@ -463,6 +463,23 @@ struct DllError{
 		}
 	} tooltipAndButton;
 
+	union {
+		DllErrorCode code;
+		struct {
+			bool unmatchdCBitmapFontProc1Injector : 1;
+			bool versionCBitmapFontProc1Injector : 1;
+			bool unmatchdCBitmapFontProc2Injector : 1;
+			bool versionCBitmapFontProc2Injector : 1;
+		};
+
+		std::string print() {
+			return PL(unmatchdCBitmapFontProc1Injector)
+				 + PL(versionCBitmapFontProc1Injector)
+				 + PL(unmatchdCBitmapFontProc2Injector)
+			 	 + PL(versionCBitmapFontProc2Injector);
+		}
+	} cBitmapFont;
+
 	void operator |= (DllError e)
 	{
 		this->mod.code |= e.mod.code;
@@ -482,6 +499,7 @@ struct DllError{
 		this->mapView.code |= e.mapView.code;
 		this->tooltipAndButton.code |= e.tooltipAndButton.code;
 		this->debug.code |= e.debug.code;
+		this->cBitmapFont.code |= e.cBitmapFont.code;
 	}
 
 	bool errorCheck() {
@@ -501,7 +519,8 @@ struct DllError{
 			|| this->mapPopup.code > 0
 			|| this->mapView.code > 0
 			|| this->tooltipAndButton.code > 0
-			|| this->debug.code > 0;
+			|| this->debug.code > 0
+			|| this->cBitmapFont.code > 0;
 	}
 
 	std::string print() {
@@ -537,7 +556,9 @@ struct DllError{
 			+ "--------------\n"
 			+ this->date.print()
 			+ "--------------\n"
-			+ this->mod.print();
+			+ this->mod.print()
+			+ "--------------\n"
+			+ this->cBitmapFont.print();
 	}
 
 	template <typename ... Args>
@@ -672,3 +693,6 @@ namespace Localization {
 	DllError Init(RunOptions option);
 }
 
+namespace CBitmapFont {
+	DllError Init(RunOptions option);
+}
