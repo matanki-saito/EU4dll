@@ -226,6 +226,8 @@ namespace EventDialog {
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
+		// CBitmapFont::GetActualRequiredSize
+
 		result |= eventDialog1Injector(options);
 		result |= eventDialog2Injector(options);
 		result |= eventDialog3Injector(options);
