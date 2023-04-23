@@ -55,11 +55,11 @@ JMP_E:
 
 JMP_G:
 	add		edi, 2;
+	xorps   xmm6, xmm6
 
 JMP_H:
 	mov     rcx, qword ptr [r15 + rax * 8 + 120h];
 	test    rcx, rcx
-	xorps   xmm6, xmm6
 
 	push	cBitmapFontProc1ReturnAddress;
 	ret;
