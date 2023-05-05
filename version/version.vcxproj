@@ -175,11 +175,6 @@ copy "$(TargetPath)" "C:\Program Files\Epic Games\EuropaUniversalis4"</Command>
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="hook.asm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </MASM>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="version.def" />
   </ItemGroup>
   <ItemGroup>
