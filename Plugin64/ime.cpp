@@ -38,6 +38,7 @@ namespace Ime {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_36_0_0:
 		case v1_35_1_0:
 			// mov     edx, r13d
 			BytePattern::temp_instance().find_pattern("41 8B D5 49 8B CC E8 ? ? ? ? 85 C0 0F 85 F1");
@@ -131,6 +132,7 @@ namespace Ime {
 		case v1_33_3_0:
 		case v1_34_2_0:
 		case v1_35_1_0:
+		case v1_36_0_0:
 			rectAddress = (uintptr_t)&rect;
 
 			// SDL_SetTextInputRectの関数を見つける
@@ -219,6 +221,7 @@ namespace Ime {
 		case v1_33_3_0:
 		case v1_34_2_0:
 		case v1_35_1_0:
+		case v1_36_0_0:
 			// 直前の部分でjmpに使う14byteを確保することができなかった。
 			// そのためWM_KEYDOWNのコードをすべて移植した
 			// mov     rcx, [rbp+0C0h+hRawInput]

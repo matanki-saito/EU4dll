@@ -13,6 +13,7 @@ namespace CBitmapFont {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_36_0_0:
 		case v1_35_1_0:
 			// movzx   eax, byte ptr [rdi+rax]
 			BytePattern::temp_instance().find_pattern("0F B6 04 07 49 8B 8C C7 20 01 00 00");
@@ -60,6 +61,7 @@ namespace CBitmapFont {
 		DllError e = {};
 
 		switch (options.version) {
+		case v1_36_0_0:
 		case v1_35_1_0:
 			// mov     r13d, edi
 			BytePattern::temp_instance().find_pattern("44 8B EF F3 41 0F 10 B4 24 48 08 00 00");
