@@ -256,7 +256,7 @@ namespace Localization {
 			break;
 		case v1_36_0_0:
 			offset = 0x3C;
-			pattern = "48 8B 04 D1 48 8B 88 D8 18 00 00 48 89 8D A0 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D A0 00 00 00 E8 ? ? ? ? 4C 8B C0";
+			pattern = "48 8B D8 48 8B 8E D8 18 00 00 48 89 8D 90 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D 90 00 00 00 E8 ? ? ? ? 4C 8B";
 			goto JMP;
 		case v1_35_1_0:
 			offset = 0x3C;
@@ -346,8 +346,6 @@ namespace Localization {
 
 		switch (options.version) {
 		case v1_36_0_0:
-			//TODO
-			break;
 		case v1_35_1_0:
 		case v1_34_2_0:
 		case v1_33_3_0:
