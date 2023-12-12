@@ -603,7 +603,7 @@ namespace TooltipAndButton {
 		result |= tooltipAndButtonProc7Injector(options);
 		//result |= tooltipAndButtonProc8Injector(options);
 		//result |= tooltipAndButtonProc9Injector(options);
-		result |= tooltipAndButtonProc10Injector(options);
+		//result |= tooltipAndButtonProc10Injector(options);
 
 		return result;
 	}
