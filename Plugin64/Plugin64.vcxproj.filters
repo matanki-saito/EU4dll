@@ -88,6 +88,9 @@
     <Filter Include="ソース ファイル\app\localization">
       <UniqueIdentifier>{5e3e9836-52fd-4562-a3cd-6b4caeb37d21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\app\c_bitmap_font">
+      <UniqueIdentifier>{f8ed2661-ef23-4081-8e84-d27ec0e9e04d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_pattern.h">
@@ -200,6 +203,9 @@
     <ClCompile Include="localization.cpp">
       <Filter>ソース ファイル\app\localization</Filter>
     </ClCompile>
+    <ClCompile Include="c_bitmap_font.cpp">
+      <Filter>ソース ファイル\app\c_bitmap_font</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -252,6 +258,9 @@
     </MASM>
     <MASM Include="localization_asm.asm">
       <Filter>ソース ファイル\app\localization</Filter>
+    </MASM>
+    <MASM Include="c_bitmap_font_asm.asm">
+      <Filter>ソース ファイル\app\c_bitmap_font</Filter>
     </MASM>
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@ namespace FileSave {
 		void fileSaveProc6();
 		void fileSaveProc6V130();
 		void fileSaveProc7();
+		void fileSaveProc8();
 		uintptr_t fileSaveProc1ReturnAddress;
 		uintptr_t fileSaveProc2ReturnAddress;
 		uintptr_t fileSaveProc2CallAddress;
@@ -57,6 +58,9 @@ namespace FileSave {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
 			// mov     eax, [rcx+10h]
 			BytePattern::temp_instance().find_pattern("8B 41 10 85 C0 0F 84 31 01 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"ファイル名を安全にしている場所を短絡する")) {
@@ -83,6 +87,9 @@ namespace FileSave {
 		int offset = 0;
 
 		switch (options.version) {
+		case v1_36_0_0:
+		case v1_35_1_0:
+		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
@@ -194,6 +201,9 @@ namespace FileSave {
 				e.fileSave.unmatchdFileSaveProc3Injector = true;
 			}
 			break;
+		case v1_36_0_0:
+		case v1_35_1_0:
+		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
@@ -245,6 +255,9 @@ namespace FileSave {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
 			// lea     r8, [rbp+0]
 			BytePattern::temp_instance().find_pattern("4C 8D 45 00 48 8D 15 ? ? ? ? 48 8D 4C 24 70 E8 ? ? ? ? 90");
 			if (BytePattern::temp_instance().has_size(1, u8"ダイアログでのセーブエントリのツールチップを表示できるようにする1")) {
@@ -327,6 +340,9 @@ namespace FileSave {
 				e.fileSave.unmatchdFileSaveProc5Injector = true;
 			}
 			break;
+		case v1_36_0_0:
+		case v1_35_1_0:
+		case v1_34_2_0:
 		case v1_33_3_0:
 		case v1_33_0_0:
 		case v1_32_0_1:
@@ -396,6 +412,9 @@ namespace FileSave {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
 			// lea     r8, [rbp+730h+var_3A0]
 			BytePattern::temp_instance().find_pattern("4C 8D 85 90 03 00 00 48 8D 15 ? ? ? ? 48 8D 4C 24 30");
 			if (BytePattern::temp_instance().has_size(1, u8"スタート画面でのコンティニューのツールチップ")) {
@@ -458,6 +477,9 @@ namespace FileSave {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
 			// lea     rcx, [rbx+0C8h]
 			uintptr_t address;
 
@@ -490,6 +512,33 @@ namespace FileSave {
 		return e;
 	}
 
+	DllError fileSaveProc8Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_36_0_0:
+		case v1_35_1_0:
+		case v1_34_2_0:
+		case v1_33_3_0:
+			// nop
+			BytePattern::temp_instance().find_pattern("90 48 8D 55 0F 48 8D 4D EF E8");
+			if (BytePattern::temp_instance().has_size(3, u8"ISSUE-231")) {
+				uintptr_t address = BytePattern::temp_instance().get(2).address();
+
+				Injector::MakeRangedNOP(address, address + 0xE);
+			}
+			else {
+				e.fileSave.unmatchdFileSaveProc8Injector = true;
+			}
+
+			break;
+		default:
+			e.fileSave.versionFileSaveProc8Injector = true;
+		}
+
+		return e;
+	}
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
@@ -502,6 +551,7 @@ namespace FileSave {
 		result |= fileSaveProc5Injector(options);
 		result |= fileSaveProc6Injector(options);
 		result |= fileSaveProc7Injector(options);
+		result |= fileSaveProc8Injector(options);
 
 		return result;
 	}
