@@ -447,6 +447,7 @@ struct DllError{
 				+ PL(versionTooltipAndButtonProc1Injector)
 				+ PL(unmatchdTooltipAndButtonProc2Injector)
 				+ PL(versionTooltipAndButtonProc2Injector)
+				+ PL(unmatchdTooltipAndButtonProc3Injector)
 				+ PL(versionTooltipAndButtonProc3Injector)
 				+ PL(unmatchdTooltipAndButtonProc4Injector)
 				+ PL(versionTooltipAndButtonProc4Injector)

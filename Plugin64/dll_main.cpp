@@ -36,7 +36,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= MainText::Init(options);
 
 			// ツールチップとボタンの表示
-			//e |= TooltipAndButton::Init(options);
+			e |= TooltipAndButton::Init(options);
 
 			// マップ文字の表示
 			//e |= MapView::Init(options);

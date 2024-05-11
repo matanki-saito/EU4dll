@@ -591,6 +591,7 @@ namespace Injector
 			case 0x84:  // jz
 			case 0x8E:  // jle
 			case 0x82:	// jb
+			case 0x8C:  // jl
 				auto a = ReadRelativeOffset(at + 2, 4, vp);
 				return a;
 			}
