@@ -4,8 +4,11 @@
 namespace MapJustify {
 	extern "C" {
 		void mapJustifyProc1();
+		void mapJustifyProc1V137();
 		void mapJustifyProc2();
+		void mapJustifyProc2V137();
 		void mapJustifyProc4();
+		void mapJustifyProc4V137();
 		uintptr_t mapJustifyProc1ReturnAddress1;
 		uintptr_t mapJustifyProc1ReturnAddress2;
 		uintptr_t mapJustifyProc2ReturnAddress;
@@ -60,6 +63,21 @@ namespace MapJustify {
 				e.mapJustify.unmatchdMapJustifyProc1Injector = true;
 			}
 			break;
+		case v1_37_0_0:
+			// movzx   eax, byte ptr [rcx+rax]
+			BytePattern::temp_instance().find_pattern("0F B6 04 01 88 85 08 08 00 00 F3 44 0F 10 A2 48 08 00 00");
+			if (BytePattern::temp_instance().has_size(1, u8"文字取得処理")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// jz loc_xxxxx
+				mapJustifyProc1ReturnAddress1 = address + 0x1A;
+
+				Injector::MakeJMP(address, mapJustifyProc1V137, true);
+			}
+			else {
+				e.mapJustify.unmatchdMapJustifyProc1Injector = true;
+			}
+			break;
 		default:
 			e.mapJustify.versionMapJustifyProc1Injector = true;
 		}
@@ -101,6 +119,21 @@ namespace MapJustify {
 				mapJustifyProc2ReturnAddress = address + 0xF;
 
 				Injector::MakeJMP(address, mapJustifyProc2, true);
+			}
+			else {
+				e.mapJustify.unmatchdMapJustifyProc2Injector = true;
+			}
+			break;
+		case v1_37_0_0:
+			// movd    xmm6, esi
+			BytePattern::temp_instance().find_pattern("66 0F 6E F6 0F 5B F6 48 8B 85 68 01 00 00");
+			if (BytePattern::temp_instance().has_size(1, u8"一文字表示の調整")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// cvtdq2ps xmm1, xmm1
+				mapJustifyProc2ReturnAddress = address + 0x14;
+
+				Injector::MakeJMP(address, mapJustifyProc2V137, true);
 			}
 			else {
 				e.mapJustify.unmatchdMapJustifyProc2Injector = true;
@@ -152,6 +185,21 @@ namespace MapJustify {
 				e.mapJustify.unmatchdMapJustifyProc4Injector = true;
 			}
 			break;
+		case v1_37_0_0:
+			// inc     esi
+			BytePattern::temp_instance().find_pattern("FF C6 89 B5 E8 07 00 00 48 FF C1");
+			if (BytePattern::temp_instance().has_size(1, u8"カウント処理")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// cmp     rcx, [rbp+7B0h+var_650]
+				mapJustifyProc4ReturnAddress = address + 0x12;
+
+				Injector::MakeJMP(address, mapJustifyProc4V137, true);
+			}
+			else {
+				e.mapJustify.unmatchdMapJustifyProc4Injector = true;
+			}
+			break;
 		default:
 			e.mapJustify.versionMapJustifyProc4Injector = true;
 		}
@@ -163,8 +211,8 @@ namespace MapJustify {
 		DllError result = {};
 
 		result |= mapJustifyProc1Injector(options);
-		result |= mapJustifyProc2Injector(options);
-		result |= mapJustifyProc4Injector(options);
+		//result |= mapJustifyProc2Injector(options);
+		//result |= mapJustifyProc4Injector(options);
 
 		return result;
 	}

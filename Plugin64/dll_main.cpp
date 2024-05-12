@@ -48,7 +48,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			//e |= MapAdjustment::Init(options);
 
 			// マップ文字の調整
-			//e |= MapJustify::Init(options);
+			e |= MapJustify::Init(options);
 
 			// イベントダイアログとマップ文字の調整
 			//e |= EventDialog::Init(options);
