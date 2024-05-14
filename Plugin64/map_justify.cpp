@@ -212,7 +212,7 @@ namespace MapJustify {
 
 		result |= mapJustifyProc1Injector(options);
 		//result |= mapJustifyProc2Injector(options);
-		//result |= mapJustifyProc4Injector(options);
+		result |= mapJustifyProc4Injector(options);
 
 		return result;
 	}

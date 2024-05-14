@@ -1,5 +1,9 @@
 EXTERN	mapAdjustmentProc1ReturnAddress		:	QWORD
+EXTERN	mapAdjustmentProc1ReturnAddressA	:	QWORD
+EXTERN	mapAdjustmentProc1ReturnAddressB	:	QWORD
 EXTERN	mapAdjustmentProc1CallAddress		:	QWORD
+EXTERN	mapAdjustmentProc1CallAddressA		:	QWORD
+EXTERN	mapAdjustmentProc1CallAddressB		:	QWORD
 EXTERN	mapAdjustmentProc2ReturnAddress		:	QWORD
 EXTERN	mapAdjustmentProc3ReturnAddress1	:	QWORD
 EXTERN	mapAdjustmentProc3ReturnAddress2	:	QWORD
@@ -56,6 +60,65 @@ JMP_C:
 mapAdjustmentProc1 ENDP
 
 ;-------------------------------------------;
+
+mapAdjustmentProc1V137A PROC
+	movsx   ecx, byte ptr [rax+rbp]
+	cmp		ecx, ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		ecx, ESCAPE_SEQ_2;
+	jz		JMP_A;
+	cmp		ecx, ESCAPE_SEQ_3;
+	jz		JMP_A;
+	cmp		ecx, ESCAPE_SEQ_4;
+	jz		JMP_A;
+
+	lea     rbx, [rax+rbp]
+	call	mapAdjustmentProc1CallAddressA;
+	inc     edi
+	mov     [rbx], al
+
+	jmp		JMP_B;
+
+JMP_A:
+	add		edi, 3;
+JMP_B:
+	mov     eax, edi
+
+	push	mapAdjustmentProc1ReturnAddressA;
+	ret;
+mapAdjustmentProc1V137A ENDP
+
+;-------------------------------------------;
+
+mapAdjustmentProc1V137B PROC
+	movsx   ecx, byte ptr [rax+rbp]
+	cmp		ecx, ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		ecx, ESCAPE_SEQ_2;
+	jz		JMP_A;
+	cmp		ecx, ESCAPE_SEQ_3;
+	jz		JMP_A;
+	cmp		ecx, ESCAPE_SEQ_4;
+	jz		JMP_A;
+
+	lea     rbx, [rax+rbp]
+	call	mapAdjustmentProc1CallAddressB;
+	inc     edi
+	mov     [rbx], al
+
+	jmp		JMP_B;
+
+JMP_A:
+	add		edi, 3;
+JMP_B:
+	mov     eax, edi
+
+	push	mapAdjustmentProc1ReturnAddressB;
+	ret;
+mapAdjustmentProc1V137B ENDP
+
+;-------------------------------------------;
+
 
 mapAdjustmentProc2 PROC
 	cmp		al, ESCAPE_SEQ_1;
@@ -133,6 +196,50 @@ mapAdjustmentProc2V130 ENDP
 
 ;-------------------------------------------;
 
+mapAdjustmentProc2V137 PROC
+	lea     rax, [rbp+230h-1A0h] ; 1A0 = Block
+	cmp     r13, 10h
+	cmovnb  rax, rsi
+	movzx   eax, byte ptr [rax+rbx]
+
+	cmp		al, ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		al, ESCAPE_SEQ_2;
+	jz		JMP_A;
+	cmp		al, ESCAPE_SEQ_3;
+	jz		JMP_A;
+	cmp		al, ESCAPE_SEQ_4;
+	jz		JMP_A;
+
+	mov     byte ptr [rbp+230h-230h], al
+	lea     rax, [rbp+230h-230h]
+	mov     r8, 0FFFFFFFFFFFFFFFFh
+
+
+JMP_B:
+	inc     r8;
+	cmp     byte ptr [rax+r8], 0;
+	jnz		JMP_B;
+	jmp		JMP_C;
+
+JMP_A:
+	mov		r8, 3;
+
+	lea     rax, [rbp+230h-1A0h] ; 1A0 = Block
+	cmp     r13, 10h
+	cmovnb  rax, rsi
+	mov		dx, word ptr [rax+rbx+1]
+	mov     word ptr [rbp+230h-230h+1], dx
+
+	add		rbx, 2;
+
+JMP_C:
+	push	mapAdjustmentProc2ReturnAddress;
+	ret;
+mapAdjustmentProc2V137 ENDP
+
+;-------------------------------------------;
+
 mapAdjustmentProc3 PROC
 	mov		dword ptr[rbp + 1F0h - 1F0h], 0000h;
 	cmp     rbx, rdi;
@@ -168,6 +275,26 @@ JMP_A:
 	push	mapAdjustmentProc3ReturnAddress2;
 	ret;
 mapAdjustmentProc3V130 ENDP
+
+;-------------------------------------------;
+
+mapAdjustmentProc3V137 PROC
+	mov		dword ptr[rbp + 230h - 230h], 0000h;
+	cmp     rbx, r12
+	jz		JMP_A;
+	lea     rdx, [rbp+230h-1C0h]
+	cmp     rdi, 10h
+	cmovnb  rdx, [rbp+230h-1C0h] ;
+	mov     r8, [rbp+230h-1B0h]
+	lea     rcx, [rbp+230h-200h]
+
+	push	mapAdjustmentProc3ReturnAddress1;
+	ret;
+
+JMP_A:
+	push	mapAdjustmentProc3ReturnAddress2;
+	ret;
+mapAdjustmentProc3V137 ENDP
 
 ;-------------------------------------------;
 
@@ -274,6 +401,59 @@ JMP_E:
 	push	mapAdjustmentProc4ReturnAddress;
 	ret;
 mapAdjustmentProc4V130 ENDP
+
+;-------------------------------------------;
+
+mapAdjustmentProc4V137 PROC
+	lea     rax, [rbp+230h+1A0h]
+	cmp     r13, 10h
+	cmovnb  rax, rsi
+
+	cmp		byte ptr[rax+rcx], ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		byte ptr[rax+rcx], ESCAPE_SEQ_2;
+	jz		JMP_B;
+	cmp		byte ptr[rax+rcx], ESCAPE_SEQ_3;
+	jz		JMP_C;
+	cmp		byte ptr[rax+rcx], ESCAPE_SEQ_4;
+	jz		JMP_D;
+	movzx   eax, byte ptr [rax+rcx]
+	jmp		JMP_E;
+
+JMP_A:
+	movzx	eax, word ptr[rax+rcx + 1];
+	jmp		JMP_F;
+
+JMP_B:
+	movzx	eax, word ptr[rax+rcx + 1];
+	sub		eax, SHIFT_2;
+	jmp		JMP_F;
+
+JMP_C:
+	movzx	eax, word ptr[rax+rcx + 1];
+	add		eax, SHIFT_3;
+	jmp		JMP_F;
+
+JMP_D:
+	movzx	eax, word ptr[rax+rcx + 1];
+	add		eax, SHIFT_4;
+
+JMP_F:
+	add		rcx, 2;
+	cmp		rcx, MAP_LIMIT;
+	ja		JMP_G;
+
+	cmp		eax, NO_FONT;
+	ja		JMP_E;
+JMP_G:
+	mov		eax, NOT_DEF;
+	movzx	eax, ax;
+
+JMP_E:
+
+	push	mapAdjustmentProc4ReturnAddress;
+	ret;
+mapAdjustmentProc4V137 ENDP
 
 ;-------------------------------------------;
 
