@@ -54,7 +54,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= EventDialog::Init(options);
 
 			// マップ上に浮き出る文字の表示
-			//e |= MapPopup::Init(options);
+			e |= MapPopup::Init(options);
 
 			// リスト表示の文字の調整
 			//e |= ListFieldAdjustment::Init(options);
