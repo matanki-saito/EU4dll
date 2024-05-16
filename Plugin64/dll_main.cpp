@@ -57,7 +57,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= MapPopup::Init(options);
 
 			// リスト表示の文字の調整
-			//e |= ListFieldAdjustment::Init(options);
+			e |= ListFieldAdjustment::Init(options);
 
 			// ファイルセーブ
 			//e |= FileSave::Init(options);
