@@ -51,7 +51,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= MapJustify::Init(options);
 
 			// イベントダイアログとマップ文字の調整
-			//e |= EventDialog::Init(options);
+			e |= EventDialog::Init(options);
 
 			// マップ上に浮き出る文字の表示
 			//e |= MapPopup::Init(options);
