@@ -63,7 +63,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			//e |= FileSave::Init(options);
 
 			// 日付
-			//e |= Date::Init(options);
+			e |= Date::Init(options);
 
 			// IME
 			//e |= Ime::Init(options);
