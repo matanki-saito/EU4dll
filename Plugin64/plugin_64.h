@@ -391,6 +391,8 @@ struct DllError{
 			bool versionMapViewProc2Injector : 1;
 			bool unmatchdMapViewProc3Injector : 1;
 			bool versionMapViewProc3Injector : 1;
+			bool unmatchdMapViewProc4Injector : 1;
+			bool versionMapViewProc4Injector : 1;
 		};
 
 		std::string print() {
@@ -399,7 +401,9 @@ struct DllError{
 				+ PL(unmatchdMapViewProc2Injector)
 				+ PL(versionMapViewProc2Injector)
 				+ PL(unmatchdMapViewProc3Injector)
-				+ PL(versionMapViewProc3Injector);
+				+ PL(versionMapViewProc3Injector)
+				+ PL(unmatchdMapViewProc4Injector)
+				+ PL(versionMapViewProc4Injector);
 		}
 
 	} mapView;

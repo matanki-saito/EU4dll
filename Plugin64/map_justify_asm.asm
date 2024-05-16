@@ -104,9 +104,9 @@ mapJustifyProc1V137 PROC
 	jz		JMP_C;
 	cmp		byte ptr [rcx+rax], ESCAPE_SEQ_4;
 	jz		JMP_D;
-	movzx   eax, byte ptr [rcx+rax]
-	mov		mapJustifyProc1TmpFlag, 0h;
+	movzx   eax, byte ptr [rcx+rax]	
 	mov     byte ptr [rbp+7B0h+58h], al
+	mov		mapJustifyProc1TmpFlag, 0h;
 	jmp		JMP_I
 
 JMP_A:
@@ -129,7 +129,7 @@ JMP_D:
 
 JMP_F:
 	; ここのdecが文字のつまりを制御している
-	dec byte ptr [rbp+7B0h-650h]
+	;dec		qword ptr [rbp+7B0h-650h]
 
 	cmp		rcx,MAP_LIMIT;
 	ja		JMP_H;
@@ -145,7 +145,7 @@ JMP_G:
 	mov     byte ptr [rbp+7B0h+58h], ESCAPE_SEQ_1 ; 下の方でsilを比較して'や.と比較しているのでいるので適当に埋める
 	
 JMP_I:
-	mov     r14, [rdx+rax*8]
+	mov     r14, qword ptr [rdx+rax*8]
 	test    r14, r14
 	push	mapJustifyProc1ReturnAddress1;
 	ret;
@@ -188,33 +188,22 @@ mapJustifyProc2 ENDP
 ;-------------------------------------------;
 
 mapJustifyProc2V137 PROC
+
 	movd    xmm6, esi
 	cvtdq2ps xmm6, xmm6
-
 	mov     rax, [rbp+7B0h-648h]
 
-	cmp		mapJustifyProc1TmpFlag, 1h;
-	jnz		JMP_A;
-
-	; 3byte = 1文字かどうか
-	cmp		r10, 2; 
-	ja		JMP_A;
-	inc		r10;
-	inc		r10;
-	mov		edx,1;
-
-JMP_A:
-	movd    xmm6, edx;
 
 	; エスケープ文字
 	cmp		mapJustifyProc1TmpFlag, 1h;
 	jz		JMP_B;
 
-	lea     eax, [r10 - 1]; ; -1している
+	dec     eax ; -1している
 	jmp		JMP_C;
 
 JMP_B:
-	lea     eax, [r10 - 2]; ; -2している
+	dec     eax;  -2している
+	dec     eax
 
 JMP_C:
 	movd    xmm1, eax

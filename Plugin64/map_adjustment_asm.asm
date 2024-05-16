@@ -197,10 +197,11 @@ mapAdjustmentProc2V130 ENDP
 ;-------------------------------------------;
 
 mapAdjustmentProc2V137 PROC
-	lea     rax, [rbp+230h-1A0h] ; 1A0 = Block
+	lea     rax, qword ptr [rbp+230h-1A0h] ; 1A0 = Block
 	cmp     r13, 10h
 	cmovnb  rax, rsi
 	movzx   eax, byte ptr [rax+rbx]
+	mov     byte ptr [rbp+230h-230h], al
 
 	cmp		al, ESCAPE_SEQ_1;
 	jz		JMP_A;
@@ -211,10 +212,8 @@ mapAdjustmentProc2V137 PROC
 	cmp		al, ESCAPE_SEQ_4;
 	jz		JMP_A;
 
-	mov     byte ptr [rbp+230h-230h], al
-	lea     rax, [rbp+230h-230h]
-	mov     r8, 0FFFFFFFFFFFFFFFFh
-
+	lea     rax, qword ptr [rbp + 230h - 230h];
+	mov     r8, 0FFFFFFFFFFFFFFFFh;
 
 JMP_B:
 	inc     r8;
@@ -225,7 +224,7 @@ JMP_B:
 JMP_A:
 	mov		r8, 3;
 
-	lea     rax, [rbp+230h-1A0h] ; 1A0 = Block
+	lea     rax, qword ptr [rbp+230h-1A0h] ; 1A0 = Block
 	cmp     r13, 10h
 	cmovnb  rax, rsi
 	mov		dx, word ptr [rax+rbx+1]
@@ -405,7 +404,7 @@ mapAdjustmentProc4V130 ENDP
 ;-------------------------------------------;
 
 mapAdjustmentProc4V137 PROC
-	lea     rax, [rbp+230h+1A0h]
+	lea     rax, [rbp+230h-1A0h]
 	cmp     r13, 10h
 	cmovnb  rax, rsi
 

@@ -10,9 +10,11 @@ namespace MapView {
 		void mapViewProc2V137();
 		void mapViewProc3();
 		void mapViewProc3V137();
+		void mapViewProc4V137();
 		uintptr_t mapViewProc1ReturnAddress;
 		uintptr_t mapViewProc2ReturnAddress;
 		uintptr_t mapViewProc3ReturnAddress;
+		uintptr_t mapViewProc4ReturnAddress;
 		uintptr_t mapViewProc3CallAddress;
 	}
 
@@ -219,12 +221,62 @@ namespace MapView {
 		return e;
 	}
 
+	DllError mapViewProc4Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_1_0:
+		case v1_29_2_0:
+		case v1_29_3_0:
+		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
+		case v1_30_3_0:
+		case v1_30_4_0:
+		case v1_30_5_0:
+		case v1_31_1_0:
+		case v1_31_2_0:
+		case v1_31_3_0:
+		case v1_31_4_0:
+		case v1_31_5_0:
+		case v1_31_6_0:
+		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
+			break;
+		case v1_37_0_0:
+			// lea     rcx, [rsp+1160h+var_10E8]
+			BytePattern::temp_instance().find_pattern("48 8D 4C 24 78 48 83 FB 10 48 0F 43 CE");
+			if (BytePattern::temp_instance().has_size(1, u8"kerning")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// call xxxxx
+				mapViewProc4ReturnAddress = address + 0x23;
+
+				Injector::MakeJMP(address, mapViewProc4V137, true);
+			}
+			else {
+				e.mapView.unmatchdMapViewProc4Injector = true;
+			}
+			break;
+		default:
+			e.mapView.versionMapViewProc4Injector = true;
+		}
+
+		return e;
+	}
+
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
 		result |= mapViewProc1Injector(options);
 		result |= mapViewProc2Injector(options);
 		result |= mapViewProc3Injector(options);
+		result |= mapViewProc4Injector(options);
 
 		return result;
 	}
