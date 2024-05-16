@@ -189,10 +189,7 @@ mapJustifyProc2 ENDP
 
 mapJustifyProc2V137 PROC
 
-	movd    xmm6, esi
-	cvtdq2ps xmm6, xmm6
 	mov     rax, [rbp+7B0h-648h]
-
 
 	; エスケープ文字
 	cmp		mapJustifyProc1TmpFlag, 1h;
@@ -202,10 +199,19 @@ mapJustifyProc2V137 PROC
 	jmp		JMP_C;
 
 JMP_B:
+	; 3byte = 1文字かどうか
+	cmp		rax, 3; 
+	ja		JMP_A;
+	inc		rax;
+	mov		esi,1;
+
+JMP_A:
 	dec     eax;  -2している
 	dec     eax
 
 JMP_C:
+	movd    xmm6, esi
+	cvtdq2ps xmm6, xmm6
 	movd    xmm1, eax
 
 	push	mapJustifyProc2ReturnAddress;

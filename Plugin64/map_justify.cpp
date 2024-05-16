@@ -127,7 +127,7 @@ namespace MapJustify {
 		case v1_37_0_0:
 			// movd    xmm6, esi
 			BytePattern::temp_instance().find_pattern("66 0F 6E F6 0F 5B F6 48 8B 85 68 01 00 00");
-			if (BytePattern::temp_instance().has_size(1, u8"？")) {
+			if (BytePattern::temp_instance().has_size(1, u8"一文字表示の調整")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// cvtdq2ps xmm1, xmm1
