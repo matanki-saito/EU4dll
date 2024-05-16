@@ -74,8 +74,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			// 文字列順序入れ替え
 			//e |= Localization::Init(options);
 
-			// bitmapfont調整
-			//e |= CBitmapFont::Init(options);
+			// bitmapfont調整、スクロール量調整
+			e |= CBitmapFont::Init(options);
 
 			Validator::Validate(e, options);
 		}
