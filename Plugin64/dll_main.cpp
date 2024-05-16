@@ -42,7 +42,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= MapView::Init(options);
 
 			// マップ文字の表示（nudge）
-			//e |= MapNudgeView::Init(options);
+			e |= MapNudgeView::Init(options);
 
 			// マップ文字の調整
 			e |= MapAdjustment::Init(options);
