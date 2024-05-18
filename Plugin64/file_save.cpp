@@ -663,6 +663,19 @@ namespace FileSave {
 			}
 
 			break;
+		case v1_37_0_0:
+			// nop
+			BytePattern::temp_instance().find_pattern("90 48 8D 55 E7 48 8D 4D C7");
+			if (BytePattern::temp_instance().has_size(1, u8"ISSUE-231")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				Injector::MakeRangedNOP(address, address + 0xE);
+			}
+			else {
+				e.fileSave.unmatchdFileSaveProc8Injector = true;
+			}
+
+			break;
 		default:
 			e.fileSave.versionFileSaveProc8Injector = true;
 		}
@@ -681,7 +694,7 @@ namespace FileSave {
 		result |= fileSaveProc5Injector(options);
 		result |= fileSaveProc6Injector(options);
 		result |= fileSaveProc7Injector(options);
-		//result |= fileSaveProc8Injector(options);
+		result |= fileSaveProc8Injector(options);
 
 		return result;
 	}
