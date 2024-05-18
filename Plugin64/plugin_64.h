@@ -25,7 +25,8 @@ enum Eu4Version {
 	v1_33_3_0 = 1333,
 	v1_34_2_0 = 1342,
 	v1_35_1_0 = 1351,
-	v1_36_0_0 = 1360
+	v1_36_0_0 = 1360,
+	v1_37_0_0 = 1370
 };
 
 typedef UINT64 DllErrorCode;
@@ -209,6 +210,8 @@ struct DllError{
 			bool versionListFieldAdjustmentProc2Injector : 1;
 			bool unmatchdListFieldAdjustmentProc3Injector : 1;
 			bool versionListFieldAdjustmentProc3Injector : 1;
+			bool unmatchdListFieldAdjustmentProc4Injector : 1;
+			bool versionListFieldAdjustmentProc4Injector : 1;
 		};
 
 		std::string print() {
@@ -217,7 +220,9 @@ struct DllError{
 				+ PL(unmatchdListFieldAdjustmentProc2Injector)
 				+ PL(versionListFieldAdjustmentProc2Injector)
 				+ PL(unmatchdListFieldAdjustmentProc3Injector)
-				+ PL(versionListFieldAdjustmentProc3Injector);
+				+ PL(versionListFieldAdjustmentProc3Injector)
+				+ PL(unmatchdListFieldAdjustmentProc4Injector)
+				+ PL(versionListFieldAdjustmentProc4Injector);
 		}
 
 	} listFiledAdjustment;
@@ -272,7 +277,7 @@ struct DllError{
 		DllErrorCode code;
 		struct {
 			bool unmatchdMainTextProc1Injector : 1;
-			bool versionMainTextProc11njector : 1;
+			bool versionMainTextProc1Injector : 1;
 			bool unmatchdMainTextProc2Injector : 1;
 			bool versionMainTextProc2Injector : 1;
 			bool unmatchdMainTextProc3Injector : 1;
@@ -283,7 +288,7 @@ struct DllError{
 
 		std::string print() {
 			return PL(unmatchdMainTextProc1Injector)
-				+ PL(versionMainTextProc11njector)
+				+ PL(versionMainTextProc1Injector)
 				+ PL(unmatchdMainTextProc2Injector)
 				+ PL(versionMainTextProc2Injector)
 				+ PL(unmatchdMainTextProc3Injector)
@@ -390,6 +395,8 @@ struct DllError{
 			bool versionMapViewProc2Injector : 1;
 			bool unmatchdMapViewProc3Injector : 1;
 			bool versionMapViewProc3Injector : 1;
+			bool unmatchdMapViewProc4Injector : 1;
+			bool versionMapViewProc4Injector : 1;
 		};
 
 		std::string print() {
@@ -398,7 +405,9 @@ struct DllError{
 				+ PL(unmatchdMapViewProc2Injector)
 				+ PL(versionMapViewProc2Injector)
 				+ PL(unmatchdMapViewProc3Injector)
-				+ PL(versionMapViewProc3Injector);
+				+ PL(versionMapViewProc3Injector)
+				+ PL(unmatchdMapViewProc4Injector)
+				+ PL(versionMapViewProc4Injector);
 		}
 
 	} mapView;
@@ -446,6 +455,7 @@ struct DllError{
 				+ PL(versionTooltipAndButtonProc1Injector)
 				+ PL(unmatchdTooltipAndButtonProc2Injector)
 				+ PL(versionTooltipAndButtonProc2Injector)
+				+ PL(unmatchdTooltipAndButtonProc3Injector)
 				+ PL(versionTooltipAndButtonProc3Injector)
 				+ PL(unmatchdTooltipAndButtonProc4Injector)
 				+ PL(versionTooltipAndButtonProc4Injector)
