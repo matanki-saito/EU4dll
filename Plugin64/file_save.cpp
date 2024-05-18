@@ -19,7 +19,9 @@ namespace FileSave {
 		void fileSaveProc5V137();
 		void fileSaveProc6();
 		void fileSaveProc6V130();
+		void fileSaveProc6V137();
 		void fileSaveProc7();
+		void fileSaveProc7V137();
 		void fileSaveProc8();
 		uintptr_t fileSaveProc1ReturnAddress;
 		uintptr_t fileSaveProc2ReturnAddress;
@@ -511,6 +513,24 @@ namespace FileSave {
 				e.fileSave.unmatchdFileSaveProc6Injector = true;
 			}
 			break;
+		case v1_37_0_0:
+			// mov     [rsp+3E0h+var_370], 0C0h
+			BytePattern::temp_instance().find_pattern("C7 44 24 70 C0 00 00 00 48 8D 95 A0 00 00 00");
+			if (BytePattern::temp_instance().has_size(1, u8"スタート画面でのコンティニューのツールチップ")) {
+				// lea     rdx, [rbp+2E0h+var_240]
+				uintptr_t address = BytePattern::temp_instance().get_first().address(0x8);
+
+				fileSaveProc6CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+				// call xxxxx
+				fileSaveProc6ReturnAddress = address + 0x23;
+
+				Injector::MakeJMP(address, fileSaveProc6V137, true);
+			}
+			else {
+				e.fileSave.unmatchdFileSaveProc6Injector = true;
+			}
+			break;
 		default:
 			e.fileSave.versionFileSaveProc6Injector = true;
 		}
@@ -582,6 +602,23 @@ namespace FileSave {
 			Injector::MakeJMP(address, fileSaveProc7, true);
 
 			break;
+		case v1_37_0_0:
+			// lea     rcx, [rdi+0C8h]
+			BytePattern::temp_instance().find_pattern("48 8D 8F C8 00 00 00 48 8B 01 48 8D 54 24 20 FF 90 80");
+			if (BytePattern::temp_instance().has_size(1, u8"セーブダイアログでのインプットテキストエリア")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				fileSaveProc7CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+				//call    qword ptr [rax+80h]
+				fileSaveProc7ReturnAddress = address + 0xF;
+
+				Injector::MakeJMP(address, fileSaveProc7V137, true);
+			}
+			else {
+				e.fileSave.unmatchdFileSaveProc7Injector = true;
+			}
+			break;
 		default:
 			e.fileSave.versionFileSaveProc7Injector = true;
 		}
@@ -593,10 +630,27 @@ namespace FileSave {
 		DllError e = {};
 
 		switch (options.version) {
-		case v1_36_0_0:
-		case v1_35_1_0:
-		case v1_34_2_0:
+		case v1_29_2_0:
+		case v1_29_3_0:
+		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
+		case v1_30_3_0:
+		case v1_30_4_0:
+		case v1_30_5_0:
+		case v1_31_1_0:
+		case v1_31_2_0:
+		case v1_31_3_0:
+		case v1_31_4_0:
+		case v1_31_5_0:
+		case v1_31_6_0:
+		case v1_32_0_1:
+		case v1_33_0_0:
+			break;
 		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
 			// nop
 			BytePattern::temp_instance().find_pattern("90 48 8D 55 0F 48 8D 4D EF E8");
 			if (BytePattern::temp_instance().has_size(3, u8"ISSUE-231")) {
@@ -625,9 +679,9 @@ namespace FileSave {
 		result |= fileSaveProc3Injector(options);
 		result |= fileSaveProc4Injector(options);
 		result |= fileSaveProc5Injector(options);
-		//result |= fileSaveProc6Injector(options);
-		//result |= fileSaveProc7Injector(options);
-		// result |= fileSaveProc8Injector(options);
+		result |= fileSaveProc6Injector(options);
+		result |= fileSaveProc7Injector(options);
+		//result |= fileSaveProc8Injector(options);
 
 		return result;
 	}
