@@ -210,6 +210,8 @@ struct DllError{
 			bool versionListFieldAdjustmentProc2Injector : 1;
 			bool unmatchdListFieldAdjustmentProc3Injector : 1;
 			bool versionListFieldAdjustmentProc3Injector : 1;
+			bool unmatchdListFieldAdjustmentProc4Injector : 1;
+			bool versionListFieldAdjustmentProc4Injector : 1;
 		};
 
 		std::string print() {
@@ -218,7 +220,9 @@ struct DllError{
 				+ PL(unmatchdListFieldAdjustmentProc2Injector)
 				+ PL(versionListFieldAdjustmentProc2Injector)
 				+ PL(unmatchdListFieldAdjustmentProc3Injector)
-				+ PL(versionListFieldAdjustmentProc3Injector);
+				+ PL(versionListFieldAdjustmentProc3Injector)
+				+ PL(unmatchdListFieldAdjustmentProc4Injector)
+				+ PL(versionListFieldAdjustmentProc4Injector);
 		}
 
 	} listFiledAdjustment;
@@ -273,7 +277,7 @@ struct DllError{
 		DllErrorCode code;
 		struct {
 			bool unmatchdMainTextProc1Injector : 1;
-			bool versionMainTextProc11njector : 1;
+			bool versionMainTextProc1Injector : 1;
 			bool unmatchdMainTextProc2Injector : 1;
 			bool versionMainTextProc2Injector : 1;
 			bool unmatchdMainTextProc3Injector : 1;
@@ -284,7 +288,7 @@ struct DllError{
 
 		std::string print() {
 			return PL(unmatchdMainTextProc1Injector)
-				+ PL(versionMainTextProc11njector)
+				+ PL(versionMainTextProc1Injector)
 				+ PL(unmatchdMainTextProc2Injector)
 				+ PL(versionMainTextProc2Injector)
 				+ PL(unmatchdMainTextProc3Injector)

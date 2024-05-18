@@ -13,11 +13,14 @@ namespace ListFieldAdjustment {
 		void listFieldAdjustmentProc2V137();
 		void listFieldAdjustmentProc3();
 		void listFieldAdjustmentProc3V1315();
-		void listFieldAdjustmentProc3V137();
+		void listFieldAdjustmentProc3V137A();
+		void listFieldAdjustmentProc3V137B();
 		uintptr_t listFieldAdjustmentProc1ReturnAddress;
 		uintptr_t listFieldAdjustmentProc2ReturnAddress;
-		uintptr_t listFieldAdjustmentProc3ReturnAddress;
 		uintptr_t listFieldAdjustmentProc2V1315ReturnAddress;
+		uintptr_t listFieldAdjustmentProc3ReturnAddress;		
+		uintptr_t listFieldAdjustmentProc3ReturnAddressA;
+		uintptr_t listFieldAdjustmentProc3ReturnAddressB;
 	}
 
 	DllError listFieldAdjustmentProc1Injector(RunOptions options) {
@@ -185,7 +188,7 @@ namespace ListFieldAdjustment {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// jl      loc_xxxxx
-				listFieldAdjustmentProc2ReturnAddress = address + 0x12;
+				listFieldAdjustmentProc2ReturnAddress = address + 0x14;
 
 				Injector::MakeJMP(address, listFieldAdjustmentProc2V137, true);
 			}
@@ -259,9 +262,16 @@ namespace ListFieldAdjustment {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
 				// call sub_xxxxx
-				listFieldAdjustmentProc3ReturnAddress = address + 0x12;
+				listFieldAdjustmentProc3ReturnAddressA = address + 0x12;
 
-				Injector::MakeJMP(address, listFieldAdjustmentProc3V137, true);
+				Injector::MakeJMP(address, listFieldAdjustmentProc3V137A, true);
+
+				address = BytePattern::temp_instance().get_second().address();
+
+				// call sub_xxxxx
+				listFieldAdjustmentProc3ReturnAddressB = address + 0x12;
+
+				Injector::MakeJMP(address, listFieldAdjustmentProc3V137B, true);
 			}
 			else {
 				e.listFiledAdjustment.unmatchdListFieldAdjustmentProc3Injector = true;

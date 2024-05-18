@@ -74,7 +74,7 @@ namespace MainText {
 			}
 			break;
 		default:
-			e.mainText.versionMainTextProc11njector = true;
+			e.mainText.versionMainTextProc1Injector = true;
 		}
 
 		return e;

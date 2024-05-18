@@ -60,7 +60,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= ListFieldAdjustment::Init(options);
 
 			// ファイルセーブ
-			//e |= FileSave::Init(options);
+			e |= FileSave::Init(options);
 
 			// 日付
 			e |= Date::Init(options);

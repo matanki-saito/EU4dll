@@ -65,6 +65,26 @@ fileSaveProc2 ENDP
 
 ;-------------------------------------------;
 
+fileSaveProc2V137 PROC
+	mov		rcx, rax;
+	call	fileSaveProc2CallAddress;
+
+	cmp		qword ptr [rax+18h], 10h;
+	jb		JMP_A;
+	mov		rax, [rax];
+
+JMP_A:
+
+	mov     qword ptr [rbp+57h-80h], r12
+	mov     qword ptr [rbp+57h-70h], r12
+	mov     qword ptr [rbp+57h-68h], 0Fh
+
+	push	fileSaveProc2ReturnAddress;
+	ret;
+fileSaveProc2V137 ENDP
+
+;-------------------------------------------;
+
 fileSaveProc3 PROC
 	mov		rdx, OFFSET fileSaveProc3Message;
 	call	qword ptr [rax + 98h];
@@ -114,6 +134,21 @@ fileSaveProc3V1316 PROC
 	push	fileSaveProc3ReturnAddress;
 	ret;
 fileSaveProc3V1316 ENDP
+
+;-------------------------------------------;
+
+fileSaveProc3V137 PROC
+	lea     rcx, [rsi+240h]
+	call	fileSaveProc3CallAddress;
+	mov		rdx, rax;
+
+	xor     r8d, r8d
+	mov     rcx, rbp
+	call	fileSaveProc3CallAddress2;
+
+	push	fileSaveProc3ReturnAddress;
+	ret;
+fileSaveProc3V137 ENDP
 
 ;-------------------------------------------;
 
@@ -170,6 +205,25 @@ fileSaveProc5V1316 PROC
 	push	fileSaveProc5ReturnAddress;
 	ret;
 fileSaveProc5V1316 ENDP
+
+;-------------------------------------------;
+
+fileSaveProc5V137 PROC
+	mov     rcx, rdx
+	call	fileSaveProc5CallAddress;
+	mov		rdx, rax;
+	mov     r8, [rdx+10h]
+
+	cmp     qword ptr [rdx+18h], 10h
+	jb		JMP_A
+	mov     rdx, [rdx]
+
+JMP_A:
+	lea     rcx, [rsp+478h-398h]
+
+	push	fileSaveProc5ReturnAddress;
+	ret;
+fileSaveProc5V137 ENDP
 
 ;-------------------------------------------;
 

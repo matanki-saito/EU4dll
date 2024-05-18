@@ -111,7 +111,7 @@ JMP_F:
 	mov		r8d, NOT_DEF;
 JMP_E:
 	movss   xmm3, dword ptr [r14+968h]
-	mov     rdx, [r14+r8*8+120h]
+	mov     rdx, qword ptr [r14+r8*8+120h]
 
 	push	mainTextProc1ReturnAddress;
 	ret;

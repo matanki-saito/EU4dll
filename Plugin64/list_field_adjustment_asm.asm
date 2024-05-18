@@ -1,7 +1,9 @@
 EXTERN	listFieldAdjustmentProc1ReturnAddress	:	QWORD
 EXTERN	listFieldAdjustmentProc2ReturnAddress	:	QWORD
-EXTERN	listFieldAdjustmentProc3ReturnAddress	:	QWORD
 EXTERN	listFieldAdjustmentProc2V1315ReturnAddress : QWORD
+EXTERN	listFieldAdjustmentProc3ReturnAddress	:	QWORD
+EXTERN	listFieldAdjustmentProc3ReturnAddressA	:	QWORD
+EXTERN	listFieldAdjustmentProc3ReturnAddressB	:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -309,7 +311,6 @@ listFieldAdjustmentProc2V1315 ENDP
 listFieldAdjustmentProc2V137 PROC
 	cmp		listFieldAdjustmentProc1MultibyteFlag, 1h;
 	jnz		JMP_A;
-	mov		listFieldAdjustmentProc2MultibyteFlag, 1h;
 	add		ebx,2;
 
 JMP_A:
@@ -369,21 +370,42 @@ listFieldAdjustmentProc3V1315 ENDP
 
 ;-------------------------------------------;
 
-listFieldAdjustmentProc3V137 PROC
-	mov     rcx, [rax+rcx*8]
-	mov     r9d, [rcx+rdx*4]
+listFieldAdjustmentProc3V137A PROC
+	mov     rcx,  qword ptr [rax+rcx*8]
+	mov     r9d,  dword ptr [rcx+rdx*4]
 
-	cmp		listFieldAdjustmentProc2MultibyteFlag, 1h;
+	cmp		listFieldAdjustmentProc1MultibyteFlag, 1h;
 	jnz		JMP_A;
 	mov		r9d, ebx;
 	sub		r9d, 3;
 
 JMP_A:
 	xor     r8d, r8d
-	lea     rdx, [rbp+100h-168h]
+	lea     rdx,  qword ptr [rbp+100h-168h]
 	mov     rcx, rdi
 
-	push	listFieldAdjustmentProc3ReturnAddress;
+	push	listFieldAdjustmentProc3ReturnAddressA;
 	ret;
-listFieldAdjustmentProc3V137 ENDP
+listFieldAdjustmentProc3V137A ENDP
+
+;-------------------------------------------;
+
+listFieldAdjustmentProc3V137B PROC
+	mov     rcx,  qword ptr [rax+rcx*8]
+	mov     r9d,  dword ptr [rcx+rdx*4]
+
+	cmp		listFieldAdjustmentProc1MultibyteFlag, 1h;
+	jnz		JMP_A;
+	mov		r9d, ebx;
+	sub		r9d, 3;
+
+JMP_A:
+	xor     r8d, r8d
+	lea     rdx,  qword ptr [rbp+100h-168h]
+	mov     rcx, rdi
+
+	push	listFieldAdjustmentProc3ReturnAddressB;
+	ret;
+listFieldAdjustmentProc3V137B ENDP
+
 END
