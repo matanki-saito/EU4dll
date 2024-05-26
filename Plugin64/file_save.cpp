@@ -20,6 +20,7 @@ namespace FileSave {
 		void fileSaveProc6();
 		void fileSaveProc6V130();
 		void fileSaveProc6V137();
+		void fileSaveProc6V137E();
 		void fileSaveProc7();
 		void fileSaveProc7V137();
 		void fileSaveProc8();
@@ -528,7 +529,22 @@ namespace FileSave {
 				Injector::MakeJMP(address, fileSaveProc6V137, true);
 			}
 			else {
-				e.fileSave.unmatchdFileSaveProc6Injector = true;
+				// mov     [rsp+3E0h+var_390], 0C0h
+				BytePattern::temp_instance().find_pattern("C7 44 24 50 C0 00 00 00 48 8D 95 A0 00 00 00");
+				if (BytePattern::temp_instance().has_size(1, u8"スタート画面でのコンティニューのツールチップ")) {
+					// lea     rdx, [rbp+2E0h+var_240]
+					uintptr_t address = BytePattern::temp_instance().get_first().address(0x8);
+
+					fileSaveProc6CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+					// call xxxxx
+					fileSaveProc6ReturnAddress = address + 0x23;
+
+					Injector::MakeJMP(address, fileSaveProc6V137E, true);
+				}
+				else {
+					e.fileSave.unmatchdFileSaveProc6Injector = true;
+				}
 			}
 			break;
 		default:
