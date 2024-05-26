@@ -21,6 +21,7 @@ namespace FileSave {
 		void fileSaveProc6V130();
 		void fileSaveProc6V137();
 		void fileSaveProc6V137E();
+		void fileSaveProc6V137G();
 		void fileSaveProc7();
 		void fileSaveProc7V137();
 		void fileSaveProc8();
@@ -543,7 +544,25 @@ namespace FileSave {
 					Injector::MakeJMP(address, fileSaveProc6V137E, true);
 				}
 				else {
-					e.fileSave.unmatchdFileSaveProc6Injector = true;
+					// lea     rcx, [rsp+560h+pDesc]
+					// call    sub_140093320 ; std::string::append(char const* const, unsigned __int64)
+					// lea     rdx, [rsp+560h+pDesc] ; pDesc=-510h
+					// lea     rcx, [rbp+460h+var_4E0]
+					BytePattern::temp_instance().find_pattern("48 8D 4C 24 50 E8 1A E6 17 FF 48 8D 54 24 50 48 8D 4D 80");
+					if (BytePattern::temp_instance().has_size(1, u8"スタート画面でのコンティニューのツールチップ")) {
+						// lea     rdx, [rsp+560h+pDesc]
+						uintptr_t address = BytePattern::temp_instance().get_first().address(0xa);
+
+						fileSaveProc6CallAddress = (uintptr_t)utf8ToEscapedStr2;
+
+						// call    sub_140094F60; CUTF8String::operator=(CUTF8String &&)
+						fileSaveProc6ReturnAddress = address + 0x9;
+
+						Injector::MakeJMP(address, fileSaveProc6V137G, true);
+					}
+					else {
+						e.fileSave.unmatchdFileSaveProc6Injector = true;
+					}
 				}
 			}
 			break;
