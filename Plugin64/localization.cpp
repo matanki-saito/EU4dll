@@ -11,19 +11,24 @@ namespace Localization {
 		void localizationProc4V130();
 		void localizationProc5();
 		void localizationProc5V131();
+		void localizationProc5V137();
 		void localizationProc6();
 		void localizationProc7();
 		void localizationProc7V131();
 		void localizationProc8();
+		void localizationProc8V137();
 
 		uintptr_t localizationProc1CallAddress1;
 		uintptr_t localizationProc1CallAddress2;
+		uintptr_t localizationProc2CallAddress;
 		uintptr_t localizationProc2ReturnAddress;
 		uintptr_t localizationProc3ReturnAddress;
 		uintptr_t localizationProc4ReturnAddress;
+		uintptr_t localizationProc5CallAddress;
 		uintptr_t localizationProc5ReturnAddress;
 		uintptr_t localizationProc6ReturnAddress;
 		uintptr_t localizationProc7ReturnAddress;
+		uintptr_t localizationProc8CallAddress;
 		uintptr_t localizationProc8ReturnAddress;
 
 		uintptr_t localizationProc7CallAddress1;
@@ -36,18 +41,6 @@ namespace Localization {
 		uintptr_t year;
 		uintptr_t month;
 		uintptr_t day;
-	}
-
-	void* bipas(ParadoxTextObject *p, const char* src, const size_t size) {
-		//tmp.clear();
-		//tmp.append(src);
-		//tmp += *p;  // " xxxxの戦い"
-
-		auto x =std::string("Great fat cats sea");
-
-		p->setString(&x);
-
-		return p;
 	}
 
 	DllError localizationProc1Injector(RunOptions options){
@@ -90,14 +83,19 @@ namespace Localization {
 			}
 			break;
 		case v1_37_0_0:
-			localizationProc1CallAddress1 = (uintptr_t) bipas;
-
 			break;
 		default:
 			e.localization.versionLocalizationProc1Injector = true;
 		}
 
 		return e;
+	}
+
+	void* localizationProc2Call(ParadoxTextObject* p, const char* src, const size_t size) {
+		auto text = std::string(src).substr(1) + p->getString();
+		p->setString(&text);
+
+		return p;
 	}
 
 	DllError localizationProc2Injector(RunOptions options) {
@@ -177,6 +175,8 @@ namespace Localization {
 				// nop
 				localizationProc2ReturnAddress = address + 0x1A;
 
+				localizationProc2CallAddress = (uintptr_t)localizationProc2Call;
+
 				Injector::MakeJMP(address, localizationProc2V137, true);
 
 			}
@@ -214,34 +214,24 @@ namespace Localization {
 				e.localization.unmatchdLocalizationProc3Injector = true;
 			}
 			break;
-		case v1_36_0_0:
-		case v1_35_1_0:
-		case v1_34_2_0:
-		case v1_33_3_0:
-		case v1_33_0_0:
-		case v1_32_0_1:
-		case v1_31_6_0:
-		case v1_31_5_0:
-		case v1_31_4_0:
-		case v1_31_3_0:
-		case v1_31_2_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D3 58 DC FF";
-			goto JMP;
-		case v1_30_5_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D3 9C DD FF";
-			goto JMP;
-		case v1_30_4_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F3 A1 DD FF";
-			goto JMP;
-		case v1_30_3_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 53 A1 DD FF";
+		case v1_30_1_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 A3 A1 DD FF";
 			goto JMP;
 		case v1_30_2_0:
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 43 A1 DD FF";
 			goto JMP;
-		case v1_30_1_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 A3 A1 DD FF";
-			JMP:
+		case v1_30_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 53 A1 DD FF";
+			goto JMP;
+		case v1_30_4_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F3 A1 DD FF";
+			goto JMP;
+		case v1_30_5_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D3 9C DD FF";
+			goto JMP;
+		case v1_31_2_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D3 58 DC FF";
+		JMP:
 			// or      r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern(pattern);
 			if (BytePattern::temp_instance().has_size(1, u8"MDEATH_HEIR_SUCCEEDS heir nameを逆転させる")) {
@@ -255,6 +245,19 @@ namespace Localization {
 			else {
 				e.localization.unmatchdLocalizationProc3Injector = true;
 			}
+			break;
+		case v1_31_3_0:
+		case v1_31_4_0:
+		case v1_31_5_0:
+		case v1_31_6_0:
+		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
+		case v1_37_0_0:
+			// 処理は不要になった
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"MDEATH_HEIR_SUCCEEDS heir nameを逆転させる [NG]");
@@ -288,26 +291,29 @@ namespace Localization {
 				e.localization.unmatchdLocalizationProc4Injector = true;
 			}
 			break;
-		case v1_36_0_0:
-			offset = 0x3C;
-			pattern = "48 8B D8 48 8B 8E D8 18 00 00 48 89 8D 90 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D 90 00 00 00 E8 ? ? ? ? 4C 8B";
+		case v1_30_1_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 46 A1 DD FF";
 			goto JMP;
-		case v1_35_1_0:
-			offset = 0x3C;
-			pattern = "48 8B D8 48 8B 8E A8 18 00 00 48 89 8D A0 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D A0 00 00 00 E8 ? ? ? ? 4C 8B C8";
+		case v1_30_2_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 E6 A0 DD FF";
 			goto JMP;
-		case v1_34_2_0:
-			offset = 0x3C;
-			pattern = "48 8B D8 48 8B 8E 88 18 00 00 48 89 8D A0 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D A0 00 00 00 E8 ? ? ? ? 4C 8B C8";
+		case v1_30_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F6 A0 DD FF";
 			goto JMP;
-		case v1_33_3_0:
-		case v1_33_0_0:
-		case v1_32_0_1:
-			offset = 0x3C;
-			pattern = "48 8B D8 48 8B 8E 70 19 00 00 48 89 8D A0 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D A0 00 00 00 E8 ? ? ? ? 4C 8B C8 48 89 7C 24 38 48 89 5C 24 28";
+		case v1_30_4_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 ? A1 DD FF";
 			goto JMP;
-		case v1_31_6_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D8 5D DC FF";
+		case v1_30_5_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 95 9E DD FF";
+			goto JMP;
+		case v1_31_2_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F8 5B DC FF";
+			goto JMP;
+		case v1_31_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 08 63 DC FF";
+			goto JMP;
+		case v1_31_4_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 88 7B DC FF";
 			goto JMP;
 		case v1_31_5_0:
 			// 1.31.5.1
@@ -315,37 +321,26 @@ namespace Localization {
 			// 1.31.5.2
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 88 5E DC FF";
 			goto JMP;
-
-		case v1_31_4_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 88 7B DC FF";
+		case v1_31_6_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 D8 5D DC FF";
 			goto JMP;
-
-		case v1_31_3_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 08 63 DC FF";
+		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
+			offset = 0x3C;
+			pattern = "48 8B D8 48 8B 8E 70 19 00 00 48 89 8D A0 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D A0 00 00 00 E8 ? ? ? ? 4C 8B C8 48 89 7C 24 38 48 89 5C 24 28";
 			goto JMP;
-
-		case v1_31_2_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F8 5B DC FF";
+		case v1_34_2_0:
+			offset = 0x3C;
+			pattern = "48 8B D8 48 8B 8E 88 18 00 00 48 89 8D A0 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D A0 00 00 00 E8 ? ? ? ? 4C 8B C8";
 			goto JMP;
-
-		case v1_30_5_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 95 9E DD FF";
+		case v1_35_1_0:
+			offset = 0x3C;
+			pattern = "48 8B D8 48 8B 8E A8 18 00 00 48 89 8D A0 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D A0 00 00 00 E8 ? ? ? ? 4C 8B C8";
 			goto JMP;
-
-		case v1_30_4_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 ? A1 DD FF";
-			goto JMP;
-
-		case v1_30_3_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 F6 A0 DD FF";
-			goto JMP;
-
-		case v1_30_2_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 E6 A0 DD FF";
-			goto JMP;
-
-		case v1_30_1_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 49 8B CF E8 46 A1 DD FF";
+		case v1_36_0_0:
+			offset = 0x3C;
+			pattern = "48 8B D8 48 8B 8E D8 18 00 00 48 89 8D 90 00 00 00 45 33 C9 45 33 C0 33 D2 48 8D 8D 90 00 00 00 E8 ? ? ? ? 4C 8B";
 
 			JMP:
 			// or      r9, 0FFFFFFFFFFFFFFFFh
@@ -365,6 +360,9 @@ namespace Localization {
 				e.localization.unmatchdLocalizationProc4Injector = true;
 			}
 			break;
+		case v1_37_0_0:
+			// 処理は不要になった
+			break;
 		default:
 			BytePattern::LoggingInfo(u8"MDEATH_REGENCY_RULE heir nameを逆転させる [NG]");
 			e.localization.versionLocalizationProc4Injector = true;
@@ -373,21 +371,71 @@ namespace Localization {
 		return e;
 	}
 
+	void* localizationProc5Call(ParadoxTextObject* p1, ParadoxTextObject *p2) {
+		// p1 = "Reimu", p2 = " ¿Hakurei"
+	
+		auto first = p1->getString();
+		auto second = p2->getString();
+
+		if (second.length() >= 3 && second.at(1) == (char)0xBF) { // 0xBF = 逆疑問符
+			auto text = second.substr(2) + first; // "HakureiReimu"
+			p1->setString(&text);
+		}
+		else {
+			// default
+			auto text = first + second; // "Reimu Hakurei"
+			p1->setString(&text);
+		}
+
+		return p1;
+	}
+
 	DllError localizationProc5Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
 		int offset = 0;
 
 		switch (options.version) {
-		case v1_36_0_0:
-		case v1_35_1_0:
-		case v1_34_2_0:
-		case v1_33_3_0:
-		case v1_33_0_0:
-		case v1_32_0_1:
-		case v1_31_6_0:
-			pattern = "48 8B 4F 68 48 8B 01 FF 50 08 84 C0 74 5F 48 8B 07";
-			offset = 0x40;
+		case v1_29_4_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 41";
+			goto JMP;
+		case v1_30_1_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 1D";
+			goto JMP;
+		case v1_30_2_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 B7 1D 91 FF";
+			goto JMP;
+		case v1_30_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 C7 1D 91 FF";
+			goto JMP;
+		case v1_30_4_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 ? 1D 91 FF";
+			goto JMP;
+		case v1_30_5_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 ? FF 90 FF";
+		JMP:
+			// or      r9, 0FFFFFFFFFFFFFFFFh
+			BytePattern::temp_instance().find_pattern(pattern);
+			if (BytePattern::temp_instance().has_size(1, u8"nameを逆転させる")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// nop
+				localizationProc5ReturnAddress = address + 0x12;
+
+				Injector::MakeJMP(address, localizationProc5, true);
+			}
+			else {
+				e.localization.unmatchdLocalizationProc5Injector = true;
+			}
+			break;
+		case v1_31_2_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 83 BA 76 FF";
+			goto JMP2;
+		case v1_31_3_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 23 C1 76 FF";
+			goto JMP2;
+		case v1_31_4_0:
+			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 33 C0 76 FF";
 			goto JMP2;
 		case v1_31_5_0:
 			// 1.31.5.0
@@ -397,14 +445,15 @@ namespace Localization {
 			// 1.31.5.2
 			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 73 81 76 FF";
 			goto JMP2;
-		case v1_31_4_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 33 C0 76 FF";
-			goto JMP2;
-		case v1_31_3_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 23 C1 76 FF";
-			goto JMP2;
-		case v1_31_2_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CB E8 83 BA 76 FF";
+		case v1_31_6_0:
+		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
+			pattern = "48 8B 4F 68 48 8B 01 FF 50 08 84 C0 74 5F 48 8B 07";
+			offset = 0x40;
 		JMP2:
 			// or      r9, 0FFFFFFFFFFFFFFFFh
 			BytePattern::temp_instance().find_pattern(pattern);
@@ -420,34 +469,19 @@ namespace Localization {
 				e.localization.unmatchdLocalizationProc5Injector = true;
 			}
 			break;
-
-		case v1_30_5_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 ? FF 90 FF";
-			goto JMP;
-		case v1_30_4_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 ? 1D 91 FF";
-			goto JMP;
-		case v1_30_3_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 C7 1D 91 FF";
-			goto JMP;
-		case v1_30_2_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 B7 1D 91 FF";
-			goto JMP;
-		case v1_30_1_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 1D";
-			goto JMP;
-		case v1_29_4_0:
-			pattern = "49 83 C9 FF 45 33 C0 48 8B D0 48 8B CF E8 27 41";			
-		JMP:
-			// or      r9, 0FFFFFFFFFFFFFFFFh
-			BytePattern::temp_instance().find_pattern(pattern);
+		case v1_37_0_0:
+			// mov     rdx, [rdi+68h]
+			BytePattern::temp_instance().find_pattern("48 8B 57 68 48 83 C2 08 48 89 75 B8 48 C7 45 D0 0F 00 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"nameを逆転させる")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				// lea     rdx, [rbp+Src]
+				uintptr_t address = BytePattern::temp_instance().get_first().address(0x40);
 
-				// nop
-				localizationProc5ReturnAddress = address + 0x12;
+				// mov     [rbp+var_50], 1
+				localizationProc5ReturnAddress = address + 0x1A;
 
-				Injector::MakeJMP(address, localizationProc5, true);
+				localizationProc5CallAddress = (uintptr_t)localizationProc5Call;
+
+				Injector::MakeJMP(address, localizationProc5V137, true);
 			}
 			else {
 				e.localization.unmatchdLocalizationProc5Injector = true;
@@ -467,17 +501,28 @@ namespace Localization {
 		int offset = 0;
 
 		switch (options.version) {
-		case v1_36_0_0:
-		case v1_35_1_0:
-		case v1_34_2_0:
-		case v1_33_3_0:
-		case v1_33_0_0:
-			/* 処理は不要になった。tmm_l_english.ymlのLONG_EU3_DATE_STRINGで代用される*/
-			break;
-		case v1_32_0_1:
-		case v1_31_6_0:
-			pattern = "4C 8D 05 ? ? ? ? 48 8D 55 DF 48 8D 4D BF E8 ? ? ? ? 90";
-			offset = 0x26;
+		case v1_29_4_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 4F FA B4 FF";
+			goto JMP;
+		case v1_30_1_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 0F 7B AD";
+			goto JMP;
+		case v1_30_2_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 AF 7B AD";
+			goto JMP;
+		case v1_30_3_0:
+		case v1_30_4_0:
+		case v1_30_5_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 ? ? AD";
+			goto JMP;
+		case v1_31_2_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 DF 9C A6";
+			goto JMP;
+		case v1_31_3_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 CF AD A6";
+			goto JMP;
+		case v1_31_4_0:
+			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 3F AD A6";
 			goto JMP;
 		case v1_31_5_0:
 			// 1.31.5.1
@@ -485,29 +530,10 @@ namespace Localization {
 			// 1.31.5.2
 			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 8F 74 A6";
 			goto JMP;
-		case v1_31_4_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 3F AD A6";
-			goto JMP;
-		case v1_31_3_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 CF AD A6";
-			goto JMP;
-		case v1_31_2_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 DF 9C A6";
-			goto JMP;
-		case v1_30_5_0:
-		case v1_30_4_0:
-		case v1_30_3_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 ? ? AD";
-			goto JMP;
-		case v1_30_2_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 AF 7B AD";
-			goto JMP;
-		case v1_30_1_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 0F 7B AD";
-			goto JMP;
-		case v1_29_4_0:
-			pattern = "90 49 83 C9 FF 45 33 C0 48 8B D0 48 8B CE E8 4F FA B4 FF";
-			goto JMP;
+		case v1_31_6_0:
+		case v1_32_0_1:
+			pattern = "4C 8D 05 ? ? ? ? 48 8D 55 DF 48 8D 4D BF E8 ? ? ? ? 90";
+			offset = 0x26;
 		JMP:
 			// nop
 			BytePattern::temp_instance().find_pattern(pattern);
@@ -523,6 +549,15 @@ namespace Localization {
 				e.localization.unmatchdLocalizationProc6Injector = true;
 			}
 			break;
+		case v1_33_0_0:
+		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
+			break;
+		case v1_37_0_0:
+			// TODO
+			break;
 		default:
 			BytePattern::LoggingInfo(u8"M, Y → Y年M [NG]");
 			e.localization.versionLocalizationProc6Injector = true;
@@ -536,34 +571,21 @@ namespace Localization {
 		std::string pattern;
 
 		switch (options.version) {
-		case v1_36_0_0:
-		case v1_35_1_0:
-		case v1_34_2_0:
-		case v1_33_3_0:
-		case v1_33_0_0:
-		case v1_32_0_1:
-		case v1_31_6_0:
-		case v1_31_5_0:
-		case v1_31_4_0:
-		case v1_31_3_0:
-		case v1_31_2_0:
-			// 処理は不要になった
-			break;
-		case v1_30_5_0:
-			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 05 61 B1 FF";
-			goto JMP;
-		case v1_30_4_0:
-		case v1_30_3_0:
-			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 ? 6B";
-			goto JMP;
-		case v1_30_2_0:
-			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 45 6B";
+		case v1_29_4_0:
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 9D";
 			goto JMP;
 		case v1_30_1_0:
 			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 6A";
 			goto JMP;
-		case v1_29_4_0:
-			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 65 9D";
+		case v1_30_2_0:
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 45 6B";
+			goto JMP;
+		case v1_30_3_0:
+		case v1_30_4_0:
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 ? 6B";
+			goto JMP;
+		case v1_30_5_0:
+			pattern = "90 4C 8D 44 24 48 48 8D 54 24 28 48 8D 4D E8 E8 05 61 B1 FF";
 		JMP:
 			// nop
 			BytePattern::temp_instance().find_pattern(pattern);
@@ -582,6 +604,21 @@ namespace Localization {
 				e.localization.unmatchdLocalizationProc7Injector = true;
 			}
 			break;
+		case v1_31_2_0:
+		case v1_31_3_0:
+		case v1_31_4_0:
+		case v1_31_5_0:
+		case v1_31_6_0:
+		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
+		case v1_37_0_0:
+			/* 処理は不要になった。tmm_l_english.ymlのLONG_EU3_DATE_STRINGで代用される*/
+			break;
+
 		default:
 			BytePattern::LoggingInfo(u8"D M, Y → Y年MD日 [NG]");
 			e.localization.versionLocalizationProc7Injector = true;
@@ -590,37 +627,49 @@ namespace Localization {
 		return e;
 	}
 
+	void* localizationProc8Call(ParadoxTextObject* p1, ParadoxTextObject* p2, ParadoxTextObject* p3) {
+		// p2= '4月 ' p3 = '1447'
+
+		auto text = p3->getString() + std::string("\x0F") + p2->getString().substr(0, p2->len-1); // 1447 + 年 + 4月
+
+		p1->len = 0;
+		p1->len2 = 0;
+		p1->setString(&text);
+
+		return p1;
+	}
+
 	DllError localizationProc8Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
 
 		switch (options.version) {
-		case v1_36_0_0:
-		case v1_35_1_0:
-		case v1_34_2_0:
-		case v1_33_3_0:
-		case v1_33_0_0:
-		case v1_32_0_1:
-		case v1_31_6_0:
-		case v1_31_5_0:
-		case v1_31_4_0:
-		case v1_31_3_0:
-		case v1_31_2_0:
-		case v1_30_5_0:
-			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF";
-			goto JMP;
-		case v1_30_4_0:
-		case v1_30_3_0:
-			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 ? E2";
-			goto JMP;
-		case v1_30_2_0:
-			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 61 E2";
+		case v1_29_4_0:
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 31 02";
 			goto JMP;
 		case v1_30_1_0:
 			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 81 E1";
 			goto JMP;
-		case v1_29_4_0:
-			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 31 02";
+		case v1_30_2_0:
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 61 E2";
+			goto JMP;
+		case v1_30_3_0:
+		case v1_30_4_0:
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF E8 ? E2";
+			goto JMP;
+		case v1_30_5_0:
+		case v1_31_2_0:
+		case v1_31_3_0:
+		case v1_31_4_0:
+		case v1_31_5_0:
+		case v1_31_6_0:
+		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
+			pattern = "90 4C 8D 45 A7 48 8D 55 0F 48 8D 4D EF";
 			JMP:
 			// nop 
 			BytePattern::temp_instance().find_pattern(pattern);
@@ -636,6 +685,23 @@ namespace Localization {
 				localizationProc8ReturnAddress = address + 0x38;
 
 				Injector::MakeJMP(address, localizationProc8, true);
+			}
+			else {
+				e.localization.unmatchdLocalizationProc8Injector = true;
+			}
+			break;
+		case v1_37_0_0:
+			// nop
+			BytePattern::temp_instance().find_pattern("90 4C 8D 44 24 40 48 8B D0 48 8B CF E8 ? ? ? ? 90");
+			if (BytePattern::temp_instance().has_size(2, u8"M Y → Y年M")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// nop
+				localizationProc8ReturnAddress = address + 0x11;
+
+				localizationProc8CallAddress = (uintptr_t)localizationProc8Call;
+
+				Injector::MakeJMP(address, localizationProc8V137, true);
 			}
 			else {
 				e.localization.unmatchdLocalizationProc8Injector = true;
@@ -685,6 +751,7 @@ namespace Localization {
 			break;
 		case v1_36_0_0:
 		case v1_37_0_0:
+			// 副作用が大きかったのでやめた
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"Replace space [NG]");
@@ -728,30 +795,32 @@ namespace Localization {
 		result |= localizationProc2Injector(options);
 
 		// MDEATH_HEIR_SUCCEEDS heir nameを逆転させる
-		//result |= localizationProc3Injector(options);
+		// 確認方法）後継者が成人している状態で君主のツールチップを確認する
+		result |= localizationProc3Injector(options);
 
 		// MDEATH_REGENCY_RULE heir nameを逆転させる
+		// 確認方法）後継者が成人していない状態で君主のツールチップを確認する
 		// ※localizationProc1CallAddress2のhookもこれで実行している
-		//result |= localizationProc4Injector(options);
+		result |= localizationProc4Injector(options);
 
 		// nameを逆転させる
 		// 確認方法）sub modを入れた状態で日本の大名を選択する。大名の名前が逆転しているかを確認する
-		//result |= localizationProc5Injector(options);
+		result |= localizationProc5Injector(options);
 
 		// 年号の表示がM, YからY年M
 		// 確認方法）オスマンで画面上部の停戦アラートのポップアップの年号を確認する
-		//result |= localizationProc6Injector(options);
+		result |= localizationProc6Injector(options);
 
 		// 年号の表示がD M, YからY年MD日になる
 		// 確認方法）スタート画面のセーブデータの日付を見る
-		//result |= localizationProc7Injector(options);
+		result |= localizationProc7Injector(options);
 
 		// 年号の表示がM YからY年Mになる
 		// 確認方法）外交官のポップアップを表示し、年号を確認する
-		//result |= localizationProc8Injector(options);
+		result |= localizationProc8Injector(options);
 
 		// スペースを変更
-		//result |= localizationProc9Injector(options);
+		result |= localizationProc9Injector(options);
 
 		return result;
 	}
