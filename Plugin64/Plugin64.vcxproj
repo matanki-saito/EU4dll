@@ -168,8 +168,8 @@ copy "$(TargetPath)" "C:\Program Files\Epic Games\EuropaUniversalis4\plugins"</C
       <EnableUAC>false</EnableUAC>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Europa Universalis IV\plugins"
+copy "$(TargetPath)" "C:\Program Files\Epic Games\EuropaUniversalis4\plugins"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

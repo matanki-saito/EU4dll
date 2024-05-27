@@ -4,6 +4,7 @@
 namespace Localization {
 	extern "C" {
 		void localizationProc2();
+		void localizationProc2V137();
 		void localizationProc3();
 		void localizationProc3V130();
 		void localizationProc4();
@@ -37,16 +38,28 @@ namespace Localization {
 		uintptr_t day;
 	}
 
+	void* bipas(ParadoxTextObject *p, const char* src, const size_t size) {
+		//tmp.clear();
+		//tmp.append(src);
+		//tmp += *p;  // " xxxxの戦い"
+
+		auto x =std::string("Great fat cats sea");
+
+		p->setString(&x);
+
+		return p;
+	}
+
 	DllError localizationProc1Injector(RunOptions options){
 		DllError e = {};
 
 		switch (options.version) {
-		case v1_30_5_0:
 		case v1_29_4_0:
 		case v1_30_1_0:
 		case v1_30_2_0:
 		case v1_30_3_0:
 		case v1_30_4_0:
+		case v1_30_5_0:
 		case v1_31_2_0:
 		case v1_31_3_0:
 		case v1_31_4_0:
@@ -75,6 +88,10 @@ namespace Localization {
 			else {
 				e.localization.unmatchdLocalizationProc1Injector = true;
 			}
+			break;
+		case v1_37_0_0:
+			localizationProc1CallAddress1 = (uintptr_t) bipas;
+
 			break;
 		default:
 			e.localization.versionLocalizationProc1Injector = true;
@@ -145,6 +162,23 @@ namespace Localization {
 				localizationProc2ReturnAddress = address + 0x13;
 
 				Injector::MakeJMP(address, localizationProc2, true);
+			}
+			else {
+				e.localization.unmatchdLocalizationProc2Injector = true;
+			}
+			break;
+		case v1_37_0_0:
+			// movdqu  xmmword ptr [rbp+Size], xmm0
+			BytePattern::temp_instance().find_pattern("F3 0F 7F 45 E8 ? ? ? ? 49 C7 C0 FF FF FF FF 0F 1F 44 00 00");
+			if (BytePattern::temp_instance().has_size(1, u8"Battle of areaを逆転させる")) {
+				// lea     rdx, [rbp+Src]
+				uintptr_t address = BytePattern::temp_instance().get_first().address(0x48);
+
+				// nop
+				localizationProc2ReturnAddress = address + 0x1A;
+
+				Injector::MakeJMP(address, localizationProc2V137, true);
+
 			}
 			else {
 				e.localization.unmatchdLocalizationProc2Injector = true;
@@ -619,16 +653,25 @@ namespace Localization {
 		DllError e = {};
 
 		switch (options.version) {
-		case v1_36_0_0:
-		case v1_35_1_0:
-		case v1_34_2_0:
-		case v1_33_3_0:
-		case v1_33_0_0:
-		case v1_32_0_1:
-		case v1_31_6_0:
-		case v1_31_5_0:
-		case v1_31_4_0:
+		case v1_29_2_0:
+		case v1_29_3_0:
+		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
+		case v1_30_3_0:
+		case v1_30_4_0:
+		case v1_30_5_0:
+		case v1_31_1_0:
+		case v1_31_2_0:
 		case v1_31_3_0:
+		case v1_31_4_0:
+		case v1_31_5_0:
+		case v1_31_6_0:
+		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
 			BytePattern::temp_instance().find_pattern("20 2D 20 00 4D 4F 4E 54 48 53 00 00");
 			if (BytePattern::temp_instance().has_size(1, u8"Replace space")) {
 				intptr_t address = BytePattern::temp_instance().get_first().address();
@@ -639,6 +682,9 @@ namespace Localization {
 			else {
 				e.localization.unmatchdLocalizationProc9Injector = true;
 			}
+			break;
+		case v1_36_0_0:
+		case v1_37_0_0:
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"Replace space [NG]");
@@ -686,23 +732,23 @@ namespace Localization {
 
 		// MDEATH_REGENCY_RULE heir nameを逆転させる
 		// ※localizationProc1CallAddress2のhookもこれで実行している
-		result |= localizationProc4Injector(options);
+		//result |= localizationProc4Injector(options);
 
 		// nameを逆転させる
 		// 確認方法）sub modを入れた状態で日本の大名を選択する。大名の名前が逆転しているかを確認する
-		result |= localizationProc5Injector(options);
+		//result |= localizationProc5Injector(options);
 
 		// 年号の表示がM, YからY年M
 		// 確認方法）オスマンで画面上部の停戦アラートのポップアップの年号を確認する
-		result |= localizationProc6Injector(options);
+		//result |= localizationProc6Injector(options);
 
 		// 年号の表示がD M, YからY年MD日になる
 		// 確認方法）スタート画面のセーブデータの日付を見る
-		result |= localizationProc7Injector(options);
+		//result |= localizationProc7Injector(options);
 
 		// 年号の表示がM YからY年Mになる
 		// 確認方法）外交官のポップアップを表示し、年号を確認する
-		result |= localizationProc8Injector(options);
+		//result |= localizationProc8Injector(options);
 
 		// スペースを変更
 		//result |= localizationProc9Injector(options);

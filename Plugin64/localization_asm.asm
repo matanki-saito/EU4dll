@@ -54,6 +54,21 @@ localizationProc2 ENDP
 
 ;-----------------------------------;
 
+localizationProc2V137 PROC
+	
+	lea     rdx, [rbp-28h]
+	cmp		QWORD PTR [rbp-10h], 10h
+	cmovnb  rdx, [rbp-28h]  ; void *
+	mov     r8, [rbp-18h]  ; Size
+	mov     rcx, rbx
+	call	localizationProc1CallAddress1;
+
+	push	localizationProc2ReturnAddress;
+	ret;
+localizationProc2V137 ENDP
+
+;-----------------------------------;
+
 localizationProc3 PROC
 	nop;
 
