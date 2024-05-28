@@ -13,6 +13,7 @@ namespace Localization {
 		void localizationProc5V131();
 		void localizationProc5V137();
 		void localizationProc6();
+		void localizationProc6V137();
 		void localizationProc7();
 		void localizationProc7V131();
 		void localizationProc8();
@@ -27,6 +28,7 @@ namespace Localization {
 		uintptr_t localizationProc5CallAddress;
 		uintptr_t localizationProc5ReturnAddress;
 		uintptr_t localizationProc6ReturnAddress;
+		uintptr_t localizationProc6CallAddress;
 		uintptr_t localizationProc7ReturnAddress;
 		uintptr_t localizationProc8CallAddress;
 		uintptr_t localizationProc8ReturnAddress;
@@ -495,6 +497,18 @@ namespace Localization {
 		return e;
 	}
 
+	void* localizationProc6Call(ParadoxTextObject* p1, ParadoxTextObject* p2, ParadoxTextObject* p3) {
+		// p2= '4月 ,' p3 = '1447'
+
+		auto text = p3->getString() + std::string("\x0F") + p2->getString().substr(0,p2->len-2); // 1447 + 年 + 4月
+
+		p1->len = 0;
+		p1->len2 = 0;
+		p1->setString(&text);
+
+		return p1;
+	}
+
 	DllError localizationProc6Injector(RunOptions options) {
 		DllError e = {};
 		std::string pattern;
@@ -556,7 +570,23 @@ namespace Localization {
 		case v1_36_0_0:
 			break;
 		case v1_37_0_0:
-			// TODO
+			// lea     r8, [rbp+57h+var_78]
+			BytePattern::temp_instance().find_pattern("4C 8D 45 DF 48 8D 55 BF 48 8D 4D 1F");
+			if (BytePattern::temp_instance().has_size(3, u8"M, Y → Y年M")) {
+
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// nop
+				localizationProc6ReturnAddress = address + 0x11;
+
+				localizationProc6CallAddress = (uintptr_t)localizationProc6Call;
+
+				Injector::MakeJMP(address, localizationProc6V137, true);
+			}
+			else {
+				e.localization.unmatchdLocalizationProc6Injector = true;
+			}
+			break;
 			break;
 		default:
 			BytePattern::LoggingInfo(u8"M, Y → Y年M [NG]");

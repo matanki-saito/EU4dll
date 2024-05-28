@@ -6,6 +6,7 @@ EXTERN localizationProc3ReturnAddress: QWORD
 EXTERN localizationProc4ReturnAddress: QWORD
 EXTERN localizationProc5CallAddress: QWORD
 EXTERN localizationProc5ReturnAddress: QWORD
+EXTERN localizationProc6CallAddress: QWORD
 EXTERN localizationProc6ReturnAddress: QWORD
 EXTERN localizationProc7ReturnAddress: QWORD
 EXTERN localizationProc7CallAddress1: QWORD
@@ -284,6 +285,18 @@ localizationProc6 PROC
 	push	localizationProc6ReturnAddress;
 	ret;
 localizationProc6 ENDP
+
+;-----------------------------------;
+
+localizationProc6V137 PROC
+	lea     r8, [rbp+57h-78h]
+	lea     rdx, [rbp+57h-98h]
+	lea     rcx, [rbp+57h-38h]
+	call	localizationProc6CallAddress
+
+	push	localizationProc6ReturnAddress;
+	ret;
+localizationProc6V137 ENDP
 
 ;-----------------------------------;
 
