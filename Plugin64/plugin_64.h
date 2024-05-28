@@ -602,18 +602,25 @@ typedef struct _ParadoxTextObject {
 
 	void setString(std::string *src) {
 
+		if (len2 >= 0x10) {
+			auto hHeap = GetProcessHeap();
+			HeapFree(hHeap, NULL, t.p);
+		}
+
+		len2 = src->capacity();
 		len = src->length();
 
 		if (len >= 0x10) {
-			len2 = 0x1F;
-			auto p = (char*)calloc(len+3, sizeof(char));
+ 			len2 = 0xFF;
+			auto hHeap = GetProcessHeap();
+			auto p = (char*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY,  0xFF);
 			if (p != NULL) {
-				memcpy(p, src->c_str(), len);
+				memcpy(p, src->c_str(), len+1);
 				t.p = p;
 			}
 		}
 		else {
-			memcpy(t.text, src->c_str(), len);
+			memcpy(t.text, src->c_str(), len+1);
 		}
 	}
 

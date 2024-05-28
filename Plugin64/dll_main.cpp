@@ -72,7 +72,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			//e |= Input::Init(options);
 
 			// 文字列順序入れ替え
-			//e |= Localization::Init(options);
+			e |= Localization::Init(options);
 
 			// bitmapfont調整、スクロール量調整
 			e |= CBitmapFont::Init(options);
