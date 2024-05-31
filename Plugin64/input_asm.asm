@@ -193,6 +193,98 @@ inputProc1V130 ENDP
 
 ;-------------------------------------------;
 
+inputProc1V137 PROC
+	; eaxにはIMEからutf8の文字が渡されてくる
+	mov		eax, dword ptr [rbp + 60h - 0A4h];
+	; ahが0であればa-zなどの1byteで収まる文字なので、変換処理は必要ない
+	cmp		ah, 0;
+	jnz		JMP_A;
+	xor		bl, bl;
+
+	; JMP_X,Yについての説明。MakeJMPでコードが破壊されてしまうため、処理を丸ごとコピーしてきている。
+	; ここで80hと比較しているのはUTF8でU+0000 … U+007Fかどうか確認するため
+	; https://ja.wikipedia.org/wiki/UTF-8
+	cmp		al, 80h;
+	jnb		JMP_X;
+	mov		ebx, eax;
+	jmp     JMP_Y;
+
+JMP_X:
+	cmp		al, 0E0h;
+	jnb		JMP_Y;
+	movzx	ebx, al
+	movzx	ebx, byte ptr [rbp + 60h - 0A4h + 1];
+	and		al, 3Fh;
+	shl		bl, 6;
+	or		bl, al;
+
+JMP_Y:
+	push	inputProc1ReturnAddress1;
+	ret;
+
+JMP_A:
+	lea		rcx,[rbp + 60h - 0A4h];
+	call	inputProc1CallAddress;
+	; 変換したエスケープ済みテキストアドレスを保存。 10 81 82のようになる
+	mov		inputProc2Tmp, rax;
+	;カウンタとして使うのでもともとあったものは保存
+	mov		inputProc1Tmp,rdi;
+	xor		rdi,rdi;
+
+JMP_B:
+	; そのままコピーした
+	mov     rax, [r15]
+	xor     r9d, r9d
+	mov     r8d, [rbp+60h-9Ch]
+	mov     edx, 303h
+	mov     rcx, r15
+	call    qword ptr [rax+20h]
+
+	; １byte取り出す
+	mov		rbx, inputProc2Tmp;
+	mov		bl, byte ptr [rbx + rdi];
+
+	; null文字チェック
+	cmp		bl,0;
+	jz		JMP_C;
+
+	; カウント補正
+	mov		dword ptr [r14+44h] , 2
+
+	; 以下はそのままコピー
+	xorps   xmm0, xmm0
+	mov     [rsp+160h-100h], bl
+	xorps   xmm1, xmm1
+	mov     QWORD PTR [rsp+160h-0ECh], 0
+	movdqu  [rsp+160h-110h], xmm0
+	mov     [rsp+160h-0E4h], r12d
+	movdqu  [rsp+160h-0FCh], xmm1
+	mov     DWORD ptr [rbp+60h-0C0h], 2
+	movdqa  xmm0, xmmword ptr [inputProc1Var1];
+	lea     rdx, [rsp+160h-110h]
+	mov     rax, [r14]
+	mov     rcx, r14
+	mov     [rbp+60h-0C8h], r12d
+	movdqu  [rbp+60h-0E0h+8], xmm0
+	mov     qword ptr [rbp+60h-0E0h], r12
+	mov     [rbp+60h-0BCh], r12w
+	mov     byte ptr [rbp+60h-0BAh], 0
+	call    qword ptr [rax+18h]
+
+	; 1byte進める
+	inc		rdi;
+	jmp		JMP_B;
+
+JMP_C:
+	;戻す
+	mov		rdi, inputProc1Tmp;
+
+	push	inputProc1ReturnAddress2;
+	ret;
+inputProc1V137 ENDP
+
+;-------------------------------------------;
+
 ; 下記はqword ptr [rax+138h];の関数（40 57 48 83 EC 20 48 8B 01 48 8B F9 48 8B 90 68 01 00 00）から割り出した
 ; rdi+54h : キャレット位置
 ; rdi+40h : 文字列長さ

@@ -66,10 +66,10 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			e |= Date::Init(options);
 
 			// IME
-			//e |= Ime::Init(options);
+			e |= Ime::Init(options);
 
 			// 入力
-			//e |= Input::Init(options);
+			e |= Input::Init(options);
 
 			// 文字列順序入れ替え
 			e |= Localization::Init(options);

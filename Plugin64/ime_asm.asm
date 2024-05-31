@@ -48,6 +48,24 @@ imeProc1 ENDP
 
 ;-------------------------------------------;
 
+imeProc1V137 PROC
+	mov		edx, edi;
+	mov		rcx, r12;
+	call	imeProc1CallAddress;
+	test	eax,eax;
+	jnz		JMP_A;
+
+	push	imeProc1ReturnAddress1;
+	ret;
+
+JMP_A:
+	push	imeProc1ReturnAddress2;
+	ret;
+
+imeProc1V137 ENDP
+
+;-------------------------------------------;
+
 imeProc2 PROC
 	sub		edx, 0BCh;
 	jz		JMP_A;

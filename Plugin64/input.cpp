@@ -7,6 +7,7 @@ namespace Input {
 	extern "C" {
 		void inputProc1();
 		void inputProc1V130();
+		void inputProc1V137();
 		uintptr_t inputProc1ReturnAddress1;
 		uintptr_t inputProc1ReturnAddress2;
 		uintptr_t inputProc1CallAddress;
@@ -94,6 +95,35 @@ namespace Input {
 			}
 
 			break;
+		case v1_37_0_0:
+			// mov     eax, dword ptr	[rbp+120h+var_18C]
+			BytePattern::temp_instance().find_pattern("8B 45 BC 32 DB 3C 80 73 05 0F B6 D8 EB 12");
+			if (BytePattern::temp_instance().has_size(1, u8"入力した文字をutf8からエスケープ列へ変換する１")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				inputProc1CallAddress = (uintptr_t)utf8ToEscapedStr3;
+
+				// mov     rax, [r15]
+				inputProc1ReturnAddress1 = address + 0x20;
+
+				Injector::MakeJMP(address, inputProc1V137, true);
+			}
+			else {
+				e.input.unmatchdInputProc1Injector = true;
+			}
+
+			// call    qword ptr [rax+18h]
+			BytePattern::temp_instance().find_pattern("FF 50 18 E9 ? ? ? ? 49 8B 07 45 33 C9");
+			if (BytePattern::temp_instance().has_size(1, u8"入力した文字をutf8からエスケープ列へ変換する２")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				// jmp     loc_{xxxxx}
+				inputProc1ReturnAddress2 = Injector::GetBranchDestination(address + 0x3).as_int();
+			}
+			else {
+				e.input.unmatchdInputProc1Injector = true;
+			}
+
+			break;
 		default:
 			e.input.versionInputProc1Injector = true;
 		}
@@ -149,7 +179,7 @@ namespace Input {
 		DllError result = {};
 
 		result |= inputProc1Injector(options);
-		result |= inputProc2Injector(options);
+		//result |= inputProc2Injector(options);
 
 		return result;
 	}
