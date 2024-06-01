@@ -13,6 +13,7 @@ namespace Input {
 		uintptr_t inputProc1CallAddress;
 
 		void inputProc2();
+		void inputProc2V137();
 		uintptr_t inputProc2ReturnAddress;
 	}
 
@@ -168,6 +169,21 @@ namespace Input {
 				e.input.unmatchdInputProc2Injector = true;
 			}
 			break;
+		case v1_37_0_0:
+			// xor     ecx, ecx
+			BytePattern::temp_instance().find_pattern("33 C9 48 89 4C 24 20 48 C7 44 24 38 0F 00 00 00 48 89 4C 24 30");
+			if (BytePattern::temp_instance().has_size(3, u8"バックスペース処理の修正")) {
+				uintptr_t address = BytePattern::temp_instance().get(2).address();
+
+				// movzx   r8d, word ptr [rdi+56h]
+				inputProc2ReturnAddress = address + 0x165;
+
+				Injector::MakeJMP(address, inputProc2V137, true);
+			}
+			else {
+				e.input.unmatchdInputProc2Injector = true;
+			}
+			break;
 		default:
 			e.input.versionInputProc2Injector = true;
 		}
@@ -179,7 +195,7 @@ namespace Input {
 		DllError result = {};
 
 		result |= inputProc1Injector(options);
-		//result |= inputProc2Injector(options);
+		result |= inputProc2Injector(options);
 
 		return result;
 	}

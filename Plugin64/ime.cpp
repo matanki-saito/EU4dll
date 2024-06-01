@@ -8,6 +8,7 @@ namespace Ime {
 		void imeProc1V137();
 		void imeProc2();
 		void imeProc3();
+		void imeProc3V137();
 		uintptr_t imeProc1ReturnAddress1;
 		uintptr_t imeProc1ReturnAddress2;
 		uintptr_t imeProc1CallAddress;
@@ -338,7 +339,7 @@ namespace Ime {
 			// 直前の部分でjmpに使う14byteを確保することができなかった。
 			// そのためWM_KEYDOWNのコードをすべて移植した
 			// mov     rcx, [rbp+0C0h+hRawInput]
-			BytePattern::temp_instance().find_pattern("48 8B 8D E8 ? ? ? ? 8B D6 E8 ? ? ? ? 33");
+			BytePattern::temp_instance().find_pattern("48 8B 8D F8 00 00 00 48 8B D6 E8 ? ? ? ? 33");
 			if (BytePattern::temp_instance().has_size(2, u8"SDL_windowsevents.cの修正")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
@@ -355,12 +356,12 @@ namespace Ime {
 				imeProc3CallAddress4 = Injector::GetBranchDestination(address + 0x50).as_int();
 
 				// call {sub_xxxxx} / SDL_SendKeyboardKey
-				imeProc3CallAddress5 = Injector::GetBranchDestination(address + 0x61).as_int();
+				imeProc3CallAddress5 = Injector::GetBranchDestination(address + 0x65).as_int();
 
 				// xor     edi, edi
-				imeProc3ReturnAddress = address + 0x66;
+				imeProc3ReturnAddress = address + 0x6A;
 
-				Injector::MakeJMP(address, imeProc3, true);
+				Injector::MakeJMP(address, imeProc3V137, true);
 			}
 			else {
 				e.ime.unmatchdImeProc3Injector = true;
@@ -378,7 +379,7 @@ namespace Ime {
 
 		result |= imeProc1Injector(options);
 		result |= imeProc2Injector(options);
-		//result |= imeProc3Injector(options);
+		result |= imeProc3Injector(options);
 
 		return result;
 	}

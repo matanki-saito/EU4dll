@@ -340,4 +340,64 @@ JMP_F:
 	push	inputProc2ReturnAddress;
 	ret;
 inputProc2 ENDP
+
+;-------------------------------------------;
+
+inputProc2V137 PROC
+	mov		inputProc2Tmp2,rsi; // カウンタとして使う
+	xor		rsi,rsi;
+
+	xor     ecx, ecx
+	mov     [rsp+48h-28h], rcx
+	mov     qword ptr [rsp+48h-10h], 0Fh
+	mov     [rsp+48h-18h], rcx
+	cmp     [rdi+80h], rcx
+
+
+	mov		rcx, qword ptr [rdi + 40h];
+	cmp		rcx, 10h;
+	lea		rcx, [rdi + 30h];
+	jbe		JMP_A;
+	mov		rcx, [rcx];
+
+JMP_A:
+	movsxd	rax, dword ptr [rdi + 54h];
+	sub		rax, 3;
+	js		JMP_C;
+	mov		al, byte ptr [rcx + rax];
+	cmp		al, ESCAPE_SEQ_1;
+	jz		JMP_B;
+	cmp		al, ESCAPE_SEQ_2;
+	jz		JMP_B;
+	cmp		al, ESCAPE_SEQ_3;
+	jz		JMP_B;
+	cmp		al, ESCAPE_SEQ_4;
+	jnz		JMP_C;
+
+JMP_B:
+	mov		rsi, 2;
+
+JMP_C:
+	mov		rax, qword ptr [rdi];
+	mov		rcx, rdi;
+	cmp		qword ptr [rdi+80h] ,0
+	jz		JMP_D;
+	call	qword ptr [rax+140h];
+	jmp		JMP_E;
+
+JMP_D:
+	call	qword ptr [rax+138h];
+
+JMP_E:
+	cmp		rsi, 0;
+	jz      JMP_F;
+	dec		rsi;
+	jmp		JMP_C;
+
+JMP_F:
+	mov		rsi,inputProc2Tmp2;
+
+	push	inputProc2ReturnAddress;
+	ret;
+inputProc2V137 ENDP
 END
