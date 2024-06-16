@@ -21,6 +21,7 @@ NOT_DEF			=	2026h
 .DATA
 	listFieldAdjustmentProc1MultibyteFlag			DD	0
 	listFieldAdjustmentProc2MultibyteFlag			DD	0
+	listFieldAdjustmentProc2length					DD	0
 
 .CODE
 listFieldAdjustmentProc1 PROC
@@ -323,6 +324,8 @@ JMP_A:
 	xor     r10d, r10d
 	cmp     ebx, ecx
 
+	mov		listFieldAdjustmentProc2length, ebx
+
 	push	listFieldAdjustmentProc2ReturnAddress;
 	ret;
 
@@ -376,8 +379,8 @@ listFieldAdjustmentProc3V137A PROC
 
 	cmp		listFieldAdjustmentProc1MultibyteFlag, 1h;
 	jnz		JMP_A;
-	mov		r9d, ebx;
-	sub		r9d, 3;
+	mov		r9d, listFieldAdjustmentProc2length
+	sub		r9d, 4;
 
 JMP_A:
 	xor     r8d, r8d
@@ -396,8 +399,8 @@ listFieldAdjustmentProc3V137B PROC
 
 	cmp		listFieldAdjustmentProc1MultibyteFlag, 1h;
 	jnz		JMP_A;
-	mov		r9d, ebx;
-	sub		r9d, 3;
+	mov		r9d, listFieldAdjustmentProc2length
+	sub		r9d, 4;
 
 JMP_A:
 	xor     r8d, r8d

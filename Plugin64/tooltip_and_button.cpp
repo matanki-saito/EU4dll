@@ -690,37 +690,6 @@ namespace TooltipAndButton {
 		return e;
 	}
 
-	DllError tooltipAndButtonProc10Injector(RunOptions options) {
-		DllError e = {};
-
-		switch (options.version) {
-		case v1_36_0_0:
-		case v1_35_1_0:
-		case v1_34_2_0:
-		case v1_33_3_0:
-			// 
-			tooltipAndButtonProc10BufferWidth = options.lineBreakBufferWidth;
-
-			BytePattern::temp_instance().find_pattern("0F 28 B4 24 C0 00 00 00 48 81 C4 F0 00 00 00 41");
-			if (BytePattern::temp_instance().has_size(1, u8"DEBUG")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
-
-				// retn
-				tooltipAndButtonProc10ReturnAddress1 = address + 0x11;
-
-				Injector::MakeJMP(address, tooltipAndButtonProc10, true);
-			}
-			else {
-				e.tooltipAndButton.unmatchdTooltipAndButtonProc9Injector = true;
-			}
-			break;
-		default:
-			e.tooltipAndButton.versionTooltipAndButtonProc9Injector = true;
-		}
-
-		return e;
-	}
-
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
@@ -733,7 +702,6 @@ namespace TooltipAndButton {
 		result |= tooltipAndButtonProc7Injector(options);
 		//result |= tooltipAndButtonProc8Injector(options);
 		//result |= tooltipAndButtonProc9Injector(options);
-		//result |= tooltipAndButtonProc10Injector(options);
 
 		return result;
 	}
