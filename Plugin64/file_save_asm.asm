@@ -345,13 +345,15 @@ fileSaveProc7V137 ENDP
 
 fileSaveProc9 PROC
 
-	mov     [rbp+57h+28h], eax
-	mov     [rbp+57h-88h], rax
-	mov     [rbp+57h-48h], rax
-	mov     QWORD PTR [rbp-71h],0fh
-
-	mov     rcx, rdi
+	lea     rcx, [r14+3C0h]
 	call	fileSaveProc9CallAddress
+
+	mov     dword ptr [rbp+30h+10h], esi
+	mov		rcx, r14
+	mov     rcx, [rcx+30h]
+	mov     rax, [rcx]
+	mov     r8, [rax+1A8h]
+	mov     [rsp+130h-100h], rsi
 
 	push	fileSaveProc9ReturnAddress;
 	ret;

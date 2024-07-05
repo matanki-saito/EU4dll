@@ -721,11 +721,9 @@ namespace FileSave {
 		return e;
 	}
 
-	void* fileSaveProc9Call(ParadoxTextObject* p) {
+	void fileSaveProc9Call(ParadoxTextObject* p) {
 
 		utf8ToEscapedStrP(p);
-
-		return p;
 	}
 
 	DllError fileSaveProc9Injector(RunOptions options) {
@@ -754,13 +752,13 @@ namespace FileSave {
 		case v1_36_0_0:
 			break;
 		case v1_37_0_0:
-			// mov     [rbp+57h+arg_18], eax
-			BytePattern::temp_instance().find_pattern("89 45 7F 48 89 45 CF 48 89 45 0F");
-			if (BytePattern::temp_instance().has_size(2, u8"ISSUE-258")) {
+			// mov     dword ptr [rbp+30h+arg_0], esi
+			BytePattern::temp_instance().find_pattern("89 75 40 48 8B 49 30 48 8B 01");
+			if (BytePattern::temp_instance().has_size(1, u8"ISSUE-258")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address();
 
-				// mov     [rbp+57h+var_D0], 0Eh
-				fileSaveProc9ReturnAddress = address + 0x13;
+				// mov     [rsp+130h+var_E8], 0Fh
+				fileSaveProc9ReturnAddress = address + 0x16;
 
 				fileSaveProc9CallAddress = (uintptr_t)fileSaveProc9Call;
 
