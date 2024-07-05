@@ -25,6 +25,7 @@ namespace FileSave {
 		void fileSaveProc7();
 		void fileSaveProc7V137();
 		void fileSaveProc8();
+		void fileSaveProc9();
 		uintptr_t fileSaveProc1ReturnAddress;
 		uintptr_t fileSaveProc2ReturnAddress;
 		uintptr_t fileSaveProc2CallAddress;
@@ -42,6 +43,8 @@ namespace FileSave {
 		uintptr_t fileSaveProc6MarkerAddress;
 		uintptr_t fileSaveProc7ReturnAddress;
 		uintptr_t fileSaveProc7CallAddress;
+		uintptr_t fileSaveProc9ReturnAddress;
+		uintptr_t fileSaveProc9CallAddress;
 	}
 	
 
@@ -718,6 +721,64 @@ namespace FileSave {
 		return e;
 	}
 
+	void* fileSaveProc9Call(ParadoxTextObject* p) {
+
+		utf8ToEscapedStrP(p);
+
+		return p;
+	}
+
+	DllError fileSaveProc9Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_2_0:
+		case v1_29_3_0:
+		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
+		case v1_30_3_0:
+		case v1_30_4_0:
+		case v1_30_5_0:
+		case v1_31_1_0:
+		case v1_31_2_0:
+		case v1_31_3_0:
+		case v1_31_4_0:
+		case v1_31_5_0:
+		case v1_31_6_0:
+		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
+			break;
+		case v1_37_0_0:
+			// mov     [rbp+57h+arg_18], eax
+			BytePattern::temp_instance().find_pattern("89 45 7F 48 89 45 CF 48 89 45 0F");
+			if (BytePattern::temp_instance().has_size(2, u8"ISSUE-258")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// mov     [rbp+57h+var_D0], 0Eh
+				fileSaveProc9ReturnAddress = address + 0x13;
+
+				fileSaveProc9CallAddress = (uintptr_t)fileSaveProc9Call;
+
+				Injector::MakeJMP(address, fileSaveProc9, true);
+			}
+			else {
+				e.fileSave.unmatchdFileSaveProc9Injector = true;
+			}
+
+			break;
+		default:
+			e.fileSave.versionFileSaveProc9Injector = true;
+		}
+
+		return e;
+	}
+
+
 	DllError Init(RunOptions options) {
 		DllError result = {};
 
@@ -730,6 +791,7 @@ namespace FileSave {
 		result |= fileSaveProc6Injector(options);
 		result |= fileSaveProc7Injector(options);
 		result |= fileSaveProc8Injector(options);
+		result |= fileSaveProc9Injector(options);
 
 		return result;
 	}

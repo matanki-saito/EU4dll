@@ -377,6 +377,23 @@ char* utf8ToEscapedStr(char* from) {
 	return (char*)tmpParadoxTextObject;
 }
 
+void utf8ToEscapedStrP(ParadoxTextObject* src) {
+
+	wchar_t* tmp1 = NULL;
+	char* tmp2 = NULL;
+
+	//UTF-8 -> wide char (ucs2)
+	convertTextToWideText(src->getString().c_str(), &tmp1);
+
+	//wide char (ucs2) -> Escaped Text
+	convertWideTextToEscapedText(tmp1, &tmp2);
+
+	src->setString(new std::string(tmp2));
+
+	free(tmp1);
+	free(tmp2);
+}
+
 ParadoxTextObject* tmpZV2 = NULL;
 ParadoxTextObject* utf8ToEscapedStr2(ParadoxTextObject* from) {
 
