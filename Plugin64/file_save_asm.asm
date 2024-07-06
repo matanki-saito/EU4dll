@@ -17,6 +17,7 @@ EXTERN	fileSaveProc7CallAddress		:	QWORD
 EXTERN	fileSaveProc7ReturnAddress		:	QWORD
 EXTERN	fileSaveProc9CallAddress		:	QWORD
 EXTERN	fileSaveProc9ReturnAddress		:	QWORD
+EXTERN	fileSaveProc10ReturnAddress		:	QWORD
 
 ESCAPE_SEQ_1	=	10h
 ESCAPE_SEQ_2	=	11h
@@ -34,6 +35,8 @@ NOT_DEF			=	2026h
 .DATA
 	fileSaveProc3Tmp	DQ	0
 	fileSaveProc3Message	DB	'save_game_title',0
+	fileSaveProc9Text		DB	'CONFIRMLOADSAVETEXT',0
+	fileSaveProc10Text		DB	'SAVEGAME_WARNING_OLD_VERSION_DESC',0
 
 .CODE
 fileSaveProc1 PROC
@@ -345,18 +348,32 @@ fileSaveProc7V137 ENDP
 
 fileSaveProc9 PROC
 
-	lea     rcx, [r14+3C0h]
+	mov     rcx, rax
 	call	fileSaveProc9CallAddress
 
-	mov     dword ptr [rbp+30h+10h], esi
-	mov		rcx, r14
-	mov     rcx, [rcx+30h]
-	mov     rax, [rcx]
-	mov     r8, [rax+1A8h]
-	mov     [rsp+130h-100h], rsi
+	mov     r9d, 1
+	lea     r8, [rbp+57h-80h]
+	lea     rdx, OFFSET fileSaveProc9Text
+	lea     rcx, [rbp+57h-0C0h]
 
 	push	fileSaveProc9ReturnAddress;
 	ret;
 fileSaveProc9 ENDP
+
+;-------------------------------------------;
+
+fileSaveProc10 PROC
+
+	mov     rcx, rax
+	call	fileSaveProc9CallAddress
+
+	mov     r9d, 1
+	lea     r8, [rbp+30h-80h]
+	lea     rdx, OFFSET fileSaveProc10Text
+	lea     rcx, [rsp+130h-0C0h]
+
+	push	fileSaveProc10ReturnAddress;
+	ret;
+fileSaveProc10 ENDP
 
 END

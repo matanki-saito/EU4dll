@@ -109,6 +109,8 @@ struct DllError{
 			bool versionFileSaveProc8Injector : 1;
 			bool unmatchdFileSaveProc9Injector : 1;
 			bool versionFileSaveProc9Injector : 1;
+			bool unmatchdFileSaveProc10Injector : 1;
+			bool versionFileSaveProc10Injector : 1;
 		};
 
 		std::string print() {
@@ -129,7 +131,9 @@ struct DllError{
 				+ PL(unmatchdFileSaveProc8Injector)
 				+ PL(versionFileSaveProc8Injector)
 				+ PL(unmatchdFileSaveProc9Injector)
-				+ PL(versionFileSaveProc9Injector);
+				+ PL(versionFileSaveProc9Injector)
+				+ PL(unmatchdFileSaveProc10Injector)
+				+ PL(versionFileSaveProc10Injector);
 		}
 	} fileSave;
 

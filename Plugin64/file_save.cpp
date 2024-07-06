@@ -26,6 +26,7 @@ namespace FileSave {
 		void fileSaveProc7V137();
 		void fileSaveProc8();
 		void fileSaveProc9();
+		void fileSaveProc10();
 		uintptr_t fileSaveProc1ReturnAddress;
 		uintptr_t fileSaveProc2ReturnAddress;
 		uintptr_t fileSaveProc2CallAddress;
@@ -45,8 +46,9 @@ namespace FileSave {
 		uintptr_t fileSaveProc7CallAddress;
 		uintptr_t fileSaveProc9ReturnAddress;
 		uintptr_t fileSaveProc9CallAddress;
+		uintptr_t fileSaveProc10ReturnAddress;
 	}
-	
+
 
 	DllError fileSaveProc1Injector(RunOptions options) {
 		DllError e = {};
@@ -159,7 +161,7 @@ namespace FileSave {
 			if (BytePattern::temp_instance().has_size(1, u8"ファイル名をUTF-8に変換して保存できるようにする")) {
 				uintptr_t address = BytePattern::temp_instance().get_first().address(offset);
 
-				fileSaveProc2CallAddress = (uintptr_t) escapedStrToUtf8;
+				fileSaveProc2CallAddress = (uintptr_t)escapedStrToUtf8;
 
 				// jnz     short loc_xxxxx
 				fileSaveProc2ReturnAddress = address + 0x14 + 0x1B;
@@ -721,9 +723,11 @@ namespace FileSave {
 		return e;
 	}
 
-	void fileSaveProc9Call(ParadoxTextObject* p) {
+	void* fileSaveProc9Call(ParadoxTextObject* p) {
 
 		utf8ToEscapedStrP(p);
+
+		return p;
 	}
 
 	DllError fileSaveProc9Injector(RunOptions options) {
@@ -752,13 +756,14 @@ namespace FileSave {
 		case v1_36_0_0:
 			break;
 		case v1_37_0_0:
-			// mov     dword ptr [rbp+30h+arg_0], esi
-			BytePattern::temp_instance().find_pattern("89 75 40 48 8B 49 30 48 8B 01");
-			if (BytePattern::temp_instance().has_size(1, u8"ISSUE-258")) {
-				uintptr_t address = BytePattern::temp_instance().get_first().address();
+			// mov     [rbp+57h+arg_18], eax
+			BytePattern::temp_instance().find_pattern("89 45 7F 48 89 45 CF 48 89 45 0F");
+			if (BytePattern::temp_instance().has_size(2, u8"ISSUE-258")) {
+				// mov     r9d, 1
+				uintptr_t address = BytePattern::temp_instance().get_first().address(0x17F);
 
-				// mov     [rsp+130h+var_E8], 0Fh
-				fileSaveProc9ReturnAddress = address + 0x16;
+				// call xxxxx
+				fileSaveProc9ReturnAddress = address + 0x15;
 
 				fileSaveProc9CallAddress = (uintptr_t)fileSaveProc9Call;
 
@@ -776,6 +781,54 @@ namespace FileSave {
 		return e;
 	}
 
+	DllError fileSaveProc10Injector(RunOptions options) {
+		DllError e = {};
+
+		switch (options.version) {
+		case v1_29_2_0:
+		case v1_29_3_0:
+		case v1_29_4_0:
+		case v1_30_1_0:
+		case v1_30_2_0:
+		case v1_30_3_0:
+		case v1_30_4_0:
+		case v1_30_5_0:
+		case v1_31_1_0:
+		case v1_31_2_0:
+		case v1_31_3_0:
+		case v1_31_4_0:
+		case v1_31_5_0:
+		case v1_31_6_0:
+		case v1_32_0_1:
+		case v1_33_0_0:
+		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
+			break;
+		case v1_37_0_0:
+			// mov     [rbp+30h+var_80], rax
+			BytePattern::temp_instance().find_pattern("48 89 45 B0 C7 45 D8 01 00 00 00 48 8D 54 24 50 48 83 7C 24");
+			if (BytePattern::temp_instance().has_size(3, u8"ISSUE-258")) {
+				// mov     r9d, 1
+				uintptr_t address = BytePattern::temp_instance().get(2).address(0x37);
+
+				// call xxxxx
+				fileSaveProc10ReturnAddress = address + 0x16;
+
+				Injector::MakeJMP(address, fileSaveProc10, true);
+			}
+			else {
+				e.fileSave.unmatchdFileSaveProc10Injector = true;
+			}
+
+			break;
+		default:
+			e.fileSave.versionFileSaveProc10Injector = true;
+		}
+
+		return e;
+	}
 
 	DllError Init(RunOptions options) {
 		DllError result = {};
@@ -790,6 +843,7 @@ namespace FileSave {
 		result |= fileSaveProc7Injector(options);
 		result |= fileSaveProc8Injector(options);
 		result |= fileSaveProc9Injector(options);
+		result |= fileSaveProc10Injector(options);
 
 		return result;
 	}
