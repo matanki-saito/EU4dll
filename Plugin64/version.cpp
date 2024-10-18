@@ -56,6 +56,14 @@ namespace Version {
 			return u8"v1_33_0_0";
 		case v1_33_3_0:
 			return u8"v1_33_3_0";
+		case v1_34_2_0:
+			return u8"v1_34_2_0";
+		case v1_35_1_0:
+			return u8"v1_35_1_0";
+		case v1_36_0_0:
+			return u8"v1_36_0_0";
+		case v1_37_0_0:
+			return u8"v1_37_0_0";
 		default:
 			return u8"UNKNOWN";
 		}
@@ -106,6 +114,33 @@ namespace Version {
 				break;
 			case 333:
 				version = v1_33_3_0;
+				break;
+			case 342:
+			case 343:
+			case 344:
+			case 345:
+				version = v1_34_2_0;
+				break;
+			case 351:
+			case 352:
+			case 353:
+			case 354:
+			case 355:
+			case 356:
+				version = v1_35_1_0;
+				break;
+			case 360:
+			case 361:
+			case 362:
+				version = v1_36_0_0;
+				break;
+			case 370:
+			case 371:
+			case 372:
+			case 373:
+			case 374:
+			case 375:
+				version = v1_37_0_0;
 				break;
 			}
 		}

@@ -5,14 +5,17 @@
 namespace Ime {
 	extern "C" {
 		void imeProc1();
+		void imeProc1V137();
 		void imeProc2();
 		void imeProc3();
+		void imeProc3V137();
 		uintptr_t imeProc1ReturnAddress1;
 		uintptr_t imeProc1ReturnAddress2;
 		uintptr_t imeProc1CallAddress;
 		uintptr_t imeProc2CallAddress;
 		uintptr_t imeProc2ReturnAddress1;
 		uintptr_t imeProc2ReturnAddress2;
+		uintptr_t imeProc2ReturnAddress3;
 		uintptr_t rectAddress;
 		uintptr_t imeProc3ReturnAddress;
 		uintptr_t imeProc3CallAddress1;
@@ -54,6 +57,7 @@ namespace Ime {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
 			// mov     edx, r13d
 			BytePattern::temp_instance().find_pattern("41 8B D5 49 8B CC E8 ? ? ? ? 85 C0 0F 85");
 			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowsevents.cの修正")) {
@@ -74,6 +78,49 @@ namespace Ime {
 				e.ime.unmatchdImeProc1Injector = true;
 			}
 			break;
+		case v1_35_1_0:
+		case v1_36_0_0:
+			// mov     edx, r13d
+			BytePattern::temp_instance().find_pattern("41 8B D5 49 8B CC E8 ? ? ? ? 85 C0 0F 85 F1");
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowsevents.cの修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// call {sub_xxxxx}
+				imeProc1CallAddress = Injector::GetBranchDestination(address + 0x6).as_int();
+
+				// cmp     r13d, 0FFh
+				imeProc1ReturnAddress1 = address + 0x13;
+
+				// jz {xxxxx}
+				imeProc1ReturnAddress2 = Injector::GetBranchDestination(address - 0x19).as_int();
+
+				Injector::MakeJMP(address, imeProc1, true);
+			}
+			else {
+				e.ime.unmatchdImeProc1Injector = true;
+			}
+			break;
+		case v1_37_0_0:
+			// mov     edx, edi
+			BytePattern::temp_instance().find_pattern("8B D7 49 8B CC E8 ? ? ? ? 85 C0 0F 85 5B");
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowsevents.cの修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// call {sub_xxxxx}
+				imeProc1CallAddress = Injector::GetBranchDestination(address + 0x5).as_int();
+
+				//  cmp     edi, 0FFh
+				imeProc1ReturnAddress1 = address + 0x12;
+
+				// jz {xxxxx}
+				imeProc1ReturnAddress2 = address - 0x3A;
+
+				Injector::MakeJMP(address, imeProc1V137, true);
+			}
+			else {
+				e.ime.unmatchdImeProc1Injector = true;
+			}
+			break;
 		default:
 			e.ime.versionImeProc1Injector = true;
 		}
@@ -89,6 +136,7 @@ namespace Ime {
 	// https://github.com/matanki-saito/EU4dll/issues/19#issuecomment-423940649
 	DllError imeProc2Injector(RunOptions options) {
 		DllError e = {};
+		HMODULE handle = NULL;
 
 		switch (options.version) {
 		case v1_29_3_0:
@@ -107,6 +155,9 @@ namespace Ime {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
 			rectAddress = (uintptr_t)&rect;
 
 			// SDL_SetTextInputRectの関数を見つける
@@ -163,6 +214,63 @@ namespace Ime {
 				e.ime.unmatchdImeProc2Injector = true;
 			}
 			break;
+		case v1_37_0_0:
+			rectAddress = (uintptr_t)&rect;
+
+			// SDL_SetTextInputRectの関数を見つける
+			//  add     rsp, 20h
+			handle = GetModuleHandle(NULL);
+			imeProc2CallAddress = (uintptr_t)GetProcAddress(handle, "SDL_SetTextInputRect");
+
+			if (imeProc2CallAddress == NULL) {
+				e.ime.unmatchdImeProc2Injector = true;
+			}
+
+			// WM_IME_STARTCOMPOSITIONでSDL_SetTextInputRectする
+			BytePattern::temp_instance().find_pattern("81 EA BC 00 00 00 0F 84 C3 02 00 00"); // sub     edx, 0BCh
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowskeyboard.cの修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// jz {loc_xxxxx}
+				imeProc2ReturnAddress1 = Injector::GetBranchDestination(address + 0x6).as_int();
+
+				// jnz loc_xxxxx
+				imeProc2ReturnAddress2 = address + 0xF;
+
+				Injector::MakeJMP(address, imeProc2, true);
+			}
+			else {
+				e.ime.unmatchdImeProc2Injector = true;
+			}
+
+			// WM_IME_SETCONTEXTで*lParam = 0;をコメントアウトする（nopで埋める）
+			// mov     [r9], r13
+			BytePattern::temp_instance().find_pattern("4D 89 29 48 8B 5C 24 50");
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowskeyboard.cの修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+				Injector::WriteMemory<uint8_t>(address, 0x90, true);
+				Injector::WriteMemory<uint8_t>(address + 1, 0x90, true);
+				Injector::WriteMemory<uint8_t>(address + 2, 0x90, true);
+			}
+			else {
+				e.ime.unmatchdImeProc2Injector = true;
+			}
+
+			// WM_IME_COMPOSITIONのif文のIME_GetCompositionStringとIME_SendInputEventをコメントアウト（jmpさせる）
+			// mov     r8d, 800h
+			// 二つ目のif文もスキップさせる
+			// https://github.com/matanki-saito/EU4dll/issues/19#issuecomment-423940364
+			BytePattern::temp_instance().find_pattern("41 B8 00 08 00 00 48 89 7C 24 58");
+			if (BytePattern::temp_instance().has_size(1, u8"SDL_windowskeyboard.cの修正")) {
+				// jnb     short loc_1417613D8
+				uintptr_t address = BytePattern::temp_instance().get_first().address(-2);
+				Injector::MakeJMP(address, address + 0x9D, true);
+			}
+			else {
+				e.ime.unmatchdImeProc2Injector = true;
+			}
+
+			break;
 		default:
 			e.ime.unmatchdImeProc2Injector = true;
 		}
@@ -193,6 +301,9 @@ namespace Ime {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
 			// 直前の部分でjmpに使う14byteを確保することができなかった。
 			// そのためWM_KEYDOWNのコードをすべて移植した
 			// mov     rcx, [rbp+0C0h+hRawInput]
@@ -219,6 +330,38 @@ namespace Ime {
 				imeProc3ReturnAddress = address + 0x66;
 
 				Injector::MakeJMP(address, imeProc3, true);
+			}
+			else {
+				e.ime.unmatchdImeProc3Injector = true;
+			}
+			break;
+		case v1_37_0_0:
+			// 直前の部分でjmpに使う14byteを確保することができなかった。
+			// そのためWM_KEYDOWNのコードをすべて移植した
+			// mov     rcx, [rbp+0C0h+hRawInput]
+			BytePattern::temp_instance().find_pattern("48 8B 8D F8 00 00 00 48 8B D6 E8 ? ? ? ? 33");
+			if (BytePattern::temp_instance().has_size(2, u8"SDL_windowsevents.cの修正")) {
+				uintptr_t address = BytePattern::temp_instance().get_first().address();
+
+				// call {sub_xxxxx} / WindowsScanCodeToSDLScanCode
+				imeProc3CallAddress1 = Injector::GetBranchDestination(address + 0xA).as_int();
+
+				// call {sub_xxxxx} / SDL_GetKeyboardState
+				imeProc3CallAddress2 = Injector::GetBranchDestination(address + 0x13).as_int();
+
+				// call {sub_xxxxx} / ShouldGenerateWindowCloseOnAltF4
+				imeProc3CallAddress3 = Injector::GetBranchDestination(address + 0x36).as_int();
+
+				// call {sub_xxxxx} / SDL_SendWindowEvent
+				imeProc3CallAddress4 = Injector::GetBranchDestination(address + 0x50).as_int();
+
+				// call {sub_xxxxx} / SDL_SendKeyboardKey
+				imeProc3CallAddress5 = Injector::GetBranchDestination(address + 0x65).as_int();
+
+				// xor     edi, edi
+				imeProc3ReturnAddress = address + 0x6A;
+
+				Injector::MakeJMP(address, imeProc3V137, true);
 			}
 			else {
 				e.ime.unmatchdImeProc3Injector = true;

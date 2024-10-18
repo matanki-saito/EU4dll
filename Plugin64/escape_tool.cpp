@@ -377,6 +377,23 @@ char* utf8ToEscapedStr(char* from) {
 	return (char*)tmpParadoxTextObject;
 }
 
+void utf8ToEscapedStrP(ParadoxTextObject* src) {
+
+	wchar_t* tmp1 = NULL;
+	char* tmp2 = NULL;
+
+	//UTF-8 -> wide char (ucs2)
+	convertTextToWideText(src->getString().c_str(), &tmp1);
+
+	//wide char (ucs2) -> Escaped Text
+	convertWideTextToEscapedText(tmp1, &tmp2);
+
+	src->setString(new std::string(tmp2));
+
+	free(tmp1);
+	free(tmp2);
+}
+
 ParadoxTextObject* tmpZV2 = NULL;
 ParadoxTextObject* utf8ToEscapedStr2(ParadoxTextObject* from) {
 
@@ -422,16 +439,7 @@ ParadoxTextObject* utf8ToEscapedStr2(ParadoxTextObject* from) {
 	return tmpZV2;
 }
 
-ParadoxTextObject* tmpParadoxTextObject2 = NULL;
 char* escapedStrToUtf8(ParadoxTextObject* from) {
-
-	if (tmpParadoxTextObject2 != NULL) {
-		if (tmpParadoxTextObject2->len > 0x10) {
-			free(tmpParadoxTextObject2->t.p);
-		}
-		delete tmpParadoxTextObject2;
-	}
-	tmpParadoxTextObject2 = new ParadoxTextObject();
 
 	std::wstring* buffer = new std::wstring();
 	std::string* dest = new std::string();
@@ -443,12 +451,12 @@ char* escapedStrToUtf8(ParadoxTextObject* from) {
 	// wide char (ucs2) ->  UTF-8
 	convertWideTextToUtf8(buffer, dest);
 
-	tmpParadoxTextObject2->setString(dest);
+	from->setString(dest);
 
 	delete buffer;
 	delete dest;
 
-	return (char*)tmpParadoxTextObject2;
+	return (char*)from;
 }
 
 char* utf8ToEscapedStr3buffer = NULL;
