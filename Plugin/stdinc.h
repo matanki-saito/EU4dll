@@ -2,7 +2,11 @@
 
 #define NOMINMAX
 
+#ifdef _WIN32
 #include <windows.h>
+#else
+#include "../platform/platform.h"
+#endif
 #include <cstdint>
 #include <cstddef>
 #include <fstream>
