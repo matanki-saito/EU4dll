@@ -191,6 +191,7 @@ void BytePattern::transform_pattern(boost::string_view literal)
 
 void BytePattern::get_module_ranges(memory_pointer module)
 {
+#ifdef _WIN32
 	static auto getSection = [](const PIMAGE_NT_HEADERS nt_headers, unsigned section) -> PIMAGE_SECTION_HEADER
 	{
 		return reinterpret_cast<PIMAGE_SECTION_HEADER>(
@@ -227,6 +228,78 @@ void BytePattern::get_module_ranges(memory_pointer module)
 		if ((i == ntHeader->FileHeader.NumberOfSections - 1) && _ranges.empty())
 			this->_ranges.emplace_back(module.address(), module.address() + sec->PointerToRawData + secSize);
 	}
+#elif defined(__APPLE__)
+	// macOS Mach-O parsing
+	_ranges.clear();
+	pair<uintptr_t, uintptr_t> range;
+
+	struct mach_header_64* header = reinterpret_cast<struct mach_header_64*>(module.get());
+	if (!header || (header->magic != MH_MAGIC_64 && header->magic != MH_MAGIC)) {
+		// Invalid Mach-O header, try to get a reasonable range
+		// Use _dyld_get_image_vmaddr_slide to find the slide
+		uintptr_t base = module.address();
+		this->_ranges.emplace_back(base, base + 0x1000000); // Default 16MB range
+		return;
+	}
+
+	uint8_t* cmd_ptr = reinterpret_cast<uint8_t*>(header + 1);
+	for (uint32_t i = 0; i < header->ncmds; i++) {
+		struct load_command* cmd = reinterpret_cast<struct load_command*>(cmd_ptr);
+
+		if (cmd->cmd == LC_SEGMENT_64) {
+			struct segment_command_64* seg = reinterpret_cast<struct segment_command_64*>(cmd);
+
+			char buff[512];
+			snprintf(buff, sizeof(buff), "Segment: %s, vmaddr: 0x%llx, vmsize: %llu",
+					 seg->segname, seg->vmaddr, seg->vmsize);
+			BytePattern::LoggingInfo(buff);
+
+			// Look for __TEXT segment which contains executable code
+			if (strcmp(seg->segname, "__TEXT") == 0) {
+				// Iterate through sections in this segment
+				struct section_64* sect = reinterpret_cast<struct section_64*>(seg + 1);
+				for (uint32_t j = 0; j < seg->nsects; j++) {
+					char sect_buff[512];
+					snprintf(sect_buff, sizeof(sect_buff), "  Section: %s, addr: 0x%llx, size: %llu",
+							 sect[j].sectname, sect[j].addr, sect[j].size);
+					BytePattern::LoggingInfo(sect_buff);
+
+					// Add __text section (executable code)
+					if (strcmp(sect[j].sectname, "__text") == 0) {
+						range.first = module.address() + sect[j].addr;
+						range.second = range.first + sect[j].size;
+						this->_ranges.emplace_back(range);
+					}
+				}
+			}
+			// Also look for __DATA segment for data sections
+			else if (strcmp(seg->segname, "__DATA") == 0 || strcmp(seg->segname, "__DATA_CONST") == 0) {
+				struct section_64* sect = reinterpret_cast<struct section_64*>(seg + 1);
+				for (uint32_t j = 0; j < seg->nsects; j++) {
+					// Add readable data sections
+					if (strcmp(sect[j].sectname, "__const") == 0 || strcmp(sect[j].sectname, "__data") == 0) {
+						range.first = module.address() + sect[j].addr;
+						range.second = range.first + sect[j].size;
+						this->_ranges.emplace_back(range);
+					}
+				}
+			}
+		}
+
+		cmd_ptr += cmd->cmdsize;
+	}
+
+	// If no ranges found, add a default range
+	if (_ranges.empty()) {
+		uintptr_t base = module.address();
+		this->_ranges.emplace_back(base, base + 0x1000000); // Default 16MB range
+	}
+#else
+	// Linux/other platforms - use a default range
+	_ranges.clear();
+	uintptr_t base = module.address();
+	this->_ranges.emplace_back(base, base + 0x1000000); // Default 16MB range
+#endif
 }
 
 void BytePattern::clear()
@@ -298,8 +371,10 @@ void BytePattern::bm_search()
 
 		ptrdiff_t index;
 
+#ifdef _WIN32
 		__try
 		{
+#endif
 			while (range_begin <= range_end)
 			{
 				for (index = pattern_len - 1; index >= 0; --index)
@@ -317,14 +392,16 @@ void BytePattern::bm_search()
 				}
 				else
 				{
-					range_begin += max(index - this->_bmbc[range_begin[index]], 1);
+					range_begin += max(index - this->_bmbc[range_begin[index]], ptrdiff_t(1));
 				}
 			}
+#ifdef _WIN32
 		}
 		__except ((GetExceptionCode() == EXCEPTION_ACCESS_VIOLATION) ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
 		{
 
 		}
+#endif
 	}
 }
 

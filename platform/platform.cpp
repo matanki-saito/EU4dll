@@ -1,11 +1,20 @@
 #include "platform.h"
 #include <cstring>
 #include <cstdlib>
+#include <cstdint>
+#include <string>
+#include <iostream>
 
 #ifdef PLATFORM_MACOS
-#include <iostream>
 #include <locale>
 #include <codecvt>
+#endif
+
+#ifdef PLATFORM_LINUX
+#include <unistd.h>
+#include <locale>
+#include <codecvt>
+#include <sys/mman.h>
 #endif
 
 namespace Platform {
@@ -147,3 +156,82 @@ bool GetExecutablePath(WCHAR* path, size_t maxLen) {
 }
 
 } // namespace Platform
+
+// Windows API implementations for non-Windows platforms
+#if defined(PLATFORM_MACOS) || defined(PLATFORM_LINUX)
+
+HMODULE GetModuleHandle(void* unused) {
+    // Get the handle to the current process's main executable
+    return dlopen(NULL, RTLD_LAZY);
+}
+
+HMODULE GetModuleHandleA(LPCSTR moduleName) {
+    if (moduleName == NULL) {
+        return GetModuleHandle(NULL);
+    }
+    // Try to get a handle to the specified module
+    return dlopen(moduleName, RTLD_LAZY | RTLD_NOLOAD);
+}
+
+DWORD GetModuleFileName(HMODULE hModule, wchar_t* lpFilename, DWORD nSize) {
+    char exePath[MAX_PATH];
+
+#ifdef PLATFORM_MACOS
+    uint32_t size = sizeof(exePath);
+    if (_NSGetExecutablePath(exePath, &size) == 0) {
+        std::mbstowcs(lpFilename, exePath, nSize);
+        return std::wcslen(lpFilename);
+    }
+#else  // Linux
+    ssize_t len = readlink("/proc/self/exe", exePath, sizeof(exePath) - 1);
+    if (len != -1) {
+        exePath[len] = '\0';
+        std::mbstowcs(lpFilename, exePath, nSize);
+        return std::wcslen(lpFilename);
+    }
+#endif
+    return 0;
+}
+
+BOOL VirtualProtect(LPVOID lpAddress, size_t dwSize, DWORD flNewProtect, DWORD* lpflOldProtect) {
+    // Use mprotect to change memory protection
+    int prot = 0;
+
+    switch (flNewProtect) {
+        case PAGE_EXECUTE_READWRITE:
+            prot = PROT_READ | PROT_WRITE | PROT_EXEC;
+            break;
+        case PAGE_EXECUTE_READ:
+            prot = PROT_READ | PROT_EXEC;
+            break;
+        case PAGE_READWRITE:
+            prot = PROT_READ | PROT_WRITE;
+            break;
+        case PAGE_READONLY:
+            prot = PROT_READ;
+            break;
+        default:
+            prot = PROT_READ | PROT_WRITE;
+            break;
+    }
+
+    // Align address to page boundary
+    uintptr_t addr = (uintptr_t)lpAddress;
+    uintptr_t page_size = sysconf(_SC_PAGESIZE);
+    uintptr_t aligned_addr = addr & ~(page_size - 1);
+    size_t aligned_size = dwSize + (addr - aligned_addr);
+
+    // Store old protection (we can't easily get it, so just set it to RW)
+    if (lpflOldProtect) {
+        *lpflOldProtect = PAGE_READWRITE;
+    }
+
+    return mprotect((void*)aligned_addr, aligned_size, prot) == 0 ? TRUE : FALSE;
+}
+
+DWORD GetExceptionCode(void) {
+    // Not used on Unix-like systems, return 0
+    return 0;
+}
+
+#endif
