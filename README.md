@@ -5,9 +5,8 @@ This dll makes it possible to display double-byte characters on Europa Universal
 ## Notice
 
 - This project is **unofficial**.
-- Windows is supported and dll only works on Steam.
-- macOS is not supported. I don't have those plans.
-- Linux is not supported.
+- Windows and macOS are supported. The library works on Steam version.
+- Linux support is experimental (not fully tested).
 - Displaying very long tooltips can cause **CTD**. See [here](https://github.com/matanki-saito/EU4dll/issues/226).
 
 ## How to use
@@ -76,6 +75,48 @@ Attaching Inverted Question Mark(¿) to dynasty, the first name and last name ar
 ```
 
 When you use this feature, please exclude Inverted Question Mark(¿) from all fonts.
+
+## Building from Source
+
+### macOS
+
+Requirements:
+- CMake 3.15 or later
+- Xcode Command Line Tools
+- Boost library
+
+Build steps:
+```bash
+# Install dependencies (using Homebrew)
+brew install cmake boost
+
+# Clone the repository
+git clone https://github.com/matanki-saito/EU4dll.git
+cd EU4dll
+
+# Create build directory
+mkdir build && cd build
+
+# Configure and build
+cmake ..
+cmake --build .
+
+# The output will be Plugin64.dylib in the build/Plugin64 directory
+```
+
+Installation on macOS:
+1. Build the library following the steps above
+2. Copy `Plugin64.dylib` to your EU4 game directory
+3. Use `DYLD_INSERT_LIBRARIES` environment variable to inject the library when launching EU4:
+   ```bash
+   DYLD_INSERT_LIBRARIES=/path/to/Plugin64.dylib /path/to/Europa\ Universalis\ IV.app/Contents/MacOS/eu4
+   ```
+
+**Note**: macOS System Integrity Protection (SIP) may prevent library injection. You may need to disable SIP or use other methods to load the library.
+
+### Windows
+
+Use the provided Visual Studio solution file `EU4JPS.sln` to build the project.
 
 ## Licence
 

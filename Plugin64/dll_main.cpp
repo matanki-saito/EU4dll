@@ -3,11 +3,39 @@
 #include "plugin_64.h"
 #include "mod_download.h"
 
+// Platform-specific entry point handling
+static void LibraryInit();
+static void LibraryShutdown();
+
+#ifdef _WIN32
+// Windows DLL entry point
 BOOL APIENTRY DllMain(HMODULE hModule,
                       DWORD  ulReasonForCall,
                       LPVOID lpReserved){
 
 	if (ulReasonForCall == DLL_PROCESS_ATTACH){
+		LibraryInit();
+	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
+		LibraryShutdown();
+	}
+
+    return TRUE;
+}
+#else
+// macOS/Linux library constructor/destructor
+__attribute__((constructor))
+static void library_init() {
+	LibraryInit();
+}
+
+__attribute__((destructor))
+static void library_shutdown() {
+	LibraryShutdown();
+}
+#endif
+
+// Common initialization code
+static void LibraryInit(){
 		BytePattern::StartLog(L"eu4_jps_2");
 
 		DllError e = {};
@@ -76,10 +104,10 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 			Validator::Validate(e, options);
 		}
-	}else if (ulReasonForCall == DLL_PROCESS_DETACH){
-		BytePattern::ShutdownLog();
-	}
+}
 
-    return TRUE;
+// Common shutdown code
+static void LibraryShutdown(){
+	BytePattern::ShutdownLog();
 }
 

@@ -2,14 +2,45 @@
 #include "byte_pattern.h"
 #include "moddl.h"
 
+// Platform-specific entry point handling
+static void LibraryInit();
+static void LibraryShutdown();
+
+#ifdef _WIN32
+// Windows DLL entry point
 BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 {
     if (reason == DLL_PROCESS_ATTACH)
     {
+        LibraryInit();
+    }
+    else if (reason == DLL_PROCESS_DETACH)
+    {
+        LibraryShutdown();
+    }
+
+    return TRUE;
+}
+#else
+// macOS/Linux library constructor/destructor
+__attribute__((constructor))
+static void library_init() {
+	LibraryInit();
+}
+
+__attribute__((destructor))
+static void library_shutdown() {
+	LibraryShutdown();
+}
+#endif
+
+// Common initialization code
+static void LibraryInit()
+{
 		// moddownload
 		#ifndef _DEBUG
 		wchar_t myDocumentPath[MAX_PATH];
-		SHGetSpecialFolderPath(NULL, myDocumentPath, CSIDL_PERSONAL, 0);
+		Platform::GetDocumentsPath(myDocumentPath, MAX_PATH);
 
 		const path gameDirPath = path{ myDocumentPath } / L"Paradox Interactive" / L"Europa Universalis IV";
 		if (!InitAutoUpdate(gameDirPath)) exit(-1);
@@ -81,7 +112,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 			byte_pattern::temp_instance().debug_output2("DLL [OK]");
 		}
 		else {
-			const DWORD sysDefLcid = ::GetSystemDefaultLCID();
+			const DWORD sysDefLcid = Platform::GetSystemLocale();
 
 			WCHAR* message;
 			WCHAR* caption;
@@ -139,16 +170,15 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 					L"https://github.com/matanki-saito/EU4dll";
 			}
 
-			MessageBoxW(NULL, message, caption, MB_OK);
+			Platform::ShowMessageBox(message, caption);
 
 			byte_pattern::temp_instance().debug_output2("DLL [NG]");
 			exit(-1);
 		}
-    }
-    else if (reason == DLL_PROCESS_DETACH)
-    {
-        byte_pattern::shutdown_log();
-    }
+}
 
-    return TRUE;
+// Common shutdown code
+static void LibraryShutdown()
+{
+	byte_pattern::shutdown_log();
 }
