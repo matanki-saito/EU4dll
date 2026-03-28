@@ -22,6 +22,7 @@ namespace FileSave {
 		void fileSaveProc6V137();
 		void fileSaveProc6V137E();
 		void fileSaveProc6V137G();
+        void fileSaveProc6V137M();
 		void fileSaveProc7();
 		void fileSaveProc7V137();
 		void fileSaveProc8();
@@ -566,7 +567,17 @@ namespace FileSave {
 						Injector::MakeJMP(address, fileSaveProc6V137G, true);
 					}
 					else {
-						e.fileSave.unmatchdFileSaveProc6Injector = true;
+                        //GOGVer 1.37.5.0 Inca(491d/1981)
+                        BytePattern::temp_instance().find_pattern("C7 45 C0 C0 00 00 00 48 8D 55 30 48 83 7D 48 10");
+                        if (BytePattern::temp_instance().has_size(1, u8"スタート画面でのコンティニューのツールチップ")) {
+                            uintptr_t address = BytePattern::temp_instance().get_first().address(0x7);
+                            fileSaveProc6CallAddress = (uintptr_t)utf8ToEscapedStr2;
+                            fileSaveProc6ReturnAddress = address + 0x17;
+                            Injector::MakeJMP(address, fileSaveProc6V137M, true);
+                        }
+                        else {
+                            e.fileSave.unmatchdFileSaveProc6Injector = true;
+                        }
 					}
 				}
 			}
