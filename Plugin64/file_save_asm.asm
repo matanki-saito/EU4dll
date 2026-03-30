@@ -314,6 +314,24 @@ fileSaveProc6V137G ENDP
 
 ;-------------------------------------------;
 
+fileSaveProc6V137M PROC
+	lea     rdx, [rbp+30h]
+	mov     rcx, rdx
+	call    fileSaveProc6CallAddress
+	mov     rdx, rax
+	mov     r8, [rdx+10h]
+	cmp     qword ptr [rdx+18h], 10h
+	jb      JMP_A
+	mov     rdx, [rdx]
+JMP_A:
+	lea     rcx, [rsp+50h]
+
+	push    fileSaveProc6ReturnAddress;
+	ret;
+fileSaveProc6V137M ENDP
+
+;-------------------------------------------;
+
 fileSaveProc7 PROC
 
 	lea		rcx, [rsp + 58h - 30h];
