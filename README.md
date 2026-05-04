@@ -5,7 +5,7 @@ This dll makes it possible to display double-byte characters on Europa Universal
 ## Notice
 
 - This project is **unofficial**.
-- Windows is supported and dll only works on Steam.
+- Windows is supported and dll only works on Steam. Use Mac OS here 👉️ [eu4dll_mac](https://github.com/PoXiao-zero/eu4dll_mac)
 - macOS is not supported. I don't have those plans.
 - Linux is not supported.
 - Displaying very long tooltips can cause **CTD**. See [here](https://github.com/matanki-saito/EU4dll/issues/226).
