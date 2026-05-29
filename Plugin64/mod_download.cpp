@@ -45,12 +45,24 @@ namespace ModDownload{
 		wchar_t myDocumentPath[MAX_PATH];
 		SHGetSpecialFolderPath(NULL, myDocumentPath, CSIDL_PERSONAL | CSIDL_FLAG_NO_ALIAS, 0);
 
-		const path gameDirPath = path{ myDocumentPath } / L"Paradox Interactive" / L"Europa Universalis IV";
-		path downloaderExePath = path{ gameDirPath } / L"claes.exe";
+		// steam
+		const path gameDirPathSteam = path{ myDocumentPath } / L"Paradox Interactive" / L"Europa Universalis IV";
+		path downloaderExePathSteam = path{ gameDirPathSteam } / L"claes.exe";
 
-		if (exists(downloaderExePath)) {
+		if (exists(downloaderExePathSteam)) {
 			error |= createProcess(
-				_wcsdup(downloaderExePath.c_str()),
+				_wcsdup(downloaderExePathSteam.c_str()),
+				CREATE_NO_WINDOW
+			);
+		}
+
+		// epic
+		const path gameDirPathEpic = path{ myDocumentPath } / L"Paradox Interactive" / L"Europa Universalis IV EGS";
+		path downloaderExePathEpic = path{ gameDirPathEpic } / L"claes.exe";
+
+		if (exists(downloaderExePathEpic)) {
+			error |= createProcess(
+				_wcsdup(downloaderExePathEpic.c_str()),
 				CREATE_NO_WINDOW
 			);
 		}

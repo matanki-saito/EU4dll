@@ -37,6 +37,10 @@ namespace Date {
 		case v1_32_0_1:
 		case v1_33_0_0:
 		case v1_33_3_0:
+		case v1_34_2_0:
+		case v1_35_1_0:
+		case v1_36_0_0:
+		case v1_37_0_0:
 			// d w mw w y
 			BytePattern::temp_instance().find_pattern("64 20 77 20 6D");
 			if (BytePattern::temp_instance().has_size(1, u8"右上の表記を変更")) {

@@ -205,6 +205,8 @@ void BytePattern::get_module_ranges(memory_pointer module)
 	PIMAGE_DOS_HEADER dosHeader = module.pointer<IMAGE_DOS_HEADER>();
 	PIMAGE_NT_HEADERS ntHeader = module.pointer<IMAGE_NT_HEADERS>(dosHeader->e_lfanew);
 
+	
+
 	for (int i = 0; i < ntHeader->FileHeader.NumberOfSections; i++)
 	{
 		auto sec = getSection(ntHeader, i);
@@ -218,7 +220,9 @@ void BytePattern::get_module_ranges(memory_pointer module)
 
 		BytePattern::LoggingInfo(buff);
 
-		if (memcmp((const char*)sec->Name, ".text", 6) == 0 || memcmp((const char*)sec->Name, ".rdata", 7) == 0)
+		if (memcmp((const char*)sec->Name, ".text", 6) == 0 ||
+			memcmp((const char*)sec->Name, ".rdata", 7) == 0 ||
+			memcmp((const char*)sec->Name, ".data", 6) == 0)
 		{
 			range.second = range.first + secSize;
 			this->_ranges.emplace_back(range);

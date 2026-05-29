@@ -1,13 +1,17 @@
 EXTERN localizationProc1CallAddress1: QWORD
 EXTERN localizationProc1CallAddress2: QWORD
+EXTERN localizationProc2CallAddress: QWORD
 EXTERN localizationProc2ReturnAddress: QWORD
 EXTERN localizationProc3ReturnAddress: QWORD
 EXTERN localizationProc4ReturnAddress: QWORD
+EXTERN localizationProc5CallAddress: QWORD
 EXTERN localizationProc5ReturnAddress: QWORD
+EXTERN localizationProc6CallAddress: QWORD
 EXTERN localizationProc6ReturnAddress: QWORD
 EXTERN localizationProc7ReturnAddress: QWORD
 EXTERN localizationProc7CallAddress1: QWORD
 EXTERN localizationProc7CallAddress2: QWORD
+EXTERN localizationProc8CallAddress: QWORD
 EXTERN localizationProc8ReturnAddress: QWORD
 
 EXTERN year: QWORD
@@ -51,6 +55,21 @@ localizationProc2 PROC
 	push	localizationProc2ReturnAddress;
 	ret;
 localizationProc2 ENDP
+
+;-----------------------------------;
+
+localizationProc2V137 PROC
+	
+	lea     rdx, [rbp-28h]
+	cmp		QWORD PTR [rbp-10h], 10h
+	cmovnb  rdx, [rbp-28h]  ; void *
+	mov     r8, [rbp-18h]  ; Size
+	mov     rcx, rbx
+	call	localizationProc2CallAddress;
+
+	push	localizationProc2ReturnAddress;
+	ret;
+localizationProc2V137 ENDP
 
 ;-----------------------------------;
 
@@ -227,6 +246,17 @@ localizationProc5V131 ENDP
 
 ;-----------------------------------;
 
+localizationProc5V137 PROC
+	lea     rdx, [rbp-48h]
+	mov     rcx, rbx
+	call	localizationProc5CallAddress
+
+	push	localizationProc5ReturnAddress;
+	ret;
+localizationProc5V137 ENDP
+
+;-----------------------------------;
+
 localizationProc6 PROC
 	nop;
 
@@ -255,6 +285,18 @@ localizationProc6 PROC
 	push	localizationProc6ReturnAddress;
 	ret;
 localizationProc6 ENDP
+
+;-----------------------------------;
+
+localizationProc6V137 PROC
+	lea     r8, [rbp+57h-78h]
+	lea     rdx, [rbp+57h-98h]
+	lea     rcx, [rbp+57h-38h]
+	call	localizationProc6CallAddress
+
+	push	localizationProc6ReturnAddress;
+	ret;
+localizationProc6V137 ENDP
 
 ;-----------------------------------;
 
@@ -404,4 +446,17 @@ localizationProc8 PROC
 	push	localizationProc8ReturnAddress;
 	ret;
 localizationProc8 ENDP
+
+;-----------------------------------;
+
+localizationProc8V137 PROC
+	nop
+	lea     r8, [rsp+0C8h-088h]
+	mov     rdx, rax
+	mov     rcx, rdi
+	call	localizationProc8CallAddress
+
+	push	localizationProc8ReturnAddress;
+	ret;
+localizationProc8V137 ENDP
 END

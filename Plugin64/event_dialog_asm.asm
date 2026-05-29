@@ -122,6 +122,57 @@ eventDialogProc1V132 ENDP
 
 ;-------------------------------------------;
 
+eventDialogProc1V137 PROC
+	cmp		byte ptr [rax+rdx], ESCAPE_SEQ_1;
+	jz		JMP_A;
+	cmp		byte ptr [rax+rdx], ESCAPE_SEQ_2;
+	jz		JMP_B;
+	cmp		byte ptr [rax+rdx], ESCAPE_SEQ_3;
+	jz		JMP_C;
+	cmp		byte ptr [rax+rdx], ESCAPE_SEQ_4;
+	jz		JMP_D;
+
+	mov		eventDialogProc1Flag, 0h;
+	movzx	eax, byte ptr [rax+rdx];
+	jmp		JMP_E;
+
+JMP_A:
+	movzx	eax, word ptr [rax+rdx + 1];
+	jmp		JMP_G;
+
+JMP_B:
+	movzx	eax, word ptr [rax+rdx + 1];
+	sub		eax, SHIFT_2;
+	jmp		JMP_G;
+
+JMP_C:
+	movzx	eax, word ptr [rax+rdx + 1];
+	add		eax, SHIFT_3;
+	jmp		JMP_G;
+
+JMP_D:
+	movzx	eax, word ptr [rax+rdx + 1];
+	add		eax, SHIFT_4;
+
+JMP_G:
+	movzx	eax, ax;
+	cmp		eax, NO_FONT;
+	ja		JMP_F;
+	mov		eax, NOT_DEF;
+
+JMP_F:
+	mov		eventDialogProc1Flag, 1h;
+
+JMP_E:
+	mov     r11, qword ptr [r13+rax*8+120h]
+	movss   xmm1, dword ptr [r13+968h]
+	test    r11, r11
+	push	eventDialogProc1ReturnAddress;
+	ret;
+eventDialogProc1V137 ENDP
+
+;-------------------------------------------;
+
 eventDialogProc2 PROC
 	cvtdq2ps	xmm0, xmm0;
 	mulss		xmm0, xmm1;
@@ -140,6 +191,27 @@ JMP_B:
 	push		eventDialogProc2ReturnAddress1;
 	ret;
 eventDialogProc2 ENDP
+
+;-------------------------------------------;
+
+eventDialogProc2V137 PROC
+	cvtdq2ps	xmm0, xmm0;
+	mulss		xmm0, xmm1;
+	ucomiss		xmm0, xmm8;
+
+	cmp			eventDialogProc1Flag,1h;
+	jz			JMP_B;
+	jp			JMP_B;
+	jnz			JMP_B;
+
+JMP_A:
+	push		eventDialogProc2ReturnAddress2;
+	ret;
+
+JMP_B:
+	push		eventDialogProc2ReturnAddress1;
+	ret;
+eventDialogProc2V137 ENDP
 
 ;-------------------------------------------;
 
@@ -190,5 +262,21 @@ JMP_A:
 	push	eventDialogProc3ReturnAddress;
 	ret;
 eventDialogProc3V132 ENDP
+
+;-------------------------------------------;
+
+eventDialogProc3V137 PROC
+	cmp		eventDialogProc1Flag, 1;
+	jnz		JMP_A;
+	add		edi,2;
+
+JMP_A:
+	inc		edi;
+	mov     r9d, [rbx+10h]
+	cmp     edi, r9d
+	mov     ecx, [rbp+1060h+10h]
+	push	eventDialogProc3ReturnAddress;
+	ret;
+eventDialogProc3V137 ENDP
 
 END
