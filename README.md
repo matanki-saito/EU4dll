@@ -11,6 +11,8 @@ This dll makes it possible to display double-byte characters on Europa Universal
 - Displaying very long tooltips can cause **CTD**. See [here](https://github.com/matanki-saito/EU4dll/issues/226).
 
 ## How to use
+- Slide For Japan user
+  [Google Slide](https://docs.google.com/presentation/d/e/2PACX-1vQNx0ZoQeabN7TRNtptkyIRQXIylnPTlWsjVRtYZ8pM2WpgpRBCwtzFZdMWH7_kmMXSxu7gdyJs_SZQ/pub?start=false&loop=false&delayms=3000)
 
 - Manual install
   1. Download latest release zipped file and unpack it.
